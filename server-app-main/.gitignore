@@ -1,0 +1,5 @@
+.env
+config
+schema
+logs
+Makefile
