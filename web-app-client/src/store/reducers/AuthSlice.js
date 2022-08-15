@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import storeConfig from "../../configs/store.config.json";
 
+/* Базовое состояние для текущего слайса */
 const initialState = {
     access_token: null,
     isAuthenticated: false,
@@ -8,6 +9,7 @@ const initialState = {
     error: "",
 };
 
+/* Создание нового слайса для авторизации и регистрации пользователя */
 export const authSlice = createSlice({
     name: "auth",
     initialState,

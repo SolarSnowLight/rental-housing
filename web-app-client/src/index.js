@@ -11,6 +11,7 @@ import { setupStore } from './store/store';
 import storeConfig from "./configs/store.config.json";
 
 /* Импорти стилей */
+import './styles/normalize.css';
 import './styles/index.css';
 
 /* Инициализируем константу root определённым элементом, определённым в DOM дереве (div с id = "root") */

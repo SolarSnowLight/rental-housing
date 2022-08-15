@@ -8,7 +8,9 @@ import SignInPage from "../containers/AuthPage/SignInPage";
 import SignUpPage from "../containers/AuthPage/SignUpPage";
 import HomePage from "../containers/HomePage";
 
+/* Хук, определяющий маршрутизацию приложения на внешнем уровне (глобальная маршрутизация) */
 const useRoutes = (isAuthenticated) => {
+    // При авторизации пользователя ему будут доступны все страницы
     if (isAuthenticated) {
         return (
             <Routes>
@@ -23,6 +25,7 @@ const useRoutes = (isAuthenticated) => {
         );
     }
 
+    // Если пользователь не авторизован, число страниц, которые он может посещать ограничено
     return (
         <Routes>
             <Route path={AuthRoute.sign_in_page} exact element={<SignInPage />} />
