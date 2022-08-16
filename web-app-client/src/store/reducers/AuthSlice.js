@@ -14,6 +14,10 @@ export const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
+        getAuthData(state){
+            console.log(JSON.parse(localStorage.getItem(storeConfig["main-store"])));
+            state.access_token = JSON.parse(localStorage.getItem(storeConfig["main-store"])).access_token;
+        },
         setAuthData(state, action) {
             state.access_token = action.payload.access_token;
 
@@ -31,7 +35,6 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.error = "";
 
-            console.log(action);
             state.access_token = action.payload.access_token;
 
             localStorage.setItem(

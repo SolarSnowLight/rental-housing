@@ -13,6 +13,8 @@ import storeConfig from "./configs/store.config.json";
 /* Импорти стилей */
 import './styles/normalize.css';
 import './styles/index.css';
+import { useAppDispatch } from './hooks/redux.hook';
+import { authSlice } from './store/reducers/AuthSlice';
 
 /* Инициализируем константу root определённым элементом, определённым в DOM дереве (div с id = "root") */
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -21,9 +23,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = setupStore();
 
 /* Подписка на изменения в local storage, с ключом main-store */
-store.subscribe(() => {
+/*store.subscribe(() => {
   localStorage[storeConfig["main-store"]] = JSON.stringify(store.getState());
-});
+});*/
 
 /* Отображение в конкретном элементе DOM дерева определённого React-компонента */
 root.render(

@@ -1,8 +1,11 @@
+import Navbar from '../../components/Navbar/Navbar';
 import styles from './HomePage.module.css';
 
 const HomePage = () => {
     return (
-        <>Home page</>
+        <div>
+            HomePage
+        </div>
     )
 }
 

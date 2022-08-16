@@ -36,3 +36,12 @@ export const authSignIn = (data) => async(dispatch) => {
         dispatch(authSlice.actions.signInError(e.message));
     }
 };
+
+/* Функция для считывания данных пользователя из local storage */
+export const authUpdate = () => async(dispatch) => {
+    try{
+        dispatch(authSlice.actions.getAuthData());
+    }catch(e){
+        dispatch(authSlice.actions.signInError(e.message));
+    }
+};

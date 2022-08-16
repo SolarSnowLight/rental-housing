@@ -1,0 +1,66 @@
+:root {
+    /* Цвета тем */
+    --theme-dark-bg: rgba(0, 0, 0, 0.25);
+    --theme-light-bg: var(--gray-background);
+
+    /* Размеры шрифта */
+    --font-size-text-header: 20px;
+
+    /* Шрифты */
+    --font-family-text: Futura PT;
+
+    /* Основные цвета */
+    --black: #111111;
+    --white: #ffffff;
+    --primaryPuple: #84009a;
+    --green: #00eba4;
+    --yellow: #fff500;
+    --red: #f3385a;
+  
+    --gray-dark: #1b1b1b;
+    --gray: #9b9b9b;
+    --gray-light: #b7b7b7;
+    --gray-background: #f8f8f8;
+  
+    /*Indents*/
+    --indent-xl: 56px;
+    --indent-l: 32px;
+    --indent-m: 24px;
+    --indent-s: 16px;
+    --indent-xs: 8px;
+  
+    /*Size*/
+    --fontSize-xl: 40px;
+    --fontSize-l: 36px;
+    --fontSize-header: 24px;
+    --fontSize-body: 16px;
+    --fontSize-Subtext: 14px;
+  
+    /*Radious*/
+    --borderRadius-block: 16px;
+    --borderRadius-button: 30px;
+  
+    /*Shadow*/
+    --blockShadow: 0px 4px 9px rgba(65, 65, 65, 0.25);
+  
+    /*Fonts*/
+    --font-family-label: Permanent Marker;
+    --font-family-body: Proxima-Regular;
+    --font-family-small: Proxima-Regular;
+    --font-family-active: Proxima-Bold;
+
+}
+
+/* Импорт стиля Futura PT*/
+@font-face {
+    font-family: 'Futura PT';
+    src: url('../resources/fonts/futura_pt/FuturaPT-Medium.eot');
+    src: local('Futura PT Medium'), local('FuturaPT-Medium'),
+        url('../resources/fonts/futura_pt/FuturaPT-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../resources/fonts/futura_pt/FuturaPT-Medium.woff2') format('woff2'),
+        url('../resources/fonts/futura_pt/FuturaPT-Medium.woff') format('woff'),
+        url('../resources/fonts/futura_pt/FuturaPT-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+  
