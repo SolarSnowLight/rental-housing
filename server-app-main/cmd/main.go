@@ -2,12 +2,15 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	mainserver "main-server"
-	config "main-server/config"
+	"main-server/config"
 	handler "main-server/pkg/handler"
 	repository "main-server/pkg/repository"
-	service "main-server/pkg/service"
+	"main-server/pkg/service"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -18,11 +21,70 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/sirupsen/logrus/hooks/writer"
+	"github.com/xuri/excelize/v2"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	"gopkg.in/Iwark/spreadsheet.v2"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
 	"github.com/spf13/viper"
 )
+
+// Retrieve a token, saves the token, then returns the generated client.
+func getClient(config *oauth2.Config) *http.Client {
+	// The file token.json stores the user's access and refresh tokens, and is
+	// created automatically when the authorization flow completes for the first
+	// time.
+	tokFile := "token.json"
+	tok, err := tokenFromFile(tokFile)
+	if err != nil {
+		tok = getTokenFromWeb(config)
+		saveToken(tokFile, tok)
+	}
+	return config.Client(context.Background(), tok)
+}
+
+// Request a token from the web, then returns the retrieved token.
+func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
+	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
+	fmt.Printf("Go to the following link in your browser then type the "+
+		"authorization code: \n%v\n", authURL)
+
+	var authCode string
+	if _, err := fmt.Scan(&authCode); err != nil {
+		logrus.Fatalf("Unable to read authorization code: %v", err)
+	}
+
+	tok, err := config.Exchange(context.TODO(), authCode)
+	if err != nil {
+		logrus.Fatalf("Unable to retrieve token from web: %v", err)
+	}
+	return tok
+}
+
+// Retrieves a token from a local file.
+func tokenFromFile(file string) (*oauth2.Token, error) {
+	f, err := os.Open(file)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	tok := &oauth2.Token{}
+	err = json.NewDecoder(f).Decode(tok)
+	return tok, err
+}
+
+// Saves a token to a file path.
+func saveToken(path string, token *oauth2.Token) {
+	fmt.Printf("Saving credential file to: %s\n", path)
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
+	if err != nil {
+		logrus.Fatalf("Unable to cache oauth token: %v", err)
+	}
+	defer f.Close()
+	json.NewEncoder(f).Encode(token)
+}
 
 // @title MISU Main Server
 // @version 1.0
@@ -36,6 +98,77 @@ import (
 // @name Authorization
 
 func main() {
+	/*data, err := ioutil.ReadFile("./config/client_secret.json")
+	if err != nil {
+		logrus.Fatalf("error : %s", err.Error())
+	}
+	conf, err := google.JWTConfigFromJSON(data, sheets.SpreadsheetsScope)
+	if err != nil {
+		logrus.Fatalf("error : %s", err.Error())
+	}
+
+	client := conf.Client(context.Background())
+	srvSheets, err := sheets.New(client)
+	if err != nil {
+		logrus.Fatalf("error : %s", err.Error())
+	}
+
+	spreadsheetID := "1m9_IhCWtlAuifx0zd1QZHxg_E6U_T_cFHlaxkdzODpo"
+	readRange := "A1:AC66"
+	resp, err := srvSheets.Spreadsheets.Values.Get(spreadsheetID, readRange).Do()
+
+	if err != nil {
+		logrus.Fatalf("error : %s", err.Error())
+	}
+
+	if len(resp.Values) == 0 {
+		fmt.Println("No data found.")
+	} else {
+		fmt.Println("Name, Major:")
+		for _, row := range resp.Values {
+			for _, cell := range row {
+				fmt.Printf("%s\n", cell)
+			}
+		}
+	}*/
+
+	data, err := ioutil.ReadFile("./config/client_secret.json")
+	if err != nil {
+		logrus.Fatalf("error : %s", err.Error())
+	}
+
+	conf, err := google.JWTConfigFromJSON(data, spreadsheet.Scope)
+	if err != nil {
+		logrus.Fatalf("error : %s", err.Error())
+	}
+
+	client := conf.Client(context.Background())
+
+	service2 := spreadsheet.NewServiceWithClient(client)
+	spreadsheet, err := service2.FetchSpreadsheet("1m9_IhCWtlAuifx0zd1QZHxg_E6U_T_cFHlaxkdzODpo")
+	if err != nil {
+		logrus.Fatalf("error : %s", err.Error())
+	}
+	sheet, err := spreadsheet.SheetByIndex(0)
+
+	if err != nil {
+		logrus.Fatalf("error : %s", err.Error())
+	}
+
+	f := excelize.NewFile()
+
+	for _, row := range sheet.Rows {
+		for _, cell := range row {
+
+			f.SetCellValue("Sheet1", cell.Pos(), cell.Value)
+			// f.SetCellStyle("Sheet1", )
+		}
+	}
+
+	if err := f.SaveAs("Book1.xlsx"); err != nil {
+		fmt.Println(err)
+	}
+
 	/* Init config */
 	if err := initConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
