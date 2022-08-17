@@ -1,0 +1,101 @@
+
+
+.company-wrapper__header{
+    /*background-color: blue;*/
+    margin-top: 2em;
+    display: grid;
+    position: relative;
+    width: 100%;
+    height: 20em;
+    grid-auto-flow: column;
+    place-items: center;
+}
+
+.company-info__header {
+    margin-left: 6em;
+    display: grid;
+    position: relative;
+    width: 30vw;
+    height: 100%;
+    grid-auto-flow: row;
+    place-items: left;
+}
+
+.company-info-title__header {
+    display: grid;
+    position: relative;
+    grid-auto-flow: column;
+    place-items: center;
+}
+
+.company-description__header {
+    margin-right: 6em;
+    grid-auto-flow: row;
+    place-items: end;
+    display: grid;
+    position: relative;
+    height: 100%;
+    width: 40vw;
+}
+
+.text-company-title {
+    font-family: 'Futura PT';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 62px;
+
+    color: #000000;
+}
+
+.text-company-contact__header {
+    font-family: 'Futura PT';
+    font-style: normal;
+    font-weight: 450;
+    font-size: 18px;
+    line-height: 150%;
+
+    letter-spacing: 0.05em;
+
+    color: #8B8B8B;
+}
+
+.text-company-description {
+    font-family: 'Futura PT';
+    font-style: normal;
+    font-weight: 450;
+    font-size: 18px;
+    line-height: 150%;
+
+    letter-spacing: 0.05em;
+
+    color: #000000;
+}
+
+.chat-btn__header {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    border: 1px solid #000000;
+
+    font-family: 'Futura PT';
+    font-style: normal;
+    font-weight: 450;
+    font-size: 18px;
+    line-height: 150%; 
+
+    letter-spacing: 0.05em;
+
+    color: #000000;
+}
+
+.chat-btn__header:hover {
+    cursor: pointer;
+    background-color: var(--theme-dark-bg);
+    transition: 0.3s;
+}
+
+.chat-btn-wrapper__header {
+    display: grid;
+    place-items: end;
+}

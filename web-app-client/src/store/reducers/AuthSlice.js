@@ -15,7 +15,6 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         getAuthData(state){
-            console.log(JSON.parse(localStorage.getItem(storeConfig["main-store"])));
             state.access_token = JSON.parse(localStorage.getItem(storeConfig["main-store"])).access_token;
         },
         setAuthData(state, action) {

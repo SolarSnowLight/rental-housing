@@ -1,0 +1,59 @@
+.text--black {
+    font-family: 'Futura PT';
+    font-style: normal;
+    font-weight: 450;
+    font-size: 18px;
+    line-height: 150%;
+
+    text-align: center;
+    letter-spacing: 0.05em;
+
+    color: #000000;
+}
+
+.filter-wrapper__header{
+    display: grid;
+    grid-auto-flow: row;
+    gap: 1em;
+}
+
+.filter-wrapper__subheader{
+    display: grid;
+    grid-auto-flow: column;
+    place-items: end;
+}
+
+.filter-wrapper__subheader--exp{
+    display: grid;
+    grid-auto-flow: column;
+    place-items: end;
+}
+
+.filter-wrapper__subheader > * {
+    height: '100%';
+    position: 'relative';
+}
+
+.block-wrapper {
+    display: grid;
+    grid-auto-flow: row;
+    place-items: start;
+    height: 100%;
+    position: relative;
+}
+
+.block-wrapper__button{
+    display: grid;
+    grid-auto-flow: row;
+    place-items: end;
+    height: 100%;
+    position: relative;
+}
+
+.block-wrapper-autocomplete {
+    display: grid;
+    grid-auto-flow: row;
+    place-items: center;
+    height: 100%;
+    position: relative;
+}

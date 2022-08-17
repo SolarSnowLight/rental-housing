@@ -1,0 +1,33 @@
+.map-wrapper {
+    position: relative;
+    width: inherit;
+    height: 40em;
+    margin-top: 1em;
+    margin-left: 4em;
+    margin-right: 4em;
+}
+
+.block-wrapper__filter {
+    margin-left: 4em;
+    margin-right: 4em;
+    margin-top: 4em;
+}
+
+.text-filter {
+    margin-left: 0%;
+    border: none;
+    background-color: transparent;
+    font-family: 'Futura PT';
+    font-style: normal;
+    font-weight: 450;
+    font-size: 18px;
+    line-height: 150%;
+
+    letter-spacing: 0.05em;
+
+    color: #424041;
+}
+
+.text-filter:hover {
+    cursor: pointer;
+}
