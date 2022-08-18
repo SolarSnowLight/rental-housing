@@ -27,7 +27,7 @@ func (s *UserService) GetProfile(c *gin.Context) (userModel.UserProfileModel, er
 	return s.repo.GetProfile(c)
 }
 
-func (s *UserService) UpdateProfile(c *gin.Context, data userModel.UserProfileDataModel) (userModel.UserProfileDataModel, error) {
+func (s *UserService) UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error) {
 	return s.repo.UpdateProfile(c, data)
 }
 

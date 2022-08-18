@@ -6,14 +6,27 @@ type UserProfileModel struct {
 	Data  string `json:"data" binding:"required" db:"data"`
 }
 
-/* Model for request update profile user */
+type UserDataModel struct {
+	Data string `json:"data" binding:"required" db:"data"`
+}
+
+/* Model for request profile user */
 type UserProfileDataModel struct {
-	Email      string `json:"email" binding:"required"`
+	Email      string `json:"email"`
 	Name       string `json:"name" binding:"required"`
 	Surname    string `json:"surname" binding:"required"`
-	Patronymic string `json:"patronymic"`
-	Gender     bool   `json:"gender"`
-	Phone      string `json:"phone"`
 	Nickname   string `json:"nickname" binding:"required"`
-	DateBirth  string `json:"date_birth"`
+	Patronymic string `json:"patronymic"`
+	Position   string `json:"position"`
+	Avatar     string `json:"avatar"`
+}
+
+/* Model for request update profile user */
+type UserProfileUpdateDataModel struct {
+	Name       string  `json:"name" binding:"required"`
+	Surname    string  `json:"surname" binding:"required"`
+	Nickname   string  `json:"nickname" binding:"required"`
+	Patronymic string  `json:"patronymic"`
+	Position   string  `json:"position"`
+	Password   *string `json:"password"`
 }

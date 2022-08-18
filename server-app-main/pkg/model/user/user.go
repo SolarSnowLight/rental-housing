@@ -20,11 +20,10 @@ type UserRegisterModel struct {
 type UserJSONBModel struct {
 	Name       string `json:"name" binding:"required"`
 	Surname    string `json:"surname" binding:"required"`
-	Patronymic string `json:"patronymic"`
-	Gender     bool   `json:"gender"`
-	Phone      string `json:"phone"`
 	Nickname   string `json:"nickname" binding:"required"`
-	DateBirth  string `json:"date_birth"`
+	Patronymic string `json:"patronymic"`
+	Position   string `json:"position"`
+	Avatar     string `json:"avatar"`
 }
 
 /* Model for registration via Google OAuth 2 */

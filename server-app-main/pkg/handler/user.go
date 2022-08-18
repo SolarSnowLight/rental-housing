@@ -54,7 +54,7 @@ func (h *Handler) getProfile(c *gin.Context) {
 // @Failure default {object} errorResponse
 // @Router /user/profile/update [post]
 func (h *Handler) updateProfile(c *gin.Context) {
-	var input userModel.UserProfileDataModel
+	var input userModel.UserProfileUpdateDataModel
 
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")

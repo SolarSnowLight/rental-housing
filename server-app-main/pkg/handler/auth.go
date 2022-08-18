@@ -26,7 +26,7 @@ func (h *Handler) signUp(c *gin.Context) {
 	var input userModel.UserRegisterModel
 
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 

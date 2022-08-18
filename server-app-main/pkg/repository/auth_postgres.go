@@ -117,7 +117,7 @@ func (r *AuthPostgres) CreateUser(user userModel.UserRegisterModel) (userModel.U
 
 	query = fmt.Sprintf("SELECT * FROM %s WHERE value = $1 AND domains_id = $2 LIMIT 1", tableConstants.ROLES_TABLE)
 	var role rbacModel.RoleModel
-	err = r.db.Get(&role, query, roleConstant.ROLE_USER, domain.Id)
+	err = r.db.Get(&role, query, roleConstant.ROLE_CLIENT, domain.Id)
 	if err != nil {
 		tx.Rollback()
 		return userModel.UserAuthDataModel{}, errors.New("Роли пользователя не существует!")
@@ -189,7 +189,7 @@ func (r *AuthPostgres) CreateUser(user userModel.UserRegisterModel) (userModel.U
 	err = smtpService.SendMessage(user.Email, smtpService.BuildMessage(email.Mail{
 		Sender:  viper.GetString("smtp.email"),
 		To:      []string{user.Email},
-		Subject: "Подтверждение аккаунта \"МИСУ Мирный\"",
+		Subject: "Подтверждение аккаунта \"Rental housing\"",
 		Body: fmt.Sprintf(`<html>
 		<head>
 			<meta charset="utf-8" />
@@ -211,13 +211,13 @@ func (r *AuthPostgres) CreateUser(user userModel.UserRegisterModel) (userModel.U
 		</style>
 		<body>
 			<h2>Подтверждение E-mail</h2>
-			<br><text>Вы получили это письмо, так как Ваш почтовый адрес был указан в приложении "МИСУ Мирный".</text> 
+			<br><text>Вы получили это письмо, так как Ваш почтовый адрес был указан в приложении "Rental housing".</text> 
 			</br><text>Чтобы подтвердить Вашу почту перейдите по ссылке: </text></br>
 			<a href="%s">
 			<button>Подтвердить E-mail</button>
 			</a>
 			<br><br><br>
-			<text>Если Вы не проходили процедуру регистрации в приложении "МИСУ Мирный", то не отвечайте на данное сообщение.</text>
+			<text>Если Вы не проходили процедуру регистрации в приложении "Rental housing", то не отвечайте на данное сообщение.</text>
 		</body>
 	</html>`, viper.GetString("api_url")+"/auth/activate/"+u2.String()),
 	}))
@@ -233,9 +233,7 @@ func (r *AuthPostgres) CreateUser(user userModel.UserRegisterModel) (userModel.U
 	}, tx.Commit()
 }
 
-/*
-* Функция авторизации пользователя
- */
+/* Login user */
 func (r *AuthPostgres) LoginUser(user userModel.UserLoginModel) (userModel.UserAuthDataModel, error) {
 	var findUser userModel.UserModel
 	query := fmt.Sprintf("SELECT * FROM %s tl WHERE tl.email = $1 LIMIT 1", tableConstants.USERS_TABLE)
@@ -268,7 +266,7 @@ func (r *AuthPostgres) LoginUser(user userModel.UserLoginModel) (userModel.UserA
 
 	query = fmt.Sprintf("SELECT * FROM %s WHERE value = $1 AND domains_id = $2 LIMIT 1", tableConstants.ROLES_TABLE)
 	var role rbacModel.RoleModel
-	err = r.db.Get(&role, query, roleConstant.ROLE_USER, domain.Id)
+	err = r.db.Get(&role, query, roleConstant.ROLE_CLIENT, domain.Id)
 	if err != nil {
 		tx.Rollback()
 		return userModel.UserAuthDataModel{}, errors.New("Роли пользователя для данного домена не существует!")
@@ -284,15 +282,6 @@ func (r *AuthPostgres) LoginUser(user userModel.UserLoginModel) (userModel.UserA
 		tx.Rollback()
 		return userModel.UserAuthDataModel{}, errors.New("Данный пользователь не имеет доступа к данному домену!")
 	}
-
-	/*query = fmt.Sprintf(`SELECT roles.id, roles.uuid, roles.value, roles.description, roles.users_id FROM %s
-			INNER JOIN %s on users_roles.roles_id = roles.id WHERE users_roles.users_id = $1 LIMIT 1`, tableConstants.USERS_ROLES_TABLE, tableConstants.ROLES_TABLE)
-
-	var role rbacModel.RoleModel
-	if err := r.db.Get(&role, query, findUser.Id); err != nil {
-		tx.Rollback()
-		return userModel.UserAuthDataModel{}, errors.New("Пользователь не имеет роли!")
-	}*/
 
 	/* Получение типа аутентификации (в данном случае - LOCAL) */
 	var authTypes userModel.AuthTypeModel
@@ -397,19 +386,11 @@ func (r *AuthPostgres) CreateUserOAuth2(user user.UserRegisterOAuth2Model, token
 
 	query = fmt.Sprintf("SELECT * FROM %s WHERE value = $1 AND domains_id = $2 LIMIT 1", tableConstants.ROLES_TABLE)
 	var role rbacModel.RoleModel
-	err = r.db.Get(&role, query, roleConstant.ROLE_USER, domain.Id)
+	err = r.db.Get(&role, query, roleConstant.ROLE_CLIENT, domain.Id)
 	if err != nil {
 		tx.Rollback()
 		return userModel.UserAuthDataModel{}, errors.New("Роли пользователя не существует!")
 	}
-
-	// Добавление роли пользователю (по-умолчанию данная роль - USER)
-	/*query = fmt.Sprintf("INSERT INTO %s (users_id, roles_id) VALUES ($1, $2)", tableConstants.USERS_ROLES_TABLE)
-	_, err = tx.Exec(query, id, role.Id)
-	if err != nil {
-		tx.Rollback()
-		return userModel.UserAuthDataModel{}, err
-	}*/
 
 	/* Added default user roles */
 	r.enforcer.AddRoleForUserInDomain(strconv.Itoa(id), strconv.Itoa(role.Id), strconv.Itoa(domain.Id))

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	middlewareConstants "main-server/pkg/constant/middleware"
 	tableConstants "main-server/pkg/constant/table"
@@ -10,6 +11,8 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
+	"github.com/spf13/viper"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserPostgres struct {
@@ -75,17 +78,17 @@ func (r *UserPostgres) GetProfile(c *gin.Context) (userModel.UserProfileModel, e
 	}, nil
 }
 
-func (r *UserPostgres) UpdateProfile(c *gin.Context, data userModel.UserProfileDataModel) (userModel.UserProfileDataModel, error) {
+func (r *UserPostgres) UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error) {
 	usersId, _ := c.Get(middlewareConstants.USER_CTX)
 
 	userJsonb, err := json.Marshal(data)
 	if err != nil {
-		return userModel.UserProfileDataModel{}, err
+		return userModel.UserJSONBModel{}, err
 	}
 
 	tx, err := r.db.Begin()
 	if err != nil {
-		return userModel.UserProfileDataModel{}, err
+		return userModel.UserJSONBModel{}, err
 	}
 
 	query := fmt.Sprintf("UPDATE %s tl SET data=$1 WHERE tl.users_id = $2", tableConstants.USERS_DATA_TABLE)
@@ -94,15 +97,55 @@ func (r *UserPostgres) UpdateProfile(c *gin.Context, data userModel.UserProfileD
 	_, err = r.db.Exec(query, userJsonb, usersId)
 	if err != nil {
 		tx.Rollback()
-		return userModel.UserProfileDataModel{}, err
+		return userModel.UserJSONBModel{}, err
+	}
+
+	query = fmt.Sprintf("SELECT data FROM %s tl WHERE users_id=$1 LIMIT 1", tableConstants.USERS_DATA_TABLE)
+	var userData []userModel.UserDataModel
+
+	err = r.db.Select(&userData, query, usersId)
+
+	if err != nil {
+		tx.Rollback()
+		return userModel.UserJSONBModel{}, err
+	}
+
+	if len(userData) <= 0 {
+		tx.Rollback()
+		return userModel.UserJSONBModel{}, errors.New("Данных у пользователя нет")
+	}
+
+	var dataFromJson userModel.UserJSONBModel
+	err = json.Unmarshal([]byte(userData[0].Data), &dataFromJson)
+
+	if err != nil {
+		tx.Rollback()
+		return userModel.UserJSONBModel{}, err
+	}
+
+	// Change password
+	if data.Password != nil {
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(*data.Password), viper.GetInt("crypt.cost"))
+		if err != nil {
+			tx.Rollback()
+			return userModel.UserJSONBModel{}, err
+		}
+
+		query := fmt.Sprintf("UPDATE %s SET password=$1 WHERE id=$2", tableConstants.USERS_TABLE)
+		_, err = r.db.Exec(query, string(hashedPassword), usersId)
+
+		if err != nil {
+			tx.Rollback()
+			return userModel.UserJSONBModel{}, err
+		}
 	}
 
 	err = tx.Commit()
 
 	if err != nil {
 		tx.Rollback()
-		return userModel.UserProfileDataModel{}, err
+		return userModel.UserJSONBModel{}, err
 	}
 
-	return data, nil
+	return dataFromJson, nil
 }

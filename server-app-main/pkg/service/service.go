@@ -34,7 +34,7 @@ type AuthType interface {
 type User interface {
 	// Profile
 	GetProfile(c *gin.Context) (userModel.UserProfileModel, error)
-	UpdateProfile(c *gin.Context, data userModel.UserProfileDataModel) (userModel.UserProfileDataModel, error)
+	UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error)
 }
 
 type Domain interface {

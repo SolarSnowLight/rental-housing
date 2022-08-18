@@ -88,11 +88,11 @@ func (h *Handler) userIdentityLogout(c *gin.Context) {
 	c.Set(middlewareConstants.ACCESS_TOKEN_CTX, headerParts[1])
 }
 
-func (h *Handler) userIdentityHasRoleUser(c *gin.Context) {
+func (h *Handler) userIdentityHasRoleClient(c *gin.Context) {
 	usersId, _ := c.Get(middlewareConstants.USER_CTX)
 	domainsId, _ := c.Get(middlewareConstants.DOMAINS_ID)
 
-	has, err := h.services.Role.HasRole(usersId.(int), domainsId.(int), roleConstant.ROLE_USER)
+	has, err := h.services.Role.HasRole(usersId.(int), domainsId.(int), roleConstant.ROLE_CLIENT)
 
 	if (err != nil) || (!has) {
 		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
@@ -100,11 +100,11 @@ func (h *Handler) userIdentityHasRoleUser(c *gin.Context) {
 	}
 }
 
-func (h *Handler) userIdentityHasRoleModerator(c *gin.Context) {
+func (h *Handler) userIdentityHasRoleBuilderManager(c *gin.Context) {
 	usersId, _ := c.Get(middlewareConstants.USER_CTX)
 	domainsId, _ := c.Get(middlewareConstants.DOMAINS_ID)
 
-	has, err := h.services.Role.HasRole(usersId.(int), domainsId.(int), roleConstant.ROLE_MODERATOR)
+	has, err := h.services.Role.HasRole(usersId.(int), domainsId.(int), roleConstant.ROLE_BUILDER_MANAGER)
 
 	if (err != nil) || (!has) {
 		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
