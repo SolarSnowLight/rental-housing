@@ -11,8 +11,15 @@ import { useState } from 'react';
 import { textMenuBlack } from './styles';
 import SignInPage from '../../containers/AuthPage/SignInPage';
 import SignUpPage from '../../containers/AuthPage/SignUpPage';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux.hook';
+import { authSlice } from '../../store/reducers/AuthSlice';
+import ProfilePage from '../../containers/ProfilePage';
 
 const Navbar = () => {
+    const auth = useAppSelector((state) => state.authReducer);
+    const authActions = authSlice.actions;
+    const dispatch = useAppDispatch();
+
     const matches = useMediaQuery('(min-width: 850px)');
     const [stateCurrentPage, setStateCurrentPage] = useState({
         "value": "sign-in"
@@ -69,7 +76,10 @@ const Navbar = () => {
             // onKeyDown={toggleDrawer(anchor, false)}
         >
             {
-                currentPageSwitcher(stateCurrentPage)
+                (!auth.isAuthenticated) && currentPageSwitcher(stateCurrentPage)
+            }
+            {
+                (auth.isAuthenticated) && <ProfilePage />
             }
         </Box>
     );

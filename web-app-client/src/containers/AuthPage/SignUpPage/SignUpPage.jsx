@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import { borderRadius } from '@mui/system';
 import { styleTextBlack, styleTextGray } from './styles';
 import ImageUploading from "react-images-uploading";
+import { useMessageToastify } from '../../../hooks/message.toastify.hook';
 
 const LinearProgressWithLabel = (props) => {
     return (
@@ -53,6 +54,11 @@ const SignUpPage = ({ setStateCurrentPage }) => {
     const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
+    const message = useMessageToastify();
+
+    useEffect(() => {
+        message(auth.message, "error");
+    }, [auth]);
 
     const { loading, request, error, clearError } = useHttp();
 

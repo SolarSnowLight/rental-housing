@@ -1,5 +1,5 @@
 import useHttp from '../../../hooks/http.hook';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 import { authSignIn } from '../../../store/actions/AuthAction';
 import { authSlice } from '../../../store/reducers/AuthSlice';
@@ -14,6 +14,8 @@ import { root, textStyleDefault } from '../../../styles';
 import styles from './SignInPage.module.css';
 import { Link } from 'react-router-dom';
 import { borderRadius } from '@mui/system';
+import { useMessageToastify } from '../../../hooks/message.toastify.hook';
+import CircularIndeterminate from '../../../components/CircularIndeterminate';
 
 const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
@@ -39,6 +41,21 @@ const SignInPage = ({ setStateCurrentPage }) => {
     const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
+
+    const message = useMessageToastify();
+
+    useEffect(() => {
+        if (auth.error.length > 0) {
+            message(auth.error, "error");
+            dispatch(authActions.authClearError());
+        }
+    }, [auth.error]);
+
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            message("Успешная авторизация", "success");
+        }
+    }, [auth.code]);
 
     const { loading, request, error, clearError } = useHttp();
 
@@ -69,6 +86,10 @@ const SignInPage = ({ setStateCurrentPage }) => {
 
     return (
         <div className={styles["auth-block__main"]}>
+            {
+                auth.isLoading && <CircularIndeterminate />
+            }
+
             <div className={styles["auth-block__content"]}>
                 <div>
                     <span className={styles["auth-block-text__header"]} >Вход</span>
