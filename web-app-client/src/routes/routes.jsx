@@ -20,9 +20,6 @@ const useBaseRoutes = () => {
             <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
             <Route path={BuilderRoute.builder_page} element={<BuilderPage />} />
 
-            <Route path={AuthRoute.sign_in_page} element={<SignInPage />} />
-            <Route path={AuthRoute.sign_up_page} element={<SignUpPage />} />
-
             <Route
                 path="*"
                 exact
@@ -40,7 +37,7 @@ const useRoutes = (isAuthenticated) => {
     if (isAuthenticated) {
         return (
             <Routes>
-                { baseRoutes }
+                {baseRoutes}
             </Routes>
         );
     }
@@ -48,7 +45,7 @@ const useRoutes = (isAuthenticated) => {
     // Если пользователь не авторизован, число страниц, которые он может посещать ограничено
     return (
         <Routes>
-            { baseRoutes }
+            {baseRoutes}
         </Routes>
     );
 };

@@ -1,14 +1,22 @@
+import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import cs from 'classnames';
 
 import styles from './Navbar.module.css';
 
 import logo from '../../resources/images/logo.svg';
-import { useMediaQuery, Button, MenuItem, Menu, Fade } from '@mui/material';
+import { useMediaQuery, Button, MenuItem, Menu, Fade, Box, Drawer } from '@mui/material';
 import { useState } from 'react';
+
+import { textMenuBlack } from './styles';
+import SignInPage from '../../containers/AuthPage/SignInPage';
+import SignUpPage from '../../containers/AuthPage/SignUpPage';
 
 const Navbar = () => {
     const matches = useMediaQuery('(min-width: 850px)');
+    const [stateCurrentPage, setStateCurrentPage] = useState({
+        "value": "sign-in"
+    });
 
     const navigate = useNavigate();
 
@@ -29,6 +37,43 @@ const Navbar = () => {
         setAnchorEl(null);
     };
 
+    // Drawer
+    const [state, setState] = useState({
+        right: false,
+    });
+
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        setState({ ...state, [anchor]: open });
+    };
+
+    const currentPageSwitcher = (state) => {
+        switch(state.value) {
+            case "sign-in": {
+                return <SignInPage setStateCurrentPage={setStateCurrentPage}/>
+            }
+            case "sign-up": {
+                return <SignUpPage setStateCurrentPage={setStateCurrentPage}/>
+            }
+        }
+    }
+    
+    const list = (anchor) => (
+        <Box
+            sx={{ width: "29em" }}
+            role="presentation"
+            // onClick={toggleDrawer(anchor, false)}
+            // onKeyDown={toggleDrawer(anchor, false)}
+        >
+            {
+                currentPageSwitcher(stateCurrentPage)
+            }
+        </Box>
+    );
+
     return (
         <nav className={cs(styles["nav__header"], styles["nav-menu__header"])}>
             <div className={styles['nav-logo__header']}>
@@ -47,15 +92,35 @@ const Navbar = () => {
                             <div>
                                 <span
                                     className={styles["text-menu--black"]}
+                                >Поиск</span>
+                            </div>
+                            <div>
+                                <span
+                                    className={styles["text-menu--black"]}
                                     onClick={toBuilder}
                                 >Застройщики</span>
                             </div>
-                            <div>
-                                <span className={styles["text-menu--black"]}>Связь с нами</span>
-                            </div>
                         </div>
                         <div className={styles["nav-block__header"]}>
-                            <span className={styles["text-menu--black"]}>Приступить к поиску</span>
+                            {["right"].map((anchor) => (
+                                <React.Fragment key={anchor}>
+                                    <Button
+                                        onClick={toggleDrawer(anchor, true)}
+                                        sx={{
+                                            ...textMenuBlack
+                                        }}
+                                    >
+                                        Профиль
+                                    </Button>
+                                    <Drawer
+                                        anchor={anchor}
+                                        open={state[anchor]}
+                                        onClose={toggleDrawer(anchor, false)}
+                                    >
+                                        {list(anchor)}
+                                    </Drawer>
+                                </React.Fragment>
+                            ))}
                         </div>
                     </>
                 )
@@ -71,7 +136,7 @@ const Navbar = () => {
                                 aria-expanded={open ? 'true' : undefined}
                                 onClick={handleClick}
                                 sx={{
-                                    ...styles['text-menu--black'],
+                                    ...textMenuBlack
                                 }}
                             >
                                 Меню
