@@ -3,7 +3,7 @@
     height: 80px;
 
     box-sizing: border-box;
-    background: var(--theme-dark-bg);
+    background: transparent;
 
     position: relative;
 
@@ -17,9 +17,9 @@
     place-items: center;
 
     grid-template-areas:
-    "A A B B   B B B B   B B C C"
-    "A A B B   B B B B   B B C C"
-    "A A B B   B B B B   B B C C";
+    "A A B B   B B B B   C C C C"
+    "A A B B   B B B B   C C C C"
+    "A A B B   B B B B   C C C C";
 }
 
 .nav-menu-center__header{

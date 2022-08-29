@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { authUpdate } from "../../store/actions/AuthAction";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const config = useAppSelector(state => state.configReducer);
@@ -17,15 +19,24 @@ const App = () => {
     dispatch(authUpdate());
   }, []);
 
-  const isAuthenticated = !!auth.access_token;
-
-  const routes = useRoutes(isAuthenticated);
+  const routes = useRoutes(auth.isAuthenticated);
 
   return (
     <BrowserRouter>
       <Navbar />
       {routes}
       <Footer />
+      <ToastContainer
+        position="bottom-left"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </BrowserRouter>
   )
 }
