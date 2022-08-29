@@ -5,12 +5,14 @@ import AuthRoute from "../constants/addresses/routes/auth.route";
 import BuilderRoute from "../constants/addresses/routes/builder.route";
 import CompanyRoute from "../constants/addresses/routes/company.route";
 import MainRoute from "../constants/addresses/routes/main.route";
+import ManagerRoute from "../constants/addresses/routes/manager.route";
 
 import SignInPage from "../containers/AuthPage/SignInPage";
 import SignUpPage from "../containers/AuthPage/SignUpPage";
 import BuilderPage from "../containers/BuilderPage";
 import CompanyPage from "../containers/CompanyPage";
 import HomePage from "../containers/HomePage";
+import ManagerPage from "../containers/Manager/ManagerPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -38,6 +40,10 @@ const useRoutes = (isAuthenticated) => {
         return (
             <Routes>
                 {baseRoutes}
+                
+                { /* Проверка на роли должна быть перед выводом маршрутов (потом) */}
+
+                <Route path={ManagerRoute.default} element={<ManagerPage />} />
             </Routes>
         );
     }
@@ -46,6 +52,9 @@ const useRoutes = (isAuthenticated) => {
     return (
         <Routes>
             {baseRoutes}
+
+            { /* For tests */}
+            <Route path={ManagerRoute.default} element={<ManagerPage />} />
         </Routes>
     );
 };
