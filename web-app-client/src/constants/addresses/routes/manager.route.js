@@ -1,7 +1,7 @@
 export const ManagerRouteDefault = "/manager";
 
 const ManagerRoute = {
-    default: ManagerRouteDefault
+    default: ManagerRouteDefault,
 };
 
 export default ManagerRoute;
