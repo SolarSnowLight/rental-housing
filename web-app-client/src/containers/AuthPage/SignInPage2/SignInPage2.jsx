@@ -1,6 +1,6 @@
 
 import css from './SignInPage2.module.scss'
-import Space from "../../../components/common/Space";
+import Space from "../../../components/icons/Space";
 import {Button, Input} from "@mui/material";
 
 

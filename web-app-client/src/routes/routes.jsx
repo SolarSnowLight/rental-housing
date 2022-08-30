@@ -15,6 +15,7 @@ import CompanyPage from "../containers/CompanyPage";
 import HomePage from "../containers/HomePage";
 import MainPage from "../containers/MainPage";
 import ManagerPage from "../containers/Manager/ManagerPage";
+import ObjectSearchPage from "../containers/ObjectSearchPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -26,6 +27,7 @@ const useBaseRoutes = () => {
             <Route path={BuilderRoute.builder_page} element={<BuilderPage />} />
 
             {/*<Route path={AuthRoute.sign_in_page} element={<SignInPage2 />} />*/}
+            <Route path={'/object-search'} element={<ObjectSearchPage />} />
 
             <Route
                 path="*"

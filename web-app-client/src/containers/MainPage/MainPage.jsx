@@ -1,10 +1,10 @@
 import css from './MainPage.module.scss'
 import mainBgcImage from '../../resources/images/main-page-bgc.jpg'
 import React from 'react'
-import LogoIc from "../../components/common/LogoIc";
-import Space from "../../components/common/Space";
-import ArrowDownIc from "../../components/common/ArrowDownIc";
-import ArrowUpRightIc from "../../components/common/ArrowUpRightIc";
+import LogoIc from "../../components/icons/LogoIc";
+import Space from "../../components/icons/Space";
+import ArrowDownIc from "../../components/icons/ArrowDownIc";
+import ArrowUpRightIc from "../../components/icons/ArrowUpRightIc";
 
 
 const MainPage = () => {
