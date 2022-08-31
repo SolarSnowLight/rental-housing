@@ -1,6 +1,7 @@
 export const root = {
     colorGreen: "#B4EFA6",
-    colorWhite: "#FCFCFC"
+    colorWhite: "#FCFCFC",
+    colorGray: "#DCDCDC"
 }
 
 export const textStyleDefault = {

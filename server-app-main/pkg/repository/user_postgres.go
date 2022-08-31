@@ -94,7 +94,7 @@ func (r *UserPostgres) UpdateProfile(c *gin.Context, data userModel.UserProfileU
 	query := fmt.Sprintf("UPDATE %s tl SET data=$1 WHERE tl.users_id = $2", tableConstants.USERS_DATA_TABLE)
 
 	// Update data about user profile
-	_, err = r.db.Exec(query, userJsonb, usersId)
+	_, err = tx.Exec(query, userJsonb, usersId)
 	if err != nil {
 		tx.Rollback()
 		return userModel.UserJSONBModel{}, err

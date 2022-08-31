@@ -6,8 +6,9 @@ const (
 
 const (
 	// LOCAL
-	AUTH_SIGN_IN_ROUTE = "/sign-in"
-	AUTH_SIGN_UP_ROUTE = "/sign-up"
+	AUTH_SIGN_IN_ROUTE        = "/sign-in"
+	AUTH_SIGN_UP_ROUTE        = "/sign-up"
+	AUTH_UPLOAD_PROFILE_IMAGE = "/sign-up/upload/image"
 
 	// VK
 	AUTH_SIGN_IN_VK_ROUTE          = "/sign-in/vk"

@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import AdminRoute from "../constants/addresses/routes/admin.route";
 
 import AuthRoute from "../constants/addresses/routes/auth.route";
 import BuilderRoute from "../constants/addresses/routes/builder.route";
@@ -14,6 +15,7 @@ import CompanyPage from "../containers/CompanyPage";
 import HomePage from "../containers/HomePage";
 import MainPage from "../containers/MainPage";
 import ManagerPage from "../containers/Manager/ManagerPage";
+import AdminPage from "../containers/Admin/AdminPage";
 import ObjectSearchPage from "../containers/ObjectSearchPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
@@ -48,20 +50,28 @@ const useRoutes = (isAuthenticated) => {
 
                 { /* Проверка на роли должна быть перед выводом маршрутов (потом) */}
 
+
+                <Route path={AdminRoute.default} element={<AdminPage />} />
                 <Route path={ManagerRoute.default} element={<ManagerPage />} />
+            </Routes>
+        );
+    } else {
+        // Если пользователь не авторизован, число страниц, которые он может посещать ограничено
+        return (
+            <Routes>
+                {baseRoutes}
+
+                { /*<Route
+                    path="*"
+                    exact
+                    element={<Navigate to={MainRoute.home_page} />}
+                />*/
+                }
             </Routes>
         );
     }
 
-    // Если пользователь не авторизован, число страниц, которые он может посещать ограничено
-    return (
-        <Routes>
-            {baseRoutes}
 
-            { /* For tests */}
-            <Route path={ManagerRoute.default} element={<ManagerPage />} />
-        </Routes>
-    );
 };
 
 export default useRoutes;

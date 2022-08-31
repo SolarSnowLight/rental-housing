@@ -15,7 +15,7 @@ export const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        /* Common function */
+        // Global functions
         authLoading(state) {
             state.isLoading = true;
         },
@@ -29,7 +29,14 @@ export const authSlice = createSlice({
         },
 
         getAuthData(state) {
-            state.access_token = JSON.parse(localStorage.getItem(storeConfig["main-store"]))?.access_token;
+            const mainStore = localStorage.getItem(storeConfig["main-store"]);
+
+            if(mainStore){
+                state.access_token = JSON.parse(mainStore)?.access_token;
+            }else{
+                state.access_token = null;
+            }
+
             state.isAuthenticated = !!state.access_token;
             state.error = "";
         },
@@ -45,7 +52,7 @@ export const authSlice = createSlice({
             );
         },
 
-        /* Function for SignIn */
+        // Function for SignIn
         signInSuccess(state, action) {
             state.isLoading = false;
             state.error = "";
@@ -61,7 +68,23 @@ export const authSlice = createSlice({
             );
         },
 
-        /* Function for logout */
+        // Functions for SignUp
+        signUpSuccess(state, action){
+            state.isLoading = false;
+            state.error = "";
+
+            state.access_token = action.payload.access_token;
+            state.isAuthenticated = !!state.access_token;
+
+            localStorage.setItem(
+                storeConfig["main-store"],
+                JSON.stringify({
+                    ...(new AuthDataDto(state)),
+                })
+            );
+        },
+
+        // Functions for logout
         logout(state, action) {
             state.isLoading = false;
             state.error = "";

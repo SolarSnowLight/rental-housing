@@ -1,12 +1,11 @@
 .nav__header {
-    width: 100%;
+    width: 100vw;
     height: 80px;
 
     box-sizing: border-box;
     background: transparent;
 
     position: relative;
-
     border-bottom: 1px solid #000000;
 
     backdrop-filter: blur(8px);

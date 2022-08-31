@@ -5,6 +5,7 @@ import (
 	userModel "main-server/pkg/model/user"
 	repository "main-server/pkg/repository"
 
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
 
@@ -25,6 +26,11 @@ func NewAuthService(repo repository.Authorization, tokenService TokenService) *A
 /* Create user */
 func (s *AuthService) CreateUser(user userModel.UserRegisterModel) (userModel.UserAuthDataModel, error) {
 	return s.repo.CreateUser(user)
+}
+
+/* Upload profile image */
+func (s *AuthService) UploadProfileImage(c *gin.Context, filepath string) (bool, error) {
+	return s.repo.UploadProfileImage(c, filepath)
 }
 
 /* Login user */
