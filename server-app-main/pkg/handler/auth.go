@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
 )
 
@@ -43,6 +44,46 @@ func (h *Handler) signUp(c *gin.Context) {
 
 	c.JSON(http.StatusOK, userModel.TokenAccessModel{
 		AccessToken: data.AccessToken,
+	})
+}
+
+// @Summary UploadProfileImage
+// @Tags auth
+// @Description Загрузка пользовательского изображения (аватар)
+// @ID upload-profile-image
+// @Accept  json
+// @Produce  json
+// @Param input body userModel.UserRegisterModel true "account info"
+// @Success 200 {object} userModel.TokenAccessModel "data"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /auth/sign-up [post]
+func (h *Handler) uploadProfileImage(c *gin.Context) {
+	form, err := c.MultipartForm()
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// Get data from form
+	images := form.File["file"]
+	profileImage := images[len(images)-1]
+
+	filepath := "public/profile/" + uuid.NewV4().String()
+
+	// Save profile image
+	c.SaveUploadedFile(profileImage, filepath)
+
+	_, err = h.services.Authorization.UploadProfileImage(c, filepath)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "Изображение профиля пользователя было обновлено",
 	})
 }
 

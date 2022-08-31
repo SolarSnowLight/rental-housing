@@ -41,6 +41,7 @@ const SignInPage = ({ setStateCurrentPage }) => {
     const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
+    dispatch(authActions.authClearError());
 
     const message = useMessageToastify();
 
@@ -101,7 +102,7 @@ const SignInPage = ({ setStateCurrentPage }) => {
                                 control={control}
                                 name="email"
                                 rules={emailValidation}
-                                defaultValue={undefined}
+                                defaultValue={''}
                                 render={({ field }) => (
                                     <TextField
                                         required
@@ -134,7 +135,7 @@ const SignInPage = ({ setStateCurrentPage }) => {
                                 control={control}
                                 name="password"
                                 rules={passwordValidation}
-                                defaultValue={undefined}
+                                defaultValue={''}
                                 render={({ field }) => (
                                     <TextField
                                         required

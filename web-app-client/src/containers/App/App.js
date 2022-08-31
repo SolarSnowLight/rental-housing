@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useRoutes from '../../routes/routes';
 import styles from './App.module.css';
 import { BrowserRouter } from "react-router-dom";
@@ -14,6 +14,7 @@ const App = () => {
   const config = useAppSelector(state => state.configReducer);
   const auth = useAppSelector(state => state.authReducer);
   const dispatch = useDispatch();
+  const [authenticated, setAuthenticated] = useState(auth.isAuthenticated);
 
   useEffect(() => {
     dispatch(authUpdate());

@@ -11,6 +11,7 @@ import (
 
 	config "main-server/config"
 	authConstants "main-server/pkg/constant/auth"
+	middlewareConstants "main-server/pkg/constant/middleware"
 	tableConstants "main-server/pkg/constant/table"
 	"main-server/pkg/model/email"
 	rbacModel "main-server/pkg/model/rbac"
@@ -23,6 +24,7 @@ import (
 
 	"github.com/casbin/casbin/v2"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
@@ -231,6 +233,61 @@ func (r *AuthPostgres) CreateUser(user userModel.UserRegisterModel) (userModel.U
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, tx.Commit()
+}
+
+func (r *AuthPostgres) UploadProfileImage(c *gin.Context, filepath string) (bool, error) {
+	usersId, _ := c.Get(middlewareConstants.USER_CTX)
+
+	query := fmt.Sprintf("SELECT data FROM %s tl WHERE users_id=$1 LIMIT 1", tableConstants.USERS_DATA_TABLE)
+	var userData []userModel.UserDataModel
+
+	err := r.db.Select(&userData, query, usersId)
+
+	if err != nil {
+		return false, err
+	}
+
+	if len(userData) <= 0 {
+		return false, errors.New("Данных у пользователя нет")
+	}
+
+	var dataFromJson userModel.UserJSONBModel
+	err = json.Unmarshal([]byte(userData[0].Data), &dataFromJson)
+
+	if err != nil {
+		return false, err
+	}
+
+	dataFromJson.Avatar = filepath
+
+	userJsonb, err := json.Marshal(dataFromJson)
+	if err != nil {
+		return false, err
+	}
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		return false, err
+	}
+
+	query = fmt.Sprintf("UPDATE %s tl SET data=$1 WHERE tl.users_id = $2", tableConstants.USERS_DATA_TABLE)
+
+	// Update data about user profile
+	_, err = tx.Exec(query, userJsonb, usersId)
+
+	if err != nil {
+		tx.Rollback()
+		return false, err
+	}
+
+	err = tx.Commit()
+
+	if err != nil {
+		tx.Rollback()
+		return false, err
+	}
+
+	return true, nil
 }
 
 /* Login user */

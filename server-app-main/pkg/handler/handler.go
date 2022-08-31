@@ -55,6 +55,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		// With middlewares (for get data from access token)
 		auth.POST(route.AUTH_REFRESH_TOKEN_ROUTE, h.userIdentityLogout, h.refresh)
 		auth.POST(route.AUTH_LOGOUT_ROUTE, h.userIdentity, h.logout)
+		auth.POST(route.AUTH_UPLOAD_PROFILE_IMAGE, h.uploadProfileImage, h.userIdentity)
 
 		// Recover password
 		auth.POST(route.AUTH_RECOVERY_PASSWORD, h.recoveryPassword)
@@ -68,6 +69,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			profile.POST(route.GET_ROUTE, h.getProfile)
 			profile.POST(route.UPDATE_ROUTE, h.updateProfile)
+		}
+	}
+
+	admin := router.Group(route.ADMIN_MAIN_ROUTE, h.userIdentity)
+	{
+		user := admin.Group(route.ADMIN_USER)
+		{
+			user.POST(route.GET_ALL_ROUTE, h.getAllUsers)
 		}
 	}
 

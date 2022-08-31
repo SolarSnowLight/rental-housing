@@ -1,6 +1,7 @@
 package repository
 
 import (
+	adminModel "main-server/pkg/model/admin"
 	rbacModel "main-server/pkg/model/rbac"
 	userModel "main-server/pkg/model/user"
 
@@ -13,6 +14,7 @@ import (
 type Authorization interface {
 	// Main routes for user authenticated
 	CreateUser(user userModel.UserRegisterModel) (userModel.UserAuthDataModel, error)
+	UploadProfileImage(c *gin.Context, filepath string) (bool, error)
 	LoginUser(user userModel.UserLoginModel) (userModel.UserAuthDataModel, error)
 	LoginUserOAuth2(code string) (userModel.UserAuthDataModel, error)
 	CreateUserOAuth2(user userModel.UserRegisterOAuth2Model, token *oauth2.Token) (userModel.UserAuthDataModel, error)
@@ -46,6 +48,10 @@ type User interface {
 	UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error)
 }
 
+type Admin interface {
+	GetAllUsers(c *gin.Context) (adminModel.UsersResponseModel, error)
+}
+
 type AuthType interface {
 	GetAuthType(column, value interface{}) (userModel.AuthTypeModel, error)
 }
@@ -55,18 +61,21 @@ type Repository struct {
 	Role
 	Domain
 	User
+	Admin
 	AuthType
 }
 
 func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
 	domain := NewDomainPostgres(db)
 	user := NewUserPostgres(db, enforcer, domain)
+	admin := NewAdminPostgres(db, enforcer, domain)
 
 	return &Repository{
 		Authorization: NewAuthPostgres(db, enforcer, *user),
 		Role:          NewRolePostgres(db, enforcer),
 		Domain:        domain,
 		User:          user,
+		Admin:         admin,
 		AuthType:      NewAuthTypePostgres(db),
 	}
 }

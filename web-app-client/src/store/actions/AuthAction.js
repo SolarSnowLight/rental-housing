@@ -38,6 +38,59 @@ export const authSignIn = (data) => async (dispatch) => {
     }
 };
 
+/* Функция для осуществления регистрации пользователя */
+export const authSignUp = (data, profileImage) => async (dispatch) => {
+    try {
+        // Вызов действия, отвечающего за начало отправки запроса
+        dispatch(authSlice.actions.authLoading());
+
+        // Отправка запроса на сервер
+        const response = await fetch(
+            (MainApi.main_server + AuthApi.sign_up),    // Формирование полного url адреса, на который отправляются данные
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...data
+                })
+            }
+        );
+
+        // Преобразование полученных данных в формат JSON
+        const responseData = await response.json();
+
+        // Обработка ошибок
+        if (!response.ok) {
+            dispatch(authSlice.actions.authError(responseData.message));
+            return;
+        }
+
+        console.log(profileImage);
+        // Загрузка пользователю изображение профиля
+        if (profileImage) {
+            const formData = new FormData();
+            formData.append("file", profileImage);
+
+            const responseProfileImage = await fetch(
+                (MainApi.main_server + AuthApi.upload_profile_image),    // Формирование полного url адреса, на который отправляются данные
+                {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + responseData.access_token
+                    },
+                    body: formData
+                }
+            );
+        }
+
+        dispatch(authSlice.actions.signUpSuccess(responseData));
+    } catch (e) {
+        dispatch(authSlice.actions.authError(e.message));
+    }
+};
+
 /* Функция для считывания данных пользователя из local storage */
 export const authUpdate = () => async (dispatch) => {
     try {

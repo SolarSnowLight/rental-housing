@@ -58,31 +58,37 @@ const Navbar = () => {
     };
 
     const currentPageSwitcher = (state) => {
-        switch(state.value) {
+        switch (state.value) {
             case "sign-in": {
-                return <SignInPage setStateCurrentPage={setStateCurrentPage}/>
+                return <SignInPage setStateCurrentPage={setStateCurrentPage} />
             }
             case "sign-up": {
-                return <SignUpPage setStateCurrentPage={setStateCurrentPage}/>
+                return <SignUpPage setStateCurrentPage={setStateCurrentPage} />
             }
         }
     }
-    
-    const list = (anchor) => (
-        <Box
-            sx={{ width: "29em" }}
-            role="presentation"
+
+    const list = (anchor) => {
+        /*if(auth.isAuthenticated){
+            setStateCurrentPage('sign-in');
+        }*/
+
+        return (
+            <Box
+                sx={{ width: "29em" }}
+                role="presentation"
             // onClick={toggleDrawer(anchor, false)}
             // onKeyDown={toggleDrawer(anchor, false)}
-        >
-            {
-                (!auth.isAuthenticated) && currentPageSwitcher(stateCurrentPage)
-            }
-            {
-                (auth.isAuthenticated) && <ProfilePage />
-            }
-        </Box>
-    );
+            >
+                {
+                    (!auth.isAuthenticated) && currentPageSwitcher(stateCurrentPage)
+                }
+                {
+                    (auth.isAuthenticated) && <ProfilePage />
+                }
+            </Box>
+        );
+    };
 
     return (
         <nav className={cs(styles["nav__header"], styles["nav-menu__header"])}>

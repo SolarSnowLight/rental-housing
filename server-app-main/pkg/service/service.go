@@ -1,6 +1,7 @@
 package service
 
 import (
+	adminModel "main-server/pkg/model/admin"
 	rbacModel "main-server/pkg/model/rbac"
 	userModel "main-server/pkg/model/user"
 	repository "main-server/pkg/repository"
@@ -10,6 +11,7 @@ import (
 
 type Authorization interface {
 	CreateUser(user userModel.UserRegisterModel) (userModel.UserAuthDataModel, error)
+	UploadProfileImage(c *gin.Context, filepath string) (bool, error)
 	LoginUser(user userModel.UserLoginModel) (userModel.UserAuthDataModel, error)
 	LoginUserOAuth2(code string) (userModel.UserAuthDataModel, error)
 	Refresh(data userModel.TokenLogoutDataModel, refreshToken string) (userModel.UserAuthDataModel, error)
@@ -37,6 +39,10 @@ type User interface {
 	UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error)
 }
 
+type Admin interface {
+	GetAllUsers(c *gin.Context) (adminModel.UsersResponseModel, error)
+}
+
 type Domain interface {
 	GetDomain(column, value interface{}) (rbacModel.DomainModel, error)
 }
@@ -50,6 +56,7 @@ type Service struct {
 	Authorization
 	Token
 	User
+	Admin
 	Domain
 	Role
 }
@@ -61,6 +68,7 @@ func NewService(repos *repository.Repository) *Service {
 		Token:         tokenService,
 		Authorization: NewAuthService(repos.Authorization, *tokenService),
 		User:          NewUserService(repos.User),
+		Admin:         NewAdminService(repos.Admin),
 		Domain:        NewDomainService(repos.Domain),
 		Role:          NewRoleService(repos.Role),
 	}

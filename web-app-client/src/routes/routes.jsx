@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import AdminRoute from "../constants/addresses/routes/admin.route";
 
 import AuthRoute from "../constants/addresses/routes/auth.route";
 import BuilderRoute from "../constants/addresses/routes/builder.route";
@@ -13,6 +14,7 @@ import BuilderPage from "../containers/BuilderPage";
 import CompanyPage from "../containers/CompanyPage";
 import HomePage from "../containers/HomePage";
 import ManagerPage from "../containers/Manager/ManagerPage";
+import AdminPage from "../containers/Admin/AdminPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -21,12 +23,6 @@ const useBaseRoutes = () => {
             <Route path={MainRoute.home_page} element={<HomePage />} />
             <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
             <Route path={BuilderRoute.builder_page} element={<BuilderPage />} />
-
-            <Route
-                path="*"
-                exact
-                element={<Navigate to={MainRoute.home_page} />}
-            />
         </>
     );
 }
@@ -40,23 +36,31 @@ const useRoutes = (isAuthenticated) => {
         return (
             <Routes>
                 {baseRoutes}
-                
+
                 { /* Проверка на роли должна быть перед выводом маршрутов (потом) */}
 
+
+                <Route path={AdminRoute.default} element={<AdminPage />} />
                 <Route path={ManagerRoute.default} element={<ManagerPage />} />
+            </Routes>
+        );
+    } else {
+        // Если пользователь не авторизован, число страниц, которые он может посещать ограничено
+        return (
+            <Routes>
+                {baseRoutes}
+
+                { /*<Route
+                    path="*"
+                    exact
+                    element={<Navigate to={MainRoute.home_page} />}
+                />*/
+                }
             </Routes>
         );
     }
 
-    // Если пользователь не авторизован, число страниц, которые он может посещать ограничено
-    return (
-        <Routes>
-            {baseRoutes}
 
-            { /* For tests */}
-            <Route path={ManagerRoute.default} element={<ManagerPage />} />
-        </Routes>
-    );
 };
 
 export default useRoutes;

@@ -36,7 +36,7 @@ const useHttp = (baseUrl = MainApi.main_server) => {
             setError(e.message);
 
             // for tests
-            console.log(e);
+            console.log(e.message);
         }
 
         return {
@@ -45,7 +45,7 @@ const useHttp = (baseUrl = MainApi.main_server) => {
         };
     }, []);
 
-    const refreshToken = useCallback(async (token, typeAuth) => {
+    const refreshToken = useCallback(async (token) => {
         setLoading(true);
 
         try {
@@ -58,7 +58,6 @@ const useHttp = (baseUrl = MainApi.main_server) => {
                     },
                     body: JSON.stringify({
                         refresh_token: token,
-                        type_auth: typeAuth
                     })
                 }
             );
@@ -94,14 +93,15 @@ const useHttp = (baseUrl = MainApi.main_server) => {
                 headers['Content-Type'] = 'application/json';
             }
 
-            if((auth.access_token) && (auth.type_auth)){
-                headers['Authorization'] = `Bearer ${auth.type_auth} ${auth.access_token}`;
+            if(auth.access_token){
+                headers['Authorization'] = `Bearer ${auth.access_token}`;
             }
 
             let { response, data } = await originalRequest(url, method, body, headers);
 
             // Status Code 401 - Unauthorized
-            if(response?.status === 401){
+            // Проработать refresh token
+            /*if(response?.status === 401){
                 const request = await refreshToken(auth.refresh_token, auth.type_auth);
                 headers['Authorization'] = `Bearer ${request.type_auth} ${request.access_token}`;
 
@@ -109,7 +109,7 @@ const useHttp = (baseUrl = MainApi.main_server) => {
 
                 response = updateResponse.response;
                 data = updateResponse.data;
-            }
+            }*/
 
             setLoading(false);
 
