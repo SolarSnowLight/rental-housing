@@ -1,12 +1,27 @@
 import css from './ObjectSearchPage.module.scss';
-import Space from "../../components/icons/Space";
+import Space from "src/components/icons/Space";
 import {InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useState} from "react";
+import RowSelect from "src/components/RowSelect";
+import {toast} from "react-toastify";
+
+
+const allRooms = ['1','2','3','4+']
+
+
 
 const ObjectSearchPage = () => {
 
+    const [selectedRooms, setSelectedRooms] = useState(['1'])
+    const onRoomSelect = (item, isSelected, index) => {
+        if (!isSelected) setSelectedRooms([...selectedRooms, item])
+        else setSelectedRooms(selectedRooms.filter(it=>it!==item))
+    }
 
+    const onFilterApply = () => {
+        toast.info('Эта функция ещё не реализована')
+    }
 
     return (
         <div className={css.page}>
@@ -29,7 +44,7 @@ const ObjectSearchPage = () => {
                     <div className={css.widgetBox}>
                         <div className={css.title}>Количество комнат</div>
                         <Space h={8}/>
-                        <div className={css.rooms}>rooms</div>
+                        <RowSelect items={allRooms} selected={selectedRooms} onSelect={onRoomSelect}/>
                     </div>
 
                     <div className={css.widgetBox}>
@@ -47,7 +62,7 @@ const ObjectSearchPage = () => {
                     <div className={css.widgetBox}>
                         <div className={css.title}/>
                         <Space h={8}/>
-                        <button className={css.apply}>Применить фильтр</button>
+                        <button className={css.apply} onClick={onFilterApply}>Применить фильтр</button>
                     </div>
 
 
@@ -56,61 +71,13 @@ const ObjectSearchPage = () => {
 
                 <Space h={56}/>
 
-                Карта
+                <div style={{ background: 'aqua' }}>Карта</div>
 
                 <Space h={56}/>
 
-                Карточки домов
+                <div style={{ background: 'aqua' }}>Карточки домов</div>
 
                 <Space h={85}/>
-
-                <div className={css.line}/>
-
-                <Space h={40}/>
-
-                <div className={css.footerContainer}>
-
-                    <div className={css.aaa}></div>
-
-                    <div className={css.cYearBox}>
-                        <div className={css.year}>© 2022</div>
-                        <Space h={8}/>
-                        <div className={css.text}>Текст</div>
-                    </div>
-
-                    <Space flexGrow={1}/>
-
-                    <div className={css.navAndContactBox}>
-                        <div className={css.title}>НАВИГАЦИЯ</div>
-                        <Space h={32}/>
-                        <div className={css.navMenuItem}>Главная</div>
-                        <Space h={16}/>
-                        <div className={css.navMenuItem}>Объекты</div>
-                        <Space h={16}/>
-                        <div className={css.navMenuItem}>Главная</div>
-                        <Space h={16}/>
-                        <div className={css.navMenuItem}>Застройщики</div>
-                    </div>
-
-                    <Space flexGrow={1}/>
-
-                    <div className={css.navAndContactBox}>
-                        <div className={css.title}>КОНТАКТЫ</div>
-                        <Space h={32}/>
-                        <div className={css.contactMenuItem}>+7895688877</div>
-                        <Space h={16}/>
-                        <div className={css.contactMenuItem}>gmail.ua@gmail.com</div>
-                    </div>
-
-                    <Space flexGrow={1}/>
-
-                    <div className={css.confidentialityBox}>
-                        <div className={css.text}>Политика конфиденциальности</div>
-                    </div>
-
-                </div>
-
-                <Space h={96}/>
 
             </div>
         </div>

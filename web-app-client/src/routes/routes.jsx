@@ -8,7 +8,6 @@ import MainRoute from "../constants/addresses/routes/main.route";
 import ManagerRoute from "../constants/addresses/routes/manager.route";
 
 import SignInPage from "../containers/AuthPage/SignInPage";
-import SignInPage2 from "../containers/AuthPage/SignInPage2";
 import SignUpPage from "../containers/AuthPage/SignUpPage";
 import BuilderPage from "../containers/BuilderPage";
 import CompanyPage from "../containers/CompanyPage";
@@ -26,7 +25,6 @@ const useBaseRoutes = () => {
             <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
             <Route path={BuilderRoute.builder_page} element={<BuilderPage />} />
 
-            {/*<Route path={AuthRoute.sign_in_page} element={<SignInPage2 />} />*/}
             <Route path={'/object-search'} element={<ObjectSearchPage />} />
 
             <Route

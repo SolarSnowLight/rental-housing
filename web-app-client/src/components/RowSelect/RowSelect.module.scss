@@ -23,9 +23,11 @@
 
     .item {
         min-width: 59px; height: 59px;
-        background: #424041;
+        background: #f8f8f8;
         border: 1px solid #424041;
         padding: 16px;
+        cursor: pointer;
+        @extend .center;
 
         &.selected {
             background: #DEDEDE;
