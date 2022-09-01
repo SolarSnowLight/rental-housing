@@ -1,5 +1,5 @@
 import css from './ManagerPage.module.scss';
-import Space from "../../../components/icons/Space";
+import Space from "../../../components/Space/Space";
 import {InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useState} from "react";

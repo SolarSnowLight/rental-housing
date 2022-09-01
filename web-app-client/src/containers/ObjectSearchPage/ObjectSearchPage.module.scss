@@ -77,7 +77,9 @@
         }
         .sort {
             width: 235px; height: 59px;
-            background: aqua;
+            background: #F8F8F8;
+            border: 1px solid #424041;
+            border-radius: 0;
         }
         .apply {
             @extend .allDefault;

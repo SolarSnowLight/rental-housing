@@ -2,7 +2,7 @@ import css from './MainPage.module.scss'
 import mainBgcImage from '../../resources/images/main-page-bgc.jpg'
 import React from 'react'
 import LogoIc from "../../components/icons/LogoIc";
-import Space from "../../components/icons/Space";
+import Space from "../../components/Space/Space";
 import ArrowDownIc from "../../components/icons/ArrowDownIc";
 import ArrowUpRightIc from "../../components/icons/ArrowUpRightIc";
 

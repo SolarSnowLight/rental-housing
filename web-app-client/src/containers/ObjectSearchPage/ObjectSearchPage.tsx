@@ -1,10 +1,10 @@
 import css from './ObjectSearchPage.module.scss';
-import Space from "src/components/icons/Space";
-import {InputLabel, Select} from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
+import Space from "src/components/Space/Space";
 import {useState} from "react";
 import RowSelect from "src/components/RowSelect";
 import {toast} from "react-toastify";
+import {InputLabel, Select} from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 
 
 const allRooms = ['1','2','3','4+']
@@ -17,6 +17,11 @@ const ObjectSearchPage = () => {
     const onRoomSelect = (item, isSelected, index) => {
         if (!isSelected) setSelectedRooms([...selectedRooms, item])
         else setSelectedRooms(selectedRooms.filter(it=>it!==item))
+    }
+
+    const [age, setAge] = useState(null)
+    const onAge = (ev) => {
+        setAge(ev.target.value)
     }
 
     const onFilterApply = () => {
@@ -56,7 +61,22 @@ const ObjectSearchPage = () => {
                     <div className={css.widgetBox}>
                         <div className={css.title}/>
                         <Space h={8}/>
-                        <div className={css.sort}>sort</div>
+
+
+                        <Select
+                            value={age}
+                            onChange={onAge}
+                            className={css.sort}
+                            placeholder='Сортировать по'
+                        >
+                            <MenuItem value=""><em>По умолчанию</em></MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+
+
+                        {/*<div className={css.sort}>sort</div>*/}
                     </div>
 
                     <div className={css.widgetBox}>

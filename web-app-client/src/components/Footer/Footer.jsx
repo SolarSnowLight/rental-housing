@@ -1,8 +1,8 @@
 import css from './Footer.module.scss';
-import Space from "src/components/icons/Space";
+import Space from "src/components/Space/Space";
 
 const Footer = () => {
-    return <footer>
+    return <footer className={css.page}>
 
         <div className={css.line}/>
 
