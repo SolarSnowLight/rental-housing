@@ -57,25 +57,11 @@
 
 
 
-/* Импорт стиля Futura PT*/
-/*@font-face {
-  font-family: "Futura PT";
-  src: url("../resources/fonts/futura_pt/FuturaPT-Medium.eot");
-  src: local("Futura PT Medium"), local("FuturaPT-Medium"),
-    url("../resources/fonts/futura_pt/FuturaPT-Medium.eot?#iefix")
-      format("embedded-opentype"),
-    url("../resources/fonts/futura_pt/FuturaPT-Medium.woff2") format("woff2"),
-    url("../resources/fonts/futura_pt/FuturaPT-Medium.woff") format("woff"),
-    url("../resources/fonts/futura_pt/FuturaPT-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}*/
 
 
 
 
-
-
+/* Подключение шрифта Futura PT*/
 @font-face {
   font-family: 'Futura PT';
   font-weight: 300;
