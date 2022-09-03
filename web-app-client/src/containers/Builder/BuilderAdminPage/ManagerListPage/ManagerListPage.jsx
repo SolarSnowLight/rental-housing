@@ -11,14 +11,30 @@ const ManagerListPage = () => {
                     <span className={styles["text-h3"]}>Менеджеры</span>
                 </div>
                 <div className={styles["list-header__item__right"]}>
-                    <ButtonWhiteComponent title={"Сохранить изменения"} />
+                    <ButtonWhiteComponent
+                        title={"Добавить менеджера"}
+                    />
                 </div>
             </div>
             <div className={styles["list-body"]}>
-                <ListItemComponent column1='ФИО' column2='2 проекта,' column3='12 клиентов' />
-                <ListItemComponent column1='ФИО' column2='2 проекта,' column3='12 клиентов' />
-                <ListItemComponent column1='ФИО' column2='2 проекта,' column3='12 клиентов' />
-                <ListItemComponent column1='ФИО' column2='2 проекта,' column3='12 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+            </div>
+            <div className={styles["list-footer"]}>
+                <div>
+                    <span className={"span__text__black-h4"}>Показать ещё</span>
+                </div>
             </div>
         </div>
     )

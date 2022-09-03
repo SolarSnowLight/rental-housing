@@ -1,5 +1,5 @@
 :root {
-    /* Переменные величины адаптивности */
+  /* Переменные величины адаптивности */
   --index: calc(1vw + 1vh);
   --side-small: 26;
   --side-big: 36;
@@ -55,52 +55,72 @@
   --font-family-active: Proxima-Bold;
 }
 
-/*@font-face {
-  font-family: "Futura PT";
-  src: url("../resources/fonts/futura_pt/FuturaPT-Medium.eot");
-  src: local("Futura PT Medium"), local("FuturaPT-Medium"),
-    url("../resources/fonts/futura_pt/FuturaPT-Medium.eot?#iefix")
-      format("embedded-opentype"),
-    url("../resources/fonts/futura_pt/FuturaPT-Medium.woff2") format("woff2"),
-    url("../resources/fonts/futura_pt/FuturaPT-Medium.woff") format("woff"),
-    url("../resources/fonts/futura_pt/FuturaPT-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}*/
-
 /* Подключение шрифта Futura PT*/
 @font-face {
-  font-family: 'Futura PT';
+  font-family: "Futura PT";
   font-weight: 300;
-  src: local('Futura PT'), url('src/resources/fonts/Futura PT/FuturaPT-Light.ttf');
+  src: local("Futura PT"),
+    url("src/resources/fonts/Futura PT/FuturaPT-Light.ttf");
 }
 @font-face {
-  font-family: 'Futura PT';
+  font-family: "Futura PT";
   font-weight: 400;
-  src: local('Futura PT'), url('src/resources/fonts/Futura PT/FuturaPT-Book.ttf');
+  src: local("Futura PT"),
+    url("src/resources/fonts/Futura PT/FuturaPT-Book.ttf");
 }
 @font-face {
-  font-family: 'Futura PT';
+  font-family: "Futura PT";
   font-weight: 500;
-  src: local('Futura PT'), url('src/resources/fonts/Futura PT/FuturaPT-Medium.ttf');
+  src: local("Futura PT"),
+    url("src/resources/fonts/Futura PT/FuturaPT-Medium.ttf");
 }
 @font-face {
-  font-family: 'Futura PT';
+  font-family: "Futura PT";
   font-weight: 600;
-  src: local('Futura PT'), url('src/resources/fonts/Futura PT/FuturaPT-Demi.ttf');
+  src: local("Futura PT"),
+    url("src/resources/fonts/Futura PT/FuturaPT-Demi.ttf");
 }
 @font-face {
-  font-family: 'Futura PT';
+  font-family: "Futura PT";
   font-weight: 700;
-  src: local('Futura PT'), url('src/resources/fonts/Futura PT/FuturaPT-Bold.ttf');
+  src: local("Futura PT"),
+    url("src/resources/fonts/Futura PT/FuturaPT-Bold.ttf");
 }
 @font-face {
-  font-family: 'Futura PT';
+  font-family: "Futura PT";
   font-weight: 800;
-  src: local('Futura PT'), url('src/resources/fonts/Futura PT/FuturaPT-ExtraBold.ttf');
+  src: local("Futura PT"),
+    url("src/resources/fonts/Futura PT/FuturaPT-ExtraBold.ttf");
 }
 @font-face {
-  font-family: 'Futura PT';
+  font-family: "Futura PT";
   font-weight: 900;
-  src: local('Futura PT'), url('src/resources/fonts/Futura PT/FuturaPT-Heavy.ttf');
+  src: local("Futura PT"),
+    url("src/resources/fonts/Futura PT/FuturaPT-Heavy.ttf");
+}
+
+/* Общие стили*/
+.span__text__black-h4 {
+  font-family: "Futura PT";
+  font-style: normal;
+  font-weight: 450;
+  font-size: 24px;
+  line-height: 31px;
+
+  letter-spacing: 0.05em;
+
+  color: var(--black);
+}
+
+.span__text__gray {
+  font-family: "Futura PT";
+  font-style: normal;
+  font-weight: 450;
+  font-size: 18px;
+  line-height: 150%;
+
+  text-align: right;
+  letter-spacing: 0.05em;
+
+  color: var(--gray);
 }

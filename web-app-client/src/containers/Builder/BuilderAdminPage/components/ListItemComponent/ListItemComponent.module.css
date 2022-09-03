@@ -1,14 +1,14 @@
 .list-item {
+  position: relative;
   display: grid;
   grid-auto-flow: column;
-  width: 400px;
-
+  width: 100%;
   border-bottom: 1px solid var(--gray);
 }
 
 .item-img {
-  width: 91px;
-  height: 91px;
+  width: 5.688em;
+  height: 5.688em;
 }
 
 .item-img:hover {
