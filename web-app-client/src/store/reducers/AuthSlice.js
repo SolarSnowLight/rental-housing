@@ -19,7 +19,7 @@ export const authSlice = createSlice({
         authLoading(state) {
             state.isLoading = true;
         },
-        
+
         authError(state, action) {
             state.isLoading = false;
             state.error = action.payload;
@@ -31,9 +31,9 @@ export const authSlice = createSlice({
         getAuthData(state) {
             const mainStore = localStorage.getItem(storeConfig["main-store"]);
 
-            if(mainStore){
+            if (mainStore) {
                 state.access_token = JSON.parse(mainStore)?.access_token;
-            }else{
+            } else {
                 state.access_token = null;
             }
 
@@ -69,7 +69,7 @@ export const authSlice = createSlice({
         },
 
         // Functions for SignUp
-        signUpSuccess(state, action){
+        signUpSuccess(state, action) {
             state.isLoading = false;
             state.error = "";
 
@@ -91,10 +91,7 @@ export const authSlice = createSlice({
             state.access_token = null;
             state.isAuthenticated = false;
 
-            localStorage.setItem(
-                storeConfig["main-store"],
-                undefined
-            );
+            localStorage.removeItem(storeConfig["main-store"]);
         },
     },
 });

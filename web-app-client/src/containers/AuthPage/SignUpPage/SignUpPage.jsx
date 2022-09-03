@@ -18,7 +18,7 @@ import { borderRadius } from '@mui/system';
 import { styleTextBlack, styleTextGray } from './styles';
 import ImageUploading from "react-images-uploading";
 import { useMessageToastify } from '../../../hooks/message.toastify.hook';
-import AuthSignUpDto from '../../../dtos/auth.sign-up.dto';
+import AuthSignUpDto from 'src/dtos/auth.sign-up.dto';
 
 const LinearProgressWithLabel = (props) => {
     return (
@@ -135,9 +135,6 @@ const SignUpPage = ({ setStateCurrentPage }) => {
 
     const onSubmit = (data) => {
         if (part) {
-
-            console.log((profileImage.length > 0) ? profileImage[0].file : null);
-
             dispatch(authSignUp({
                 email: data.email,
                 password: data.password,

@@ -1,0 +1,40 @@
+.list {
+  margin-top: 38.5px;
+  margin-left: 64px;
+  margin-right: 64px;
+}
+
+.list-header {
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.list-header__item {
+    display: grid;
+}
+
+.list-header__item__right {
+    display: grid;
+    justify-content: right;
+}
+
+.list-header__item__left {
+    display: grid;
+    justify-content: left;
+}
+
+.text-h3 {
+  font-family: "Futura PT";
+  font-style: normal;
+  font-weight: 450;
+  font-size: 36px;
+  line-height: 46px;
+
+  color: #000000;
+}
+
+.list-body {
+  display: grid;
+  grid-auto-flow: row;
+  gap: 16px;
+}
