@@ -1,8 +1,8 @@
-import { ReactComponent as SvgComponent } from '../../resources/images/arrow-down.svg'
+import { ReactComponent as SvgComponent } from 'src/resources/images/arrow-down.svg'
 import React from 'react'
 
 
-const ArrowDownIc = ({ mainColor = 'black', size, ...props }) => {
+const ArrowDownIc = ({ mainColor = 'black', size = undefined, ...props }) => {
     const { style, ...restProps } = props
     return <SvgComponent
         style={{

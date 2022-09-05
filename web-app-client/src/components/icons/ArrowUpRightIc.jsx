@@ -1,4 +1,4 @@
-import { ReactComponent as SvgComponent } from '../../resources/images/arrow-up-right.svg'
+import { ReactComponent as SvgComponent } from 'src/resources/images/arrow-up-right.svg'
 import React from 'react'
 
 
