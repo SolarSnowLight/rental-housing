@@ -9,6 +9,7 @@ import { authSlice } from '../../store/reducers/AuthSlice';
 import CircularIndeterminate from '../../components/CircularIndeterminate';
 import { useEffect } from 'react';
 import { useMessageToastify } from '../../hooks/message.toastify.hook';
+import { authLogout } from 'src/store/actions/AuthAction';
 
 const ProfilePage = () => {
     const auth = useAppSelector((state) => state.authReducer);
@@ -36,7 +37,9 @@ const ProfilePage = () => {
                 fullWidth={true}
                 disableElevation={true}
                 onClick={() => {
-                    dispatch(authActions.logout(auth));
+                    (async () => {
+                        dispatch(authLogout(auth.access_token));
+                    })();
                 }}
                 sx={{
                     backgroundColor: root.colorGreen,

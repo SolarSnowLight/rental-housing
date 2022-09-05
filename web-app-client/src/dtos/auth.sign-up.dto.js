@@ -1,4 +1,4 @@
-module.exports = class AuthSignUpDto {
+export default class AuthSignUpDto {
     name;
     surname;
     patronymic;

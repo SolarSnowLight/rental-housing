@@ -1,4 +1,4 @@
-module.exports = class AuthDataDto {
+export default class AuthDataDto {
     access_token;
 
     constructor(model) {

@@ -1,4 +1,4 @@
-module.exports = class AdminUsersDto {
+export default class AdminUsersDto {
     users;
 
     constructor(model) {

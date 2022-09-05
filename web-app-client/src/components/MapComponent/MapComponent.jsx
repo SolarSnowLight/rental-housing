@@ -16,7 +16,7 @@ const MapComponent = () => {
             zoom={14}
             scrollZoom={false}
             mapStyle="mapbox://styles/mapbox/streets-v11"
-            mapboxAccessToken={configSlice.mapbox_access_token}
+            mapboxAccessToken={"pk.eyJ1IjoiZGFuc3ciLCJhIjoiY2wyMGMyZzhuMHV3MDNjbWt5ajRuNHY2cSJ9.VQGluZCuS2Y1RclO0FuRTQ"}
         ></Map>
     )
 }

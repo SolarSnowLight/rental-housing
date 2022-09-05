@@ -15,6 +15,10 @@ import { useAppSelector, useAppDispatch } from '../../hooks/redux.hook';
 import { authSlice } from '../../store/reducers/AuthSlice';
 import ProfilePage from '../../containers/ProfilePage';
 
+import ClientMenu from './ClientMenu';
+import AdminMenu from './AdminMenu';
+import BuilderAdminMenu from './BuilderAdminMenu';
+
 const Navbar = () => {
     const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
@@ -28,11 +32,15 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const toHome = () => {
-        navigate('/home');
+        navigate('/company');
     }
 
     const toBuilder = () => {
-        navigate('/builder');
+        navigate('/admin');
+    }
+
+    const toSearch = () => {
+        navigate('/object-search');
     }
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -95,86 +103,7 @@ const Navbar = () => {
             <div className={styles['nav-logo__header']}>
                 <img src={logo} />
             </div>
-            {
-                matches && (
-                    <>
-                        <div className={styles["nav-menu-center__header"]}>
-                            <div>
-                                <span
-                                    className={styles["text-menu--black"]}
-                                    onClick={toHome}
-                                >Главная</span>
-                            </div>
-                            <div>
-                                <span
-                                    className={styles["text-menu--black"]}
-                                >Поиск</span>
-                            </div>
-                            <div>
-                                <span
-                                    className={styles["text-menu--black"]}
-                                    onClick={toBuilder}
-                                >Застройщики</span>
-                            </div>
-                        </div>
-                        <div className={styles["nav-block__header"]}>
-                            {["right"].map((anchor) => (
-                                <React.Fragment key={anchor}>
-                                    <Button
-                                        onClick={toggleDrawer(anchor, true)}
-                                        sx={{
-                                            ...textMenuBlack
-                                        }}
-                                    >
-                                        Профиль
-                                    </Button>
-                                    <Drawer
-                                        anchor={anchor}
-                                        open={state[anchor]}
-                                        onClose={toggleDrawer(anchor, false)}
-                                    >
-                                        {list(anchor)}
-                                    </Drawer>
-                                </React.Fragment>
-                            ))}
-                        </div>
-                    </>
-                )
-            }
-            {
-                (!matches) && (
-                    <>
-                        <div className={styles["nav-block__header"]}>
-                            <Button
-                                id="fade-button"
-                                aria-controls={open ? 'fade-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleClick}
-                                sx={{
-                                    ...textMenuBlack
-                                }}
-                            >
-                                Меню
-                            </Button>
-                            <Menu
-                                id="fade-menu"
-                                MenuListProps={{
-                                    'aria-labelledby': 'fade-button',
-                                }}
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleClose}
-                                TransitionComponent={Fade}
-                            >
-                                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={handleClose}>My account</MenuItem>
-                                <MenuItem onClick={handleClose}>Logout</MenuItem>
-                            </Menu>
-                        </div>
-                    </>
-                )
-            }
+            <BuilderAdminMenu />
         </nav>
     )
 }

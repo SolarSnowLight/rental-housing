@@ -19,7 +19,8 @@ export const authSignIn = (data) => async (dispatch) => {
                 },
                 body: JSON.stringify({
                     ...data
-                })
+                }),
+                credentials: "same-origin"
             }
         );
 
@@ -54,7 +55,8 @@ export const authSignUp = (data, profileImage) => async (dispatch) => {
                 },
                 body: JSON.stringify({
                     ...data
-                })
+                }),
+                credentials: "same-origin"
             }
         );
 
@@ -80,7 +82,8 @@ export const authSignUp = (data, profileImage) => async (dispatch) => {
                     headers: {
                         'Authorization': 'Bearer ' + responseData.access_token
                     },
-                    body: formData
+                    body: formData,
+                    credentials: "same-origin"
                 }
             );
         }
@@ -101,7 +104,7 @@ export const authUpdate = () => async (dispatch) => {
 };
 
 /* Функция для выхода из системы */
-export const authLogout = ({ auth }) => async (dispatch) => {
+export const authLogout = (access_token) => async (dispatch) => {
     try {
         // Вызов действия, отвечающего за начало отправки запроса
         dispatch(authSlice.actions.authLoading());
@@ -113,8 +116,9 @@ export const authLogout = ({ auth }) => async (dispatch) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${auth.access_token}`
-                }
+                    'Authorization': `Bearer ${access_token}`
+                },
+                credentials: "same-origin"
             }
         );
 
