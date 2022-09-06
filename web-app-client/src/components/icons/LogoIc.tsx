@@ -2,7 +2,14 @@ import { ReactComponent as SvgComponent } from 'src/resources/images/logo-2.svg'
 import React from 'react'
 
 
-const LogoIc = ({ mainColor = 'black', size, ...props }) => {
+type SvgProps = React.SVGProps<SVGSVGElement> & { title?: string }
+type CustomProps = {
+    mainColor?: string|undefined
+    size?: number|string|undefined
+}
+
+
+const LogoIc = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProps) => {
     const { style, ...restProps } = props
     return <SvgComponent
         style={{

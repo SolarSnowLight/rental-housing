@@ -2,7 +2,16 @@ import { ReactComponent as SvgComponent } from 'src/resources/images/arrow-up-ri
 import React from 'react'
 
 
-const ArrowUpRightIc = ({ mainColor = 'black', size, ...props }) => {
+
+
+type SvgProps = React.SVGProps<SVGSVGElement> & { title?: string }
+type CustomProps = {
+    mainColor?: string|undefined
+    size?: number|string|undefined
+}
+
+
+const ArrowUpRightIc = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProps) => {
     const { style, ...restProps } = props
     return <SvgComponent
         style={{

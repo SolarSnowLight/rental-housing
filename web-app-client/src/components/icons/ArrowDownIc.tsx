@@ -2,7 +2,16 @@ import { ReactComponent as SvgComponent } from 'src/resources/images/arrow-down.
 import React from 'react'
 
 
-const ArrowDownIc = ({ mainColor = 'black', size = undefined, ...props }) => {
+
+type SvgProps = React.SVGProps<SVGSVGElement> & { title?: string }
+type CustomProps = {
+    mainColor?: string|undefined
+    size?: number|string|undefined
+}
+
+
+
+const ArrowDownIc = ({ mainColor = 'black', size = undefined, ...props }: CustomProps & SvgProps) => {
     const { style, ...restProps } = props
     return <SvgComponent
         style={{

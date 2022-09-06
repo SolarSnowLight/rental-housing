@@ -3,17 +3,20 @@ import Space from "src/components/Space/Space";
 import React, { useState } from "react";
 import RowSelect from "src/components/RowSelect";
 import {toast} from "react-toastify";
-import { Select, MenuItem } from "@mui/material";
+import {Select, MenuItem, TextField, IconButton, InputAdornment, Autocomplete} from "@mui/material";
 import styled from "styled-components";
 import { ArrowDownIc } from 'src/components/icons';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {SearchIc} from "src/components/icons";
 
 
 
 const allRooms = ['1','2','3','4+']
 const allSorts = ['Стоимость', 'Дата']
-let costFromDefault
-const allCostsFrom = [costFromDefault = { name: 'от 2млн', value: 2000000 }, { name: 'от 4млн', value: 4000000 }]
+const allCostsFrom = [{ name: 'от 2млн', value: 2000000 }, { name: 'от 4млн', value: 4000000 }]
 const allCostsTo = [{ name: 'до 10млн', value: 10000000 }, { name: 'до 100млн', value: 100000000 }]
+const searchVariants = [{value: 'Иркутск'}, {value: 'Анграск'}]
 
 
 //const aaaa = [{ name: 'от 2млн', value: 2000000 }, { name: 'от 4млн', value: 4000000 }]
@@ -62,7 +65,18 @@ const ObjectSearchPage = () => {
                     <div className={css.widgetBox}>
                         <div className={css.title}/>
                         <Space h={8}/>
-                        <div className={css.search}>search</div>
+                        <Autocomplete
+                            freeSolo
+                            disableClearable
+                            options={searchVariants.map(it=>it.value)}
+                            renderInput={(params)=><SearchInput1
+                                {...params}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    type: 'search',
+                                }}
+                            />}
+                        />
                     </div>
 
                     <div className={css.widgetBox}>
@@ -79,7 +93,6 @@ const ObjectSearchPage = () => {
                                 sx={{ width: '169px' }}
                                 value={costFrom}
                                 onChange={onCostFrom}
-                                IconComponent={ArrowDownIc1}
                             >
                                 {
                                     // в доках написано, что объект можно кидать в качестве value https://mui.com/material-ui/api/select/
@@ -91,7 +104,6 @@ const ObjectSearchPage = () => {
                                 sx={{ width: '194px', marginLeft: '-1px' }}
                                 value={costTo}
                                 onChange={onCostTo}
-                                IconComponent={ArrowDownIc1}
                             >
                                 {
                                     // в доках написано, что объект можно кидать в качестве value https://mui.com/material-ui/api/select/
@@ -115,7 +127,6 @@ const ObjectSearchPage = () => {
                                 }
                                 return selected
                             }}
-                            IconComponent={ArrowDownIc1}
                         >
                             <MenuItem value=""><em>По умолчанию</em></MenuItem>
                             { allSorts.map(it=><MenuItem key={it} value={it}>{it}</MenuItem>) }
@@ -151,7 +162,21 @@ export default ObjectSearchPage;
 
 
 
-const Select1 = React.memo(styled(Select)`
+const ArrowDownIc1 = styled(ArrowDownIc).attrs({
+    mainColor: 'black', // icon color
+})`
+  height: 11px;
+  &.MuiSelect-icon {
+    right: 32px; // offset from right
+  }
+  &.MuiSelect-iconOpen { // icon state when menu is open
+    transform: rotate(180deg);
+  }
+`
+const Select1 = React.memo(styled(Select).attrs({
+    variant: 'outlined',
+    IconComponent: ArrowDownIc1,
+})`
   width: 235px; height: 59px;
   background: #F8F8F8;
   .MuiOutlinedInput-notchedOutline {
@@ -170,14 +195,49 @@ const Select1 = React.memo(styled(Select)`
   }
 `)
 
-const ArrowDownIc1 = styled(ArrowDownIc).attrs({
-    mainColor: 'black', // icon color
-})`
-  height: 11px;
-  &.MuiSelect-icon {
-    right: 32px; // offset from right
+
+const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
+    variant: "outlined",
+    type: 'text',
+    placeholder: "Введите название ЖК или адрес",
+    InputProps: {
+        ...p.InputProps,
+        endAdornment: <InputAdornment position="end">
+            <IconButton
+                onClick={()=>console.log('search clicked!')}
+            >
+                <SearchIc mainColor='black' size={24}/>
+            </IconButton>
+        </InputAdornment>
+    },
+}))`
+  fieldset {
+    border: 1px solid #424041;
+    border-radius: 0;
   }
-  &.MuiSelect-iconOpen { // icon state when menu is open
-    transform: rotate(180deg);
+  .MuiInputBase-root {
+    width: 381px; height: 59px;
+    padding-right: 0 !important; 
+    padding-left: 0 !important;
   }
-`
+  .MuiInputBase-input {
+    padding-left: 32px !important;
+    font: 500 18px var(--font-family-text);
+    color: black;
+    letter-spacing: 0.05em;
+    line-height: 150%;
+    &input::placeholder {
+      color: #8B8B8B;
+    }
+  }
+  .MuiInputAdornment-root {
+    width: fit-content; height: fit-content;
+    .MuiButtonBase-root {
+      width: fit-content; height: fit-content;
+      margin-right: calc(32px - 8px);
+      //padding: 0; 
+      //display: grid;
+      //place-items: center;
+    }
+  }
+`)
