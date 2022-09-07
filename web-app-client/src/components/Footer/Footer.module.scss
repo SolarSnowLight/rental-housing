@@ -23,8 +23,7 @@
 
 
 .elementsFrame {
-    // 1900px instead of 1920px to count vertical scrollbar width
-    width: clamp(400px, 100%, 1900px);
+    width: clamp(400px, 100%, 1920px);
     padding: 0 64px 0 64px;
 }
 
