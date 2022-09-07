@@ -1,7 +1,7 @@
 import { root, textStyleDefault } from '../../../../styles';
 import { Button } from '@mui/material';
 
-const ButtonWhiteComponent = ({ title, style = { width: '15em', height: '3.688em'}, clickHandler = (e) => {}, type = "button", variant = "container" }) => {
+const ButtonWhiteComponent = ({ title, style = { width: '15em', height: '3.688em' }, clickHandler = (e) => { }, type = "button", variant = "container" }) => {
     return (
         <>
             <Button

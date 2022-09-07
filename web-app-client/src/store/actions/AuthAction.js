@@ -55,8 +55,7 @@ export const authSignUp = (data, profileImage) => async (dispatch) => {
                 },
                 body: JSON.stringify({
                     ...data
-                }),
-                credentials: "same-origin"
+                })
             }
         );
 
@@ -69,21 +68,19 @@ export const authSignUp = (data, profileImage) => async (dispatch) => {
             return;
         }
 
-        console.log(profileImage);
         // Загрузка пользователю изображение профиля
         if (profileImage) {
             const formData = new FormData();
             formData.append("file", profileImage);
 
-            const responseProfileImage = await fetch(
+            await fetch(
                 (MainApi.main_server + AuthApi.upload_profile_image),    // Формирование полного url адреса, на который отправляются данные
                 {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + responseData.access_token
                     },
-                    body: formData,
-                    credentials: "same-origin"
+                    body: formData
                 }
             );
         }
@@ -117,8 +114,7 @@ export const authLogout = (access_token) => async (dispatch) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${access_token}`
-                },
-                credentials: "same-origin"
+                }
             }
         );
 

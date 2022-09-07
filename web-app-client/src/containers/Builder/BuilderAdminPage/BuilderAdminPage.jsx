@@ -17,12 +17,6 @@ import useHttp from '../../../hooks/http.hook';
 import AdminApi from '../../../constants/addresses/apis/admin.api';
 import { styleTextGray } from './styles';
 
-function sleep(delay = 0) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    });
-}
-
 const BuilderAdminPage = () => {
     const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
