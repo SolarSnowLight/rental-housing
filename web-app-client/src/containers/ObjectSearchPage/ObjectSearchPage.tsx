@@ -6,9 +6,9 @@ import {toast} from "react-toastify";
 import {Select, MenuItem, TextField, IconButton, InputAdornment, Autocomplete} from "@mui/material";
 import styled from "styled-components";
 import { ArrowDownIc } from 'src/components/icons';
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {SearchIc} from "src/components/icons";
+import MapComponent from 'src/components/MapComponent';
+import ObjectCard from "src/components/ObjectCard";
 
 
 
@@ -145,11 +145,25 @@ const ObjectSearchPage = () => {
 
                 <Space h={56}/>
 
-                <div style={{ background: 'aqua' }}>Карта</div>
+                <div className={css.mapBox}>
+                    <MapComponent style={{ width: '100%', height: '100%' }}/>
+                </div>
 
-                <Space h={56}/>
-
-                <div style={{ background: 'aqua' }}>Карточки домов</div>
+                <div className={css.objectCardFrame}>
+                    <div className={css.container}>
+                        <div className={css.list}>
+                            <ObjectCard />
+                            <ObjectCard />
+                            <ObjectCard />
+                            <ObjectCard />
+                            <ObjectCard />
+                            <ObjectCard />
+                            <ObjectCard />
+                            <ObjectCard />
+                            <ObjectCard />
+                        </div>
+                    </div>
+                </div>
 
                 <Space h={85}/>
 
@@ -235,9 +249,6 @@ const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
     .MuiButtonBase-root {
       width: fit-content; height: fit-content;
       margin-right: calc(32px - 8px);
-      //padding: 0; 
-      //display: grid;
-      //place-items: center;
     }
   }
 `)

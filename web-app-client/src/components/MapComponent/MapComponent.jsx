@@ -3,11 +3,12 @@ import { useAppSelector } from '../../hooks/redux.hook';
 
 import styles from './MapComponent.module.css';
 
-const MapComponent = () => {
+const MapComponent = (props) => {
     const configSlice = useAppSelector(store => store.configReducer);
 
     return (
         <Map
+            {...props}
             initialViewState={{
                 longitude: 104.298234,
                 latitude: 52.262757,
