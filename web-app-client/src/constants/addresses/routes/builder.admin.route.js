@@ -4,7 +4,10 @@ export const BuilderAdminRouteDefault = "/builder/admin";
 const BuilderAdminRoute = {
     builder_admin: BuilderAdminRouteDefault,
     company: "company",
-    manager_list: 'manager-list',
+    manager_list: 'manager/list',
+    project_list: 'project/list',
+    project_create: 'project/create',
+    project_add_object: 'project/create/add/object',
 };
 
 export default BuilderAdminRoute;

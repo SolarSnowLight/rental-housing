@@ -36,8 +36,8 @@ const BuilderAdminMenu = () => {
         navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.manager_list);
     }
 
-    const toSearch = () => {
-        navigate('/object-search');
+    const toProjectList = () => {
+        navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_list);
     }
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -108,7 +108,7 @@ const BuilderAdminMenu = () => {
                             <div>
                                 <span
                                     className={styles["text-menu--black"]}
-                                    onClick={toSearch}
+                                    onClick={toProjectList}
                                 >Проекты</span>
                             </div>
                             <div>

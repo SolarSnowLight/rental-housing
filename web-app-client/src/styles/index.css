@@ -112,6 +112,15 @@
   color: var(--black);
 }
 
+.span__text__black-h3 {
+  font-family: "Futura PT";
+  font-style: normal;
+  font-weight: 450;
+  font-size: 36px;
+  line-height: 46px;
+  color: var(--black);
+}
+
 .span__text__gray {
   font-family: "Futura PT";
   font-style: normal;
