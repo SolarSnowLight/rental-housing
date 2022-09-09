@@ -40,7 +40,7 @@
   color: var(--gray);
 }
 
-.list-item span:hover {
+span:hover {
   cursor: pointer;
 }
 

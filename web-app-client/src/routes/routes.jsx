@@ -28,17 +28,15 @@ const useBaseRoutes = () => {
     return (
         <>
             <Route path={MainRoute.home_page} element={<HomePage />} />
-            {/*<Route path={MainRoute.home_page} element={<MainPage />} />*/}
             <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
 
             <Route path={'/object-search'} element={<ObjectSearchPage />} />
 
             {
-                /*<Route
-                path="*"
-                exact
-                element={<Navigate to={MainRoute.home_page} />}
-            /> */
+                <Route
+                    path="*"
+                    element={<Navigate to={MainRoute.home_page} />}
+                />
             }
         </>
     );
@@ -63,47 +61,6 @@ const useRoutes = (isAuthenticated) => {
 
         </Routes>
     );
-
-    // При авторизации пользователя ему будут доступны все страницы
-    /*if (isAuthenticated) {
-        return (
-            <Routes>
-                {baseRoutes}
-                <Route path={AdminRoute.default} element={<AdminPage />} />
-                <Route path={ManagerRoute.default} element={<ManagerPage />} />
-
-                {
-                    <Route
-                        path="*"
-                        exact
-                        element={<Navigate to={MainRoute.home_page} />}
-                    />
-                }
-            </Routes>
-        );
-    } else {
-        // Если пользователь не авторизован, число страниц, которые он может посещать ограничено
-        return (
-            <Routes>
-                {baseRoutes}
-                <Route path={AdminRouteDefault} element={<AdminPage />} />
-                <Route path={ManagerRouteDefault} element={<ManagerPage />} />
-
-                <Route path={BuilderAdminRouteDefault} element={<BuilderAdminPage />}>
-                    {  Nested routes of the admin }
-                    <Route path={BuilderAdminRoute.company} element={<BuilderAdminPage />} />
-                </Route>
-                {
-                    <Route
-                        path="*"
-                        exact
-                        element={<Navigate to={MainRoute.home_page} />}
-                    />
-                }
-            </Routes>
-        );
-    }*/
-
 };
 
 export default useRoutes;

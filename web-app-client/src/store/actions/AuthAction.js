@@ -2,96 +2,84 @@ import { authSlice } from "../reducers/AuthSlice";
 
 import MainApi from "../../constants/addresses/apis/main.api";
 import AuthApi from "../../constants/addresses/apis/auth.api";
+import axios from "axios";
 
-/* Функция для осуществления авторизации пользователя */
+/* Function for auth user on high level */
 export const authSignIn = (data) => async (dispatch) => {
     try {
-        // Вызов действия, отвечающего за начало отправки запроса
+        // Call action for set state about begin request
         dispatch(authSlice.actions.authLoading());
 
-        // Отправка запроса на сервер
-        const response = await fetch(
-            (MainApi.main_server + AuthApi.sign_in),    // Формирование полного url адреса, на который отправляются данные
+        const response = await axios.post(
+            (MainApi.main_server + AuthApi.sign_in),
+            JSON.stringify({
+                ...data
+            }),
             {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    ...data
-                }),
-                credentials: "same-origin"
+                withCredentials: true
             }
         );
 
-        // Преобразование полученных данных в формат JSON
-        const responseData = await response.json();
-
-        // Обработка ошибок
-        if (!response.ok) {
-            dispatch(authSlice.actions.authError(responseData.message));
+        // Handling error
+        if ((response.status != 200) && (response.status != 201)) {
+            dispatch(authSlice.actions.authError(response.data.message));
             return;
         }
 
-        dispatch(authSlice.actions.signInSuccess(responseData));
+        // Call action for set state about success request (her ending)
+        dispatch(authSlice.actions.signInSuccess(response.data));
     } catch (e) {
         dispatch(authSlice.actions.authError(e.message));
     }
 };
 
-/* Функция для осуществления регистрации пользователя */
+/* Function for register new user */
 export const authSignUp = (data, profileImage) => async (dispatch) => {
     try {
-        // Вызов действия, отвечающего за начало отправки запроса
         dispatch(authSlice.actions.authLoading());
 
-        // Отправка запроса на сервер
-        const response = await fetch(
-            (MainApi.main_server + AuthApi.sign_up),    // Формирование полного url адреса, на который отправляются данные
+        const response = await axios.post(
+            (MainApi.main_server + AuthApi.sign_up),
+            JSON.stringify({
+                ...data
+            }),
             {
-                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    ...data
-                })
+                withCredentials: true
             }
         );
 
-        // Преобразование полученных данных в формат JSON
-        const responseData = await response.json();
-
-        // Обработка ошибок
-        if (!response.ok) {
-            dispatch(authSlice.actions.authError(responseData.message));
+        // Error handling
+        if((response.status != 200) && (response.status != 201)){
+            dispatch(authSlice.actions.authError(response.data.message));
             return;
         }
 
-        // Загрузка пользователю изображение профиля
+        // Upload user's image for profile
         if (profileImage) {
             const formData = new FormData();
             formData.append("file", profileImage);
 
-            await fetch(
-                (MainApi.main_server + AuthApi.upload_profile_image),    // Формирование полного url адреса, на который отправляются данные
+            await axios.post(
+                (MainApi.main_server + AuthApi.upload_profile_image),    
+                formData,
                 {
-                    method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + responseData.access_token
-                    },
-                    body: formData
+                        'Authorization': 'Bearer ' + response.data.access_token
+                    }
                 }
             );
         }
 
-        dispatch(authSlice.actions.signUpSuccess(responseData));
+        dispatch(authSlice.actions.signUpSuccess(response.data));
     } catch (e) {
         dispatch(authSlice.actions.authError(e.message));
     }
 };
 
-/* Функция для считывания данных пользователя из local storage */
+/* Function for update data user from local storage */
 export const authUpdate = () => async (dispatch) => {
     try {
         dispatch(authSlice.actions.getAuthData());
@@ -100,30 +88,26 @@ export const authUpdate = () => async (dispatch) => {
     }
 };
 
-/* Функция для выхода из системы */
+/* Function for logout user */
 export const authLogout = (access_token) => async (dispatch) => {
     try {
-        // Вызов действия, отвечающего за начало отправки запроса
         dispatch(authSlice.actions.authLoading());
 
-        // Отправка запроса на сервер
-        const response = await fetch(
-            (MainApi.main_server + AuthApi.logout),    // Формирование полного url адреса, на который отправляются данные
+        const response = await axios.post(
+            (MainApi.main_server + AuthApi.logout),
+            null,
             {
-                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${access_token}`
-                }
+                    'Authorization': `Bearer ${access_token}`,
+                },
+                withCredentials: true
             }
         );
 
-        // Преобразование полученных данных в формат JSON
-        const responseData = await response.json();
-
-        // Обработка ошибок
-        if (!response.ok) {
-            dispatch(authSlice.actions.authError(responseData.message));
+        // Error handling
+        if (response.status != 200 && response.status != 201) {
+            dispatch(authSlice.actions.authError(response.data.message));
             return;
         }
 

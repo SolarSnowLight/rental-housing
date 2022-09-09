@@ -75,7 +75,7 @@ const BuilderAdminPage = () => {
         (async () => {
             const response = await request(AdminApi.get_all_users, 'POST');
 
-            if (active) {
+            if (response?.users && active) {
                 setOptions(response.users);
             }
         })();

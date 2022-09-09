@@ -6,15 +6,10 @@ import {toast} from "react-toastify";
 import {Select, MenuItem, TextField, IconButton, InputAdornment, Autocomplete} from "@mui/material";
 import styled from "styled-components";
 import { ArrowDownIc } from 'src/components/icons';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {SearchIc} from "src/components/icons";
-import MapComponent from 'src/components/MapComponent';
-import ObjectCard from "src/components/ObjectCard";
 
-
-import logoDefault from 'src/resources/images/logo-default.png'
-import buildingExample1 from 'src/resources/images/building-example-1.webp'
-import buildingExample2 from 'src/resources/images/building-exapmle-2.webp'
-import buildingExample3 from 'src/resources/images/building-example-3.jpg'
 
 
 const allRooms = ['1','2','3','4+']
@@ -24,66 +19,8 @@ const allCostsTo = [{ name: 'до 10млн', value: 10000000 }, { name: 'до 10
 const searchVariants = [{value: 'Иркутск'}, {value: 'Анграск'}]
 
 
-
-const buildings = [
-    {
-        id: 1,
-        developerCompanyLogo: logoDefault,
-        images: [buildingExample1,buildingExample2,buildingExample3],
-        projectName: 'Проект 1',
-        year: 2025,
-        developer: 'Застройщик 1',
-        address: 'ул. Мира 15, 76',
-        square: 50,
-        price: 10,
-    },
-    {
-        id: 2,
-        developerCompanyLogo: logoDefault,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Застройщик',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-    {
-        id: 3,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Застройщик',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-    {
-        id: 4,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Застройщик',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-    {
-        id: 5,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Застройщик',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-    {
-        id: 6,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Застройщик',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-]
+//const aaaa = [{ name: 'от 2млн', value: 2000000 }, { name: 'от 4млн', value: 4000000 }]
+//console.log('find',aaaa.find(it=>it.value===2000000))
 
 
 const ObjectSearchPage = () => {
@@ -203,21 +140,16 @@ const ObjectSearchPage = () => {
                     </div>
 
 
+
                 </div>
 
                 <Space h={56}/>
 
-                <div className={css.mapBox}>
-                    <MapComponent style={{ width: '100%', height: '100%' }}/>
-                </div>
+                <div style={{ background: 'aqua' }}>Карта</div>
 
-                <div className={css.objectCardFrame}>
-                    <div className={css.container}>
-                        <div className={css.list}>
-                            { buildings.map(it=><ObjectCard key={it.id} building={it} />) }
-                        </div>
-                    </div>
-                </div>
+                <Space h={56}/>
+
+                <div style={{ background: 'aqua' }}>Карточки домов</div>
 
                 <Space h={85}/>
 
@@ -303,6 +235,9 @@ const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
     .MuiButtonBase-root {
       width: fit-content; height: fit-content;
       margin-right: calc(32px - 8px);
+      //padding: 0; 
+      //display: grid;
+      //place-items: center;
     }
   }
 `)

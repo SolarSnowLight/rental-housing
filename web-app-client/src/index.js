@@ -16,9 +16,6 @@ import './styles/index.css';
 import { useAppDispatch } from './hooks/redux.hook';
 import { authSlice } from './store/reducers/AuthSlice';
 
-// Importing of map styles
-import 'mapbox-gl/dist/mapbox-gl.css';
-
 /* Инициализируем константу root определённым элементом, определённым в DOM дереве (div с id = "root") */
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
