@@ -1,24 +1,24 @@
 
 
 .company-wrapper__header{
-    /*background-color: blue;*/
     margin-top: 2em;
     display: grid;
     position: relative;
     width: 100%;
     height: 20em;
     grid-auto-flow: column;
-    place-items: center;
+    justify-content: center;
+    gap: 128px;
 }
 
 .company-info__header {
     margin-left: 6em;
     display: grid;
     position: relative;
-    width: 30vw;
+    width: max-content;
     height: 100%;
     grid-auto-flow: row;
-    place-items: left;
+    justify-content: start;
 }
 
 .company-info-title__header {
@@ -26,12 +26,13 @@
     position: relative;
     grid-auto-flow: column;
     place-items: center;
+    gap: 64px;
 }
 
 .company-description__header {
     margin-right: 6em;
     grid-auto-flow: row;
-    place-items: end;
+    align-items: center;
     display: grid;
     position: relative;
     height: 100%;
@@ -41,7 +42,7 @@
 .text-company-title {
     font-family: 'Futura PT';
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 48px;
     line-height: 62px;
 
@@ -74,7 +75,7 @@
 
 .chat-btn__header {
     position: relative;
-    width: 100%;
+    width: 60%;
     height: 60%;
     border: 1px solid #000000;
 
@@ -97,5 +98,14 @@
 
 .chat-btn-wrapper__header {
     display: grid;
-    place-items: end;
+    align-items: flex-end;
+}
+
+.company-info__contact {
+    display: grid;
+    grid-auto-flow: row;
+    justify-content: start;
+    align-items: center;
+    height: max-content;
+    gap: 16px;
 }

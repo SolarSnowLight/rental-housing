@@ -127,9 +127,18 @@
   font-weight: 450;
   font-size: 18px;
   line-height: 150%;
-
-  text-align: right;
   letter-spacing: 0.05em;
 
   color: var(--gray);
+}
+
+.span__text__black {
+  font-family: "Futura PT";
+  font-style: normal;
+  font-weight: 450;
+  font-size: 18px;
+  line-height: 150%;
+  letter-spacing: 0.05em;
+
+  color: var(--black);
 }
