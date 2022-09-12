@@ -106,7 +106,6 @@ const SignInPage = ({ setStateCurrentPage }) => {
                                 render={({ field }) => (
                                     <TextField
                                         required
-                                        id="outlined-required"
                                         label="Email"
                                         placeholder="Введите email адрес"
                                         onChange={(e) => field.onChange(e)}

@@ -22,31 +22,24 @@
 }
 
 
-.elementsFrame {
-    width: clamp(400px, 100%, 1920px);
-    padding: 0 64px 0 64px;
-}
-
-
-
 
 .page {
+    margin-top: 4em;
     width: 100%;
-    background: #F8F8F8;
     @extend .center;
 }
 
 
 
 .line {
-    @extend .elementsFrame; height: 1px;
-    padding: 0;
+    width: clamp(400px, 100%, 1920px); height: 1px;
     background: #424041;
 }
 
 
 .footerContainer {
-    @extend .elementsFrame; height: fit-content;
+    padding: 0 64px 0 64px;
+    width: clamp(400px, 100%, 1920px); height: fit-content;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;

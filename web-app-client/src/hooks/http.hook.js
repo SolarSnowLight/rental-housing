@@ -1,4 +1,6 @@
 import { useState, useCallback, useContext } from "react";
+import { useDispatch } from "react-redux";
+import { authUpdate } from "src/store/actions/AuthAction";
 import AuthApi from "../constants/addresses/apis/auth.api";
 import MainApi from "../constants/addresses/apis/main.api";
 import { authSlice } from "../store/reducers/AuthSlice";
@@ -7,11 +9,13 @@ import { useAppSelector } from "./redux.hook";
 const useHttp = (baseUrl = MainApi.main_server) => {
     const auth = useAppSelector(state => state.authReducer);
     const authActions = authSlice.actions;
+    const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const originalRequest = useCallback(async (url, method = 'GET', body = null, headers = { 'Content-Type': 'application/json' }) => {
+        dispatch(authUpdate());
         setLoading(true);
 
         try {
@@ -46,6 +50,7 @@ const useHttp = (baseUrl = MainApi.main_server) => {
     }, []);
 
     const refreshToken = useCallback(async (token) => {
+        dispatch(authUpdate());
         setLoading(true);
 
         try {
@@ -86,6 +91,7 @@ const useHttp = (baseUrl = MainApi.main_server) => {
     }, []);
 
     const request = useCallback(async (url, method = 'GET', body = null, headers = { 'Content-Type': 'application/json' }, multipart = false) => {
+        dispatch(authUpdate());
         setLoading(true);
         try {
             if(body && (!headers['Content-Type']) && (!multipart)){
@@ -96,6 +102,8 @@ const useHttp = (baseUrl = MainApi.main_server) => {
             if(auth.access_token){
                 headers['Authorization'] = `Bearer ${auth.access_token}`;
             }
+
+            console.log(auth);
 
             let { response, data } = await originalRequest(url, method, body, headers);
 

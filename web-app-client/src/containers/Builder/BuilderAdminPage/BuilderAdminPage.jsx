@@ -75,7 +75,7 @@ const BuilderAdminPage = () => {
         (async () => {
             const response = await request(AdminApi.get_all_users, 'POST');
 
-            if (active) {
+            if (response?.users && active) {
                 setOptions(response.users);
             }
         })();
@@ -142,7 +142,7 @@ const BuilderAdminPage = () => {
                                         onClick={onImageUpload}
                                         {...dragProps}
                                     >
-                                        Добавить фото
+                                        <span className='span__text__gray'>Добавить фото</span>
                                     </button>
                                     {imageList.map((image, index) => {
                                         return (

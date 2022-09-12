@@ -14,6 +14,10 @@ import AdminApi from 'src/constants/addresses/apis/admin.api';
 import MapComponent from 'src/components/MapComponent';
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
+import CompanyInfo from 'src/components/Company/CompanyInfo/CompanyInfo';
+import ProjectInfo from 'src/components/Company/ProjectInfo/ProjectInfo';
+import TemplateTable from 'src/components/TemplateTable';
+import TextFieldComponent from 'src/components/ui/textfields/TextFieldComponent';
 
 
 const CreateObjectPage = () => {
@@ -39,6 +43,8 @@ const CreateObjectPage = () => {
         link: '', admin: ''
     });
 
+    const [characteristics, setCharacteristics] = useState([]);
+
     // Event Handlers Section
     const onChangeImage = (imageList, addUpdateIndex) => {
         setLogo(imageList);
@@ -47,6 +53,13 @@ const CreateObjectPage = () => {
     const changeHandler = (key, value) => {
         setForm({ ...form, [key]: value });
     };
+
+    const addNewCharacteristicHandler = () => {
+        const data = JSON.parse(JSON.stringify(characteristics));
+        data.push("new value");
+
+        setCharacteristics(data);
+    }
 
     // Data section of functional operation of components
     const [open, setOpen] = useState(false);
@@ -96,17 +109,16 @@ const CreateObjectPage = () => {
     }, [form]);
 
     return (
-        <div className={styles["wrapper-section"]}>
-            <div className={styles["wrapper-section__item"]}>
-                <div>
+        <div>
+            <ProjectInfo />
+            <div className={styles["block"]}>
+                <div className={styles["block__item"]}>
                     <span className='span__text__black-h3'>Создание объекта</span>
                 </div>
-                <div className={styles["wrapper-section__item-element__column"]}>
-                    <div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <div>
-                                <span className='span__text__gray'>Лого *</span>
-                            </div>
+                <div className={styles["block__item"]}>
+                    <div className={styles["block__item-element"]}>
+                        <div>
+                            <span className='span__text__gray'>Фото *</span>
                             <div>
                                 <ImageUploading
                                     value={logo}
@@ -132,7 +144,7 @@ const CreateObjectPage = () => {
                                                 onClick={onImageUpload}
                                                 {...dragProps}
                                             >
-                                                Добавить фото
+                                                <span className='span__text__gray'>Добавить фото</span>
                                             </button>
                                             {imageList.map((image, index) => {
                                                 return (
@@ -140,8 +152,6 @@ const CreateObjectPage = () => {
                                                         <img
                                                             src={image.data_url}
                                                             alt=""
-                                                            width="11em"
-                                                            height="11em"
                                                             className={styles["upload_image"]}
                                                         />
                                                         <Button
@@ -154,7 +164,7 @@ const CreateObjectPage = () => {
                                                                 fontSize: '14px !important',
                                                                 borderRadius: '0px !important',
                                                                 border: '1px solid #424041 !important',
-                                                                width: '60%',
+                                                                width: 'max-content',
                                                                 height: '2em',
                                                                 ...textStyleDefault,
                                                                 ":hover": {
@@ -162,7 +172,7 @@ const CreateObjectPage = () => {
                                                                     fontSize: '14px !important',
                                                                     borderRadius: '0px !important',
                                                                     border: '1px solid #424041 !important',
-                                                                    width: '60%',
+                                                                    width: 'max-content',
                                                                     height: '2em',
                                                                     ...textStyleDefault,
                                                                 }
@@ -178,142 +188,148 @@ const CreateObjectPage = () => {
                                 </ImageUploading>
                             </div>
                         </div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <div>
-                                <span className='span__text__gray'>Название *</span>
-                            </div>
-                            <div>
-                                <TextField
-                                    required
-                                    id="outlined-required"
-                                    placeholder="Название компании"
-                                    onChange={(e) => {
-                                        changeHandler("title", e.target.value);
-                                    }}
-                                    sx={{
-                                        borderRadius: '0px !important',
-                                        border: 'none',
-                                        width: '20em',
-                                        '&:hover fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                        'fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <div>
-                                <span className='span__text__gray'>Менеджеры проекта</span>
-                            </div>
-                            <div>
-                                <Autocomplete
-                                    id="tags-outlined"
-                                    open={open}
-                                    onOpen={() => {
-                                        setOpen(true);
-                                    }}
-                                    onClose={() => {
-                                        setOpen(false);
-                                    }}
-                                    getOptionLabel={(option) => option.email}
-                                    isOptionEqualToValue={(option, value) => option.email === value.email}
-                                    options={options}
-                                    loading={loadingAutocomplete}
-                                    onChange={(e, value) => {
-                                        changeHandler("admin", value.email);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            sx={{
-                                                borderRadius: '0px !important',
-                                                border: 'none',
-                                                width: '20em',
-                                                '&:hover fieldset': {
-                                                    border: '1px solid #424041 !important',
-                                                    borderRadius: '0px'
-                                                },
-                                                'fieldset': {
-                                                    border: '1px solid #424041 !important',
-                                                    borderRadius: '0px'
-                                                },
-                                            }}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                endAdornment: (
-                                                    <React.Fragment>
-                                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                        {params.InputProps.endAdornment}
-                                                    </React.Fragment>
-                                                ),
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </div>
-                        </div>
                     </div>
-                    <div className={styles["wrapper-section__element-description"]}>
+                    <div className={styles["block__item-element"]}>
                         <div>
-                            <span className='span__text__gray'>Описание</span>
-                        </div>
-                        <div className={styles["wrapper-section__element-description-input"]}>
+                            <span className='span__text__gray'>Название *</span>
                             <TextField
-                                id="outlined-multiline-static"
-                                multiline
-                                rows={9}
-                                name={"description"}
-                                placeholder="Описание"
+                                required
+                                id="outlined-required"
+                                placeholder="Название компании"
                                 onChange={(e) => {
-                                    changeHandler("description", e.target.value);
                                 }}
-
                                 sx={{
-                                    width: '100%',
-                                    height: '100%',
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px',
-                                    ':hover': {
+                                    marginTop: '8px',
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
                                         border: '1px solid #424041 !important',
                                         borderRadius: '0px'
                                     },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <span className='span__text__gray'>Адрес</span>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Название компании"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    marginTop: '8px',
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
                                     '&:hover fieldset': {
-                                        border: '0px !important',
+                                        border: '1px solid #424041 !important',
                                         borderRadius: '0px'
                                     },
                                     'fieldset': {
-                                        border: '0px !important',
+                                        border: '1px solid #424041 !important',
                                         borderRadius: '0px'
-                                    }
+                                    },
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <span className='span__text__gray'>Координаты *</span>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Название компании"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    marginTop: '8px',
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <span className='span__text__gray'>Дата сдачи</span>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Название компании"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    marginTop: '8px',
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
                                 }}
                             />
                         </div>
                     </div>
                 </div>
             </div>
-            <div className={styles["wrapper-section__item__map"]}>
-                <div className={styles["wrapper-section__item__map-element"]}>
-                    <div className={styles["grid-item__left"]}>
-                        <span className='span__text__black-h4'>Объекты проекта на карте</span>
-                    </div>
-                    <div className={styles["grid-item__right"]}>
-                        <ButtonWhiteComponent title="Добавить объект" />
-                    </div>
+            <div className={styles["block"]}>
+                <div className={styles["block__item"]}>
+                    <span className='span__text__black-h3'>Характеристика объекта</span>
                 </div>
-                <div className={styles["wrapper-section__item-element__map"]}>
-                    <MapComponent />
-                </div>
-            </div>
-            <div className={styles["wrapper-section__item__map"]}>
-                <div className={styles["wrapper-section__item__map-element"]}>
-                    <div className={styles["grid-item__left"]}></div>
-                    <div className={styles["grid-item__right"]}>
-                        <ButtonGreenComponent title="Создать проект" />
+                <div className={styles["block__item"]}>
+                    <div className={styles["block__item-element__row"]}>
+                        <span className='span__text__gray'>Способ оплаты *</span>
+                        {
+                            characteristics && characteristics.map((item) => {
+                                return (
+                                    <TextFieldComponent
+                                        value={item}
+                                        title="Способ оплаты"
+                                        headerVisible={false}
+                                    />
+                                );
+                            })
+                        }
+                        <div className={styles["template-input-btn"]}>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Способ оплаты"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                }}
+                            />
+                            <ButtonWhiteComponent clickHandler={addNewCharacteristicHandler} style={{ width: "20em", height: "100%" }} title="Добавить способ оплаты" />
+                        </div>
                     </div>
                 </div>
             </div>

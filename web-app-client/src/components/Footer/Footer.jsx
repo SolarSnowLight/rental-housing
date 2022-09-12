@@ -4,8 +4,6 @@ import Space from "src/components/Space/Space";
 const Footer = () => {
     return <footer className={css.page}>
 
-        <Space h='4em'/>
-
         <div className={css.line}/>
 
         <Space h={40}/>
