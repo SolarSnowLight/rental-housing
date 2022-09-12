@@ -113,117 +113,115 @@ const ObjectSearchPage = () => {
         toast.info('Эта функция ещё не реализована')
     }
 
-    return (
-        <div className={css.page}>
-            <div className={css.mainFrame}>
+    return <div className={css.page}>
+        <div className={css.mainFrame}>
 
-                <Space h={33}/>
+            <Space h={33}/>
 
-                <div className={css.mainTitle}>Поиск объекта</div>
+            <div className={css.mainTitle}>Поиск объекта</div>
 
-                <Space h={88}/>
+            <Space h={88}/>
 
-                <div className={css.fieldsContainer}>
+            <div className={css.fieldsContainer}>
 
-                    <div className={css.widgetBox}>
-                        <div className={css.title}/>
-                        <Space h={8}/>
-                        <Autocomplete
-                            freeSolo
-                            disableClearable
-                            options={searchVariants.map(it=>it.value)}
-                            renderInput={(params)=><SearchInput1
-                                {...params}
-                                InputProps={{
-                                    ...params.InputProps,
-                                    type: 'search',
-                                }}
-                            />}
-                        />
-                    </div>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title}>Количество комнат</div>
-                        <Space h={8}/>
-                        <RowSelect items={allRooms} selected={selectedRooms} onSelect={onRoomSelect}/>
-                    </div>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title}>Стоимость</div>
-                        <Space h={8}/>
-                        <div className={css.row}>
-                            <Select1
-                                sx={{ width: '169px' }}
-                                value={costFrom}
-                                onChange={onCostFrom}
-                            >
-                                {
-                                    // в доках написано, что объект можно кидать в качестве value https://mui.com/material-ui/api/select/
-                                    // @ts-ignore
-                                    allCostsFrom.map(it=><MenuItem key={it.value} value={it}>{it.name}</MenuItem>)
-                                }
-                            </Select1>
-                            <Select1
-                                sx={{ width: '194px', marginLeft: '-1px' }}
-                                value={costTo}
-                                onChange={onCostTo}
-                            >
-                                {
-                                    // в доках написано, что объект можно кидать в качестве value https://mui.com/material-ui/api/select/
-                                    // @ts-ignore
-                                    allCostsTo.map(it=><MenuItem key={it.value} value={it}>{it.name}</MenuItem>)
-                                }
-                            </Select1>
-                        </div>
-                    </div>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title}/>
-                        <Space h={8}/>
-                        <Select1
-                            displayEmpty
-                            value={sort}
-                            onChange={onSort}
-                            renderValue={(selected)=>{
-                                if (selected.length===0){
-                                    return <span data-placeholder-text>Сортировать по</span>
-                                }
-                                return selected
+                <div className={css.widgetBox}>
+                    <div className={css.title}/>
+                    <Space h={8}/>
+                    <Autocomplete
+                        freeSolo
+                        disableClearable
+                        options={searchVariants.map(it=>it.value)}
+                        renderInput={(params)=><SearchInput1
+                            {...params}
+                            InputProps={{
+                                ...params.InputProps,
+                                type: 'search',
                             }}
+                        />}
+                    />
+                </div>
+
+                <div className={css.widgetBox}>
+                    <div className={css.title}>Количество комнат</div>
+                    <Space h={8}/>
+                    <RowSelect items={allRooms} selected={selectedRooms} onSelect={onRoomSelect}/>
+                </div>
+
+                <div className={css.widgetBox}>
+                    <div className={css.title}>Стоимость</div>
+                    <Space h={8}/>
+                    <div className={css.row}>
+                        <Select1
+                            sx={{ width: '169px' }}
+                            value={costFrom}
+                            onChange={onCostFrom}
                         >
-                            <MenuItem value=""><em>По умолчанию</em></MenuItem>
-                            { allSorts.map(it=><MenuItem key={it} value={it}>{it}</MenuItem>) }
+                            {
+                                // в доках написано, что объект можно кидать в качестве value https://mui.com/material-ui/api/select/
+                                // @ts-ignore
+                                allCostsFrom.map(it=><MenuItem key={it.value} value={it}>{it.name}</MenuItem>)
+                            }
+                        </Select1>
+                        <Select1
+                            sx={{ width: '194px', marginLeft: '-1px' }}
+                            value={costTo}
+                            onChange={onCostTo}
+                        >
+                            {
+                                // в доках написано, что объект можно кидать в качестве value https://mui.com/material-ui/api/select/
+                                // @ts-ignore
+                                allCostsTo.map(it=><MenuItem key={it.value} value={it}>{it.name}</MenuItem>)
+                            }
                         </Select1>
                     </div>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title}/>
-                        <Space h={8}/>
-                        <button className={css.apply} onClick={onFilterApply}>Применить фильтр</button>
-                    </div>
-
-
                 </div>
 
-                <Space h={56}/>
-
-                <div className={css.mapBox}>
-                    <MapComponent style={{ width: '100%', height: '100%' }}/>
+                <div className={css.widgetBox}>
+                    <div className={css.title}/>
+                    <Space h={8}/>
+                    <Select1
+                        displayEmpty
+                        value={sort}
+                        onChange={onSort}
+                        renderValue={(selected)=>{
+                            if (selected.length===0){
+                                return <span data-placeholder-text>Сортировать по</span>
+                            }
+                            return selected
+                        }}
+                    >
+                        <MenuItem value=""><em>По умолчанию</em></MenuItem>
+                        { allSorts.map(it=><MenuItem key={it} value={it}>{it}</MenuItem>) }
+                    </Select1>
                 </div>
 
-                <div className={css.objectCardFrame}>
-                    <div className={css.container}>
-                        <div className={css.list}>
-                            { buildings.map(it=><ObjectCard key={it.id} building={it} />) }
-                        </div>
-                    </div>
+                <div className={css.widgetBox}>
+                    <div className={css.title}/>
+                    <Space h={8}/>
+                    <button className={css.apply} onClick={onFilterApply}>Применить фильтр</button>
                 </div>
 
-                <Space h={85}/>
 
             </div>
+
+            <Space h={56}/>
+
+            <div className={css.mapBox}>
+                <MapComponent style={{ width: '100%', height: '100%' }}/>
+            </div>
+
+            <div className={css.objectCardFrame}>
+                <div className={css.container}>
+                    <div className={css.list}>
+                        { buildings.map(it=><ObjectCard key={it.id} building={it} />) }
+                    </div>
+                </div>
+            </div>
+
+            <Space h={85}/>
+
         </div>
-    )
+    </div>
 }
 export default ObjectSearchPage;
 
@@ -279,21 +277,20 @@ const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
         </InputAdornment>
     },
 }))`
-  fieldset {
+  fieldset { // рамка
     border: 1px solid #424041;
     border-radius: 0;
   }
-  .MuiInputBase-root {
+  .MuiInputBase-root.MuiOutlinedInput-root { // input container
     width: 381px; height: 59px;
-    padding-right: 0 !important; 
-    padding-left: 0 !important;
+    padding-right: 0; 
+    padding-left: 0;
   }
-  .MuiInputBase-input {
-    padding-left: 32px !important;
+  .MuiInputBase-input.MuiOutlinedInput-input.MuiAutocomplete-input  { // input
+    padding-left: 32px;
     font: 500 18px var(--font-family-text);
     color: black;
     letter-spacing: 0.05em;
-    line-height: 150%;
     &input::placeholder {
       color: #8B8B8B;
     }

@@ -26,11 +26,14 @@
     top: 0; right: 0; bottom: 0; left: 0;
 }
 
-
 .elementsFrame {
     width: clamp(400px, 100%, 1920px);
     padding: 0 64px 0 64px;
 }
+
+
+
+
 
 
 .page {
@@ -41,7 +44,7 @@
 
 .mainFrame {
     @extend .col;
-    width: clamp(400px, 100%, 1920px);
+    width: 100%;
 }
 
 .mainTitle {
@@ -68,7 +71,7 @@
             display: grid;
             place-items: center start;
             height: 27px;
-            font: 450 18px var(--font-family-text);
+            font: 500 18px var(--font-family-text);
             color: #424041;
             letter-spacing: 0.05em;
         }
