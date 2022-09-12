@@ -1,7 +1,7 @@
 .upload_image_wrapper {
   cursor: pointer;
-  width: 15em;
-  height: 15em;
+  width: 20em;
+  height: 13.688em;
   margin-top: 8px;
   font-family: "Futura PT";
   font-style: "normal";
@@ -18,10 +18,43 @@
 
 .upload_image {
   cursor: pointer;
-  width: 15em;
-  height: 15em;
+  width: 20em;
+  height: 13.688em;
   margin-top: 8px;
   object-fit: cover;
   border-radius: 0px;
   border: 2px solid #000000;
+}
+
+.block {
+  margin-left: 2em;
+  margin-right: 2em;
+  margin-top: 4em;
+}
+
+.block__item-element {
+  display: grid;
+  grid-auto-flow: column;
+
+  margin-top: 32px;
+}
+
+.block__item-element__row {
+  display: grid;
+  grid-auto-flow: row;
+
+  margin-top: 32px;
+}
+
+.item-element__content {
+  display: grid;
+  grid-auto-flow: row;
+}
+
+.template-input-btn {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 64px;
+  width: max-content;
+  margin-top: 8px;
 }

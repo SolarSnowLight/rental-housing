@@ -142,7 +142,7 @@ const BuilderAdminPage = () => {
                                         onClick={onImageUpload}
                                         {...dragProps}
                                     >
-                                        Добавить фото
+                                        <span className='span__text__gray'>Добавить фото</span>
                                     </button>
                                     {imageList.map((image, index) => {
                                         return (

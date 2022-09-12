@@ -17,6 +17,7 @@ import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent
 import CompanyInfo from 'src/components/Company/CompanyInfo/CompanyInfo';
 import ProjectInfo from 'src/components/Company/ProjectInfo/ProjectInfo';
 import TemplateTable from 'src/components/TemplateTable';
+import TextFieldComponent from 'src/components/ui/textfields/TextFieldComponent';
 
 
 const CreateObjectPage = () => {
@@ -42,6 +43,8 @@ const CreateObjectPage = () => {
         link: '', admin: ''
     });
 
+    const [characteristics, setCharacteristics] = useState([]);
+
     // Event Handlers Section
     const onChangeImage = (imageList, addUpdateIndex) => {
         setLogo(imageList);
@@ -50,6 +53,13 @@ const CreateObjectPage = () => {
     const changeHandler = (key, value) => {
         setForm({ ...form, [key]: value });
     };
+
+    const addNewCharacteristicHandler = () => {
+        const data = JSON.parse(JSON.stringify(characteristics));
+        data.push("new value");
+
+        setCharacteristics(data);
+    }
 
     // Data section of functional operation of components
     const [open, setOpen] = useState(false);
@@ -101,11 +111,227 @@ const CreateObjectPage = () => {
     return (
         <div>
             <ProjectInfo />
-            <div style={{
-                marginTop: "64px",
-                marginLeft: "64px"
-            }}>
-                <TemplateTable />
+            <div className={styles["block"]}>
+                <div className={styles["block__item"]}>
+                    <span className='span__text__black-h3'>Создание объекта</span>
+                </div>
+                <div className={styles["block__item"]}>
+                    <div className={styles["block__item-element"]}>
+                        <div>
+                            <span className='span__text__gray'>Фото *</span>
+                            <div>
+                                <ImageUploading
+                                    value={logo}
+                                    onChange={onChangeImage}
+                                    dataURLKey="data_url"
+                                >
+                                    {({
+                                        imageList,
+                                        onImageUpload,
+                                        onImageRemoveAll,
+                                        onImageUpdate,
+                                        onImageRemove,
+                                        isDragging,
+                                        dragProps,
+                                    }) => (
+                                        <div>
+                                            <button
+                                                className={styles["upload_image_wrapper"]}
+                                                style={{
+                                                    display: logo.length > 0 ? "none" : "block",
+                                                }}
+
+                                                onClick={onImageUpload}
+                                                {...dragProps}
+                                            >
+                                                <span className='span__text__gray'>Добавить фото</span>
+                                            </button>
+                                            {imageList.map((image, index) => {
+                                                return (
+                                                    <div key={index} className={styles["btn-img-delete"]}>
+                                                        <img
+                                                            src={image.data_url}
+                                                            alt=""
+                                                            className={styles["upload_image"]}
+                                                        />
+                                                        <Button
+                                                            onClick={() => {
+                                                                onImageRemove(index);
+                                                            }}
+                                                            sx={{
+                                                                marginTop: '1em',
+                                                                backgroundColor: root.colorGreen,
+                                                                fontSize: '14px !important',
+                                                                borderRadius: '0px !important',
+                                                                border: '1px solid #424041 !important',
+                                                                width: 'max-content',
+                                                                height: '2em',
+                                                                ...textStyleDefault,
+                                                                ":hover": {
+                                                                    backgroundColor: root.colorGreen,
+                                                                    fontSize: '14px !important',
+                                                                    borderRadius: '0px !important',
+                                                                    border: '1px solid #424041 !important',
+                                                                    width: 'max-content',
+                                                                    height: '2em',
+                                                                    ...textStyleDefault,
+                                                                }
+                                                            }}
+                                                        >
+                                                            Удалить
+                                                        </Button>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    )}
+                                </ImageUploading>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles["block__item-element"]}>
+                        <div>
+                            <span className='span__text__gray'>Название *</span>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Название компании"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    marginTop: '8px',
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <span className='span__text__gray'>Адрес</span>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Название компании"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    marginTop: '8px',
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <span className='span__text__gray'>Координаты *</span>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Название компании"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    marginTop: '8px',
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <span className='span__text__gray'>Дата сдачи</span>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Название компании"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    marginTop: '8px',
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={styles["block"]}>
+                <div className={styles["block__item"]}>
+                    <span className='span__text__black-h3'>Характеристика объекта</span>
+                </div>
+                <div className={styles["block__item"]}>
+                    <div className={styles["block__item-element__row"]}>
+                        <span className='span__text__gray'>Способ оплаты *</span>
+                        {
+                            characteristics && characteristics.map((item) => {
+                                return (
+                                    <TextFieldComponent
+                                        value={item}
+                                        title="Способ оплаты"
+                                        headerVisible={false}
+                                    />
+                                );
+                            })
+                        }
+                        <div className={styles["template-input-btn"]}>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                placeholder="Способ оплаты"
+                                onChange={(e) => {
+                                }}
+                                sx={{
+                                    borderRadius: '0px !important',
+                                    border: 'none',
+                                    width: '20em',
+                                    '&:hover fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                    'fieldset': {
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px'
+                                    },
+                                }}
+                            />
+                            <ButtonWhiteComponent clickHandler={addNewCharacteristicHandler} style={{ width: "20em", height: "100%" }} title="Добавить способ оплаты" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )
