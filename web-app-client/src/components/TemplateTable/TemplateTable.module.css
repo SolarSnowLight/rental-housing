@@ -53,6 +53,8 @@
 .block-td__text-column {
     display: grid;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     min-width: 9.75em;
+    transform: rotate(270deg);
+    margin-left: -48px;
 }

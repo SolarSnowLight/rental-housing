@@ -98,9 +98,6 @@ const TemplateTable = () => {
                                         className={styles["block-td__text-column"]}
                                     >
                                         <span
-                                            style={{
-                                                transform: "rotate(270deg)",
-                                            }}
                                             className='span__text__gray'
                                             onClick={() => {
                                                 const templObj = { value: "", type_component: "input" };

@@ -14,6 +14,7 @@ import SignUpPage from "../containers/AuthPage/SignUpPage";
 import BuilderAdminPage from "src/containers/Builder/BuilderAdminPage";
 import CompanyPage from "../containers/CompanyPage";
 import HomePage from "../containers/HomePage";
+import MainPage from "../containers/MainPage";
 import ManagerPage from "../containers/Manager/ManagerPage";
 import AdminPage from "../containers/Admin/AdminPage";
 import ObjectSearchPage from "../containers/ObjectSearchPage";
@@ -21,7 +22,6 @@ import ManagerListPage from "src/containers/Builder/BuilderAdminPage/containers/
 import ProjectListPage from "../containers/Builder/BuilderAdminPage/containers/ProjectListPage";
 import CreateProjectPage from "src/containers/Builder/BuilderAdminPage/containers/CreateProjectPage";
 import CreateObjectPage from "src/containers/Builder/BuilderAdminPage/containers/CreateObjectPage";
-import DeveloperEditPage from "../containers/Manager/DeveloperEditPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -29,7 +29,6 @@ const useBaseRoutes = () => {
         <>
             <Route path={MainRoute.home_page} element={<HomePage />} />
             <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
-
 
             <Route path={'/object-search'} element={<ObjectSearchPage />} />
 
@@ -49,10 +48,7 @@ const useRoutes = (isAuthenticated) => {
         <Routes>
             {useBaseRoutes()}
             <Route path={AdminRouteDefault} element={<AdminPage />} />
-            <Route path={ManagerRouteDefault} >
-                <Route path={ManagerRouteDefault} element={<ManagerPage/>} />
-                <Route path={ManagerRoute.developerEdit} element={<DeveloperEditPage/>} />
-            </Route>
+            <Route path={ManagerRouteDefault} element={<ManagerPage />} />
 
             <Route path={BuilderAdminRouteDefault}>
                 <Route path={BuilderAdminRouteDefault} element={<BuilderAdminPage />} />

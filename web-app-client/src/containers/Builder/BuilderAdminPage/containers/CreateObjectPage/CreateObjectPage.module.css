@@ -42,6 +42,8 @@
 .block__item-element__row {
   display: grid;
   grid-auto-flow: row;
+  height: min-content;
+  width: 20em;
 
   margin-top: 32px;
 }
@@ -57,4 +59,10 @@
   gap: 64px;
   width: max-content;
   margin-top: 8px;
+}
+
+.block__item__column {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 16px;
 }
