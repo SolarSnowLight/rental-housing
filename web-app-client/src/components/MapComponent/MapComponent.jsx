@@ -3,7 +3,7 @@ import { useAppSelector } from '../../hooks/redux.hook';
 
 import styles from './MapComponent.module.css';
 
-const MapComponent = () => {
+const MapComponent = (props) => {
     const configSlice = useAppSelector(store => store.configReducer);
 
     return (
@@ -17,6 +17,7 @@ const MapComponent = () => {
             scrollZoom={false}
             mapStyle="mapbox://styles/mapbox/streets-v11"
             mapboxAccessToken={"pk.eyJ1IjoiZGFuc3ciLCJhIjoiY2wyMGMyZzhuMHV3MDNjbWt5ajRuNHY2cSJ9.VQGluZCuS2Y1RclO0FuRTQ"}
+            {...props}
         ></Map>
     )
 }

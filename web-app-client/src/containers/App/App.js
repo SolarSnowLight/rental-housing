@@ -9,6 +9,8 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+// стили для карты
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const App = () => {
   const config = useAppSelector(state => state.configReducer);
