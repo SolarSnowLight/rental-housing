@@ -190,30 +190,3 @@ const Multiline1 = React.memo(styled(TextField).attrs({
 
 
 
-
-
-const IUButton = React.memo(styled.button`
-  cursor: pointer;
-  width: 15em;
-  height: 15em;
-  margin-top: 8px;
-  font: 500 18px var(--font-family-text);
-  letter-spacing: 0.05em;
-  color: #424041;
-  text-transform: none;
-  border: 2px dashed #000000;
-  border-radius: 0;
-  background-color: transparent;
-`)
-const IUDiv = React.memo(styled.div`
-  
-`)
-const IUImg = React.memo(styled.img`
-  cursor: pointer;
-  width: 15em;
-  height: 15em;
-  margin-top: 8px;
-  object-fit: cover;
-  border-radius: 0px;
-  border: 2px solid black;
-`)
