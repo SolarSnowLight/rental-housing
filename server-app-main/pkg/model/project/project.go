@@ -44,7 +44,7 @@ type ProjectUuidModel struct {
 type ProjectCountModel struct {
 	Uuid  string `json:"uuid" binding:"required"`
 	Limit int    `json:"limit" binding:"required"`
-	Count int    `json:"count" binding:"required"`
+	Count int    `json:"count"`
 }
 
 type ProjectAnyCountModel struct {

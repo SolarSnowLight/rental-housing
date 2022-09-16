@@ -2,7 +2,7 @@ import styles from './ListItemComponent.module.css';
 
 import defaultProfileImg from '../../../../../resources/images/default_profile.png'
 
-const ListItemComponent = ({ column1 = '', column2 = '', column3 = '', clickHandler = () => { } }) => {
+const ListItemComponent = ({ column1 = '', column2 = '', column3 = '', clickHandler = () => { }, img = {defaultProfileImg}}) => {
     const columnCheck = (column) => {
         if (column.length <= 0) {
             return false;
@@ -20,7 +20,7 @@ const ListItemComponent = ({ column1 = '', column2 = '', column3 = '', clickHand
                         onClick={() => {
                             clickHandler();
                         }}
-                        src={defaultProfileImg}
+                        src={(img) ? img : defaultProfileImg}
                     />
                 </div>
                 {

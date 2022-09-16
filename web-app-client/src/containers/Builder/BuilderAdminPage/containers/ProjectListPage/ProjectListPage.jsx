@@ -4,9 +4,41 @@ import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent
 import ListItemComponent from '../../components/ListItemComponent';
 import { useNavigate } from 'react-router-dom';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
+import { useEffect, useState } from 'react';
+import useHttp from 'src/hooks/http.hook';
+import { useMessageToastify } from 'src/hooks/message.toastify.hook';
+import ProjectApi from 'src/constants/addresses/apis/project.api';
+import MainApi from 'src/constants/addresses/apis/main.api';
 
 const ProjectListPage = () => {
+    const { loading, request, error, clearError } = useHttp();
+    const message = useMessageToastify();
     const navigate = useNavigate();
+
+    const [projects, setProjects] = useState([]);
+
+    useEffect(() => {
+        message(error, "error");
+        clearError();
+    }, [error, message, clearError]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await request(
+                ProjectApi.get_all_projects,
+                'POST',
+                JSON.stringify({
+                    uuid: "8c5e07cb-37a9-4fa9-bbdb-0a68452608bf",
+                    count: projects.length,
+                    limit: 10
+                })
+            );
+
+            if (response.projects) {
+                setProjects(response.projects);
+            }
+        })();
+    }, []);
 
     return (
         <div className={styles["list"]}>
@@ -24,19 +56,16 @@ const ProjectListPage = () => {
                 </div>
             </div>
             <div className={styles["list-body"]}>
-                <ListItemComponent column1='Проект жилстрой' column2='324 проекта,' />
-                <ListItemComponent column1='Проект проект' column2='324 проекта,'/>
-                <ListItemComponent column1='Проект проекта в проекте' column2='324 проекта,' />
-                <ListItemComponent column1='Очень классный проект' column2='324 проекта,' />
-                <ListItemComponent column1='Дайте деняк' column2='324 проекта,' />
-                <ListItemComponent column1='Проект работы за еду' column2='324 проекта,' />
-                <ListItemComponent column1='Проект ...' column2='324 проекта,' />
-                <ListItemComponent column1='Проект жилстрой' column2='324 проекта,' />
-                <ListItemComponent column1='Проект проект' column2='324 проекта,' />
-                <ListItemComponent column1='Проект проекта в проекте' column2='324 проекта,' />
-                <ListItemComponent column1='Очень классный проект' column2='324 проекта,' />
-                <ListItemComponent column1='Проект проекта в проекте' column2='324 проекта,' />
-                <ListItemComponent column1='Очень классный проект' column2='324 проекта,' />
+                {
+                    projects && projects?.length > 0 && projects.map((item) => {
+                        return (
+                            <ListItemComponent
+                                column1={item.data.title}
+                                img={(item.data.logo) ? MainApi.main_server + '/' + item.data.logo: null}
+                            />
+                        )
+                    })
+                }
             </div>
             <div className={styles["list-footer"]}>
                 <div>

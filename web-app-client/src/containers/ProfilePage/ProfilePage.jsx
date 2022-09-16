@@ -10,21 +10,15 @@ import CircularIndeterminate from '../../components/CircularIndeterminate';
 import { useEffect } from 'react';
 import { useMessageToastify } from '../../hooks/message.toastify.hook';
 import { authLogout } from 'src/store/actions/AuthAction';
+import { Navigate, useNavigate } from 'react-router-dom';
+import AdminRoute from 'src/constants/addresses/routes/admin.route';
 
 const ProfilePage = () => {
+    const navigate = useNavigate();
     const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
-
     const message = useMessageToastify();
-
-    /*console.log(auth);
-    useEffect((auth) => {
-        if(!auth.isAuthenticated){
-            message("Выход выполнен успешно!", "success");
-        }
-
-    }, [auth.isAuthenticated]);*/
 
     return (
         <div>
@@ -61,6 +55,35 @@ const ProfilePage = () => {
                 }}
             >
                 Выход
+            </Button>
+
+            <Button
+                variant="contained"
+                fullWidth={true}
+                disableElevation={true}
+                onClick={() => {
+                    navigate(AdminRoute.default);
+                }}
+                sx={{
+                    backgroundColor: root.colorGreen,
+                    fontSize: '14px !important',
+                    borderRadius: '0px !important',
+                    border: '1px solid #424041 !important',
+                    width: '100%',
+                    height: '3em',
+                    ...textStyleDefault,
+                    ":hover": {
+                        backgroundColor: root.colorGreen,
+                        fontSize: '14px !important',
+                        borderRadius: '0px !important',
+                        border: '1px solid #424041 !important',
+                        width: '100%',
+                        height: '3em',
+                        ...textStyleDefault,
+                    }
+                }}
+            >
+                Создание компании
             </Button>
         </div>
     )
