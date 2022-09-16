@@ -2,6 +2,7 @@ package repository
 
 import (
 	adminModel "main-server/pkg/model/admin"
+	projectModel "main-server/pkg/model/project"
 	rbacModel "main-server/pkg/model/rbac"
 	userModel "main-server/pkg/model/user"
 
@@ -50,10 +51,16 @@ type User interface {
 
 type Admin interface {
 	GetAllUsers(c *gin.Context) (adminModel.UsersResponseModel, error)
+	CreateCompany(c *gin.Context, data adminModel.CompanyModel) (adminModel.CompanyModel, error)
 }
 
 type AuthType interface {
 	GetAuthType(column, value interface{}) (userModel.AuthTypeModel, error)
+}
+
+type Project interface {
+	CreateProject(userId, domainId int, data projectModel.ProjectModel) (projectModel.ProjectModel, error)
+	AddLogoProject(userId, domainId int, data projectModel.ProjectLogoModel) (projectModel.ProjectLogoModel, error)
 }
 
 type Repository struct {
@@ -63,12 +70,15 @@ type Repository struct {
 	User
 	Admin
 	AuthType
+
+	Project
 }
 
 func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
 	domain := NewDomainPostgres(db)
 	user := NewUserPostgres(db, enforcer, domain)
 	admin := NewAdminPostgres(db, enforcer, domain)
+	project := NewProjectPostgres(db, enforcer)
 
 	return &Repository{
 		Authorization: NewAuthPostgres(db, enforcer, *user),
@@ -77,5 +87,6 @@ func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
 		User:          user,
 		Admin:         admin,
 		AuthType:      NewAuthTypePostgres(db),
+		Project:       project,
 	}
 }

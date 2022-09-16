@@ -1,5 +1,7 @@
 package object
 
 const (
-	TYPE_ARTICLE = "article"
+	TYPE_COMPANY = "company"
+	TYPE_PROJECT = "project"
+	TYPE_ENTITY  = "entity"
 )

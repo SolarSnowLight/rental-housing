@@ -2,6 +2,7 @@ package service
 
 import (
 	"main-server/pkg/model/admin"
+	adminModel "main-server/pkg/model/admin"
 	repository "main-server/pkg/repository"
 
 	"github.com/gin-gonic/gin"
@@ -22,4 +23,9 @@ func NewAdminService(repo repository.Admin) *AdminService {
 /* Method for get all users, when location in system */
 func (s *AdminService) GetAllUsers(c *gin.Context) (admin.UsersResponseModel, error) {
 	return s.repo.GetAllUsers(c)
+}
+
+/* Method for create new company */
+func (s *AdminService) CreateCompany(c *gin.Context, data adminModel.CompanyModel) (adminModel.CompanyModel, error) {
+	return s.repo.CreateCompany(c, data)
 }
