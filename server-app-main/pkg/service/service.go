@@ -2,6 +2,7 @@ package service
 
 import (
 	adminModel "main-server/pkg/model/admin"
+	projectModel "main-server/pkg/model/project"
 	rbacModel "main-server/pkg/model/rbac"
 	userModel "main-server/pkg/model/user"
 	repository "main-server/pkg/repository"
@@ -41,6 +42,7 @@ type User interface {
 
 type Admin interface {
 	GetAllUsers(c *gin.Context) (adminModel.UsersResponseModel, error)
+	CreateCompany(c *gin.Context, data adminModel.CompanyModel) (adminModel.CompanyModel, error)
 }
 
 type Domain interface {
@@ -52,6 +54,11 @@ type Role interface {
 	HasRole(usersId, domainsId int, roleValue string) (bool, error)
 }
 
+type Project interface {
+	CreateProject(userId, domainId int, data projectModel.ProjectModel) (projectModel.ProjectModel, error)
+	AddLogoProject(userId, domainId int, data projectModel.ProjectLogoModel) (projectModel.ProjectLogoModel, error)
+}
+
 type Service struct {
 	Authorization
 	Token
@@ -59,6 +66,8 @@ type Service struct {
 	Admin
 	Domain
 	Role
+
+	Project
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -71,5 +80,6 @@ func NewService(repos *repository.Repository) *Service {
 		Admin:         NewAdminService(repos.Admin),
 		Domain:        NewDomainService(repos.Domain),
 		Role:          NewRoleService(repos.Role),
+		Project:       NewProjectService(repos.Project),
 	}
 }

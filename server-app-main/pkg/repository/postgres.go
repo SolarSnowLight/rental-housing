@@ -36,6 +36,7 @@ func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
 }
 
 func CheckRowExists(db *sqlx.DB, table, column, value string) bool {
+	fmt.Println(db)
 	query := fmt.Sprintf(`SELECT * FROM %s tl WHERE tl.%s = $1 limit 1`, table, column)
 	row := db.QueryRow(query, value)
 

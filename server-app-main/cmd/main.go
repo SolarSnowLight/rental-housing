@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	mainserver "main-server"
 	"main-server/config"
 	handler "main-server/pkg/handler"
@@ -21,10 +20,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/sirupsen/logrus/hooks/writer"
-	"github.com/xuri/excelize/v2"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
-	"gopkg.in/Iwark/spreadsheet.v2"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -132,7 +128,7 @@ func main() {
 		}
 	}*/
 
-	data, err := ioutil.ReadFile("./config/client_secret.json")
+	/*data, err := ioutil.ReadFile("./config/client_secret.json")
 	if err != nil {
 		logrus.Fatalf("error : %s", err.Error())
 	}
@@ -167,7 +163,7 @@ func main() {
 
 	if err := f.SaveAs("Book1.xlsx"); err != nil {
 		fmt.Println(err)
-	}
+	}*/
 
 	/* Init config */
 	if err := initConfig(); err != nil {

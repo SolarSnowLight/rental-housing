@@ -49,9 +49,7 @@ func NewAuthPostgres(db *sqlx.DB, enforcer *casbin.Enforcer, userPostgres UserPo
 	}
 }
 
-/*
-* Функция регистрации пользователя
- */
+/* Method for create new user */
 func (r *AuthPostgres) CreateUser(user userModel.UserRegisterModel) (userModel.UserAuthDataModel, error) {
 	check := CheckRowExists(r.db, tableConstants.USERS_TABLE, "email", user.Email)
 
@@ -229,10 +227,16 @@ func (r *AuthPostgres) CreateUser(user userModel.UserRegisterModel) (userModel.U
 		return userModel.UserAuthDataModel{}, err
 	}
 
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		return userModel.UserAuthDataModel{}, err
+	}
+
 	return userModel.UserAuthDataModel{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
-	}, tx.Commit()
+	}, nil
 }
 
 func (r *AuthPostgres) UploadProfileImage(c *gin.Context, filepath string) (bool, error) {
