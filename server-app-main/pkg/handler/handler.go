@@ -128,7 +128,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			project.POST(route.GET_ROUTE, h.getProject)
 
 			// URL: /company/project/get/all
-			project.POST(route.GET_ALL_ROUTE, h.createCompany)
+			project.POST(route.GET_ALL_ROUTE, h.getProjects)
 		}
 
 		// URL: /company/create

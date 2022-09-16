@@ -10,6 +10,7 @@ import (
 	tableConstant "main-server/pkg/constant/table"
 	projectModel "main-server/pkg/model/project"
 	rbacModel "main-server/pkg/model/rbac"
+	"sort"
 
 	"strconv"
 	"time"
@@ -236,14 +237,15 @@ func (r *ProjectPostgres) GetProjects(userId, domainId int, data projectModel.Pr
 	}
 
 	var projects []projectModel.ProjectDbModel
+	sum := (data.Count + data.Limit)
 
 	query = fmt.Sprintf("SELECT uuid, data, created_at FROM %s tl WHERE tl.companies_id = $1 LIMIT $2", tableConstant.PROJECTS_TABLE)
-	err := r.db.Select(&projects, query, companyId, (data.Count + data.Limit))
+	err := r.db.Select(&projects, query, companyId, sum)
 	if err != nil {
 		return projectModel.ProjectAnyCountModel{}, err
 	}
 
-	/*var projectsEx []projectModel.ProjectDbDataEx
+	var projectsEx []projectModel.ProjectDbDataEx
 	for _, element := range projects {
 		var projectData projectModel.ProjectDataModel
 		err = json.Unmarshal([]byte(element.Data), &projectData)
@@ -252,8 +254,29 @@ func (r *ProjectPostgres) GetProjects(userId, domainId int, data projectModel.Pr
 			return projectModel.ProjectAnyCountModel{}, err
 		}
 
+		projectsEx = append(projectsEx, projectModel.ProjectDbDataEx{
+			Uuid:      element.Uuid,
+			Data:      projectData,
+			CreatedAt: element.CreatedAt,
+		})
+	}
 
-	}*/
+	sort.SliceStable(projectsEx, func(i, j int) bool {
+		return projectsEx[i].CreatedAt.After(projectsEx[j].CreatedAt)
+	})
 
-	return projectModel.ProjectAnyCountModel{}, nil
+	if data.Count >= len(projectsEx) {
+		return projectModel.ProjectAnyCountModel{}, nil
+	}
+
+	if sum >= len(projectsEx) {
+		fmt.Println(sum)
+		sum -= (sum - len(projectsEx))
+		fmt.Println(sum)
+	}
+
+	return projectModel.ProjectAnyCountModel{
+		Projects: projectsEx[data.Count:sum],
+		Count:    (sum - data.Count),
+	}, nil
 }

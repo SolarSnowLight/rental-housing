@@ -4,27 +4,25 @@ import { authUpdate } from "src/store/actions/AuthAction";
 import AuthApi from "../constants/addresses/apis/auth.api";
 import MainApi from "../constants/addresses/apis/main.api";
 import { authSlice } from "../store/reducers/AuthSlice";
-import { useAppSelector } from "./redux.hook";
+import storeConfig from "../configs/store.config.json";
+import { useAppDispatch } from "./redux.hook";
 
 const useHttp = (baseUrl = MainApi.main_server) => {
-    const auth = useAppSelector(state => state.authReducer);
     const authActions = authSlice.actions;
-    const dispatch = useDispatch();
-
+    const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const originalRequest = useCallback(async (url, method = 'GET', body = null, headers = { 'Content-Type': 'application/json' }) => {
-        dispatch(authUpdate());
         setLoading(true);
 
         try {
             const response = await fetch(
-                (baseUrl + url), 
-                { 
-                    method, 
-                    body, 
-                    headers 
+                (baseUrl + url),
+                {
+                    method,
+                    body,
+                    headers
                 }
             );
 
@@ -35,12 +33,9 @@ const useHttp = (baseUrl = MainApi.main_server) => {
                 response,
                 data
             };
-        } catch(e){
+        } catch (e) {
             setLoading(false);
             setError(e.message);
-
-            // for tests
-            console.log(e.message);
         }
 
         return {
@@ -49,8 +44,7 @@ const useHttp = (baseUrl = MainApi.main_server) => {
         };
     }, []);
 
-    const refreshToken = useCallback(async (token) => {
-        dispatch(authUpdate());
+    const refreshToken = useCallback(async () => {
         setLoading(true);
 
         try {
@@ -60,30 +54,24 @@ const useHttp = (baseUrl = MainApi.main_server) => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        refresh_token: token,
-                    })
+                    }
                 }
             );
 
             const data = await response.json();
 
-            if(response.ok){
-                authActions.setAuthData({
-                    users_id: data.users_id,
-                    type_auth: data.type_auth,
-                    access_token: data.access_token,
-                    refresh_token: data.refresh_token,
-                    attributes: data.attributes,
-                    modules: data.modules
-                });
+            if (response.ok) {
+                dispatch(authActions.setAuthData({
+                    access_token: data.access_token
+                }));
+            }else if(response?.status === 401){
+                throw new Error("Пользователь не авторизован!");
             }
 
             setLoading(false);
 
             return data;
-        } catch(e){
+        } catch (e) {
             setLoading(false);
             setError(e.message);
             throw e;
@@ -91,38 +79,45 @@ const useHttp = (baseUrl = MainApi.main_server) => {
     }, []);
 
     const request = useCallback(async (url, method = 'GET', body = null, headers = { 'Content-Type': 'application/json' }, multipart = false) => {
-        dispatch(authUpdate());
         setLoading(true);
         try {
-            if(body && (!headers['Content-Type']) && (!multipart)){
+            if (body && (!headers['Content-Type']) && (!multipart)) {
                 body = JSON.stringify(body);
                 headers['Content-Type'] = 'application/json';
             }
 
-            if(auth.access_token){
-                headers['Authorization'] = `Bearer ${auth.access_token}`;
+            const mainStore = localStorage.getItem(storeConfig["main-store"]);
+            let accessToken = null;
+
+            if (mainStore) {
+                accessToken = JSON.parse(mainStore)?.access_token;
             }
 
-            console.log(auth);
+            if (accessToken) {
+                headers['Authorization'] = `Bearer ${accessToken}`;
+            }
 
             let { response, data } = await originalRequest(url, method, body, headers);
 
             // Status Code 401 - Unauthorized
-            // Проработать refresh token
-            /*if(response?.status === 401){
-                const request = await refreshToken(auth.refresh_token, auth.type_auth);
-                headers['Authorization'] = `Bearer ${request.type_auth} ${request.access_token}`;
+            if (response?.status === 401) {
+                const localResponse = await refreshToken(accessToken);
+                headers['Authorization'] = `Bearer ${localResponse.access_token}`;
+
+                dispatch(authActions.setAuthData({
+                    access_token: localResponse.access_token
+                }));
 
                 const updateResponse = await originalRequest(url, method, body, headers);
 
                 response = updateResponse.response;
                 data = updateResponse.data;
-            }*/
+            }
 
             setLoading(false);
 
             return data;
-        } catch(e){
+        } catch (e) {
             setLoading(false);
             setError(e.message);
             throw e;

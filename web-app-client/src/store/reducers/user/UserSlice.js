@@ -7,25 +7,25 @@ const initialState = {
     error: ""
 };
 
-/* Create a new clice for admin API */
-export const adminSlice = createSlice({
-    name: "admin",
+/* Create a new clice for user API */
+export const userSlice = createSlice({
+    name: "user",
     initialState,
     reducers: {
-        loading(state) {
+        userLoading(state) {
             state.isLoading = true;
         },
 
-        error(state, action) {
+        userError(state, action) {
             state.isLoading = false;
             state.error = action.payload;
         },
 
-        clearError(state) {
+        userClearError(state) {
             state.error = "";
         },
 
-        createCompanySuccess(state, action) {
+        getAllUsersSuccess(state, action) {
             state.isLoading = false;
             state.error = "";
             state.response = action.payload;
@@ -33,4 +33,4 @@ export const adminSlice = createSlice({
     },
 });
 
-export default adminSlice.reducer;
+export default userSlice.reducer;

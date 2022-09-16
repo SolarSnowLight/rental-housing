@@ -116,3 +116,12 @@ export const authLogout = (access_token) => async (dispatch) => {
         dispatch(authSlice.actions.authError(e.message));
     }
 }
+
+/* Function for set new data auth */
+export const setAuthData = (accessToken) => async (dispatch) => {
+    try {
+        dispatch(authSlice.actions.setAuthData(accessToken));
+    } catch (e) {
+        dispatch(authSlice.actions.authError(e.message));
+    }
+};

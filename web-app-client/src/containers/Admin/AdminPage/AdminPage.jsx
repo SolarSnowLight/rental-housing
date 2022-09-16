@@ -16,6 +16,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useHttp from '../../../hooks/http.hook';
 import AdminApi from '../../../constants/addresses/apis/admin.api';
 import { styleTextGray } from './styles';
+import { adminSlice } from 'src/store/reducers/admin/AdminSlice';
+import { adminCreateCompany } from 'src/store/actions/admin/AdminAction';
 
 function sleep(delay = 0) {
     return new Promise((resolve) => {
@@ -24,27 +26,26 @@ function sleep(delay = 0) {
 }
 
 const AdminPage = () => {
-    const auth = useAppSelector((state) => state.authReducer);
-    const authActions = authSlice.actions;
+    const adminSelector = useAppSelector((state) => state.adminReducer);
+    const adminActions = adminSlice.actions;
     const dispatch = useAppDispatch();
+
     const { loading, request, error, clearError } = useHttp();
 
     const message = useMessageToastify();
 
     useEffect(() => {
-        if (auth.error.length > 0) {
-            message(auth.error, "error");
-            dispatch(authActions.authClearError());
-        }
-    }, [auth.error]);
+        message(error, "error");
+        clearError();
+    }, [error, message, clearError]);
 
 
     const [btnDisabled, setBtnDisabled] = useState(true);
     const [logo, setLogo] = useState([]);
     const [form, setForm] = useState({
         title: '', description: '',
-        email: '', phone: '',
-        link: '', admin: ''
+        email_company: '', phone: '',
+        link: '', email_admin: ''
     });
 
     const onChangeImage = (imageList, addUpdateIndex) => {
@@ -61,9 +62,36 @@ const AdminPage = () => {
         control
     });
 
-    const onSubmit = (data) => {
-        console.log(form);
-        // dispatch(authSignIn(data));
+    const onSubmit = async () => {
+        const data = {
+            ...form,
+            logo: logo[0].file
+        }
+
+        const formData = new FormData();
+        formData.append("logo", data.logo);
+        formData.append("title", data.title);
+        formData.append("description", data.description);
+        formData.append("email_company", data.email_company);
+        formData.append("email_admin", data.email_admin);
+        formData.append("phone", data.phone);
+        formData.append("link", data.link);
+
+        console.log(data);
+        // dispatch(adminCreateCompany(data));
+        const response = await request(
+            AdminApi.create_company,
+            'POST',
+            formData,
+            {},
+            true
+        );
+
+        if(!response.message){
+            message("Новая компания создана успешно!", "success");
+        }else{
+            message("При создании компании произошла ошибка!", "error");
+        }
     };
 
     // Autocomplete settings
@@ -81,7 +109,7 @@ const AdminPage = () => {
         (async () => {
             const response = await request(AdminApi.get_all_users, 'POST');
 
-            if (active) {
+            if (response?.users && active) {
                 setOptions(response.users);
             }
         })();
@@ -112,6 +140,12 @@ const AdminPage = () => {
             }
         }
     }, [form]);
+
+    // Error handling
+    useEffect(() => {
+        message(error, "error");
+        clearError();
+    }, [error, message, clearError]);
 
     return (
         <form className={styles["admin-page__container"]} onSubmit={handleSubmit(onSubmit)}>
@@ -272,21 +306,21 @@ const AdminPage = () => {
                 </div>
                 <div>
                     <div>
-                        <span className={styles['admin-page__h4']}>Email *</span>
+                        <span className={styles['admin-page__h4']}>Email компании*</span>
                     </div>
                     <div>
                         <Controller
                             control={control}
-                            name="email"
+                            name="email_company"
                             defaultValue={''}
                             render={({ field }) => (
                                 <TextField
                                     required
                                     id="outlined-required"
-                                    placeholder="Введите email"
+                                    placeholder="Введите email компании"
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        changeHandler("email", e.target.value);
+                                        changeHandler("email_company", e.target.value);
                                     }}
                                     value={field.value}
                                     error={!!errors.email?.message}
@@ -396,7 +430,7 @@ const AdminPage = () => {
                     <div>
                         <Controller
                             control={control}
-                            name="admin"
+                            name="email_admin"
                             defaultValue={''}
                             render={({ field }) => (
                                 <Autocomplete
@@ -414,7 +448,7 @@ const AdminPage = () => {
                                     loading={loadingAutocomplete}
                                     onChange={(e, value) => {
                                         field.value = value.email;
-                                        changeHandler("admin", value.email);
+                                        changeHandler("email_admin", value.email);
                                     }}
                                     renderInput={(params) => (
                                         <TextField
