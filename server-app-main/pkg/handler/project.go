@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	middlewareConstant "main-server/pkg/constant/middleware"
 	projectModel "main-server/pkg/model/project"
 	"net/http"
@@ -32,6 +33,80 @@ func (h *Handler) createProject(c *gin.Context) {
 	domainId, _ := c.Get(middlewareConstant.DOMAINS_ID)
 
 	data, err := h.services.Project.CreateProject(userId.(int), domainId.(int), input)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, data)
+}
+
+// @Summary GetProject
+// @Tags project
+// @Description Get all users, which are located in system
+// @ID get-project
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} adminModel.UsersResponseModel "data"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /company/project/get [post]
+func (h *Handler) getProject(c *gin.Context) {
+	var input projectModel.ProjectUuidModel
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	userId, _ := c.Get(middlewareConstant.USER_CTX)
+	domainId, _ := c.Get(middlewareConstant.DOMAINS_ID)
+
+	data, err := h.services.Project.GetProject(userId.(int), domainId.(int), input)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// From json to object
+	var projectData projectModel.ProjectDataModel
+	err = json.Unmarshal([]byte(data.Data), &projectData)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, projectModel.ProjectDbDataEx{
+		Uuid:      data.Uuid,
+		Data:      projectData,
+		CreatedAt: data.CreatedAt,
+	})
+}
+
+// @Summary GetProjects
+// @Tags project
+// @Description Get all projects for this company
+// @ID get-projects
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} adminModel.UsersResponseModel "data"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /company/project/get/all [post]
+func (h *Handler) getProjects(c *gin.Context) {
+	var input projectModel.ProjectCountModel
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	userId, _ := c.Get(middlewareConstant.USER_CTX)
+	domainId, _ := c.Get(middlewareConstant.DOMAINS_ID)
+
+	data, err := h.services.Project.GetProjects(userId.(int), domainId.(int), input)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return

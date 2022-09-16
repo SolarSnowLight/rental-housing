@@ -57,6 +57,8 @@ type Role interface {
 type Project interface {
 	CreateProject(userId, domainId int, data projectModel.ProjectModel) (projectModel.ProjectModel, error)
 	AddLogoProject(userId, domainId int, data projectModel.ProjectLogoModel) (projectModel.ProjectLogoModel, error)
+	GetProject(userId, domainId int, data projectModel.ProjectUuidModel) (projectModel.ProjectDbModel, error)
+	GetProjects(userId, domainId int, data projectModel.ProjectCountModel) (projectModel.ProjectAnyCountModel, error)
 }
 
 type Service struct {

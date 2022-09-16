@@ -10,6 +10,7 @@ import (
 	tableConstant "main-server/pkg/constant/table"
 	projectModel "main-server/pkg/model/project"
 	rbacModel "main-server/pkg/model/rbac"
+
 	"strconv"
 	"time"
 
@@ -48,7 +49,7 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 
 	query = fmt.Sprintf("INSERT INTO %s (uuid, data, created_at, updated_at, users_id, companies_id) values ($1, $2, $3, $4, $5, $6) RETURNING uuid", tableConstant.PROJECTS_TABLE)
 
-	dataJson, err := json.Marshal(projectModel.ProjectDbModel{
+	dataJson, err := json.Marshal(projectModel.ProjectDataModel{
 		Title:       data.Title,
 		Description: data.Description,
 		Managers:    data.Managers,
@@ -208,4 +209,51 @@ func (r *ProjectPostgres) AddLogoProject(userId, domainId int, data projectModel
 	}
 
 	return data, nil
+}
+
+/* Get information about one project */
+func (r *ProjectPostgres) GetProject(userId, domainId int, data projectModel.ProjectUuidModel) (projectModel.ProjectDbModel, error) {
+	var project projectModel.ProjectDbModel
+
+	query := fmt.Sprintf("SELECT uuid, data, created_at FROM %s tl WHERE tl.uuid = $1 LIMIT 1", tableConstant.PROJECTS_TABLE)
+
+	err := r.db.Get(&project, query, data.Uuid)
+	if err != nil {
+		return projectModel.ProjectDbModel{}, err
+	}
+
+	return project, nil
+}
+
+/* Get information about any count projects */
+func (r *ProjectPostgres) GetProjects(userId, domainId int, data projectModel.ProjectCountModel) (projectModel.ProjectAnyCountModel, error) {
+	query := fmt.Sprintf("SELECT id FROM %s WHERE uuid=$1", tableConstant.COMPANIES_TABLE)
+	var companyId int
+
+	row := r.db.QueryRow(query, data.Uuid)
+	if err := row.Scan(&companyId); err != nil {
+		return projectModel.ProjectAnyCountModel{}, err
+	}
+
+	var projects []projectModel.ProjectDbModel
+
+	query = fmt.Sprintf("SELECT uuid, data, created_at FROM %s tl WHERE tl.companies_id = $1 LIMIT $2", tableConstant.PROJECTS_TABLE)
+	err := r.db.Select(&projects, query, companyId, (data.Count + data.Limit))
+	if err != nil {
+		return projectModel.ProjectAnyCountModel{}, err
+	}
+
+	/*var projectsEx []projectModel.ProjectDbDataEx
+	for _, element := range projects {
+		var projectData projectModel.ProjectDataModel
+		err = json.Unmarshal([]byte(element.Data), &projectData)
+
+		if err != nil {
+			return projectModel.ProjectAnyCountModel{}, err
+		}
+
+
+	}*/
+
+	return projectModel.ProjectAnyCountModel{}, nil
 }
