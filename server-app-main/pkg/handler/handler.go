@@ -92,6 +92,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			// URL: /user/profile/update
 			profile.POST(route.UPDATE_ROUTE, h.updateProfile)
 		}
+
+		// URL: /user/company
+		company := user.Group(route.COMPANY_MAIN_ROUTE)
+		{
+			// URL: /user/company/get
+			company.POST(route.GET_ROUTE, h.getUserCompany)
+		}
 	}
 
 	// URL: /admin

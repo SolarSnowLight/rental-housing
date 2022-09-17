@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	middlewareConstant "main-server/pkg/constant/middleware"
 	projectModel "main-server/pkg/model/project"
 	"net/http"
 
@@ -29,10 +28,13 @@ func (h *Handler) createProject(c *gin.Context) {
 		return
 	}
 
-	userId, _ := c.Get(middlewareConstant.USER_CTX)
-	domainId, _ := c.Get(middlewareConstant.DOMAINS_ID)
+	userId, domainId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
 
-	data, err := h.services.Project.CreateProject(userId.(int), domainId.(int), input)
+	data, err := h.services.Project.CreateProject(userId, domainId, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -60,10 +62,13 @@ func (h *Handler) getProject(c *gin.Context) {
 		return
 	}
 
-	userId, _ := c.Get(middlewareConstant.USER_CTX)
-	domainId, _ := c.Get(middlewareConstant.DOMAINS_ID)
+	userId, domainId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
 
-	data, err := h.services.Project.GetProject(userId.(int), domainId.(int), input)
+	data, err := h.services.Project.GetProject(userId, domainId, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -103,10 +108,13 @@ func (h *Handler) getProjects(c *gin.Context) {
 		return
 	}
 
-	userId, _ := c.Get(middlewareConstant.USER_CTX)
-	domainId, _ := c.Get(middlewareConstant.DOMAINS_ID)
+	userId, domainId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
 
-	data, err := h.services.Project.GetProjects(userId.(int), domainId.(int), input)
+	data, err := h.services.Project.GetProjects(userId, domainId, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -140,12 +148,15 @@ func (h *Handler) addLogoProject(c *gin.Context) {
 	newFilename := uuid.NewV4().String()
 	filepath := "public/project/" + newFilename
 
-	userId, _ := c.Get(middlewareConstant.USER_CTX)
-	domainId, _ := c.Get(middlewareConstant.DOMAINS_ID)
+	userId, domainId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
 
 	data, err := h.services.Project.AddLogoProject(
-		userId.(int),
-		domainId.(int),
+		userId,
+		domainId,
 		projectModel.ProjectLogoModel{
 			Filepath: filepath,
 			Uuid:     projectUuid,
