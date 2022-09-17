@@ -103,27 +103,29 @@ func getUserId(c *gin.Context) (int, error) {
 }
 
 /* Function for get information user with gin.Context */
-func getContextUserInfo(c *gin.Context) (int, int) {
+func getContextUserInfo(c *gin.Context) (int, int, error) {
 	usersId, exist := c.Get(middlewareConstants.USER_CTX)
 
 	if !exist {
-		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
-		return -1, -1
+		return -1, -1, errors.New("Нет доступа!")
 	}
 
 	domainsId, exist := c.Get(middlewareConstants.DOMAINS_ID)
 
 	if !exist {
-		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
-		return -1, -1
+		return -1, -1, errors.New("Нет доступа!")
 	}
 
-	return usersId.(int), domainsId.(int)
+	return usersId.(int), domainsId.(int), nil
 }
 
 /* Has roles */
 func (h *Handler) userIdentityHasRoleClient(c *gin.Context) {
-	usersId, domainsId := getContextUserInfo(c)
+	usersId, domainsId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
+		return
+	}
 
 	has, err := h.services.Role.HasRole(usersId, domainsId, roleConstant.ROLE_CLIENT)
 
@@ -134,7 +136,11 @@ func (h *Handler) userIdentityHasRoleClient(c *gin.Context) {
 }
 
 func (h *Handler) userIdentityHasRoleAdmin(c *gin.Context) {
-	usersId, domainsId := getContextUserInfo(c)
+	usersId, domainsId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
+		return
+	}
 
 	has, err := h.services.Role.HasRole(usersId, domainsId, roleConstant.ROLE_ADMIN)
 
@@ -145,7 +151,11 @@ func (h *Handler) userIdentityHasRoleAdmin(c *gin.Context) {
 }
 
 func (h *Handler) userIdentityHasRoleBuilderManager(c *gin.Context) {
-	usersId, domainsId := getContextUserInfo(c)
+	usersId, domainsId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
+		return
+	}
 
 	has, err := h.services.Role.HasRole(usersId, domainsId, roleConstant.ROLE_BUILDER_MANAGER)
 

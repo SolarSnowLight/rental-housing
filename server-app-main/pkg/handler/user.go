@@ -69,3 +69,31 @@ func (h *Handler) updateProfile(c *gin.Context) {
 
 	c.JSON(http.StatusOK, data)
 }
+
+// @Summary GetUserCompany
+// @Tags profile
+// @Description Update user profile
+// @ID update-profile
+// @Accept  json
+// @Produce  json
+// @Param input body user.UserProfileDataModel true "credentials"
+// @Success 200 {object} user.UserProfileDataModel "data"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /user/company/get [post]
+func (h *Handler) getUserCompany(c *gin.Context) {
+	userId, domainId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
+
+	data, err := h.services.User.GetUserCompany(userId, domainId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, data)
+}

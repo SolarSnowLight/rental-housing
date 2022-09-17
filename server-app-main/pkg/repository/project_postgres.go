@@ -48,7 +48,7 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 		return projectModel.ProjectModel{}, err
 	}
 
-	query = fmt.Sprintf("INSERT INTO %s (uuid, data, created_at, updated_at, users_id, companies_id) values ($1, $2, $3, $4, $5, $6) RETURNING uuid", tableConstant.PROJECTS_TABLE)
+	query = fmt.Sprintf("INSERT INTO %s (uuid, data, created_at, updated_at, users_id, companies_id) values ($1, $2, $3, $4, $5, $6)", tableConstant.PROJECTS_TABLE)
 
 	dataJson, err := json.Marshal(projectModel.ProjectDataModel{
 		Title:       data.Title,
@@ -64,10 +64,8 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 	currentDate := time.Now()
 	projectUuid := uuid.NewV4()
 
-	var uuid string
-
-	row = tx.QueryRow(query, projectUuid, dataJson, currentDate, currentDate, userId, companyId)
-	if err := row.Scan(&uuid); err != nil {
+	_, err = tx.Exec(query, projectUuid, dataJson, currentDate, currentDate, userId, companyId)
+	if err != nil {
 		tx.Rollback()
 		return projectModel.ProjectModel{}, err
 	}
@@ -88,9 +86,9 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 		return projectModel.ProjectModel{}, err
 	}
 
-	query = fmt.Sprintf("INSERT INTO %s (value, types_objects_id) values ($1, $2)", tableConstant.OBJECTS_TABLE)
+	query = fmt.Sprintf(`INSERT INTO %s (value, types_objects_id) values ($1, $2)`, tableConstant.OBJECTS_TABLE)
 
-	_, err = tx.Exec(query, data.Uuid, typesObjects.Id)
+	_, err = tx.Exec(query, projectUuid.String(), typesObjects.Id)
 	if err != nil {
 		tx.Rollback()
 		return projectModel.ProjectModel{}, err
@@ -101,10 +99,10 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 
 	// Update current user policy for current article
 	_, err = r.enforcer.AddPolicies([][]string{
-		{userIdStr, domainIdStr, uuid, actionConstant.DELETE},
-		{userIdStr, domainIdStr, uuid, actionConstant.MODIFY},
-		{userIdStr, domainIdStr, uuid, actionConstant.READ},
-		{userIdStr, domainIdStr, uuid, actionConstant.ADMINISTRATION},
+		{userIdStr, domainIdStr, projectUuid.String(), actionConstant.DELETE},
+		{userIdStr, domainIdStr, projectUuid.String(), actionConstant.MODIFY},
+		{userIdStr, domainIdStr, projectUuid.String(), actionConstant.READ},
+		{userIdStr, domainIdStr, projectUuid.String(), actionConstant.ADMINISTRATION},
 	})
 
 	if err != nil {
@@ -129,8 +127,8 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 		userManagerIdStr := strconv.Itoa(userManagerId)
 
 		_, err = r.enforcer.AddPolicies([][]string{
-			{userManagerIdStr, domainIdStr, uuid, actionConstant.READ},
-			{userManagerIdStr, domainIdStr, uuid, actionConstant.MANAGEMENT},
+			{userManagerIdStr, domainIdStr, projectUuid.String(), actionConstant.READ},
+			{userManagerIdStr, domainIdStr, projectUuid.String(), actionConstant.MANAGEMENT},
 		})
 	}
 
@@ -138,10 +136,10 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 	if err := tx.Commit(); err != nil {
 		// Rejected
 		r.enforcer.RemovePolicies([][]string{
-			{userIdStr, domainIdStr, uuid, actionConstant.DELETE},
-			{userIdStr, domainIdStr, uuid, actionConstant.MODIFY},
-			{userIdStr, domainIdStr, uuid, actionConstant.READ},
-			{userIdStr, domainIdStr, uuid, actionConstant.ADMINISTRATION},
+			{userIdStr, domainIdStr, projectUuid.String(), actionConstant.DELETE},
+			{userIdStr, domainIdStr, projectUuid.String(), actionConstant.MODIFY},
+			{userIdStr, domainIdStr, projectUuid.String(), actionConstant.READ},
+			{userIdStr, domainIdStr, projectUuid.String(), actionConstant.ADMINISTRATION},
 		})
 
 		for _, element := range data.Managers {
@@ -154,8 +152,8 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 			userManagerIdStr := strconv.Itoa(userManagerId)
 
 			_, err = r.enforcer.RemovePolicies([][]string{
-				{userManagerIdStr, domainIdStr, uuid, actionConstant.READ},
-				{userManagerIdStr, domainIdStr, uuid, actionConstant.MANAGEMENT},
+				{userManagerIdStr, domainIdStr, projectUuid.String(), actionConstant.READ},
+				{userManagerIdStr, domainIdStr, projectUuid.String(), actionConstant.MANAGEMENT},
 			})
 		}
 
@@ -168,7 +166,7 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 		Title:       data.Title,
 		Description: data.Description,
 		Managers:    data.Managers,
-		Uuid:        uuid,
+		Uuid:        projectUuid.String(),
 	}, nil
 }
 

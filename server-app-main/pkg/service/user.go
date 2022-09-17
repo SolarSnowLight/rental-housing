@@ -1,6 +1,7 @@
 package service
 
 import (
+	companyModel "main-server/pkg/model/company"
 	userModel "main-server/pkg/model/user"
 	repository "main-server/pkg/repository"
 
@@ -19,16 +20,16 @@ func NewUserService(repo repository.User) *UserService {
 	}
 }
 
-/* ********** */
-/* Methods for profile */
-
 /* Get information about profile user */
 func (s *UserService) GetProfile(c *gin.Context) (userModel.UserProfileModel, error) {
 	return s.repo.GetProfile(c)
 }
 
+/* Method for update profile user */
 func (s *UserService) UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error) {
 	return s.repo.UpdateProfile(c, data)
 }
 
-/* ********** */
+func (s *UserService) GetUserCompany(userId, domainId int) (companyModel.CompanyDbModelEx, error) {
+	return s.repo.GetUserCompany(userId, domainId)
+}

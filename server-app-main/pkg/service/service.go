@@ -2,6 +2,7 @@ package service
 
 import (
 	adminModel "main-server/pkg/model/admin"
+	companyModel "main-server/pkg/model/company"
 	projectModel "main-server/pkg/model/project"
 	rbacModel "main-server/pkg/model/rbac"
 	userModel "main-server/pkg/model/user"
@@ -38,6 +39,7 @@ type User interface {
 	// Profile
 	GetProfile(c *gin.Context) (userModel.UserProfileModel, error)
 	UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error)
+	GetUserCompany(userId, domainId int) (companyModel.CompanyDbModelEx, error)
 }
 
 type Admin interface {
