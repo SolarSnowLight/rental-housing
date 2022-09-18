@@ -10,12 +10,12 @@ import (
 	tableConstant "main-server/pkg/constant/table"
 	companyModel "main-server/pkg/model/company"
 	userModel "main-server/pkg/model/user"
-
 	"strconv"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
+	"github.com/samber/lo"
 	"github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -155,37 +155,58 @@ func (r *UserPostgres) UpdateProfile(c *gin.Context, data userModel.UserProfileU
 	return dataFromJson, nil
 }
 
+/* Get information about company for current user */
 func (r *UserPostgres) GetUserCompany(userId, domainId int) (companyModel.CompanyDbModelEx, error) {
-	allRules := r.enforcer.GetPermissionsForUser(strconv.Itoa(userId), strconv.Itoa(domainId))
-	rules := make([][]string, 0)
-
-	for i := 0; i < len(allRules); i++ {
-		element := allRules[i]
-
-		if (element[len(element)-1] == actionConstant.ADMINISTRATION) || (element[len(element)-1] == actionConstant.MANAGEMENT) {
-			rules = append(rules, element)
-		}
-	}
-
 	query := fmt.Sprintf(`
-			SELECT DISTINCT %s.value
+			SELECT DISTINCT tl.value, trule.v3
 			FROM %s tl
 			JOIN %s tr ON tr.id = tl.types_objects_id
-			WHERE tr.value = $1
-	`, tableConstant.OBJECTS_TABLE, tableConstant.OBJECTS_TABLE, tableConstant.TYPES_OBJECTS_TABLE)
+			JOIN %s trule ON trule.v2 = tl.value 
+			WHERE tr.value = $1 
+					AND trule.v0 = $2 
+					AND trule.ptype = 'p'
+					AND (trule.v3 = $3 OR trule.v3 = $4)
+	`, tableConstant.OBJECTS_TABLE, tableConstant.TYPES_OBJECTS_TABLE, tableConstant.RULES_TABLE)
 
-	var companyUuid []string
-	err := r.db.Select(&companyUuid, query, objectConstant.TYPE_COMPANY)
+	var companies []companyModel.CompanyRuleModelEx
+	err := r.db.Select(&companies, query,
+		objectConstant.TYPE_COMPANY, userId,
+		actionConstant.ADMINISTRATION, actionConstant.MANAGEMENT,
+	)
+
 	if err != nil {
 		return companyModel.CompanyDbModelEx{}, err
 	}
 
-	for i := 0; i < len(rules); i++ {
-		for j := 0; j < len(rules[i]); j++ {
-			fmt.Print(rules[i][j] + " ")
-		}
-		fmt.Println()
+	if len(companies) <= 0 {
+		return companyModel.CompanyDbModelEx{}, nil
 	}
 
-	return companyModel.CompanyDbModelEx{}, nil
+	company := companies[len(companies)-1]
+	policies := r.enforcer.GetFilteredPolicy(0, strconv.Itoa(userId), strconv.Itoa(domainId), company.Value)
+
+	rules := lo.Map(policies, func(x []string, _ int) string {
+		return x[len(x)-1]
+	})
+
+	var companyInfo companyModel.CompanyDbModel
+	query = fmt.Sprintf(`SELECT uuid, data, created_at FROM %s tl WHERE tl.uuid = $1 LIMIT 1`, tableConstant.COMPANIES_TABLE)
+
+	err = r.db.Get(&companyInfo, query, company.Value)
+	if err != nil {
+		return companyModel.CompanyDbModelEx{}, err
+	}
+
+	var companyDataEx companyModel.CompanyModel
+	err = json.Unmarshal([]byte(companyInfo.Data), &companyDataEx)
+	if err != nil {
+		return companyModel.CompanyDbModelEx{}, err
+	}
+
+	return companyModel.CompanyDbModelEx{
+		Uuid:      companyInfo.Uuid,
+		Data:      companyDataEx,
+		CreatedAt: companyInfo.CreatedAt,
+		Rules:     rules,
+	}, nil
 }

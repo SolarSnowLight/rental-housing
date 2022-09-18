@@ -95,5 +95,9 @@ func (h *Handler) getUserCompany(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, data)
+	if len(data.Uuid) <= 0 {
+		c.JSON(http.StatusOK, nil)
+	} else {
+		c.JSON(http.StatusOK, data)
+	}
 }

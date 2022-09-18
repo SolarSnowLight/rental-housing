@@ -28,3 +28,8 @@ type CompanyDbModelEx struct {
 	CreatedAt string       `json:"created_at" binding:"required"`
 	Rules     []string     `json:"rules" binding:"required"`
 }
+
+type CompanyRuleModelEx struct {
+	Value string `json:"value" binding:"required" db:"value"`
+	V3    string `json:"v3" binding:"required" db:"v3"`
+}
