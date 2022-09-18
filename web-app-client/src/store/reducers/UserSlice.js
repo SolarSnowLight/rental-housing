@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 /* Base state for current slice */
 const initialState = {
-    response: null,
+    company: null,
     isLoading: false,
     error: ""
 };
@@ -12,23 +12,26 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        userLoading(state) {
+        loading(state) {
             state.isLoading = true;
         },
 
-        userError(state, action) {
+        error(state, action) {
             state.isLoading = false;
             state.error = action.payload;
         },
 
-        userClearError(state) {
+        clearError(state) {
             state.error = "";
         },
 
-        getAllUsersSuccess(state, action) {
+        getUserCompanySuccess(state, action) {
             state.isLoading = false;
             state.error = "";
-            state.response = action.payload;
+
+            if (action.payload) {
+                state.company = action.payload;
+            }
         }
     },
 });

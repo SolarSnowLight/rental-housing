@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { borderRadius } from '@mui/system';
 import { useMessageToastify } from '../../../hooks/message.toastify.hook';
 import CircularIndeterminate from '../../../components/CircularIndeterminate';
+import { getUserCompany } from 'src/store/actions/UserAction';
 
 const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
@@ -51,12 +52,6 @@ const SignInPage = ({ setStateCurrentPage }) => {
             dispatch(authActions.authClearError());
         }
     }, [auth.error]);
-
-    useEffect(() => {
-        if (auth.isAuthenticated) {
-            message("Успешная авторизация", "success");
-        }
-    }, [auth.code]);
 
     const { loading, request, error, clearError } = useHttp();
 

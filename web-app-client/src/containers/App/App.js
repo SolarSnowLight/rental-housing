@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import styles from './App.module.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { getUserCompany } from "src/store/actions/UserAction";
 
 const App = () => {
   const config = useAppSelector(state => state.configReducer);
@@ -21,6 +22,12 @@ const App = () => {
   useEffect(() => {
     dispatch(authUpdate());
   }, []);
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      dispatch(getUserCompany());
+    }
+  }, [auth.isAuthenticated])
 
   const routes = useRoutes(auth.isAuthenticated);
 
