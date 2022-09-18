@@ -9,35 +9,40 @@ import useHttp from 'src/hooks/http.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import ProjectApi from 'src/constants/addresses/apis/project.api';
 import MainApi from 'src/constants/addresses/apis/main.api';
+import apiMainServer from 'src/http/http.main-server';
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';
+import { getAllProjectsByCompany } from 'src/store/actions/CompanyAction';
 
 const ProjectListPage = () => {
-    const { loading, request, error, clearError } = useHttp();
+    const userSelector = useAppSelector((state) => state.userReducer);
+    const companySelector = useAppSelector((state) => state.companyReducer);
+    const dispatch = useAppDispatch();
     const message = useMessageToastify();
     const navigate = useNavigate();
 
     const [projects, setProjects] = useState([]);
 
     useEffect(() => {
-        message(error, "error");
-        clearError();
-    }, [error, message, clearError]);
+        console.log(companySelector.projects);
+    }, [companySelector.projects]);
 
     useEffect(() => {
-        (async () => {
-            const response = await request(
+        console.log(userSelector.company);
+        //dispatch(getAllProjectsByCompany(userSelector.company.uuid));
+        /*(async () => {
+            const response = await apiMainServer.post(
                 ProjectApi.get_all_projects,
-                'POST',
                 JSON.stringify({
-                    uuid: "8c5e07cb-37a9-4fa9-bbdb-0a68452608bf",
+                    uuid: userSelector.company.uuid,
                     count: projects.length,
                     limit: 10
                 })
-            );
+            )
 
-            if (response.projects) {
-                setProjects(response.projects);
+            if (response.data.projects) {
+                setProjects(response.data.projects);
             }
-        })();
+        })();*/
     }, []);
 
     return (
@@ -57,14 +62,14 @@ const ProjectListPage = () => {
             </div>
             <div className={styles["list-body"]}>
                 {
-                    projects && projects?.length > 0 && projects.map((item) => {
+                    /*companySelector.projects && companySelector.projects?.length > 0 && companySelector.projects.map((item) => {
                         return (
                             <ListItemComponent
                                 column1={item.data.title}
                                 img={(item.data.logo) ? MainApi.main_server + '/' + item.data.logo: null}
                             />
                         )
-                    })
+                    })*/
                 }
             </div>
             <div className={styles["list-footer"]}>

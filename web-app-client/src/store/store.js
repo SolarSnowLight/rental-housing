@@ -2,16 +2,17 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import authReducer from "../store/reducers/AuthSlice";
 import configReducer from "../store/reducers/ConfigSlice";
-import adminReducer from "../store/reducers/admin/AdminSlice";
+import adminReducer from "./reducers/AdminSlice";
+import userReducer from "./reducers/UserSlice";
+import companyReducer from "./reducers/CompanySlice";
 
 /* Главный Reducer */
 const rootReducer = combineReducers({
-    // Common
     authReducer,
     configReducer,
-
-    // Specific
-    adminReducer
+    adminReducer,
+    userReducer,
+    companyReducer
 });
 
 /* Функция инициализирующая основное хранилие */

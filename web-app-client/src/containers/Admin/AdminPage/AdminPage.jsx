@@ -16,8 +16,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useHttp from '../../../hooks/http.hook';
 import AdminApi from '../../../constants/addresses/apis/admin.api';
 import { styleTextGray } from './styles';
-import { adminSlice } from 'src/store/reducers/admin/AdminSlice';
-import { adminCreateCompany } from 'src/store/actions/admin/AdminAction';
+import { adminSlice } from 'src/store/reducers/AdminSlice';
+import { adminCreateCompany } from 'src/store/actions/AdminAction';
 
 function sleep(delay = 0) {
     return new Promise((resolve) => {

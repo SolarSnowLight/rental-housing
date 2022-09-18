@@ -1,10 +1,10 @@
-import { adminSlice } from "src/store/reducers/admin/AdminSlice";
+import { adminSlice } from "src/store/reducers/AdminSlice";
 
 import MainApi from "src/constants/addresses/apis/main.api";
 import AdminApi from "src/constants/addresses/apis/admin.api";
 import axios from "axios";
 import apiMainServer from "src/http/http.main-server";
-import storeConfig from "../../../configs/store.config.json";
+import storeConfig from "../../configs/store.config.json";
 
 /* Function for get all users */
 export const adminGetAllUser = (access_token) => async (dispatch) => {

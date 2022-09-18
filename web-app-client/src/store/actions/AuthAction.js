@@ -52,7 +52,7 @@ export const authSignUp = (data, profileImage) => async (dispatch) => {
         );
 
         // Error handling
-        if((response.status != 200) && (response.status != 201)){
+        if ((response.status != 200) && (response.status != 201)) {
             dispatch(authSlice.actions.authError(response.data.message));
             return;
         }
@@ -63,7 +63,7 @@ export const authSignUp = (data, profileImage) => async (dispatch) => {
             formData.append("file", profileImage);
 
             await axios.post(
-                (MainApi.main_server + AuthApi.upload_profile_image),    
+                (MainApi.main_server + AuthApi.upload_profile_image),
                 formData,
                 {
                     headers: {
@@ -108,13 +108,13 @@ export const authLogout = (access_token) => async (dispatch) => {
         // Error handling
         if (response.status != 200 && response.status != 201) {
             dispatch(authSlice.actions.authError(response.data.message));
-            return;
         }
 
-        dispatch(authSlice.actions.logout());
     } catch (e) {
         dispatch(authSlice.actions.authError(e.message));
     }
+    
+    dispatch(authSlice.actions.logout());
 }
 
 /* Function for set new data auth */
