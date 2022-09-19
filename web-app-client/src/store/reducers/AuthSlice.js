@@ -19,7 +19,6 @@ export const authSlice = createSlice({
         authLoading(state) {
             state.isLoading = true;
         },
-
         authError(state, action) {
             state.isLoading = false;
             state.error = action.payload;
@@ -27,7 +26,12 @@ export const authSlice = createSlice({
         authClearError(state) {
             state.error = "";
         },
-
+        clearData(state) {
+            state.isLoading = false;
+            state.error = "";
+            state.access_token = null;
+            state.isAuthenticated = false;
+        },
         getAuthData(state) {
             const mainStore = localStorage.getItem(storeConfig["main-store"]);
 

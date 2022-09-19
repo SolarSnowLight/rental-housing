@@ -86,11 +86,11 @@ const useHttp = (baseUrl = MainApi.main_server) => {
                 headers['Content-Type'] = 'application/json';
             }
 
-            const mainStore = localStorage.getItem(storeConfig["main-store"]);
+            const mainStore = JSON.parse(localStorage.getItem('persist:' + storeConfig["main-store"]));
             let accessToken = null;
 
             if (mainStore) {
-                accessToken = JSON.parse(mainStore)?.access_token;
+                accessToken = JSON.parse(mainStore.authReducer)?.access_token;
             }
 
             if (accessToken) {

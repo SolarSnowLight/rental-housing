@@ -7,6 +7,7 @@ const BuilderAdminRoute = {
     manager_list: 'manager/list',
     project_list: 'project/list',
     project_create: 'project/create',
+    project_info: 'project/info',
     project_add_object: 'project/create/add/object',
 };
 

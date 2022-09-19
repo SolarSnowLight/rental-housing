@@ -24,6 +24,11 @@ export const adminSlice = createSlice({
         clearError(state) {
             state.error = "";
         },
+        clearData(state) {
+            state.isLoading = false;
+            state.error = "";
+            state.response = null;
+        },
 
         createCompanySuccess(state, action) {
             state.isLoading = false;

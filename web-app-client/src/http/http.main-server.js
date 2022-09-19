@@ -2,8 +2,9 @@ import axios from "axios";
 import AuthApi from "src/constants/addresses/apis/auth.api";
 import MainApi from "src/constants/addresses/apis/main.api";
 import storeConfig from "../configs/store.config.json";
-import { useAppDispatch } from "src/hooks/redux.hook";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux.hook";
 import { authSlice } from "src/store/reducers/AuthSlice";
+import storageConfig from "../configs/store.config.json";
 
 const apiMainServer = axios.create({
     withCredentials: true,
@@ -11,11 +12,13 @@ const apiMainServer = axios.create({
 });
 
 apiMainServer.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem(storeConfig["main-store"])).access_token}`;
+    const data = JSON.parse(localStorage.getItem('persist:' + storageConfig["main-store"]));
+
+    config.headers.Authorization = `Bearer ${JSON.parse(data.authReducer).access_token}`;
     return config;
 });
 
-apiMainServer.interceptors.response.use((config) => {
+/*apiMainServer.interceptors.response.use((config) => {
     return config;
 }, async (error) => {
     const authActions = authSlice.actions;
@@ -42,6 +45,6 @@ apiMainServer.interceptors.response.use((config) => {
     }
 
     throw error;
-});
+});*/
 
 export default apiMainServer;

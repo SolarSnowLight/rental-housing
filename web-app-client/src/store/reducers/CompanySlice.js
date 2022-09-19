@@ -25,12 +25,23 @@ export const companySlice = createSlice({
             state.error = "";
         },
 
+        clear(state){
+            state.projects = null;
+            state.isLoading = false;
+            state.error = "";
+        },
+        clearData(state) {
+            state.projects = null;
+            state.isLoading = false;
+            state.error = "";
+        },
+
         getAllProjectsSuccess(state, action) {
             state.isLoading = false;
             state.error = "";
 
             if (action.payload) {
-                state.projects = action.payload;
+                state.projects = action.payload.projects;
             }
         }
     },

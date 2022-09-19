@@ -22,6 +22,7 @@ import ProjectListPage from "../containers/Builder/BuilderAdminPage/containers/P
 import CreateProjectPage from "src/containers/Builder/BuilderAdminPage/containers/CreateProjectPage";
 import CreateObjectPage from "src/containers/Builder/BuilderAdminPage/containers/CreateObjectPage";
 import DeveloperEditPage from "../containers/Manager/DeveloperEditPage";
+import ProjectInfoPage from "src/containers/Builder/BuilderAdminPage/containers/ProjectInfoPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -60,6 +61,7 @@ const useRoutes = (isAuthenticated) => {
                 <Route path={BuilderAdminRoute.manager_list} element={<ManagerListPage />} />
                 <Route path={BuilderAdminRoute.project_list} element={<ProjectListPage />} />
                 <Route path={BuilderAdminRoute.project_create} element={<CreateProjectPage />} />
+                <Route path={BuilderAdminRoute.project_info} element={<ProjectInfoPage />} />
                 <Route path={BuilderAdminRoute.project_add_object} element={<CreateObjectPage />} />
             </Route>
 

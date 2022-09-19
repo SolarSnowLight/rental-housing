@@ -15,16 +15,18 @@ export const userSlice = createSlice({
         loading(state) {
             state.isLoading = true;
         },
-
         error(state, action) {
             state.isLoading = false;
             state.error = action.payload;
         },
-
         clearError(state) {
             state.error = "";
         },
-
+        clearData(state) {
+            state.company = null;
+            state.isLoading = false;
+            state.error = "";
+        },
         getUserCompanySuccess(state, action) {
             state.isLoading = false;
             state.error = "";

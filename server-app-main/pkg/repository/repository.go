@@ -78,13 +78,14 @@ type Repository struct {
 
 func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
 	domain := NewDomainPostgres(db)
+	role := NewRolePostgres(db, enforcer)
 	user := NewUserPostgres(db, enforcer, domain)
-	admin := NewAdminPostgres(db, enforcer, domain)
+	admin := NewAdminPostgres(db, enforcer, domain, role)
 	project := NewProjectPostgres(db, enforcer)
 
 	return &Repository{
 		Authorization: NewAuthPostgres(db, enforcer, *user),
-		Role:          NewRolePostgres(db, enforcer),
+		Role:          role,
 		Domain:        domain,
 		User:          user,
 		Admin:         admin,
