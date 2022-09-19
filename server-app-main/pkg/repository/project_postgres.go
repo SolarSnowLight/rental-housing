@@ -385,3 +385,56 @@ func (r *ProjectPostgres) GetProjectManagers(userId, domainId int, data projectM
 		Count:    (sum - data.Count),
 	}, nil
 }
+
+/* Get information about any count managers for current project */
+func (r *ProjectPostgres) GetProjectManagers(userId, domainId int, data projectModel.ProjectCountModel) (projectModel.ProjectAnyCountModel, error) {
+	query := fmt.Sprintf("SELECT id FROM %s WHERE uuid=$1", tableConstant.COMPANIES_TABLE)
+	var companyId int
+
+	row := r.db.QueryRow(query, data.Uuid)
+	if err := row.Scan(&companyId); err != nil {
+		return projectModel.ProjectAnyCountModel{}, err
+	}
+
+	var projects []projectModel.ProjectDbModel
+	sum := (data.Count + data.Limit)
+
+	query = fmt.Sprintf("SELECT uuid, data, created_at FROM %s tl WHERE tl.companies_id = $1 LIMIT $2", tableConstant.PROJECTS_TABLE)
+	err := r.db.Select(&projects, query, companyId, sum)
+	if err != nil {
+		return projectModel.ProjectAnyCountModel{}, err
+	}
+
+	var projectsEx []projectModel.ProjectDbDataEx
+	for _, element := range projects {
+		var projectData projectModel.ProjectDataModel
+		err = json.Unmarshal([]byte(element.Data), &projectData)
+
+		if err != nil {
+			return projectModel.ProjectAnyCountModel{}, err
+		}
+
+		projectsEx = append(projectsEx, projectModel.ProjectDbDataEx{
+			Uuid:      element.Uuid,
+			Data:      projectData,
+			CreatedAt: element.CreatedAt,
+		})
+	}
+
+	sort.SliceStable(projectsEx, func(i, j int) bool {
+		return projectsEx[i].CreatedAt.After(projectsEx[j].CreatedAt)
+	})
+
+	if data.Count >= len(projectsEx) {
+		return projectModel.ProjectAnyCountModel{}, nil
+	}
+
+	if sum >= len(projectsEx) {
+		sum -= (sum - len(projectsEx))
+	}
+
+	return projectModel.ProjectAnyCountModel{
+		Projects: projectsEx[data.Count:sum],
+		Count:    (sum - data.Count),
+	}, nil
+}
