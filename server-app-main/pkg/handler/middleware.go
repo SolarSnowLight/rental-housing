@@ -3,7 +3,6 @@ package handler
 import (
 	"errors"
 	middlewareConstants "main-server/pkg/constant/middleware"
-	roleConstant "main-server/pkg/constant/role"
 	authService "main-server/pkg/service/auth"
 	"net/http"
 	"strings"
@@ -119,48 +118,67 @@ func getContextUserInfo(c *gin.Context) (int, int, error) {
 	return usersId.(int), domainsId.(int), nil
 }
 
-/* Has roles */
-func (h *Handler) userIdentityHasRoleClient(c *gin.Context) {
-	usersId, domainsId, err := getContextUserInfo(c)
-	if err != nil {
-		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
-		return
-	}
+func (h *Handler) userIdentityHasRoles(exp string, roles ...string) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		usersId, domainsId, err := getContextUserInfo(c)
+		if err != nil {
+			newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
+			return
+		}
 
-	has, err := h.services.Role.HasRole(usersId, domainsId, roleConstant.ROLE_CLIENT)
+		flags := make([]bool, 0)
 
-	if (err != nil) || (!has) {
-		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
-		return
+		for _, element := range roles {
+			has, err := h.services.Role.HasRole(usersId, domainsId, element)
+
+			if err != nil {
+				newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
+				return
+			}
+
+			flags = append(flags, has)
+		}
+
+		access := false
+
+		if exp == "AND" || exp == "and" {
+			access = true
+			for _, element := range flags {
+				if !element {
+					access = false
+					break
+				}
+			}
+		} else if exp == "OR" || exp == "or" {
+			access = false
+			for _, element := range flags {
+				if element {
+					access = true
+					break
+				}
+			}
+		}
+
+		if !access {
+			newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
+			return
+		}
 	}
 }
 
-func (h *Handler) userIdentityHasRoleAdmin(c *gin.Context) {
-	usersId, domainsId, err := getContextUserInfo(c)
-	if err != nil {
-		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
-		return
-	}
+func (h *Handler) userIdentityHasRole(role string) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		usersId, domainsId, err := getContextUserInfo(c)
+		if err != nil {
+			newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
+			return
+		}
 
-	has, err := h.services.Role.HasRole(usersId, domainsId, roleConstant.ROLE_ADMIN)
+		has, err := h.services.Role.HasRole(usersId, domainsId, role)
 
-	if (err != nil) || (!has) {
-		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
-		return
-	}
-}
-
-func (h *Handler) userIdentityHasRoleBuilderManager(c *gin.Context) {
-	usersId, domainsId, err := getContextUserInfo(c)
-	if err != nil {
-		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
-		return
-	}
-
-	has, err := h.services.Role.HasRole(usersId, domainsId, roleConstant.ROLE_BUILDER_MANAGER)
-
-	if (err != nil) || (!has) {
-		newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
-		return
+		if (err != nil) || (!has) {
+			newErrorResponse(c, http.StatusForbidden, "Нет доступа!")
+			return
+		}
 	}
 }

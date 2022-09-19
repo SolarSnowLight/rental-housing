@@ -16,29 +16,49 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useHttp from '../../../hooks/http.hook';
 import AdminApi from '../../../constants/addresses/apis/admin.api';
 import { styleTextGray } from './styles';
+import MainApi from 'src/constants/addresses/apis/main.api';
+import userAction, { getUserCompany } from 'src/store/actions/UserAction';
 
 const BuilderAdminPage = () => {
-    const auth = useAppSelector((state) => state.authReducer);
-    const authActions = authSlice.actions;
+    const authSelector = useAppSelector((state) => state.authReducer);
+    const userSelector = useAppSelector((state) => state.userReducer);
     const dispatch = useAppDispatch();
+
+    const authActions = authSlice.actions;
     const { loading, request, error, clearError } = useHttp();
 
     const message = useMessageToastify();
 
     useEffect(() => {
-        if (auth.error.length > 0) {
-            message(auth.error, "error");
+        if (authSelector.error.length > 0) {
+            message(authSelector.error, "error");
             dispatch(authActions.authClearError());
         }
-    }, [auth.error]);
+    }, [authSelector.error]);
+
+    useEffect(() => {
+        dispatch(userAction.getUserCompany());
+    }, []);
 
 
     const [btnDisabled, setBtnDisabled] = useState(true);
-    const [logo, setLogo] = useState([]);
+    const [logo, setLogo] = useState(
+        (userSelector.company?.data.logo) ?
+            [
+                {
+                    data_url: `${MainApi.main_server}/${userSelector.company.data.logo}`
+                }
+            ]
+            :
+            []
+    );
     const [form, setForm] = useState({
-        title: '', description: '',
-        email: '', phone: '',
-        link: '', admin: ''
+        title: userSelector.company?.data.title,
+        description: userSelector.company?.data.description,
+        email: userSelector.company?.data.email_company,
+        phone: userSelector.company?.data.phone,
+        link: userSelector.company?.data.link,
+        admin: userSelector.company?.data.email_admin
     });
 
     const onChangeImage = (imageList, addUpdateIndex) => {
@@ -96,7 +116,7 @@ const BuilderAdminPage = () => {
             let countExists = 0;
 
             for (var key of Object.keys(form)) {
-                if (form[key].length > 0) {
+                if (form[key]?.length > 0) {
                     countExists++;
                 }
             }
@@ -202,7 +222,7 @@ const BuilderAdminPage = () => {
                             onChange={(e) => {
                                 changeHandler("description", e.target.value);
                             }}
-
+                            defaultValue={form.description}
                             sx={{
                                 width: '15em',
                                 border: '1px solid #424041 !important',
@@ -233,7 +253,7 @@ const BuilderAdminPage = () => {
                         <Controller
                             control={control}
                             name="title"
-                            defaultValue={''}
+                            defaultValue={form.title}
                             render={({ field }) => (
                                 <TextField
                                     required
@@ -272,7 +292,7 @@ const BuilderAdminPage = () => {
                         <Controller
                             control={control}
                             name="email"
-                            defaultValue={''}
+                            defaultValue={form.email}
                             render={({ field }) => (
                                 <TextField
                                     required
@@ -311,7 +331,7 @@ const BuilderAdminPage = () => {
                         <Controller
                             control={control}
                             name="phone"
-                            defaultValue={''}
+                            defaultValue={form.phone}
                             render={({ field }) => (
                                 <TextField
                                     required
@@ -350,7 +370,7 @@ const BuilderAdminPage = () => {
                         <Controller
                             control={control}
                             name="link"
-                            defaultValue={''}
+                            defaultValue={form.link}
                             render={({ field }) => (
                                 <TextField
                                     required
@@ -391,7 +411,6 @@ const BuilderAdminPage = () => {
                         <Controller
                             control={control}
                             name="admin"
-                            defaultValue={''}
                             render={({ field }) => (
                                 <Autocomplete
                                     id="tags-outlined"

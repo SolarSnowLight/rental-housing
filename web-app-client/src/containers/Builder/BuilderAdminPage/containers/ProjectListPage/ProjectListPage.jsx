@@ -11,7 +11,7 @@ import ProjectApi from 'src/constants/addresses/apis/project.api';
 import MainApi from 'src/constants/addresses/apis/main.api';
 import apiMainServer from 'src/http/http.main-server';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';
-import { getAllProjectsByCompany } from 'src/store/actions/CompanyAction';
+import companyAction from 'src/store/actions/CompanyAction';
 
 const ProjectListPage = () => {
     const userSelector = useAppSelector((state) => state.userReducer);
@@ -20,29 +20,8 @@ const ProjectListPage = () => {
     const message = useMessageToastify();
     const navigate = useNavigate();
 
-    const [projects, setProjects] = useState([]);
-
     useEffect(() => {
-        console.log(companySelector.projects);
-    }, [companySelector.projects]);
-
-    useEffect(() => {
-        console.log(userSelector.company);
-        //dispatch(getAllProjectsByCompany(userSelector.company.uuid));
-        /*(async () => {
-            const response = await apiMainServer.post(
-                ProjectApi.get_all_projects,
-                JSON.stringify({
-                    uuid: userSelector.company.uuid,
-                    count: projects.length,
-                    limit: 10
-                })
-            )
-
-            if (response.data.projects) {
-                setProjects(response.data.projects);
-            }
-        })();*/
+        dispatch(companyAction.getAllProjectsByCompany(userSelector.company?.uuid));
     }, []);
 
     return (
@@ -62,14 +41,24 @@ const ProjectListPage = () => {
             </div>
             <div className={styles["list-body"]}>
                 {
-                    /*companySelector.projects && companySelector.projects?.length > 0 && companySelector.projects.map((item) => {
+                    companySelector.projects && companySelector.projects?.length > 0 && companySelector.projects.map((item) => {
                         return (
                             <ListItemComponent
                                 column1={item.data.title}
-                                img={(item.data.logo) ? MainApi.main_server + '/' + item.data.logo: null}
+                                img={(item.data.logo) ? MainApi.main_server + '/' + item.data.logo : null}
+                                clickHandler={() => {
+                                    navigate(
+                                        (BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_info),
+                                        {
+                                            state: {
+                                                ...item
+                                            }
+                                        }
+                                    );
+                                }}
                             />
                         )
-                    })*/
+                    })
                 }
             </div>
             <div className={styles["list-footer"]}>

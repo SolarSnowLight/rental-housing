@@ -1,6 +1,8 @@
 package handler
 
 import (
+	roleConstant "main-server/pkg/constant/role"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -102,7 +104,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	}
 
 	// URL: /admin
-	admin := router.Group(route.ADMIN_MAIN_ROUTE, h.userIdentity, h.userIdentityHasRoleAdmin)
+	admin := router.Group(route.ADMIN_MAIN_ROUTE, h.userIdentity, h.userIdentityHasRole(roleConstant.ROLE_ADMIN))
 	{
 		// URL: /admin/user
 		user := admin.Group(route.ADMIN_USER)
@@ -120,16 +122,20 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	}
 
 	// URL: /company
-	company := router.Group(route.COMPANY_MAIN_ROUTE, h.userIdentity)
+	company := router.Group(
+		route.COMPANY_MAIN_ROUTE,
+		h.userIdentity,
+		h.userIdentityHasRoles("OR", roleConstant.ROLE_ADMIN, roleConstant.ROLE_BUILDER_ADMIN),
+	)
 	{
 		// URL: /project
 		project := company.Group(route.PROJECT_MAIN_ROUTE)
 		{
 			// URL: /company/project/create
-			project.POST(route.CREATE_ROUTE, h.createProject)
+			project.POST(route.CREATE_ROUTE, h.userIdentityHasRole(roleConstant.ROLE_BUILDER_ADMIN), h.createProject)
 
 			// URL: /company/project/add/logo
-			project.POST(route.PROJECT_ADD_LOGO_ROUTE, h.addLogoProject)
+			project.POST(route.PROJECT_ADD_LOGO_ROUTE, h.userIdentityHasRole(roleConstant.ROLE_BUILDER_ADMIN), h.addLogoProject)
 
 			// URL: /company/project/get
 			project.POST(route.GET_ROUTE, h.getProject)
@@ -139,7 +145,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		}
 
 		// URL: /company/create
-		company.POST(route.CREATE_ROUTE, h.userIdentityHasRoleAdmin, h.createCompany)
+		company.POST(route.CREATE_ROUTE, h.userIdentityHasRole(roleConstant.ROLE_ADMIN), h.createCompany)
 	}
 
 	return router

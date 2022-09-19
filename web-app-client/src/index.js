@@ -5,7 +5,8 @@ import { Provider } from 'react-redux';
 
 /* Импорт внутренных элементов (контейнеры, хуки, компоненты, hocs, и т.д.) */
 import App from './containers/App';
-import { setupStore } from './store/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor } from './store/store';
 
 /* Импорт файлов конфигурации */
 import storeConfig from "./configs/store.config.json";
@@ -19,9 +20,6 @@ import { authSlice } from './store/reducers/AuthSlice';
 /* Инициализируем константу root определённым элементом, определённым в DOM дереве (div с id = "root") */
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-/* Инициализация централизованного хранилища */
-const store = setupStore();
-
 /* Подписка на изменения в local storage, с ключом main-store */
 /*store.subscribe(() => {
   localStorage[storeConfig["main-store"]] = JSON.stringify(store.getState());
@@ -31,7 +29,9 @@ const store = setupStore();
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );
