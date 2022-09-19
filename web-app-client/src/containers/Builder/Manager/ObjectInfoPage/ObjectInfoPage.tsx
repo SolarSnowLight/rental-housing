@@ -36,6 +36,87 @@ const flats: Flat[] = [
     { number: 23, floor: 4, state: 'promotions' },
     { number: 27, floor: 4, state: 'reserve' },
 ]
+const floors2 = [
+    { number: 1, firstFlatNumber: 1, lastFlatNumber: 10 },
+    { number: 2, firstFlatNumber: 11, lastFlatNumber: 20 },
+    { number: 3, firstFlatNumber: 21, lastFlatNumber: 30 },
+    { number: 4, firstFlatNumber: 31, lastFlatNumber: 40 },
+    { number: 5, firstFlatNumber: 41, lastFlatNumber: 50 },
+    { number: 6, firstFlatNumber: 51, lastFlatNumber: 60 },
+]
+const flats2: Flat[] = [
+    { number: 1, floor: 1, state: 'sold' },
+    { number: 2, floor: 1, state: 'sold' },
+    { number: 3, floor: 1, state: 'sold' },
+    { number: 4, floor: 1, state: 'sold' },
+    { number: 5, floor: 1, state: 'sold' },
+    { number: 6, floor: 1, state: 'sold' },
+    { number: 7, floor: 1, state: 'sold' },
+    { number: 8, floor: 1, state: 'sold' },
+    { number: 9, floor: 1, state: 'sold' },
+    { number: 10, floor: 1, state: 'sold' },
+
+    { number: 11, floor: 2, state: 'sold' },
+    { number: 12, floor: 2, state: 'sold' },
+    { number: 13, floor: 2, state: 'sold' },
+    { number: 14, floor: 2, state: 'sold' },
+    { number: 15, floor: 2, state: 'sold' },
+    { number: 16, floor: 2, state: 'sold' },
+    { number: 17, floor: 2, state: 'sold' },
+    { number: 18, floor: 2, state: 'sold' },
+    { number: 19, floor: 2, state: 'sold' },
+    { number: 20, floor: 2, state: 'free' },
+
+    { number: 21, floor: 3, state: 'sold' },
+    { number: 22, floor: 3, state: 'sold' },
+    { number: 23, floor: 3, state: 'sold' },
+    { number: 24, floor: 3, state: 'sold' },
+    { number: 25, floor: 3, state: 'sold' },
+    { number: 26, floor: 3, state: 'sold' },
+    { number: 27, floor: 3, state: 'sold' },
+    { number: 28, floor: 3, state: 'sold' },
+    { number: 29, floor: 3, state: 'sold' },
+    { number: 30, floor: 3, state: 'free' },
+
+    { number: 31, floor: 4, state: 'sold' },
+    { number: 32, floor: 4, state: 'sold' },
+    { number: 33, floor: 4, state: 'sold' },
+    { number: 34, floor: 4, state: 'sold' },
+    { number: 35, floor: 4, state: 'sold' },
+    { number: 36, floor: 4, state: 'sold' },
+    { number: 37, floor: 4, state: 'sold' },
+    { number: 38, floor: 4, state: 'sold' },
+    { number: 39, floor: 4, state: 'sold' },
+    { number: 40, floor: 4, state: 'free' },
+
+    { number: 41, floor: 5, state: 'sold' },
+    { number: 42, floor: 5, state: 'sold' },
+    { number: 43, floor: 5, state: 'sold' },
+    { number: 44, floor: 5, state: 'sold' },
+    { number: 45, floor: 5, state: 'sold' },
+    { number: 46, floor: 5, state: 'sold' },
+    { number: 47, floor: 5, state: 'sold' },
+    { number: 48, floor: 5, state: 'sold' },
+    { number: 49, floor: 5, state: 'sold' },
+    { number: 50, floor: 5, state: 'free' },
+
+    { number: 51, floor: 6, state: 'sold' },
+    { number: 52, floor: 6, state: 'sold' },
+    { number: 53, floor: 6, state: 'sold' },
+    { number: 54, floor: 6, state: 'sold' },
+    { number: 55, floor: 6, state: 'sold' },
+    { number: 56, floor: 6, state: 'sold' },
+    { number: 57, floor: 6, state: 'sold' },
+    { number: 58, floor: 6, state: 'sold' },
+    { number: 59, floor: 6, state: 'sold' },
+    { number: 60, floor: 6, state: 'free' },
+]
+
+
+
+
+
+
 
 const photos = [imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder]
 
@@ -118,8 +199,12 @@ const ObjectInfoPage = () => {
                 <FlatsTable floors={floors} flats={flats}/>
                 <FlatsTable floors={floors} flats={flats}/>
                 <FlatsTable floors={floors} flats={flats}/>
-                <FlatsTable floors={floors} flats={flats}/>
-                <FlatsTable floors={floors.filter(it=>it.number===4)} flats={flats}/>
+                <FlatsTable floors={floors.filter(it=>it.number===4)} flats={flats} style={{ alignSelf: 'stretch' }}/>
+
+                <FlatsTable floors={floors2} flats={flats2}/>
+                <FlatsTable floors={floors2} flats={flats2}/>
+                <FlatsTable floors={floors2} flats={flats2}/>
+                <FlatsTable floors={floors2} flats={flats2}/>
             </div>
 
         </div>
