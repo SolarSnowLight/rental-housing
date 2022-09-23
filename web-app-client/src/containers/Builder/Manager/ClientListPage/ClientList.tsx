@@ -2,7 +2,7 @@ import React from "react";
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import css from './ClientList.module.scss'
 import styled from "styled-components";
-import ListItem from "./components/ListItem";
+import ListItem from "src/components/ClientListItem/ClientListItem";
 import Space from "src/components/Space";
 import {Button} from "@mui/material";
 import { root } from "src/styles";

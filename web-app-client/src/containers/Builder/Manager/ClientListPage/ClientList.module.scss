@@ -32,7 +32,7 @@
     top: 0; right: 0; bottom: 0; left: 0;
 }
 
-.elementsFrame {
+.pageElement {
     width: clamp(400px, 100%, 1920px);
     padding: 0 64px 0 64px;
 }
@@ -48,7 +48,7 @@
     @extend .center;
 }
 
-.mainFrame {
+.pageFrame {
     @extend .col;
     width: 100%;
 }
@@ -57,7 +57,7 @@
 
 
 .buttonsContainer {
-    @extend .elementsFrame;
+    @extend .pageElement;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
@@ -70,7 +70,7 @@
 
 
 .list {
-    @extend .elementsFrame;
+    @extend .pageElement;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 32px 64px;

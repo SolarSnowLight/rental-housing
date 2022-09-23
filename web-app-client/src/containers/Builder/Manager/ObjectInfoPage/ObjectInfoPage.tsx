@@ -122,7 +122,7 @@ const photos = [imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlacehol
 
 const ObjectInfoPage = () => {
     return <div className={css.page}>
-        <div className={css.mainFrame}>
+        <div className={css.pageFrame}>
 
             <Space h={64}/>
 

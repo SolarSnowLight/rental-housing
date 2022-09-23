@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import {commonStyled} from "src/styles/commonStyled";
-import Space from "../../../../../components/Space";
 
 
 type ListItemProps = JSX.IntrinsicElements['div'] & {
@@ -13,7 +12,7 @@ type ListItemProps = JSX.IntrinsicElements['div'] & {
     }
 }
 
-const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>((
+const ClientListItem = React.forwardRef<HTMLDivElement, ListItemProps>((
     { client, ...props  },
     forwardedRef
 ) => {
@@ -23,7 +22,7 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>((
         <Info>{client.projectsCnt} проекта, {client.objectsCnt} объектов</Info>
     </Container>
 })
-export default React.memo(ListItem)
+export default React.memo(ClientListItem)
 export type { ListItemProps }
 
 
