@@ -10,11 +10,12 @@ import (
 
 // @Summary GetProfile
 // @Tags profile
-// @Description Get user profile
-// @ID get-profile
+// @Description Получение информации о профиле
+// @ID user-profile-get
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} user.UserProfileDataModel "data"
+// @Param input body userModel.UserProfileDataModel true "credentials"
+// @Success 200 {object} userModel.UserProfileDataModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -43,12 +44,12 @@ func (h *Handler) getProfile(c *gin.Context) {
 
 // @Summary UpdateProfile
 // @Tags profile
-// @Description Update user profile
-// @ID update-profile
+// @Description Обновление информации о пользователе
+// @ID user-profile-update
 // @Accept  json
 // @Produce  json
-// @Param input body user.UserProfileDataModel true "credentials"
-// @Success 200 {object} user.UserProfileDataModel "data"
+// @Param input body userModel.UserProfileUpdateDataModel true "credentials"
+// @Success 200 {object} userModel.UserJSONBModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -72,12 +73,11 @@ func (h *Handler) updateProfile(c *gin.Context) {
 
 // @Summary GetUserCompany
 // @Tags profile
-// @Description Update user profile
-// @ID update-profile
+// @Description Получение информации о компании, к которой принадлежит пользователь
+// @ID user-company-get
 // @Accept  json
 // @Produce  json
-// @Param input body user.UserProfileDataModel true "credentials"
-// @Success 200 {object} user.UserProfileDataModel "data"
+// @Success 200 {object} company.CompanyDbModelEx "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse

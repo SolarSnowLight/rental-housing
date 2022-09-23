@@ -10,12 +10,13 @@ import (
 )
 
 // @Summary CreateProject
-// @Tags project
-// @Description Get all users, which are located in system
-// @ID get-all-users
+// @Tags company
+// @Description Создание нового проекта в компании
+// @ID company-project-create
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} adminModel.UsersResponseModel "data"
+// @Param input body projectModel.ProjectModel true "credentials"
+// @Success 200 {object} projectModel.ProjectModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -44,12 +45,13 @@ func (h *Handler) createProject(c *gin.Context) {
 }
 
 // @Summary GetProject
-// @Tags project
-// @Description Get all users, which are located in system
-// @ID get-project
+// @Tags company
+// @Description Получение информации о конкретном проекте
+// @ID company-project-get
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} adminModel.UsersResponseModel "data"
+// @Param input body projectModel.ProjectUuidModel true "credentials"
+// @Success 200 {object} projectModel.ProjectDbDataEx "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -90,12 +92,13 @@ func (h *Handler) getProject(c *gin.Context) {
 }
 
 // @Summary GetProjects
-// @Tags project
-// @Description Get all projects for this company
-// @ID get-projects
+// @Tags company
+// @Description Получение среза из общего числа проектов компании
+// @ID company-project-get-all
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} adminModel.UsersResponseModel "data"
+// @Param input body projectModel.ProjectCountModel true "credentials"
+// @Success 200 {object} projectModel.ProjectAnyCountModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -124,12 +127,14 @@ func (h *Handler) getProjects(c *gin.Context) {
 }
 
 // @Summary AddLogoProject
-// @Tags project
-// @Description Add logo to project
-// @ID add-logo-project
+// @Tags company
+// @Description Добавление нового логотипа проекта
+// @ID company-project-add-logo
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} adminModel.UsersResponseModel "data"
+// @Param logo query string true "logo"
+// @Param uuid query string true "uuid"
+// @Success 200 {object} projectModel.ProjectLogoModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse

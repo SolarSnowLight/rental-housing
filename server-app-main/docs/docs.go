@@ -16,6 +16,153 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/company/create": {
+            "post": {
+                "description": "Создание новой компании (доступно только администратору)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "CreateCompany",
+                "operationId": "admin-company-create",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "logo",
+                        "name": "logo",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "title",
+                        "name": "title",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "description",
+                        "name": "description",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "email_company",
+                        "name": "email_company",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "email_admin",
+                        "name": "email_admin",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "phone",
+                        "name": "phone",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "link",
+                        "name": "link",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/admin.CompanyModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/user/get/all": {
+            "post": {
+                "description": "Получение списка всех пользователей находящихся в системе",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "GetAllUsers",
+                "operationId": "admin-user-get-all",
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/admin.UsersResponseModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/activate": {
             "get": {
                 "description": "Активация аккаунта по почте",
@@ -29,7 +176,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Activate",
-                "operationId": "activate",
+                "operationId": "auth-activate",
                 "responses": {
                     "200": {
                         "description": "data",
@@ -77,7 +224,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Logout",
-                "operationId": "logout",
+                "operationId": "auth-logout",
                 "responses": {
                     "200": {
                         "description": "data",
@@ -125,7 +272,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Recovery password",
-                "operationId": "recovery-password",
+                "operationId": "auth-recovery-password",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -184,7 +331,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Refresh",
-                "operationId": "refresh",
+                "operationId": "auth-refresh",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -243,7 +390,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Reset password",
-                "operationId": "reset-password",
+                "operationId": "auth-reset-password",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -302,7 +449,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "SignIn",
-                "operationId": "login",
+                "operationId": "auth-sign-in",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -361,7 +508,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "SignInOAuth2",
-                "operationId": "login_oauth2",
+                "operationId": "auth-sign-in-oauth2",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -420,7 +567,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "SignInVK",
-                "operationId": "login_vk",
+                "operationId": "auth-sign-in-vk",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -468,7 +615,7 @@ const docTemplate = `{
         },
         "/auth/sign-up": {
             "post": {
-                "description": "Регистрация пользователя",
+                "description": "Регистрация нового пользователя",
                 "consumes": [
                     "application/json"
                 ],
@@ -479,7 +626,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "SignUp",
-                "operationId": "create-account",
+                "operationId": "auth-sign-up",
                 "parameters": [
                     {
                         "description": "account info",
@@ -525,9 +672,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/article/create": {
+        "/auth/sign-up/upload/image": {
             "post": {
-                "description": "Update article",
+                "description": "Загрузка пользовательского изображения (аватар)",
                 "consumes": [
                     "application/json"
                 ],
@@ -535,15 +682,26 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "article"
+                    "auth"
                 ],
-                "summary": "UpdateArticle",
-                "operationId": "update-article",
+                "summary": "UploadProfileImage",
+                "operationId": "auth-sign-up-upload-image",
+                "parameters": [
+                    {
+                        "description": "account info",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.UserRegisterModel"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "data",
                         "schema": {
-                            "$ref": "#/definitions/article.ArticleSuccessModel"
+                            "$ref": "#/definitions/user.TokenAccessModel"
                         }
                     },
                     "400": {
@@ -573,9 +731,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/article/delete": {
+        "/company/project/add/logo": {
             "post": {
-                "description": "Удаление статьи",
+                "description": "Добавление нового логотипа проекта",
                 "consumes": [
                     "application/json"
                 ],
@@ -583,10 +741,74 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "article"
+                    "company"
                 ],
-                "summary": "DeleteArticle",
-                "operationId": "delete-article",
+                "summary": "AddLogoProject",
+                "operationId": "company-project-add-logo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "logo",
+                        "name": "logo",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "uuid",
+                        "name": "uuid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/project.ProjectLogoModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/company/project/create": {
+            "post": {
+                "description": "Создание нового проекта в компании",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company"
+                ],
+                "summary": "CreateProject",
+                "operationId": "company-project-create",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -594,7 +816,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/article.ArticleUuidModel"
+                            "$ref": "#/definitions/project.ProjectModel"
                         }
                     }
                 ],
@@ -602,7 +824,7 @@ const docTemplate = `{
                     "200": {
                         "description": "data",
                         "schema": {
-                            "$ref": "#/definitions/article.ArticleSuccessModel"
+                            "$ref": "#/definitions/project.ProjectModel"
                         }
                     },
                     "400": {
@@ -632,9 +854,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/article/get": {
+        "/company/project/get": {
             "post": {
-                "description": "Get information about article",
+                "description": "Получение информации о конкретном проекте",
                 "consumes": [
                     "application/json"
                 ],
@@ -642,10 +864,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "article"
+                    "company"
                 ],
-                "summary": "GetArticle",
-                "operationId": "get-article",
+                "summary": "GetProject",
+                "operationId": "company-project-get",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -653,7 +875,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/article.ArticleUuidModel"
+                            "$ref": "#/definitions/project.ProjectUuidModel"
                         }
                     }
                 ],
@@ -661,7 +883,7 @@ const docTemplate = `{
                     "200": {
                         "description": "data",
                         "schema": {
-                            "$ref": "#/definitions/article.ArticleModel"
+                            "$ref": "#/definitions/project.ProjectDbDataEx"
                         }
                     },
                     "400": {
@@ -691,9 +913,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/article/get/all": {
+        "/company/project/get/all": {
             "post": {
-                "description": "Получение списка статей",
+                "description": "Получение среза из общего числа проектов компании",
                 "consumes": [
                     "application/json"
                 ],
@@ -701,15 +923,74 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "article"
+                    "company"
                 ],
-                "summary": "GetArticles",
-                "operationId": "get-articles",
+                "summary": "GetProjects",
+                "operationId": "company-project-get-all",
+                "parameters": [
+                    {
+                        "description": "credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/project.ProjectCountModel"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "data",
                         "schema": {
-                            "$ref": "#/definitions/article.ArticlesModel"
+                            "$ref": "#/definitions/project.ProjectAnyCountModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/company/get": {
+            "post": {
+                "description": "Получение информации о компании, к которой принадлежит пользователь",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "profile"
+                ],
+                "summary": "GetUserCompany",
+                "operationId": "user-company-get",
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/company.CompanyDbModelEx"
                         }
                     },
                     "400": {
@@ -741,7 +1022,7 @@ const docTemplate = `{
         },
         "/user/profile/get": {
             "post": {
-                "description": "Get user profile",
+                "description": "Получение информации о профиле",
                 "consumes": [
                     "application/json"
                 ],
@@ -752,7 +1033,18 @@ const docTemplate = `{
                     "profile"
                 ],
                 "summary": "GetProfile",
-                "operationId": "get-profile",
+                "operationId": "user-profile-get",
+                "parameters": [
+                    {
+                        "description": "credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.UserProfileDataModel"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "data",
@@ -789,7 +1081,7 @@ const docTemplate = `{
         },
         "/user/profile/update": {
             "post": {
-                "description": "Update user profile",
+                "description": "Обновление информации о пользователе",
                 "consumes": [
                     "application/json"
                 ],
@@ -800,7 +1092,7 @@ const docTemplate = `{
                     "profile"
                 ],
                 "summary": "UpdateProfile",
-                "operationId": "update-profile",
+                "operationId": "user-profile-update",
                 "parameters": [
                     {
                         "description": "credentials",
@@ -808,7 +1100,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.UserProfileDataModel"
+                            "$ref": "#/definitions/user.UserProfileUpdateDataModel"
                         }
                     }
                 ],
@@ -816,7 +1108,7 @@ const docTemplate = `{
                     "200": {
                         "description": "data",
                         "schema": {
-                            "$ref": "#/definitions/user.UserProfileDataModel"
+                            "$ref": "#/definitions/user.UserJSONBModel"
                         }
                     },
                     "400": {
@@ -848,100 +1140,124 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "article.ArticleModel": {
+        "admin.CompanyModel": {
+            "type": "object",
+            "required": [
+                "description",
+                "email_admin",
+                "email_company",
+                "link",
+                "logo",
+                "phone",
+                "title"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "email_admin": {
+                    "type": "string"
+                },
+                "email_company": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "admin.UserResponseModel": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "admin.UsersResponseModel": {
+            "type": "object",
+            "required": [
+                "users"
+            ],
+            "properties": {
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/admin.UserResponseModel"
+                    }
+                }
+            }
+        },
+        "company.CompanyDbModelEx": {
             "type": "object",
             "required": [
                 "created_at",
-                "filepath",
-                "files",
-                "tags",
-                "text",
-                "title",
-                "updated_at",
+                "data",
+                "rules",
                 "uuid"
             ],
             "properties": {
                 "created_at": {
                     "type": "string"
                 },
-                "filepath": {
-                    "type": "string"
+                "data": {
+                    "$ref": "#/definitions/company.CompanyModel"
                 },
-                "files": {
+                "rules": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/article.ArticlesFilesDBModel"
+                        "type": "string"
                     }
                 },
-                "tags": {
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "company.CompanyModel": {
+            "type": "object",
+            "required": [
+                "description",
+                "email_admin",
+                "email_company",
+                "link",
+                "logo",
+                "phone",
+                "title"
+            ],
+            "properties": {
+                "description": {
                     "type": "string"
                 },
-                "text": {
+                "email_admin": {
+                    "type": "string"
+                },
+                "email_company": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "phone": {
                     "type": "string"
                 },
                 "title": {
                     "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "uuid": {
-                    "type": "string"
-                }
-            }
-        },
-        "article.ArticleSuccessModel": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "article.ArticleUuidModel": {
-            "type": "object",
-            "required": [
-                "uuid"
-            ],
-            "properties": {
-                "uuid": {
-                    "type": "string"
-                }
-            }
-        },
-        "article.ArticlesFilesDBModel": {
-            "type": "object",
-            "required": [
-                "filename",
-                "filepath",
-                "index"
-            ],
-            "properties": {
-                "filename": {
-                    "type": "string"
-                },
-                "filepath": {
-                    "type": "string"
-                },
-                "files_id": {
-                    "type": "integer"
-                },
-                "index": {
-                    "type": "integer"
-                }
-            }
-        },
-        "article.ArticlesModel": {
-            "type": "object",
-            "required": [
-                "articles"
-            ],
-            "properties": {
-                "articles": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/article.ArticleModel"
-                    }
                 }
             }
         },
@@ -965,6 +1281,144 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "project.ProjectAnyCountModel": {
+            "type": "object",
+            "required": [
+                "count",
+                "projects"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "projects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/project.ProjectDbDataEx"
+                    }
+                }
+            }
+        },
+        "project.ProjectCountModel": {
+            "type": "object",
+            "required": [
+                "limit",
+                "uuid"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "project.ProjectDataModel": {
+            "type": "object",
+            "required": [
+                "description",
+                "managers",
+                "title"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "managers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/project.UserEmailModel"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "project.ProjectDbDataEx": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/project.ProjectDataModel"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "project.ProjectLogoModel": {
+            "type": "object",
+            "required": [
+                "filepath",
+                "uuid"
+            ],
+            "properties": {
+                "filepath": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "project.ProjectModel": {
+            "type": "object",
+            "required": [
+                "description",
+                "managers",
+                "title",
+                "uuid"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "managers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/project.UserEmailModel"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "project.ProjectUuidModel": {
+            "type": "object",
+            "required": [
+                "uuid"
+            ],
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "project.UserEmailModel": {
+            "type": "object",
+            "properties": {
+                "email": {
                     "type": "string"
                 }
             }
@@ -1033,11 +1487,8 @@ const docTemplate = `{
                 "surname"
             ],
             "properties": {
-                "date_birth": {
+                "avatar": {
                     "type": "string"
-                },
-                "gender": {
-                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -1048,7 +1499,7 @@ const docTemplate = `{
                 "patronymic": {
                     "type": "string"
                 },
-                "phone": {
+                "position": {
                     "type": "string"
                 },
                 "surname": {
@@ -1079,11 +1530,11 @@ const docTemplate = `{
                 "surname"
             ],
             "properties": {
-                "date_birth": {
+                "avatar": {
                     "type": "string"
                 },
-                "gender": {
-                    "type": "boolean"
+                "email": {
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -1094,7 +1545,35 @@ const docTemplate = `{
                 "patronymic": {
                     "type": "string"
                 },
-                "phone": {
+                "position": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.UserProfileUpdateDataModel": {
+            "type": "object",
+            "required": [
+                "name",
+                "nickname",
+                "surname"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "patronymic": {
+                    "type": "string"
+                },
+                "position": {
                     "type": "string"
                 },
                 "surname": {
@@ -1137,7 +1616,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:5000",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "MISU Main Server",
+	Title:            "Rental Housing",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
