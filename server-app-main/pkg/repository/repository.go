@@ -72,7 +72,6 @@ type Repository struct {
 	User
 	Admin
 	AuthType
-
 	Project
 }
 
@@ -81,7 +80,7 @@ func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
 	role := NewRolePostgres(db, enforcer)
 	user := NewUserPostgres(db, enforcer, domain)
 	admin := NewAdminPostgres(db, enforcer, domain, role)
-	project := NewProjectPostgres(db, enforcer)
+	project := NewProjectPostgres(db, enforcer, role)
 
 	return &Repository{
 		Authorization: NewAuthPostgres(db, enforcer, *user),

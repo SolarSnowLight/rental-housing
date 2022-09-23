@@ -7,9 +7,12 @@ import (
 	"fmt"
 	actionConstant "main-server/pkg/constant/action"
 	objectConstant "main-server/pkg/constant/object"
+	roleConstant "main-server/pkg/constant/role"
 	tableConstant "main-server/pkg/constant/table"
 	projectModel "main-server/pkg/model/project"
 	rbacModel "main-server/pkg/model/rbac"
+	userModel "main-server/pkg/model/user"
+	"main-server/pkg/model/worker"
 	"sort"
 
 	"strconv"
@@ -23,13 +26,15 @@ import (
 type ProjectPostgres struct {
 	db       *sqlx.DB
 	enforcer *casbin.Enforcer
+	role     *RolePostgres
 }
 
 /* Function for create new struct of AdminPostgres */
-func NewProjectPostgres(db *sqlx.DB, enforcer *casbin.Enforcer) *ProjectPostgres {
+func NewProjectPostgres(db *sqlx.DB, enforcer *casbin.Enforcer, role *RolePostgres) *ProjectPostgres {
 	return &ProjectPostgres{
 		db:       db,
 		enforcer: enforcer,
+		role:     role,
 	}
 }
 
@@ -48,7 +53,7 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 		return projectModel.ProjectModel{}, err
 	}
 
-	query = fmt.Sprintf("INSERT INTO %s (uuid, data, created_at, updated_at, users_id, companies_id) values ($1, $2, $3, $4, $5, $6)", tableConstant.PROJECTS_TABLE)
+	query = fmt.Sprintf("INSERT INTO %s (uuid, data, created_at, updated_at, users_id, companies_id) values ($1, $2, $3, $4, $5, $6) RETURNING id", tableConstant.PROJECTS_TABLE)
 
 	dataJson, err := json.Marshal(projectModel.ProjectDataModel{
 		Title:       data.Title,
@@ -64,8 +69,9 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 	currentDate := time.Now()
 	projectUuid := uuid.NewV4()
 
-	_, err = tx.Exec(query, projectUuid, dataJson, currentDate, currentDate, userId, companyId)
-	if err != nil {
+	var projectId int
+	row = tx.QueryRow(query, projectUuid, dataJson, currentDate, currentDate, userId, companyId)
+	if err := row.Scan(&projectId); err != nil {
 		tx.Rollback()
 		return projectModel.ProjectModel{}, err
 	}
@@ -73,6 +79,56 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 	if err != nil {
 		tx.Rollback()
 		return projectModel.ProjectModel{}, err
+	}
+
+	query = fmt.Sprintf(`
+	INSERT INTO %s (uuid, data, created_at, updated_at, users_id, companies_id) 
+	values ($1, $2, $3, $4, $5, $6) RETURNING id`,
+		tableConstant.WORKERS_TABLE,
+	)
+
+	roleAdmin, err := r.role.GetRole("value", roleConstant.ROLE_BUILDER_MANAGER)
+	if err != nil {
+		tx.Rollback()
+		return projectModel.ProjectModel{}, err
+	}
+
+	roleAdminJson, err := json.Marshal(worker.WorkerModel{
+		Role: roleAdmin.Uuid,
+	})
+
+	if err != nil {
+		tx.Rollback()
+		return projectModel.ProjectModel{}, err
+	}
+
+	for _, element := range data.Managers {
+		var user userModel.UserModel
+		queryLocal := fmt.Sprintf("SELECT * FROM %s tl WHERE tl.email=$1", tableConstant.USERS_TABLE)
+		err = r.db.Get(&user, queryLocal, element.Email)
+		if err != nil {
+			tx.Rollback()
+			return projectModel.ProjectModel{}, err
+		}
+
+		var workerId int
+		row = tx.QueryRow(query, uuid.NewV4().String(), roleAdminJson, currentDate, currentDate, user.Id, companyId)
+		if err := row.Scan(&workerId); err != nil {
+			tx.Rollback()
+			return projectModel.ProjectModel{}, err
+		}
+
+		queryLocal = fmt.Sprintf(`
+		INSERT INTO %s (workers_id, projects_id) 
+		values ($1, $2)`,
+			tableConstant.WORKERS_PROJECTS_TABLE,
+		)
+
+		_, err = tx.Exec(queryLocal, workerId, projectId)
+		if err != nil {
+			tx.Rollback()
+			return projectModel.ProjectModel{}, err
+		}
 	}
 
 	// Adding information about a resource
@@ -237,8 +293,8 @@ func (r *ProjectPostgres) GetProjects(userId, domainId int, data projectModel.Pr
 	var projects []projectModel.ProjectDbModel
 	sum := (data.Count + data.Limit)
 
-	query = fmt.Sprintf("SELECT uuid, data, created_at FROM %s tl WHERE tl.companies_id = $1 LIMIT $2", tableConstant.PROJECTS_TABLE)
-	err := r.db.Select(&projects, query, companyId, sum)
+	query = fmt.Sprintf("SELECT uuid, data, created_at FROM %s tl WHERE tl.companies_id = $1", tableConstant.PROJECTS_TABLE)
+	err := r.db.Select(&projects, query, companyId)
 	if err != nil {
 		return projectModel.ProjectAnyCountModel{}, err
 	}
@@ -268,9 +324,7 @@ func (r *ProjectPostgres) GetProjects(userId, domainId int, data projectModel.Pr
 	}
 
 	if sum >= len(projectsEx) {
-		fmt.Println(sum)
 		sum -= (sum - len(projectsEx))
-		fmt.Println(sum)
 	}
 
 	return projectModel.ProjectAnyCountModel{
