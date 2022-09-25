@@ -22,7 +22,7 @@
     composes: center;
 }
 
-.mainFrame {
+.pageFrame {
     composes: col;
     width: clamp(400px, 100%, 1920px);
 }
