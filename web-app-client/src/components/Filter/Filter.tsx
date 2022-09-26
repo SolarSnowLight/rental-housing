@@ -1,15 +1,14 @@
 import React, {useState} from "react";
-import css from './MapSlide.module.scss'
-import styled from "styled-components";
+import css from './Filter.module.scss'
 import {Autocomplete, Button, IconButton, InputAdornment, MenuItem, Select, TextField} from "@mui/material";
-import Space from "src/components/Space";
-import { root } from "src/styles";
-import MapComponent from "src/components/MapComponent";
 import {toast} from "react-toastify";
-import RowSelect from "src/components/RowSelect";
-import { SearchIc } from "src/components/icons";
-import { ArrowDownIc } from "src/components/icons";
-import Filter2 from "src/components/Filter/Filter";
+import styled from "styled-components";
+import { root } from "src/styles";
+import { ArrowDownIc, SearchIc } from "../icons";
+import Space from "../Space";
+import RowSelect from "../RowSelect";
+
+
 
 
 
@@ -20,7 +19,9 @@ const allCostsTo = [{ name: 'до 10млн', value: 10000000 }, { name: 'до 10
 const allSorts = ['Стоимость', 'Дата']
 
 
-const MapSlide = () => {
+
+
+const Filter = () => {
 
 
     const [selectedRooms, setSelectedRooms] = useState(['1'])
@@ -53,23 +54,83 @@ const MapSlide = () => {
     }
 
 
-    return <div className={css.mapSlide}>
 
-        <div className={css.title}>На карте</div>
+    return <div className={css.mapFilters}>
 
-        <Space h={59}/>
+        <Autocomplete
+            freeSolo
+            disableClearable
+            options={searchVariants.map(it=>it.value)}
+            renderInput={(params)=><SearchInput1
+                {...params}
+                InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                }}
+            />}
+        />
 
-        <Filter2 />
-
-        <Space h={24}/>
-
-        <div className={css.mapBox}>
-            <MapComponent style={{ width: '100%', height: '100%' }}/>
+        <div className={css.widgetBox}>
+            <div className={css.title}>Количество комнат</div>
+            <Space h={8}/>
+            <RowSelect items={allRooms} selected={selectedRooms} onSelect={onRoomSelect}/>
         </div>
+
+        <div className={css.widgetBox}>
+            <div className={css.title}>Стоимость</div>
+            <Space h={8}/>
+            <div className={css.row}>
+                <Select1
+                    sx={{ width: '169px' }}
+                    value={costFrom}
+                    onChange={onCostFrom}
+                >
+                    {
+                        // в доках написано, что объект можно кидать в качестве value https://mui.com/material-ui/api/select/
+                        // @ts-ignore
+                        allCostsFrom.map(it=><MenuItem key={it.value} value={it}>{it.name}</MenuItem>)
+                    }
+                </Select1>
+                <Select1
+                    sx={{ width: '193px', marginLeft: '-1px' }}
+                    value={costTo}
+                    onChange={onCostTo}
+                >
+                    {
+                        // в доках написано, что объект можно кидать в качестве value https://mui.com/material-ui/api/select/
+                        // @ts-ignore
+                        allCostsTo.map(it=><MenuItem key={it.value} value={it}>{it.name}</MenuItem>)
+                    }
+                </Select1>
+            </div>
+        </div>
+
+        <div className={css.widgetBox}>
+            <div className={css.title}/>
+            <Space h={8}/>
+            <Select1
+                displayEmpty
+                value={sort}
+                onChange={onSort}
+                renderValue={(selected)=>{
+                    if (selected.length===0){
+                        return <span data-placeholder-text>Сортировать по</span>
+                    }
+                    return selected
+                }}
+            >
+                <MenuItem value=""><em>По умолчанию</em></MenuItem>
+                { allSorts.map(it=><MenuItem key={it} value={it}>{it}</MenuItem>) }
+            </Select1>
+        </div>
+
+        <Button1 onClick={onFilterApply}>Применить фильтр</Button1>
+
+        <Button1White onClick={onShowAll}>Показать всё</Button1White>
 
     </div>
 }
-export default React.memo(MapSlide)
+export default React.memo(Filter)
 
 
 

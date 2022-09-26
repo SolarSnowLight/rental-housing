@@ -22,26 +22,6 @@
         color: black;
         letter-spacing: 0.05em;
     }
-    .mapFilters {
-        @extend .rowWrap;
-        width: 100%;
-        justify-content: space-between;
-        align-items: end;
-        gap: 16px;
-
-        .widgetBox {
-            @extend .col;
-
-            .title {
-                display: grid;
-                place-items: center start;
-                height: 27px;
-                font: 500 18px var(--font-family-text);
-                color: #424041;
-                letter-spacing: 0.05em;
-            }
-        }
-    }
 
     .mapBox {
         height: 628px;

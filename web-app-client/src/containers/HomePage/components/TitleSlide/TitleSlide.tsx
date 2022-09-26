@@ -61,12 +61,6 @@ const TitleSlide = () => {
 
         <div className={css.grid}>
 
-            <div className={css.logo}>
-                <LogoIc width={64} mainColor={'#FCFCFC'} />
-            </div>
-
-            <div className={css.empty}/>
-
             <div className={css.search}>
                 <div className={css.title}>Хватит сёрфить.<br/>Найди тут и успокойся</div>
                 <Space h={16}/>
@@ -115,15 +109,15 @@ export default React.memo(TitleSlide)
 
 
 
-
-const LinkBtn = ({ title }) => {
+// It is part of Navbar
+/*const LinkBtn = ({ title }) => {
     return <div className={css.linkBox}>
         <div className={css.linkTitle}>{title}</div>
         <div className={css.linkIcBox}>
             <ArrowUpRightIc size={45} mainColor='#FCFCFC'/>
         </div>
     </div>
-}
+}*/
 
 
 
