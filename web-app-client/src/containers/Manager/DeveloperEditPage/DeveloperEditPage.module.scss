@@ -29,7 +29,7 @@
     top: 0; right: 0; bottom: 0; left: 0;
 }
 
-.pageElement {
+.elementsFrame {
     width: clamp(400px, 100%, 1920px);
     padding: 0 64px 0 64px;
 }
@@ -45,14 +45,13 @@
     @extend .center;
 }
 
-.pageFrame {
+.mainFrame {
     @extend .col;
-    align-items: center;
     width: 100%;
 }
 
 .mainTitle {
-    @extend .pageElement; width: fit-content;
+    @extend .elementsFrame; width: fit-content;
     font: 500 36px var(--font-family-text);
     color: black;
 }
@@ -62,7 +61,7 @@
 
 
 .fieldsContainer {
-    @extend .pageElement;
+    @extend .elementsFrame;
     display: flex;
     flex-flow: row wrap;
     height: fit-content;

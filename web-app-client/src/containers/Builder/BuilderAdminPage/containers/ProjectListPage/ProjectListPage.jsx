@@ -24,6 +24,14 @@ const ProjectListPage = () => {
         dispatch(companyAction.getAllProjectsByCompany(userSelector.company?.uuid));
     }, []);
 
+    const getProjectsHandler = () => {
+        dispatch(companyAction.getAllProjectsByCompany(
+            userSelector.company?.uuid,
+            true,
+            companySelector.projects.length
+        ));
+    };
+
     return (
         <div className={styles["list"]}>
             <div className={styles["list-header"]}>
@@ -42,10 +50,13 @@ const ProjectListPage = () => {
             <div className={styles["list-body"]}>
                 {
                     companySelector.projects && companySelector.projects?.length > 0 && companySelector.projects.map((item) => {
+                        if(!item) {
+                            return (<></>);
+                        }
                         return (
                             <ListItemComponent
                                 column1={item.data.title}
-                                img={(item.data.logo) ? MainApi.main_server + '/' + item.data.logo : null}
+                                img={(item.data.logo) ? MainApi.main_server + '/' + item.data.logo.replace('\\', '/') : null}
                                 clickHandler={() => {
                                     navigate(
                                         (BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_info),
@@ -63,7 +74,10 @@ const ProjectListPage = () => {
             </div>
             <div className={styles["list-footer"]}>
                 <div>
-                    <span className={"span__text__black-h4"}>Показать ещё</span>
+                    <span
+                        className={"span__text__black-h4"}
+                        onClick={getProjectsHandler}
+                    >Показать ещё</span>
                 </div>
             </div>
         </div>

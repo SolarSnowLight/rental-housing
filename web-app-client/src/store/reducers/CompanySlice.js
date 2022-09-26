@@ -43,6 +43,15 @@ export const companySlice = createSlice({
             if (action.payload) {
                 state.projects = action.payload.projects;
             }
+        },
+
+        getAllProjectsAddSuccess(state, action) {
+            state.isLoading = false;
+            state.error = "";
+
+            if (action.payload) {
+                state.projects = state.projects.concat(action.payload.projects);
+            }
         }
     },
 });

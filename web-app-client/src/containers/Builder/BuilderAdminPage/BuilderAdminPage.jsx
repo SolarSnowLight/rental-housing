@@ -46,7 +46,7 @@ const BuilderAdminPage = () => {
         (userSelector.company?.data.logo) ?
             [
                 {
-                    data_url: `${MainApi.main_server}/${userSelector.company.data.logo}`
+                    data_url: `${MainApi.main_server}/${userSelector.company.data.logo.replace('\\', '/')}`
                 }
             ]
             :
