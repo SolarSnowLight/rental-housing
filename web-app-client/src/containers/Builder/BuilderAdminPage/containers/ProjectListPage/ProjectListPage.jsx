@@ -7,7 +7,7 @@ import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.rout
 import { useEffect, useState } from 'react';
 import useHttp from 'src/hooks/http.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
-import ProjectApi from 'src/constants/addresses/apis/project.api';
+import CompanyApi from 'src/constants/addresses/apis/company.api.';
 import MainApi from 'src/constants/addresses/apis/main.api';
 import apiMainServer from 'src/http/http.main-server';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';

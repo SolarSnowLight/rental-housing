@@ -421,6 +421,7 @@ const BuilderAdminPage = () => {
                                     onClose={() => {
                                         setOpen(false);
                                     }}
+                                    defaultValue={form.admin}
                                     getOptionLabel={(option) => option.email}
                                     isOptionEqualToValue={(option, value) => option.email === value.email}
                                     options={options}

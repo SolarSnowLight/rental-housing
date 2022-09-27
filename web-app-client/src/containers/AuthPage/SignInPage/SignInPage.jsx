@@ -39,19 +39,12 @@ const CssTextField = styled(TextField)({
 });
 
 const SignInPage = ({ setStateCurrentPage }) => {
-    const auth = useAppSelector((state) => state.authReducer);
+    const authSelector = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
     dispatch(authActions.authClearError());
 
     const message = useMessageToastify();
-
-    useEffect(() => {
-        if (auth.error.length > 0) {
-            message(auth.error, "error");
-            dispatch(authActions.authClearError());
-        }
-    }, [auth.error]);
 
     const { loading, request, error, clearError } = useHttp();
 
@@ -83,7 +76,7 @@ const SignInPage = ({ setStateCurrentPage }) => {
     return (
         <div className={styles["auth-block__main"]}>
             {
-                auth.isLoading && <CircularIndeterminate />
+                authSelector.isLoading && <CircularIndeterminate />
             }
 
             <div className={styles["auth-block__content"]}>

@@ -7,29 +7,38 @@ import { authUpdate } from "../../store/actions/AuthAction";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { ToastContainer } from "react-toastify";
+import "react-datepicker/dist/react-datepicker.css";
 
 import styles from './App.module.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import userAction from "src/store/actions/UserAction";
+import { useMessageToastify } from "src/hooks/message.toastify.hook";
 
 const App = () => {
   const config = useAppSelector(state => state.configReducer);
-  const auth = useAppSelector(state => state.authReducer);
+  const authSelector = useAppSelector(state => state.authReducer);
   const dispatch = useAppDispatch();
-  const [authenticated, setAuthenticated] = useState(auth.isAuthenticated);
+  const [authenticated, setAuthenticated] = useState(authSelector.isAuthenticated);
+  const message = useMessageToastify();
 
   useEffect(() => {
     dispatch(authUpdate());
   }, []);
 
   useEffect(() => {
-    if (auth.access_token) {
+    if (authSelector.access_token) {
       dispatch(userAction.getUserCompany());
     }
-  }, [auth])
+  }, [authSelector]);
 
-  const routes = useRoutes(auth.isAuthenticated);
+  useEffect(() => {
+    if (authSelector.error && authSelector.error.length) {
+      message(authSelector.error, "error");
+    }
+  }, [authSelector.error]);
+  
+  const routes = useRoutes(authSelector.isAuthenticated);
 
   return (
     <BrowserRouter>

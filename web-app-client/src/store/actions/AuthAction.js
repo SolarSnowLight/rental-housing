@@ -29,7 +29,7 @@ export const authSignIn = (data) => async (dispatch) => {
         // Call action for set state about success request (her ending)
         dispatch(authSlice.actions.signInSuccess(response.data));
     } catch (e) {
-        dispatch(authSlice.actions.authError(e.message));
+        dispatch(authSlice.actions.authError(e.response.data.message));
     }
 };
 

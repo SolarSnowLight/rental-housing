@@ -40,6 +40,7 @@ type User interface {
 	GetProfile(c *gin.Context) (userModel.UserProfileModel, error)
 	UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error)
 	GetUserCompany(userId, domainId int) (companyModel.CompanyDbModelEx, error)
+	AccessCheck(userId, domainId int, value rbacModel.RoleValueModel) (bool, error)
 }
 
 type Admin interface {
@@ -63,6 +64,10 @@ type Project interface {
 	GetProjects(userId, domainId int, data projectModel.ProjectCountModel) (projectModel.ProjectAnyCountModel, error)
 }
 
+type Company interface {
+	GetManagers(userId, domainId int, data companyModel.ManagerCountModel) (companyModel.ManagerAnyCountModel, error)
+}
+
 type Service struct {
 	Authorization
 	Token
@@ -70,8 +75,8 @@ type Service struct {
 	Admin
 	Domain
 	Role
-
 	Project
+	Company
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -85,5 +90,6 @@ func NewService(repos *repository.Repository) *Service {
 		Domain:        NewDomainService(repos.Domain),
 		Role:          NewRoleService(repos.Role),
 		Project:       NewProjectService(repos.Project),
+		Company:       NewCompanyService(repos.Company),
 	}
 }

@@ -2,8 +2,33 @@ import styles from './ManagerListPage.module.css';
 
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
 import ListItemComponent from '../../components/ListItemComponent';
+import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
+import { useMessageToastify } from 'src/hooks/message.toastify.hook';
+import { useNavigate } from 'react-router-dom';
+import companyAction from 'src/store/actions/CompanyAction';
+import { useEffect } from "react";
+import MainApi from 'src/constants/addresses/apis/main.api';
+import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 
 const ManagerListPage = () => {
+    const userSelector = useAppSelector((state) => state.userReducer);
+    const companySelector = useAppSelector((state) => state.companyReducer);
+    const dispatch = useAppDispatch();
+    const message = useMessageToastify();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(companyAction.getAllManagersByCompany(userSelector.company?.uuid));
+    }, []);
+
+    const getProjectsHandler = () => {
+        dispatch(companyAction.getAllManagersByCompany(
+            userSelector.company?.uuid,
+            true,
+            companySelector.managers.length
+        ));
+    };
+
     return (
         <div className={styles["list"]}>
             <div className={styles["list-header"]}>
@@ -17,19 +42,29 @@ const ManagerListPage = () => {
                 </div>
             </div>
             <div className={styles["list-body"]}>
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
-                <ListItemComponent column1='Алексей Алексеевич Алексеев' column2='324 проекта,' column3='12123 клиентов' />
+                {
+                    companySelector.managers && companySelector.managers?.length > 0 && companySelector.managers.map((item) => {
+                        if (!item) {
+                            return (<></>);
+                        }
+                        return (
+                            <ListItemComponent
+                                column1={item.data.name}
+                                img={(item.data.avatar) ? MainApi.main_server + '/' + item.data.avatar.replace('\\', '/') : null}
+                                clickHandler={() => {
+                                    navigate(
+                                        (BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_info),
+                                        {
+                                            state: {
+                                                ...item
+                                            }
+                                        }
+                                    );
+                                }}
+                            />
+                        )
+                    })
+                }
             </div>
             <div className={styles["list-footer"]}>
                 <div>

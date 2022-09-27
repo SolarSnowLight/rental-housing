@@ -81,12 +81,6 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 		return projectModel.ProjectModel{}, err
 	}
 
-	query = fmt.Sprintf(`
-	INSERT INTO %s (uuid, data, created_at, updated_at, users_id, companies_id) 
-	values ($1, $2, $3, $4, $5, $6) RETURNING id`,
-		tableConstant.WORKERS_TABLE,
-	)
-
 	roleAdmin, err := r.role.GetRole("value", roleConstant.ROLE_BUILDER_MANAGER)
 	if err != nil {
 		tx.Rollback()
@@ -101,6 +95,12 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 		tx.Rollback()
 		return projectModel.ProjectModel{}, err
 	}
+
+	query = fmt.Sprintf(`
+	INSERT INTO %s (uuid, data, created_at, updated_at, users_id, companies_id) 
+	values ($1, $2, $3, $4, $5, $6) RETURNING id`,
+		tableConstant.WORKERS_TABLE,
+	)
 
 	for _, element := range data.Managers {
 		var user userModel.UserModel

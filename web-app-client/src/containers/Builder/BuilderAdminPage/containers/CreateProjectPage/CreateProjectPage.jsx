@@ -16,12 +16,14 @@ import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
 import { useNavigate } from 'react-router-dom';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
-import ProjectApi from 'src/constants/addresses/apis/project.api';
+import CompanyApi from 'src/constants/addresses/apis/company.api.';
+import projectAction from 'src/store/actions/ProjectAction';
 
 const CreateProjectPage = () => {
     // Section of working with the network over the HTTP protocol
-    const auth = useAppSelector((state) => state.authReducer);
+    const authSelector = useAppSelector((state) => state.authReducer);
     const userSelector = useAppSelector((state) => state.userReducer);
+    const projectSelector = useAppSelector((state) => state.projectReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
@@ -49,10 +51,10 @@ const CreateProjectPage = () => {
         setForm({ ...form, [key]: value });
     };
 
-    const createProjectHandler = async() => {
-        const response = await request(ProjectApi.create_project, 'POST', JSON.stringify({ ...form, uuid: userSelector.company?.uuid}));
+    const createProjectHandler = async () => {
+        const response = await request(CompanyApi.create_project, 'POST', JSON.stringify({ ...form, uuid: userSelector.company?.uuid }));
 
-        if(response.message){
+        if (response.message) {
             message(response.message, "error");
             return;
         }
@@ -61,8 +63,8 @@ const CreateProjectPage = () => {
         formData.append('logo', logo[0].file);
         formData.append('uuid', response.uuid);
 
-        const responseImage = await request(ProjectApi.project_add_logo, 'POST', formData, {}, true);
-        if(response.message){
+        const responseImage = await request(CompanyApi.project_add_logo, 'POST', formData, {}, true);
+        if (response.message) {
             message(response.message, "error");
             return;
         }
@@ -214,7 +216,7 @@ const CreateProjectPage = () => {
                                 <TextField
                                     required
                                     id="outlined-required"
-                                    placeholder="Название компании"
+                                    placeholder="Название проекта"
                                     onChange={(e) => {
                                         changeHandler("title", e.target.value);
                                     }}
@@ -342,10 +344,10 @@ const CreateProjectPage = () => {
                 <div className={styles["wrapper-section__item__map-element"]}>
                     <div className={styles["grid-item__left"]}></div>
                     <div className={styles["grid-item__right"]}>
-                        <ButtonGreenComponent 
-                        title="Создать проект"
-                        clickHandler={createProjectHandler}
-                         />
+                        <ButtonGreenComponent
+                            title="Создать проект"
+                            clickHandler={createProjectHandler}
+                        />
                     </div>
                 </div>
             </div>

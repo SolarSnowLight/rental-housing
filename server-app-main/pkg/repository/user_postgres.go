@@ -9,6 +9,7 @@ import (
 	objectConstant "main-server/pkg/constant/object"
 	tableConstant "main-server/pkg/constant/table"
 	companyModel "main-server/pkg/model/company"
+	rbacModel "main-server/pkg/model/rbac"
 	userModel "main-server/pkg/model/user"
 	"strconv"
 
@@ -24,16 +25,21 @@ type UserPostgres struct {
 	db       *sqlx.DB
 	enforcer *casbin.Enforcer
 	domain   *DomainPostgres
+	role     *RolePostgres
 }
 
 /*
 * Функция создания экземпляра сервиса
  */
-func NewUserPostgres(db *sqlx.DB, enforcer *casbin.Enforcer, domain *DomainPostgres) *UserPostgres {
+func NewUserPostgres(
+	db *sqlx.DB, enforcer *casbin.Enforcer,
+	domain *DomainPostgres, role *RolePostgres,
+) *UserPostgres {
 	return &UserPostgres{
 		db:       db,
 		enforcer: enforcer,
 		domain:   domain,
+		role:     role,
 	}
 }
 
@@ -209,4 +215,21 @@ func (r *UserPostgres) GetUserCompany(userId, domainId int) (companyModel.Compan
 		CreatedAt: companyInfo.CreatedAt,
 		Rules:     rules,
 	}, nil
+}
+
+/* Method for to check acces every user. On result this method make decision for make navbar or other component */
+func (r *UserPostgres) AccessCheck(userId, domainId int, value rbacModel.RoleValueModel) (bool, error) {
+	role, err := r.role.GetRole("value", value.Value)
+
+	if err != nil {
+		return false, err
+	}
+
+	result, err := r.enforcer.HasRoleForUser(strconv.Itoa(userId), strconv.Itoa(role.Id), strconv.Itoa(domainId))
+
+	if err != nil {
+		return false, err
+	}
+
+	return result, nil
 }

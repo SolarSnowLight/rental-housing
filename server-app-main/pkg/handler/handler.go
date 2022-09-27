@@ -85,6 +85,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	// URL: /user
 	user := router.Group(route.USER_MAIN_ROUTE, h.userIdentity)
 	{
+		// URL: /user/access/check
+		user.POST(route.USER_CHECK_ACCESS_ROUTE, h.accessCheck)
+
 		// URL: /user/profile
 		profile := user.Group(route.USER_PROFILE_ROUTE)
 		{
@@ -142,6 +145,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			// URL: /company/project/get/all
 			project.POST(route.GET_ALL_ROUTE, h.getProjects)
+		}
+
+		// URL: /manager
+		manager := company.Group(route.MANAGER_MAIN_ROUTE)
+		{
+			// URL: /company/manager/get/all
+			manager.POST(route.GET_ALL_ROUTE, h.userIdentityHasRole(roleConstant.ROLE_BUILDER_ADMIN), h.getManagers)
 		}
 
 		// URL: /company/create

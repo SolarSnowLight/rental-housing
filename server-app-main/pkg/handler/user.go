@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	rbacModel "main-server/pkg/model/rbac"
 	userModel "main-server/pkg/model/user"
 	"net/http"
 
@@ -100,4 +101,39 @@ func (h *Handler) getUserCompany(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, data)
 	}
+}
+
+// @Summary CheckAccess
+// @Tags profile
+// @Description Проверка пользовательских прав на подключение к тому или иному административному модулю
+// @ID user-check-access
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} BooleanResponse "data"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /user/access/check [post]
+func (h *Handler) accessCheck(c *gin.Context) {
+	userId, domainId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
+
+	var input rbacModel.RoleValueModel
+	if err := c.Bind(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	data, err := h.services.User.AccessCheck(userId, domainId, input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, BooleanResponse{
+		Value: data,
+	})
 }

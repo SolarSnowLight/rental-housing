@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 /* Base state for current slice */
 const initialState = {
     projects: null,
+    managers: null,
     isLoading: false,
     error: ""
 };
@@ -36,6 +37,7 @@ export const companySlice = createSlice({
             state.error = "";
         },
 
+        // Get all projects
         getAllProjectsSuccess(state, action) {
             state.isLoading = false;
             state.error = "";
@@ -51,6 +53,25 @@ export const companySlice = createSlice({
 
             if (action.payload) {
                 state.projects = state.projects.concat(action.payload.projects);
+            }
+        },
+
+        // Get all managers
+        getAllManagersSuccess(state, action) {
+            state.isLoading = false;
+            state.error = "";
+
+            if (action.payload) {
+                state.managers = action.payload.managers;
+            }
+        },
+
+        getAllManagersAddSuccess(state, action) {
+            state.isLoading = false;
+            state.error = "";
+
+            if (action.payload) {
+                state.managers = state.managers.concat(action.payload.managers);
             }
         }
     },

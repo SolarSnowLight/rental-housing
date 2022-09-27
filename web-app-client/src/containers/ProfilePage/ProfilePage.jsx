@@ -15,16 +15,45 @@ import AdminRoute from 'src/constants/addresses/routes/admin.route';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
-    const auth = useAppSelector((state) => state.authReducer);
+    const authSelector = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
-    const message = useMessageToastify();
 
     return (
         <div>
             {
-                auth.isLoading && <CircularIndeterminate />
+                authSelector.isLoading && <CircularIndeterminate />
             }
+            <Button
+                variant="contained"
+                fullWidth={true}
+                disableElevation={true}
+                onClick={() => {
+                    (async () => {
+                        dispatch(authLogout(authSelector.access_token));
+                    })();
+                }}
+                sx={{
+                    backgroundColor: root.colorGreen,
+                    fontSize: '14px !important',
+                    borderRadius: '0px !important',
+                    border: '1px solid #424041 !important',
+                    width: '100%',
+                    height: '3em',
+                    ...textStyleDefault,
+                    ":hover": {
+                        backgroundColor: root.colorGreen,
+                        fontSize: '14px !important',
+                        borderRadius: '0px !important',
+                        border: '1px solid #424041 !important',
+                        width: '100%',
+                        height: '3em',
+                        ...textStyleDefault,
+                    }
+                }}
+            >
+                Профиль пользователя
+            </Button>
 
             <Button
                 variant="contained"
@@ -32,7 +61,7 @@ const ProfilePage = () => {
                 disableElevation={true}
                 onClick={() => {
                     (async () => {
-                        dispatch(authLogout(auth.access_token));
+                        dispatch(authLogout(authSelector.access_token));
                     })();
                 }}
                 sx={{

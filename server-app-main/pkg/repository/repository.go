@@ -47,6 +47,7 @@ type User interface {
 	GetProfile(c *gin.Context) (userModel.UserProfileModel, error)
 	UpdateProfile(c *gin.Context, data userModel.UserProfileUpdateDataModel) (userModel.UserJSONBModel, error)
 	GetUserCompany(userId, domainId int) (companyModel.CompanyDbModelEx, error)
+	AccessCheck(userId, domainId int, value rbacModel.RoleValueModel) (bool, error)
 }
 
 type Admin interface {
@@ -65,6 +66,10 @@ type Project interface {
 	GetProjects(userId, domainId int, data projectModel.ProjectCountModel) (projectModel.ProjectAnyCountModel, error)
 }
 
+type Company interface {
+	GetManagers(userId, domainId int, data companyModel.ManagerCountModel) (companyModel.ManagerAnyCountModel, error)
+}
+
 type Repository struct {
 	Authorization
 	Role
@@ -73,14 +78,16 @@ type Repository struct {
 	Admin
 	AuthType
 	Project
+	Company
 }
 
 func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
 	domain := NewDomainPostgres(db)
 	role := NewRolePostgres(db, enforcer)
-	user := NewUserPostgres(db, enforcer, domain)
+	user := NewUserPostgres(db, enforcer, domain, role)
 	admin := NewAdminPostgres(db, enforcer, domain, role)
 	project := NewProjectPostgres(db, enforcer, role)
+	company := NewCompanyPostgres(db, enforcer, role)
 
 	return &Repository{
 		Authorization: NewAuthPostgres(db, enforcer, *user),
@@ -90,5 +97,6 @@ func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
 		Admin:         admin,
 		AuthType:      NewAuthTypePostgres(db),
 		Project:       project,
+		Company:       company,
 	}
 }
