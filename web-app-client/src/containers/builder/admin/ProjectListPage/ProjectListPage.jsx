@@ -1,15 +1,12 @@
 import styles from './ProjectListPage.module.css';
 
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import ListItemComponent from '../../components/ListItemComponent';
+import ListItemComponent from 'src/components/ListItemComponent';
 import { useNavigate } from 'react-router-dom';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 import { useEffect, useState } from 'react';
-import useHttp from 'src/hooks/http.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
-import CompanyApi from 'src/constants/addresses/apis/company.api.';
 import MainApi from 'src/constants/addresses/apis/main.api';
-import apiMainServer from 'src/http/http.main-server';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';
 import companyAction from 'src/store/actions/CompanyAction';
 

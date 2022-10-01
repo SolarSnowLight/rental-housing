@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Autocomplete } from '@mui/material';
 
-import styles from './ProjectInfoPage.module.css';
+import styles from './CreateProjectPage.module.css';
 import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles';
 import ImageUploading from "react-images-uploading";
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { authSlice } from 'src/store/reducers/AuthSlice';
-import useHttp from '../../../../../hooks/http.hook';
+import useHttp from 'src/hooks/http.hook';
 import CircularProgress from '@mui/material/CircularProgress';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 import MapComponent from 'src/components/MapComponent';
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
-import MainApi from 'src/constants/addresses/apis/main.api';
+import CompanyApi from 'src/constants/addresses/apis/company.api.';
+import projectAction from 'src/store/actions/ProjectAction';
 
-const ProjectInfoPage = () => {
+const CreateProjectPage = () => {
     // Section of working with the network over the HTTP protocol
-    const auth = useAppSelector((state) => state.authReducer);
+    const authSelector = useAppSelector((state) => state.authReducer);
+    const userSelector = useAppSelector((state) => state.userReducer);
+    const projectSelector = useAppSelector((state) => state.projectReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
-
-    const { state } = useLocation();
 
     const message = useMessageToastify();
 
@@ -36,28 +37,40 @@ const ProjectInfoPage = () => {
 
     // The data section presented on the page
     const [btnDisabled, setBtnDisabled] = useState(true);
-    const [logo, setLogo] = useState(
-        (state?.data.logo) ?
-            [
-                {
-                    data_url: `${MainApi.main_server}/${state.data.logo}`
-                }
-            ]
-            :
-            []
-    );
-
-    const [form, setForm] = useState({
-        title: state?.data.title, description: state?.data.description,
-    });
 
     // Event Handlers Section
     const onChangeImage = (imageList, addUpdateIndex) => {
-        setLogo(imageList);
+        dispatch(projectAction.setItemProjectInfo("logo", imageList));
     };
 
     const changeHandler = (key, value) => {
-        setForm({ ...form, [key]: value });
+        dispatch(projectAction.setItemProjectInfo(key, value));
+    };
+
+    const createProjectHandler = async () => {
+        const response = await request(CompanyApi.create_project, 'POST', JSON.stringify({
+            title: projectSelector.title,
+            description: projectSelector.desctiprion,
+            manager: projectSelector.managers,
+            uuid: userSelector.company?.uuid
+        }));
+
+        if (response.message) {
+            message(response.message, "error");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('logo', projectSelector.logo[0].file);
+        formData.append('uuid', response.uuid);
+
+        const responseImage = await request(CompanyApi.project_add_logo, 'POST', formData, {}, true);
+        if (response.message) {
+            message(response.message, "error");
+            return;
+        }
+
+        message("Проект создан успешно!", "success");
     };
 
     // Data section of functional operation of components
@@ -91,12 +104,12 @@ const ProjectInfoPage = () => {
         }
     }, [open]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (btnDisabled) {
             let countExists = 0;
 
-            for (var key of Object.keys(form)) {
-                if (form[key].length > 0) {
+            for (var key of Object.keys(projectSelector)) {
+                if (form[key]?.length > 0) {
                     countExists++;
                 }
             }
@@ -105,7 +118,7 @@ const ProjectInfoPage = () => {
                 setBtnDisabled(false);
             }
         }
-    }, [form]);
+    }, [form]);*/
 
     // Navigation functions section
     const navigate = useNavigate();
@@ -117,7 +130,7 @@ const ProjectInfoPage = () => {
         <div className={styles["wrapper-section"]}>
             <div className={styles["wrapper-section__item"]}>
                 <div>
-                    <span className='span__text__black-h3'>Информация о проекте</span>
+                    <span className='span__text__black-h3'>Создание проекта</span>
                 </div>
                 <div className={styles["wrapper-section__item-element__column"]}>
                     <div>
@@ -127,7 +140,7 @@ const ProjectInfoPage = () => {
                             </div>
                             <div>
                                 <ImageUploading
-                                    value={logo}
+                                    value={projectSelector.logo}
                                     onChange={onChangeImage}
                                     dataURLKey="data_url"
                                 >
@@ -144,7 +157,7 @@ const ProjectInfoPage = () => {
                                             <button
                                                 className={styles["upload_image_wrapper"]}
                                                 style={{
-                                                    display: logo.length > 0 ? "none" : "block",
+                                                    display: projectSelector.logo.length > 0 ? "none" : "block",
                                                 }}
 
                                                 onClick={onImageUpload}
@@ -204,11 +217,11 @@ const ProjectInfoPage = () => {
                                 <TextField
                                     required
                                     id="outlined-required"
-                                    placeholder="Название компании"
+                                    placeholder="Название проекта"
+                                    defaultValue={projectSelector.title}
                                     onChange={(e) => {
                                         changeHandler("title", e.target.value);
                                     }}
-                                    defaultValue={form.title}
                                     sx={{
                                         borderRadius: '0px !important',
                                         border: 'none',
@@ -231,8 +244,8 @@ const ProjectInfoPage = () => {
                             </div>
                             <div>
                                 <Autocomplete
-                                    multiple
                                     id="tags-outlined"
+                                    multiple
                                     open={open}
                                     onOpen={() => {
                                         setOpen(true);
@@ -244,8 +257,9 @@ const ProjectInfoPage = () => {
                                     isOptionEqualToValue={(option, value) => option.email === value.email}
                                     options={options}
                                     loading={loadingAutocomplete}
+                                    defaultValue={projectSelector.managers}
                                     onChange={(e, value) => {
-                                        changeHandler("admin", value.email);
+                                        changeHandler("managers", value);
                                     }}
                                     renderInput={(params) => (
                                         <TextField
@@ -289,10 +303,11 @@ const ProjectInfoPage = () => {
                                 rows={9}
                                 name={"description"}
                                 placeholder="Описание"
+                                defaultValue={projectSelector.description}
                                 onChange={(e) => {
                                     changeHandler("description", e.target.value);
                                 }}
-                                defaultValue={form.description}
+
                                 sx={{
                                     width: '100%',
                                     height: '100%',
@@ -333,7 +348,10 @@ const ProjectInfoPage = () => {
                 <div className={styles["wrapper-section__item__map-element"]}>
                     <div className={styles["grid-item__left"]}></div>
                     <div className={styles["grid-item__right"]}>
-                        <ButtonGreenComponent title="Сохранить изменения" />
+                        <ButtonGreenComponent
+                            title="Создать проект"
+                            clickHandler={createProjectHandler}
+                        />
                     </div>
                 </div>
             </div>
@@ -341,4 +359,4 @@ const ProjectInfoPage = () => {
     )
 }
 
-export default ProjectInfoPage;
+export default CreateProjectPage;

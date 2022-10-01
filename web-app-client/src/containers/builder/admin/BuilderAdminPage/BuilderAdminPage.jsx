@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import styles from './BuilderAdminPage.module.css';
-import { textStyleDefault } from '../../../styles';
+import { textStyleDefault } from 'src/styles';
 import { Button, TextField } from '@mui/material';
-import { root } from '../../../styles';
+import { root } from 'src/styles/index';
 import ImageUploading from "react-images-uploading";
 import { Controller } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { useMessageToastify } from '../../../hooks/message.toastify.hook';
-import { useAppSelector } from '../../../hooks/redux.hook';
-import { useAppDispatch } from '../../../hooks/redux.hook';
-import { authSlice } from '../../../store/reducers/AuthSlice';
+import { useMessageToastify } from 'src/hooks/message.toastify.hook';
+import { useAppSelector } from 'src/hooks/redux.hook';
+import { useAppDispatch } from 'src/hooks/redux.hook';
+import { authSlice } from 'src/store/reducers/AuthSlice';
 import { useFormState } from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import useHttp from '../../../hooks/http.hook';
-import AdminApi from '../../../constants/addresses/apis/admin.api';
+import useHttp from 'src/hooks/http.hook';
+import AdminApi from 'src/constants/addresses/apis/admin.api';
 import { styleTextGray } from './styles';
 import MainApi from 'src/constants/addresses/apis/main.api';
 import userAction, { getUserCompany } from 'src/store/actions/UserAction';
@@ -421,7 +421,7 @@ const BuilderAdminPage = () => {
                                     onClose={() => {
                                         setOpen(false);
                                     }}
-                                    defaultValue={form.admin}
+                                    defaultValue={{"email": form.admin}}
                                     getOptionLabel={(option) => option.email}
                                     isOptionEqualToValue={(option, value) => option.email === value.email}
                                     options={options}

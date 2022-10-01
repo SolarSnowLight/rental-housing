@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 /* Base state for current slice */
 const initialState = {
-    logo: null,
-    title: null,
-    description: null,
+    logo: [],
+    title: '',
+    description: '',
     managers: [],
     objects: [],
 
@@ -31,9 +31,9 @@ export const projectSlice = createSlice({
         },
 
         clear(state) {
-            state.logo = null;
-            state.title = null;
-            state.description = null;
+            state.logo = [];
+            state.title = '';
+            state.description = '';
             state.managers = [];
             state.objects = [];
 

@@ -1,5 +1,5 @@
 import useHttp from '../../../hooks/http.hook';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 import { authSignIn } from '../../../store/actions/AuthAction';
 import { authSlice } from '../../../store/reducers/AuthSlice';
@@ -17,6 +17,7 @@ import { borderRadius } from '@mui/system';
 import { useMessageToastify } from '../../../hooks/message.toastify.hook';
 import CircularIndeterminate from '../../../components/CircularIndeterminate';
 import { getUserCompany } from 'src/store/actions/UserAction';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
@@ -43,11 +44,10 @@ const SignInPage = ({ setStateCurrentPage }) => {
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
     dispatch(authActions.authClearError());
-
     const message = useMessageToastify();
+    const recaptchaRef = createRef();
 
-    const { loading, request, error, clearError } = useHttp();
-
+    const [isVerified, setVerified] = useState(false);
     const [showIcon, setShowIcon] = useState({
         showPassword: false,
     });
@@ -62,6 +62,10 @@ const SignInPage = ({ setStateCurrentPage }) => {
         event.preventDefault();
     };
 
+    const onReCaptchaChange = (e) => {
+        setVerified(true);
+    };
+
     // For form
     const { handleSubmit, control } = useForm();
 
@@ -72,6 +76,10 @@ const SignInPage = ({ setStateCurrentPage }) => {
     const onSubmit = (data) => {
         dispatch(authSignIn(data));
     };
+
+    useEffect(() => {
+        console.log(recaptchaRef.current);
+    }, [recaptchaRef]);
 
     return (
         <div className={styles["auth-block__main"]}>
@@ -167,7 +175,15 @@ const SignInPage = ({ setStateCurrentPage }) => {
                             <Link to={"/"} className={styles["auth-form-recover-link__form"]}>Восстановить пароль</Link>
                         </div>
                         <div className={styles["auth-form-btn__form"]}>
+                            <ReCAPTCHA
+                                ref={recaptchaRef}
+                                sitekey="6LfLNUEiAAAAAPHCy0REuWc3908HFrJwocmmb0Fs"
+                                onChange={(e) => onReCaptchaChange(e)}
+                            />
+                        </div>
+                        <div className={styles["auth-form-btn__form"]}>
                             <Button
+                                disabled={isVerified ? false : true}
                                 type="submit"
                                 variant="contained"
                                 fullWidth={true}

@@ -9,11 +9,11 @@ import { useMediaQuery, Button, MenuItem, Menu, Fade, Box, Drawer } from '@mui/m
 import { useState } from 'react';
 
 import { textMenuBlack } from './styles';
-import SignInPage from '../../../containers/AuthPage/SignInPage';
-import SignUpPage from '../../../containers/AuthPage/SignUpPage';
+import SignInPage from 'src/containers/auth/SignInPage';
+import SignUpPage from 'src/containers/auth/SignUpPage';
+import ProfilePage from 'src/containers/client/ProfilePage';
 import { useAppSelector, useAppDispatch } from '../../../hooks/redux.hook';
 import { authSlice } from '../../../store/reducers/AuthSlice';
-import ProfilePage from '../../../containers/ProfilePage';
 
 const AdminMenu = () => {
     const auth = useAppSelector((state) => state.authReducer);

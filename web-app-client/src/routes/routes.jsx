@@ -1,28 +1,27 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import AuthRoute from "../constants/addresses/routes/auth.route";
-import BuilderRoute from "../constants/addresses/routes/builder.route";
-import CompanyRoute from "../constants/addresses/routes/company.route";
-import MainRoute from "../constants/addresses/routes/main.route";
-import ManagerRoute, { ManagerRouteDefault } from "../constants/addresses/routes/manager.route";
-import BuilderAdminRoute, { BuilderAdminRouteDefault } from "../constants/addresses/routes/builder.admin.route";
-import AdminRoute, { AdminRouteDefault } from "../constants/addresses/routes/admin.route";
+import AuthRoute from "src/constants/addresses/routes/auth.route";
+import BuilderRoute from "src/constants/addresses/routes/builder.route";
+import CompanyRoute from "src/constants/addresses/routes/company.route";
+import MainRoute from "src/constants/addresses/routes/main.route";
+import ManagerRoute, { ManagerRouteDefault } from "src/constants/addresses/routes/manager.route";
+import BuilderAdminRoute, { BuilderAdminRouteDefault } from "src/constants/addresses/routes/builder.admin.route";
+import AdminRoute, { AdminRouteDefault } from "src/constants/addresses/routes/admin.route";
 
-import SignInPage from "../containers/AuthPage/SignInPage";
-import SignUpPage from "../containers/AuthPage/SignUpPage";
-import BuilderAdminPage from "src/containers/Builder/BuilderAdminPage";
-import CompanyPage from "../containers/CompanyPage";
-import HomePage from "../containers/HomePage";
-import ManagerPage from "../containers/Manager/ManagerPage";
-import AdminPage from "../containers/Admin/AdminPage";
-import ObjectSearchPage from "../containers/ObjectSearchPage";
-import ManagerListPage from "src/containers/Builder/BuilderAdminPage/containers/ManagerListPage";
-import ProjectListPage from "../containers/Builder/BuilderAdminPage/containers/ProjectListPage";
-import CreateProjectPage from "src/containers/Builder/BuilderAdminPage/containers/CreateProjectPage";
-import CreateObjectPage from "src/containers/Builder/BuilderAdminPage/containers/CreateObjectPage";
-import DeveloperEditPage from "../containers/Manager/DeveloperEditPage";
-import ProjectInfoPage from "src/containers/Builder/BuilderAdminPage/containers/ProjectInfoPage";
+import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
+import CompanyPage from "src/containers/client/CompanyPage";
+import HomePage from "src/containers/client/HomePage";
+import ManagerPage from "src/containers/manager/ManagerPage";
+import AdminPage from "src/containers/admin/AdminPage";
+import ObjectInfoPage from "src/containers/builder/manager/ObjectInfoPage";
+import ObjectSearchPage from "src/containers/client/ObjectSearchPage";
+import ManagerListPage from "src/containers/builder/admin/ManagerListPage";
+import ProjectListPage from "src/containers/builder/admin/ProjectListPage";
+import CreateProjectPage from "src/containers/builder/admin/CreateProjectPage";
+import CreateObjectPage from "src/containers/builder/admin/CreateObjectPage";
+import DeveloperEditPage from "src/containers/manager/DeveloperEditPage";
+import ProjectInfoPage from "src/containers/builder/admin/ProjectInfoPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {

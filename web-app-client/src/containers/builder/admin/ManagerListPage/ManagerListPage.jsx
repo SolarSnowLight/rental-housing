@@ -1,7 +1,7 @@
 import styles from './ManagerListPage.module.css';
 
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import ListItemComponent from '../../components/ListItemComponent';
+import ListItemComponent from 'src/components/ListItemComponent';
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { useNavigate } from 'react-router-dom';

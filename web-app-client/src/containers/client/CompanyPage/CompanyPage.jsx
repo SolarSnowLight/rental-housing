@@ -1,9 +1,9 @@
 import styles from './CompanyPage.module.css';
 
-import CompanyInfo from '../../components/Company/CompanyInfo/CompanyInfo';
-import MapComponent from '../../components/MapComponent';
+import CompanyInfo from 'src/components/Company/CompanyInfo/CompanyInfo';
+import MapComponent from 'src/components/MapComponent';
 import { useState } from 'react';
-import Filter from '../../components/Filter';
+import Filter from 'src/components/Filter';
 import { animated, useSpring } from '@react-spring/web';
 
 const CompanyPage = () => {

@@ -8,7 +8,7 @@ import ImageUploading from "react-images-uploading";
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { authSlice } from 'src/store/reducers/AuthSlice';
-import useHttp from '../../../../../hooks/http.hook';
+import useHttp from '../../../../hooks/http.hook';
 import CircularProgress from '@mui/material/CircularProgress';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
@@ -23,8 +23,14 @@ import cities from 'src/data/russian-cities.json';
 import DatePicker from 'react-datepicker';
 import { useDropzone } from 'react-dropzone';
 import MainApi from 'src/constants/addresses/apis/main.api';
-
+import { useNavigate } from 'react-router-dom';
+import MainRoute from 'src/constants/addresses/routes/main.route';
+import { MainRouteDefault } from 'src/constants/addresses/routes/main.route';
+import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
+import { animateScroll } from 'react-scroll';
 const CreateObjectPage = () => {
+    animateScroll.scrollToUp();
+
     // Section of working with the network over the HTTP protocol
     const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
@@ -32,6 +38,7 @@ const CreateObjectPage = () => {
     const { loading, request, error, clearError } = useHttp();
     const [modalActive, setModalActive] = useState(false);
     const [modalText, setModalText] = useState(null);
+    const navigate = useNavigate();
     const message = useMessageToastify();
 
     // The data section presented on the page
@@ -693,10 +700,16 @@ const CreateObjectPage = () => {
                             width: 'max-content'
                         }}
                     >
-                        <ButtonWhiteComponent style={{
-                            width: '17.8em',
-                            height: '100%',
-                        }} title={"Отмена"} />
+                        <ButtonWhiteComponent
+                            style={{
+                                width: '17.8em',
+                                height: '100%',
+                            }}
+                            clickHandler={() => {
+                                navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_create);
+                            }}
+                            title={"Отмена"}
+                        />
                     </div>
                     <div
                         style={{

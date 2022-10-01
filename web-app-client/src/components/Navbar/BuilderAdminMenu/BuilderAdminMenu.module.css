@@ -29,7 +29,6 @@
     width: 80%;
     height: 100%;
     grid-auto-flow: column;
-    column-gap: 10%;
     place-items: center;
 }
 
@@ -66,4 +65,22 @@
 
 .text-menu--black:hover{
     cursor: pointer;
+}
+
+.nav-menu__element {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.nav-menu__element__select {
+    display: grid;
+    background-color: #B4EFA6;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
 }

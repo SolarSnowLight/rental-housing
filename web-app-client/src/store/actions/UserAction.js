@@ -13,7 +13,6 @@ export const getUserCompany = () => async (dispatch) => {
     const originalRequest = async () => {
         const response = await apiMainServer.post(UserApi.get_user_company);
 
-        console.log(response.data);
         if (response.status != 200 && response.status != 201) {
             dispatch(userSlice.error(response.data.message));
             return;

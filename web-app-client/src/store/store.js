@@ -5,6 +5,7 @@ import configReducer from "../store/reducers/ConfigSlice";
 import adminReducer from "./reducers/AdminSlice";
 import userReducer from "./reducers/UserSlice";
 import companyReducer from "./reducers/CompanySlice";
+import projectReducer from "./reducers/ProjectSlice";
 import storageConfig from "../configs/store.config.json";
 
 import {
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
     configReducer,
     adminReducer,
     userReducer,
-    companyReducer
+    companyReducer,
+    projectReducer
 });
 
 const persistConfig = {

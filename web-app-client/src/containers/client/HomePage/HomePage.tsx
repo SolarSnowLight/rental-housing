@@ -13,7 +13,7 @@ import {toast} from "react-toastify";
 import RowSelect from "src/components/RowSelect";
 import {ArrowDownIc} from "src/components/icons";
 import MapComponent from 'src/components/MapComponent';
-import ListItem from "../../components/ClientListItem/ClientListItem";
+import ClientListItem from 'src/components/ClientListItem';
 
 import logoDefault from 'src/resources/images/logo-default.png'
 import buildingExample1 from 'src/resources/images/building-example-1.webp'
@@ -406,7 +406,7 @@ const HomePage = () => {
                 <Space h={24}/>
 
                 <div className={css.list}>
-                    { clients.map(it=><ListItem key={it.id} client={it} />) }
+                    { clients.map(it=><ClientListItem key={it.id} client={it} />) }
                 </div>
 
                 <Space h={24}/>

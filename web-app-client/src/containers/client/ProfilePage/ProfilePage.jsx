@@ -1,14 +1,14 @@
 import styles from './ProfilePage.module.css';
 
-import { root } from '../../styles';
-import { textStyleDefault } from '../../styles';
+import { root } from 'src/styles';
+import { textStyleDefault } from 'src/styles';
 
 import { Button } from '@mui/material';
-import { useAppSelector, useAppDispatch } from '../../hooks/redux.hook';
-import { authSlice } from '../../store/reducers/AuthSlice';
-import CircularIndeterminate from '../../components/CircularIndeterminate';
+import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
+import { authSlice } from 'src/store/reducers/AuthSlice';
+import CircularIndeterminate from 'src/components/CircularIndeterminate';
 import { useEffect } from 'react';
-import { useMessageToastify } from '../../hooks/message.toastify.hook';
+import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { authLogout } from 'src/store/actions/AuthAction';
 import { Navigate, useNavigate } from 'react-router-dom';
 import AdminRoute from 'src/constants/addresses/routes/admin.route';

@@ -9,17 +9,19 @@ import { useMediaQuery, Button, MenuItem, Menu, Fade, Box, Drawer } from '@mui/m
 import { useState } from 'react';
 
 import { textMenuBlack } from './styles';
-import SignInPage from '../../../containers/AuthPage/SignInPage';
-import SignUpPage from '../../../containers/AuthPage/SignUpPage';
+import SignInPage from 'src/containers/auth/SignInPage';
+import SignUpPage from 'src/containers/auth/SignUpPage';
+import ProfilePage from 'src/containers/client/ProfilePage';
 import { useAppSelector, useAppDispatch } from '../../../hooks/redux.hook';
 import { authSlice } from '../../../store/reducers/AuthSlice';
-import ProfilePage from '../../../containers/ProfilePage';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
+import BuilderAdminMenuItem from 'src/constants/menu/builder.admin.menu-item';
 
 const BuilderAdminMenu = () => {
     const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
+    const [currentPoint, setCurrentPoint] = useState(BuilderAdminMenuItem.company);
 
     const matches = useMediaQuery('(min-width: 850px)');
     const [stateCurrentPage, setStateCurrentPage] = useState({
@@ -29,14 +31,17 @@ const BuilderAdminMenu = () => {
     const navigate = useNavigate();
 
     const toCompany = () => {
+        setCurrentPoint(BuilderAdminMenuItem.company);
         navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.company);
     }
 
     const toManagerList = () => {
+        setCurrentPoint(BuilderAdminMenuItem.managers);
         navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.manager_list);
     }
 
     const toProjectList = () => {
+        setCurrentPoint(BuilderAdminMenuItem.projects);
         navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_list);
     }
 
@@ -99,29 +104,37 @@ const BuilderAdminMenu = () => {
                 matches && (
                     <>
                         <div className={styles["nav-menu-center__header"]}>
-                            <div>
+                            <div
+                                className={(currentPoint === BuilderAdminMenuItem.company ? styles["nav-menu__element__select"] : styles["nav-menu__element"])}
+                            >
                                 <span
                                     className={styles["text-menu--black"]}
                                     onClick={toCompany}
-                                >Компания</span>
+                                >{BuilderAdminMenuItem.company}</span>
                             </div>
-                            <div>
+                            <div
+                                className={(currentPoint === BuilderAdminMenuItem.projects ? styles["nav-menu__element__select"] : styles["nav-menu__element"])}
+                            >
                                 <span
                                     className={styles["text-menu--black"]}
                                     onClick={toProjectList}
-                                >Проекты</span>
+                                >{BuilderAdminMenuItem.projects}</span>
                             </div>
-                            <div>
+                            <div
+                                className={(currentPoint === BuilderAdminMenuItem.managers ? styles["nav-menu__element__select"] : styles["nav-menu__element"])}
+                            >
                                 <span
                                     className={styles["text-menu--black"]}
                                     onClick={toManagerList}
-                                >Менеджеры</span>
+                                >{BuilderAdminMenuItem.managers}</span>
                             </div>
-                            <div>
+                            <div
+                                className={(currentPoint === BuilderAdminMenuItem.messenger ? styles["nav-menu__element__select"] : styles["nav-menu__element"])}
+                            >
                                 <span
                                     className={styles["text-menu--black"]}
                                     onClick={toManagerList}
-                                >Чат</span>
+                                >{BuilderAdminMenuItem.messenger}</span>
                             </div>
                         </div>
                         <div className={styles["nav-block__header"]}>

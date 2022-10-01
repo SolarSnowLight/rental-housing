@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Autocomplete } from '@mui/material';
 
-import styles from './CreateProjectPage.module.css';
+import styles from './ProjectInfoPage.module.css';
 import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles';
 import ImageUploading from "react-images-uploading";
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { authSlice } from 'src/store/reducers/AuthSlice';
-import useHttp from '../../../../../hooks/http.hook';
+import useHttp from 'src/hooks/http.hook';
 import CircularProgress from '@mui/material/CircularProgress';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 import MapComponent from 'src/components/MapComponent';
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
-import CompanyApi from 'src/constants/addresses/apis/company.api.';
-import projectAction from 'src/store/actions/ProjectAction';
+import MainApi from 'src/constants/addresses/apis/main.api';
 
-const CreateProjectPage = () => {
+const ProjectInfoPage = () => {
+    window.scrollTo(0, 0);
+    
     // Section of working with the network over the HTTP protocol
-    const authSelector = useAppSelector((state) => state.authReducer);
-    const userSelector = useAppSelector((state) => state.userReducer);
-    const projectSelector = useAppSelector((state) => state.projectReducer);
+    const auth = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
+
+    const { state } = useLocation();
 
     const message = useMessageToastify();
 
@@ -37,9 +38,21 @@ const CreateProjectPage = () => {
 
     // The data section presented on the page
     const [btnDisabled, setBtnDisabled] = useState(true);
-    const [logo, setLogo] = useState([]);
+    const [logo, setLogo] = useState(
+        (state?.data.logo) ?
+            [
+                {
+                    data_url: `${MainApi.main_server}/${state.data.logo}`
+                }
+            ]
+            :
+            []
+    );
+
     const [form, setForm] = useState({
-        title: '', description: '', managers: [],
+        title: state?.data.title, 
+        description: state?.data.description,
+        managers: state?.data.managers
     });
 
     // Event Handlers Section
@@ -49,27 +62,6 @@ const CreateProjectPage = () => {
 
     const changeHandler = (key, value) => {
         setForm({ ...form, [key]: value });
-    };
-
-    const createProjectHandler = async () => {
-        const response = await request(CompanyApi.create_project, 'POST', JSON.stringify({ ...form, uuid: userSelector.company?.uuid }));
-
-        if (response.message) {
-            message(response.message, "error");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('logo', logo[0].file);
-        formData.append('uuid', response.uuid);
-
-        const responseImage = await request(CompanyApi.project_add_logo, 'POST', formData, {}, true);
-        if (response.message) {
-            message(response.message, "error");
-            return;
-        }
-
-        message("Проект создан успешно!", "success");
     };
 
     // Data section of functional operation of components
@@ -108,7 +100,7 @@ const CreateProjectPage = () => {
             let countExists = 0;
 
             for (var key of Object.keys(form)) {
-                if (form[key]?.length > 0) {
+                if (form[key].length > 0) {
                     countExists++;
                 }
             }
@@ -129,7 +121,7 @@ const CreateProjectPage = () => {
         <div className={styles["wrapper-section"]}>
             <div className={styles["wrapper-section__item"]}>
                 <div>
-                    <span className='span__text__black-h3'>Создание проекта</span>
+                    <span className='span__text__black-h3'>Информация о проекте</span>
                 </div>
                 <div className={styles["wrapper-section__item-element__column"]}>
                     <div>
@@ -216,10 +208,11 @@ const CreateProjectPage = () => {
                                 <TextField
                                     required
                                     id="outlined-required"
-                                    placeholder="Название проекта"
+                                    placeholder="Название компании"
                                     onChange={(e) => {
                                         changeHandler("title", e.target.value);
                                     }}
+                                    defaultValue={form.title}
                                     sx={{
                                         borderRadius: '0px !important',
                                         border: 'none',
@@ -242,8 +235,8 @@ const CreateProjectPage = () => {
                             </div>
                             <div>
                                 <Autocomplete
-                                    id="tags-outlined"
                                     multiple
+                                    id="tags-outlined"
                                     open={open}
                                     onOpen={() => {
                                         setOpen(true);
@@ -251,12 +244,13 @@ const CreateProjectPage = () => {
                                     onClose={() => {
                                         setOpen(false);
                                     }}
+                                    defaultValue={form.managers}
                                     getOptionLabel={(option) => option.email}
                                     isOptionEqualToValue={(option, value) => option.email === value.email}
                                     options={options}
                                     loading={loadingAutocomplete}
                                     onChange={(e, value) => {
-                                        changeHandler("managers", value);
+                                        changeHandler("admin", value.email);
                                     }}
                                     renderInput={(params) => (
                                         <TextField
@@ -303,7 +297,7 @@ const CreateProjectPage = () => {
                                 onChange={(e) => {
                                     changeHandler("description", e.target.value);
                                 }}
-
+                                defaultValue={form.description}
                                 sx={{
                                     width: '100%',
                                     height: '100%',
@@ -344,10 +338,7 @@ const CreateProjectPage = () => {
                 <div className={styles["wrapper-section__item__map-element"]}>
                     <div className={styles["grid-item__left"]}></div>
                     <div className={styles["grid-item__right"]}>
-                        <ButtonGreenComponent
-                            title="Создать проект"
-                            clickHandler={createProjectHandler}
-                        />
+                        <ButtonGreenComponent title="Сохранить изменения" />
                     </div>
                 </div>
             </div>
@@ -355,4 +346,4 @@ const CreateProjectPage = () => {
     )
 }
 
-export default CreateProjectPage;
+export default ProjectInfoPage;
