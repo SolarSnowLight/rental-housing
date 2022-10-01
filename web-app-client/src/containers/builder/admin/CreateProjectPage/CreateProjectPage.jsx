@@ -104,25 +104,10 @@ const CreateProjectPage = () => {
         }
     }, [open]);
 
-    /*useEffect(() => {
-        if (btnDisabled) {
-            let countExists = 0;
-
-            for (var key of Object.keys(projectSelector)) {
-                if (form[key]?.length > 0) {
-                    countExists++;
-                }
-            }
-
-            if (countExists >= 1) {
-                setBtnDisabled(false);
-            }
-        }
-    }, [form]);*/
-
     // Navigation functions section
     const navigate = useNavigate();
     const toCreateObject = () => {
+        window.scrollTo(0, 0);
         navigate(BuilderAdminRoute.builder_admin + "/" + BuilderAdminRoute.project_add_object);
     }
 

@@ -2,7 +2,7 @@ import Map, { Marker, Source, Layer } from 'react-map-gl';
 import { useAppSelector } from '../../hooks/redux.hook';
 import ButtonGreenComponent from '../ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from '../ui/buttons/ButtonWhiteComponent';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -16,9 +16,20 @@ const MapSelectComponent = ({ city, style, setActive, setLatLng }) => {
         longitude: parseFloat(city.coords.lon),
         latitude: parseFloat(city.coords.lat),
     });
+    const [viewport, setViewport] = useState({
+        longitude: parseFloat(city.coords.lon),
+        latitude: parseFloat(city.coords.lat)
+    });
 
     const [clickMarker, setClickMarker] = useState(false);
     const configSlice = useAppSelector(store => store.configReducer);
+
+    useEffect(() => {
+        setMarkerLatLng({
+            longitude: parseFloat(city.coords.lon),
+            latitude: parseFloat(city.coords.lat),
+        });
+    }, [city]);
 
     return (
         <div className={styles['map-wrapper']}>
@@ -31,8 +42,8 @@ const MapSelectComponent = ({ city, style, setActive, setLatLng }) => {
             </div>
             <Map
                 initialViewState={{
-                    latitude: markerLatLng.latitude,
-                    longitude: markerLatLng.longitude,
+                    longitude: parseFloat(city.coords.lon),
+                    latitude: parseFloat(city.coords.lat),
                     zoom: zoom
                 }}
                 style={{
@@ -99,7 +110,7 @@ const MapSelectComponent = ({ city, style, setActive, setLatLng }) => {
                     />
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

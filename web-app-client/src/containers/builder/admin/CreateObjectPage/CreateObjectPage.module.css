@@ -66,3 +66,17 @@
   grid-auto-flow: column;
   gap: 16px;
 }
+
+.btn-img-delete {
+  display: grid;
+  grid-auto-flow: row;
+  width: max-content;
+}
+
+.div-upload_image_wrapper {
+  display: grid;
+  grid-auto-flow: row;
+  width: min-content;
+  height: max-content;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}

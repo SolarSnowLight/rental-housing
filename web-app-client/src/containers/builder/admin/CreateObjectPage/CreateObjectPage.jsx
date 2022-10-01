@@ -20,7 +20,7 @@ import TextFieldComponent from 'src/components/ui/textfields/TextFieldComponent'
 import LabelSelectComponent from 'src/components/LabelSelectComponent';
 import MapSelectComponent from 'src/components/MapSelectComponent';
 import cities from 'src/data/russian-cities.json';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
 import { useDropzone } from 'react-dropzone';
 import MainApi from 'src/constants/addresses/apis/main.api';
 import { useNavigate } from 'react-router-dom';
@@ -28,8 +28,11 @@ import MainRoute from 'src/constants/addresses/routes/main.route';
 import { MainRouteDefault } from 'src/constants/addresses/routes/main.route';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 import { animateScroll } from 'react-scroll';
+import ru from "date-fns/locale/ru";
+registerLocale("ru", ru);
+
 const CreateObjectPage = () => {
-    animateScroll.scrollToUp();
+    // animateScroll.scrollToTop();
 
     // Section of working with the network over the HTTP protocol
     const auth = useAppSelector((state) => state.authReducer);
@@ -220,6 +223,7 @@ const CreateObjectPage = () => {
                             <span className='span__text__gray'>Фото *</span>
                             <div>
                                 <ImageUploading
+                                    multiple
                                     value={logo}
                                     onChange={onChangeImage}
                                     dataURLKey="data_url"
@@ -233,7 +237,7 @@ const CreateObjectPage = () => {
                                         isDragging,
                                         dragProps,
                                     }) => (
-                                        <div>
+                                        <div className={styles["div-upload_image_wrapper"]}>
                                             <button
                                                 className={styles["upload_image_wrapper"]}
                                                 style={{
@@ -251,6 +255,8 @@ const CreateObjectPage = () => {
                                                         <img
                                                             src={image.data_url}
                                                             alt=""
+                                                            width="11em"
+                                                            height="11em"
                                                             className={styles["upload_image"]}
                                                         />
                                                         <Button
@@ -263,7 +269,7 @@ const CreateObjectPage = () => {
                                                                 fontSize: '14px !important',
                                                                 borderRadius: '0px !important',
                                                                 border: '1px solid #424041 !important',
-                                                                width: 'max-content',
+                                                                width: '100%',
                                                                 height: '2em',
                                                                 ...textStyleDefault,
                                                                 ":hover": {
@@ -271,7 +277,7 @@ const CreateObjectPage = () => {
                                                                     fontSize: '14px !important',
                                                                     borderRadius: '0px !important',
                                                                     border: '1px solid #424041 !important',
-                                                                    width: 'max-content',
+                                                                    width: '100%',
                                                                     height: '2em',
                                                                     ...textStyleDefault,
                                                                 }
@@ -322,7 +328,7 @@ const CreateObjectPage = () => {
                                 getOptionLabel={(option) => `${option.name}, ${option.district}, ${option.subject}`}
                                 options={cityOptions}
                                 loading={loading}
-                                defaultValue={city}
+                                value={city}
                                 onChange={(e, value) => {
                                     setCity(value);
                                 }}
@@ -389,6 +395,7 @@ const CreateObjectPage = () => {
                         <div>
                             <span className='span__text__gray'>Дата сдачи</span>
                             <DatePicker
+                                locale="ru"
                                 selected={form.date_end}
                                 onChange={(date) => changeHandler("date_end", date)}
                                 customInput={
@@ -706,6 +713,7 @@ const CreateObjectPage = () => {
                                 height: '100%',
                             }}
                             clickHandler={() => {
+                                window.scrollTo(0, 0);
                                 navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_create);
                             }}
                             title={"Отмена"}
