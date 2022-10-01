@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AdminPage.module.css';
-import { textStyleDefault } from '.src/styles';
+import { textStyleDefault } from 'src/styles';
 import { Button, TextField } from '@mui/material';
 import { root } from 'src/styles';
 import ImageUploading from "react-images-uploading";
