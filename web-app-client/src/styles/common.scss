@@ -21,6 +21,10 @@
     display: flex;
     flex-flow: column nowrap;
 }
+@mixin col{
+    display: flex;
+    flex-flow: column nowrap;
+}
 .center {
     display: grid;
     place-items: center;

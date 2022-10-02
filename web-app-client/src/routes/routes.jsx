@@ -9,23 +9,24 @@ import ManagerRoute, { ManagerRouteDefault } from "../constants/addresses/routes
 import BuilderAdminRoute, { BuilderAdminRouteDefault } from "../constants/addresses/routes/builder.admin.route";
 import AdminRoute, { AdminRouteDefault } from "../constants/addresses/routes/admin.route";
 
-import SignInPage from "../containers/AuthPage/SignInPage";
-import SignUpPage from "../containers/AuthPage/SignUpPage";
-import BuilderAdminPage from "src/containers/Builder/BuilderAdminPage";
-import CompanyPage from "../containers/CompanyPage";
-import HomePage from "../containers/HomePage";
-import ManagerPage from "../containers/Manager/ManagerPage";
-import AdminPage from "../containers/Admin/AdminPage";
-import ObjectSearchPage from "../containers/ObjectSearchPage";
-import ManagerListPage from "src/containers/Builder/BuilderAdminPage/containers/ManagerListPage";
-import ProjectListPage from "../containers/Builder/BuilderAdminPage/containers/ProjectListPage";
-import CreateProjectPage from "src/containers/Builder/BuilderAdminPage/containers/CreateProjectPage";
-import CreateObjectPage from "src/containers/Builder/BuilderAdminPage/containers/CreateObjectPage";
-import DeveloperEditPage from "../containers/Manager/DeveloperEditPage";
+import SignInPage from "../containers/auth/SignInPage";
+import SignUpPage from "../containers/auth/SignUpPage";
+import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
+import CompanyPage from "../containers/client/CompanyPage";
+import HomePage from "../containers/client/HomePage";
+import ManagerPage from "../containers/manager/ManagerPage";
+import AdminPage from "../containers/admin/AdminPage";
+import ObjectSearchPage from "../containers/client/ObjectSearchPage";
+import ManagerListPage from "src/containers/builder/admin/BuilderAdminPage/containers/ManagerListPage";
+import ProjectListPage from "../containers/builder/admin/BuilderAdminPage/containers/ProjectListPage";
+import CreateProjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateProjectPage";
+import CreateObjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateObjectPage";
+import DeveloperEditPage from "../containers/manager/DeveloperEditPage";
 import {BuilderManagerRoutes} from "../constants/addresses/routes/builder.manager.routes";
-import ClientList from "../containers/Builder/Manager/ClientListPage";
-import BuilderManagerDefaultPage from "../containers/Builder/Manager/Default";
-import ObjectInfoPage from "../containers/Builder/Manager/ObjectInfoPage";
+import ClientList from "../containers/builder/manager/ClientListPage";
+import BuilderManagerDefaultPage from "../containers/builder/manager/ManagerPage";
+import ObjectInfoPage from "../containers/builder/manager/ObjectInfoPage";
+import DeveloperStatistics from "src/containers/manager/DeveloperStatistics/DeveloperStatistics";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -52,9 +53,10 @@ const useRoutes = (isAuthenticated) => {
         <Routes>
             {useBaseRoutes()}
             <Route path={AdminRouteDefault} element={<AdminPage />} />
-            <Route path={ManagerRouteDefault} >
+            <Route path={ManagerRouteDefault}>
                 <Route path={ManagerRouteDefault} element={<ManagerPage/>} />
                 <Route path={ManagerRoute.developerEdit} element={<DeveloperEditPage/>} />
+                <Route path={ManagerRoute.developersStatistics} element={<DeveloperStatistics/>} />
             </Route>
 
 
@@ -67,7 +69,7 @@ const useRoutes = (isAuthenticated) => {
                 <Route path={BuilderAdminRoute.project_add_object} element={<CreateObjectPage />} />
             </Route>
 
-            <Route path={BuilderManagerRoutes.common} >
+            <Route path={BuilderManagerRoutes.common}>
                 <Route path={BuilderManagerRoutes.default} element={<BuilderManagerDefaultPage/>} />
                 <Route path={BuilderManagerRoutes.clients} element={<ClientList/>} />
                 <Route path={BuilderManagerRoutes.objectInfo} element={<ObjectInfoPage/>} />

@@ -1,6 +1,6 @@
 
 
-// Builder Manager Routes
+// builder manager Routes
 const common = 'builder/manager'
 export const BuilderManagerRoutes = {
     common: common,
