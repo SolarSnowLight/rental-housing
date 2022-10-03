@@ -18,14 +18,14 @@ const round = (n:number, scale:number = 0) => {
     const mult = (n<0?-1:1) * 10**scale
     return Math.round(n * mult) / mult
 }
-const numberToString = (n: number) => {
+const numberToPlainString = (n: number) => {
     return n.toLocaleString(
         ['fullwide', 'en-Us'],
         { useGrouping: false, maximumSignificantDigits: 21 }
     )
 }
 const getPercent = (value: number, total: number, scale: number = 1) => {
-    return utils.numberToString(utils.round(value*100/total,scale))
+    return utils.numberToPlainString(utils.round(value*100/total,scale))
 }
 
 
@@ -36,7 +36,7 @@ const isArray = <T,E>(obj: T|E[]): obj is Array<E> => obj instanceof Array
 export const utils = {
     readAsUrl,
     round,
-    numberToString,
+    numberToPlainString,
     getPercent,
     isArray,
 }

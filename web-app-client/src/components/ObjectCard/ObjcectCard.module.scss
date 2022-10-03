@@ -18,7 +18,7 @@
     display: grid;
     place-items: center;
 }
-.centerV {
+.centerStart {
     display: grid;
     place-items: center start;
 }
@@ -69,7 +69,7 @@
 
         .name {
             grid-area: name;
-            @extend .centerV;
+            @extend .centerStart;
             height: 31px;
             font: 500 24px var(--font-family-text);
             letter-spacing: 0.05em;
@@ -78,7 +78,7 @@
 
         .dev {
             grid-area: dev;
-            @extend .centerV;
+            @extend .centerStart;
             height: 27px;
             font: 500 18px var(--font-family-text);
             letter-spacing: 0.05em;
@@ -87,7 +87,7 @@
 
         .addr {
             grid-area: addr;
-            @extend .centerV;
+            @extend .centerStart;
             height: 27px;
             font: 500 18px var(--font-family-text);
             letter-spacing: 0.05em;

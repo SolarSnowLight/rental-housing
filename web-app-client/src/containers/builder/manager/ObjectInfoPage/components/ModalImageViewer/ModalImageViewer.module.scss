@@ -1,0 +1,18 @@
+
+
+@use 'src/styles/common';
+
+
+.transparent {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+}
+
+.card {
+    border-radius: 10px;
+    background: white;
+    position: fixed;
+    top: 30px; right: 40px; bottom: 30px; left: 40px;
+}

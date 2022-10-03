@@ -1,46 +1,6 @@
 
 
-
-
-.allDefault {
-    all: unset;
-    box-sizing: border-box;
-    margin: 0;
-}
-* {
-    box-sizing: border-box;
-    margin: 0;
-}
-.row {
-    display: flex;
-    flex-flow: row nowrap;
-}
-.rowWrap {
-    display: flex;
-    flex-flow: row wrap;
-}
-.col {
-    display: flex;
-    flex-flow: column nowrap;
-}
-.center {
-    display: grid;
-    place-items: center;
-}
-.centerV {
-    display: grid;
-    place-items: center start;
-}
-.abs {
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-}
-
-.pageElement {
-    width: clamp(400px, 100%, 1920px);
-    padding: 0 64px 0 64px;
-}
-
+@use 'src/styles/common';
 
 
 
@@ -51,11 +11,14 @@
     background: #F8F8F8;
     @extend .center;
 }
-
 .pageFrame {
     @extend .col;
     align-items: center;
     width: 100%;
+}
+.pageElement {
+    width: clamp(400px, 100%, 1920px);
+    padding: 0 64px 0 64px;
 }
 
 
@@ -72,21 +35,20 @@
 
 .pageTopContainer {
     @extend .pageElement;
-    display: flex;
-    flex-flow: row wrap;
-    gap: 66px;
+    @extend .rowWrap;
+    gap: 64px;
+    justify-content: space-between;
 
     .photosContainer {
         @extend .col;
         min-width: 400px;
-        flex-grow: 1;
 
         .objectName {
             font: 900 48px var(--font-family-text);
             color: black;
         }
 
-        .developer {
+        .developerAndAddress {
             @extend .rowWrap;
             justify-content: space-between;
             gap: 8px 200px;
@@ -103,39 +65,35 @@
         }
 
 
-        .restCounterBox{
-            position: relative;
+        .imagesContainer {
+            width: calc(401px + 16px + 401px); height: fit-content;
+            @extend .rowWrap;
+            gap: 16px;
+        }
+
+        .imageFrame {
             @extend .center;
-            &>*{
-                grid-area: 1 / 1 / 2 / 2;
+            grid: 'center' fit-content / fit-content;
+
+            .normalImage {
+                grid-area: center;
+                width: 401px; height: 285px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                cursor: pointer;
+            }
+            .smallImage {
+                @extend .normalImage;
+                width: 262px; height: 151px;
             }
 
-            .count{
+            .count {
+                grid-area: center;
                 font: 500 36px var(--font-family-text);
                 color: black;
             }
         }
-
-        .photo {
-            width: 400px; height: 285px;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-        .bigPhotos {
-            @extend .rowWrap;
-            gap: 16px;
-        }
-        .smallPhotos {
-            margin-top: 16px;
-            @extend .rowWrap;
-            gap: 16px;
-
-            .photo {
-                width: 262px; height: 151px;
-            }
-        }
-
     }
 
     .infoContainer {
