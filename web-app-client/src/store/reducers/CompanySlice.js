@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 /* Base state for current slice */
 const initialState = {
-    projects: null,
-    managers: null,
+    projects: [],
+    managers: [],
     isLoading: false,
     error: ""
 };
@@ -27,12 +27,15 @@ export const companySlice = createSlice({
         },
 
         clear(state){
-            state.projects = null;
+            state.projects = [];
+            state.managers = [];
             state.isLoading = false;
             state.error = "";
         },
+        
         clearData(state) {
-            state.projects = null;
+            state.projects = [];
+            state.managers = [];
             state.isLoading = false;
             state.error = "";
         },

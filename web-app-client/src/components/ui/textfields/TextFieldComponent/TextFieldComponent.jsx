@@ -1,5 +1,8 @@
+/* Libraries */
 import React from 'react';
 import { TextField } from '@mui/material';
+
+/* Styles */
 import styles from './TextFieldComponent.module.css';
 
 const TextFieldComponent = ({ value = "", headerVisible = true, title = "", changeHandler = () => { } }) => {

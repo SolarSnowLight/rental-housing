@@ -1,10 +1,13 @@
 /* Libraries */
-import { useState, useEffect, createRef } from "react";
-import { TextField, Button, InputAdornment, IconButton } from '@mui/material';
+import React, { useState, useEffect, createRef } from "react";
+import { styled } from '@mui/material/styles';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useForm, Controller, useFormState } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useForm, Controller, SubmitHandler, useFormState } from "react-hook-form";
+import { TextField, Button, InputAdornment, IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { borderRadius } from '@mui/system';
 
 /* Context */
 import { authSignIn } from 'src/store/actions/AuthAction';
@@ -25,9 +28,10 @@ import UserPanelValue from "src/constants/values/user.panel.value";
 
 /* Styles */
 import { root, textStyleDefault } from 'src/styles';
-import styles from './SignInPage.module.css';
+import styles from './RecoverPasswordPage.module.css';
 
-const SignInPage = ({ setStateCurrentPage }) => {
+/* Functional component for recover password user */
+const RecoverPasswordPage = ({ setStateCurrentPage }) => {
     const authSelector = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
@@ -39,12 +43,6 @@ const SignInPage = ({ setStateCurrentPage }) => {
     const [showIcon, setShowIcon] = useState({
         showPassword: false,
     });
-
-    const handleClickShowPassword = () => {
-        setShowIcon({
-            showPassword: !showIcon.showPassword,
-        });
-    };
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -73,7 +71,7 @@ const SignInPage = ({ setStateCurrentPage }) => {
 
             <div className={styles["auth-block__content"]}>
                 <div>
-                    <span className={styles["auth-block-text__header"]} >Вход</span>
+                    <span className={styles["auth-block-text__header"]} >Восстановление пароля</span>
                 </div>
                 <div>
                     <form className="auth-form__form" onSubmit={handleSubmit(onSubmit)}>
@@ -109,62 +107,16 @@ const SignInPage = ({ setStateCurrentPage }) => {
                                 )}
                             />
                         </div>
-                        <div className={styles["auth-form-input__form"]} style={{ marginTop: '2em' }}>
-                            <Controller
-                                control={control}
-                                name="password"
-                                rules={passwordValidation}
-                                defaultValue={''}
-                                render={({ field }) => (
-                                    <TextField
-                                        required
-                                        label="Пароль"
-                                        variant="outlined"
-                                        type={showIcon.showPassword ? "text" : "password"}
-                                        onChange={(e) => field.onChange(e)}
-                                        value={field.value}
-                                        error={!!errors.password?.message}
-                                        helperText={errors.password?.message}
-                                        sx={{
-                                            borderRadius: '0px !important',
-                                            border: 'none',
-                                            width: '100%',
-                                            '&:hover fieldset': {
-                                                border: '1px solid #424041 !important',
-                                                borderRadius: '0px'
-                                            },
-                                            'fieldset': {
-                                                border: '1px solid #424041 !important',
-                                                borderRadius: '0px'
-                                            },
-                                        }}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleClickShowPassword}
-                                                        onMouseDown={handleMouseDownPassword}
-                                                    >
-                                                        {showIcon.showPassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                    />
-                                )}
-                            />
-                        </div>
                         <div className={styles["auth-form-recover__form"]}>
                             <span
                                 className={styles["auth-form-recover-link__form"]}
                                 onClick={() => {
                                     setStateCurrentPage({
-                                        "value": UserPanelValue.recover_password
+                                        "value": UserPanelValue.sign_in
                                     });
                                 }}
                             >
-                                Восстановить пароль
+                                Назад
                             </span>
                         </div>
                         <div className={styles["auth-form-btn__form"]}>
@@ -200,27 +152,14 @@ const SignInPage = ({ setStateCurrentPage }) => {
                                     }
                                 }}
                             >
-                                Войти
+                                Далее
                             </Button>
                         </div>
                     </form>
-                </div>
-                <div className={styles["auth-form-register__form"]}>
-                    <div>
-                        <span className={styles["auth-form-text-gray__form"]} >Ещё нет аккаунта?</span>
-                        <span
-                            className={styles["auth-form-text-black__form"]}
-                            onClick={() => {
-                                setStateCurrentPage({
-                                    "value": UserPanelValue.sign_up
-                                });
-                            }}
-                        > Зарегистрироваться</span>
-                    </div>
                 </div>
             </div>
         </div>
     );
 }
 
-export default SignInPage;
+export default RecoverPasswordPage;

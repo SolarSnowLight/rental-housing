@@ -1,29 +1,34 @@
-import Map, { Marker, Source, Layer } from 'react-map-gl';
-import { useAppSelector } from '../../hooks/redux.hook';
-import ButtonGreenComponent from '../ui/buttons/ButtonGreenComponent';
-import ButtonWhiteComponent from '../ui/buttons/ButtonWhiteComponent';
+/* Libraries */
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import Map, { Marker, Source, Layer } from 'react-map-gl';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
+
+/* Context */
+import { useAppSelector } from '../../hooks/redux.hook';
+
+/* Components */
+import ButtonGreenComponent from '../ui/buttons/ButtonGreenComponent';
+import ButtonWhiteComponent from '../ui/buttons/ButtonWhiteComponent';
+
+/* Constants */
 import cities from "src/data/russian-cities.json";
 
+/* Styles */
 import styles from './MapSelectComponent.module.css';
 
+/* Component for selectiong a marker on the map  */
 const MapSelectComponent = ({ city, style, setActive, setLatLng }) => {
+    // States
     const [zoom, setZoom] = useState(14);
     const [markerLatLng, setMarkerLatLng] = useState({
         longitude: parseFloat(city.coords.lon),
         latitude: parseFloat(city.coords.lat),
     });
-    const [viewport, setViewport] = useState({
-        longitude: parseFloat(city.coords.lon),
-        latitude: parseFloat(city.coords.lat)
-    });
-
     const [clickMarker, setClickMarker] = useState(false);
-    const configSlice = useAppSelector(store => store.configReducer);
 
+    // Updating the coordinates of the marker when it is moved
     useEffect(() => {
         setMarkerLatLng({
             longitude: parseFloat(city.coords.lon),

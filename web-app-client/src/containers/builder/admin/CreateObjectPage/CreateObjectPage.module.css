@@ -69,14 +69,14 @@
 
 .btn-img-delete {
   display: grid;
-  grid-auto-flow: row;
+  grid-auto-flow: column;
   width: max-content;
 }
 
 .div-upload_image_wrapper {
   display: grid;
   grid-auto-flow: row;
-  width: min-content;
+  width: 100%;
   height: max-content;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, 22em);
 }

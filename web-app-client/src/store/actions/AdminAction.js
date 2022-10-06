@@ -13,7 +13,12 @@ export const adminGetAllUser = (access_token) => async (dispatch) => {
 
         const response = await apiMainServer.post(
             AdminApi.get_all_users,
-            null
+            null,
+            {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`
+                }
+            }
         );
 
         if (response.status != 200 && response.status != 201) {
@@ -29,7 +34,7 @@ export const adminGetAllUser = (access_token) => async (dispatch) => {
 }
 
 /* Function for create new company */
-export const adminCreateCompany = (data) => async (dispatch) => {
+export const adminCreateCompany = (access_token, data) => async (dispatch) => {
     try {
         dispatch(adminSlice.actions.loading());
 
@@ -48,7 +53,12 @@ export const adminCreateCompany = (data) => async (dispatch) => {
 
         const response = await apiMainServer.post(
             (MainApi.main_server + AdminApi.create_company),
-            formData
+            formData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`
+                }
+            }
         );
 
         if (response.status != 200 && response.status != 201) {

@@ -5,15 +5,23 @@ import AdminApi from "src/constants/addresses/apis/admin.api";
 import CompanyApi from "src/constants/addresses/apis/company.api.";
 
 /* Get all projects for define company */
-const getAllProjectsByCompany = (uuid, add = false, count = 0, limit = 10) => async (dispatch) => {
+const getAllProjectsByCompany = (access_token, uuid, add = false, count = 0, limit = 10) => async (dispatch) => {
     try {
         dispatch(companySlice.actions.loading());
 
-        const response = await apiMainServer.post(CompanyApi.get_all_projects, JSON.stringify({
-            uuid: uuid,
-            count: count,
-            limit: limit
-        }));
+        const response = await apiMainServer.post(
+            CompanyApi.get_all_projects,
+            JSON.stringify({
+                uuid: uuid,
+                count: count,
+                limit: limit
+            }),
+            {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`
+                }
+            }
+        );
 
         if (response.status != 200 && response.status != 201) {
             dispatch(companySlice.actions.clearData());
@@ -33,15 +41,23 @@ const getAllProjectsByCompany = (uuid, add = false, count = 0, limit = 10) => as
 }
 
 /* Get all managers for define company */
-const getAllManagersByCompany = (uuid, add = false, count = 0, limit = 10) => async (dispatch) => {
+const getAllManagersByCompany = (access_token, uuid, add = false, count = 0, limit = 10) => async (dispatch) => {
     try {
         dispatch(companySlice.actions.loading());
 
-        const response = await apiMainServer.post(CompanyApi.get_all_managers, JSON.stringify({
-            uuid: uuid,
-            count: count,
-            limit: limit
-        }));
+        const response = await apiMainServer.post(
+            CompanyApi.get_all_managers,
+            JSON.stringify({
+                uuid: uuid,
+                count: count,
+                limit: limit
+            }),
+            {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`
+                }
+            }
+        );
 
         if (response.status != 200 && response.status != 201) {
             dispatch(companySlice.actions.clearData());

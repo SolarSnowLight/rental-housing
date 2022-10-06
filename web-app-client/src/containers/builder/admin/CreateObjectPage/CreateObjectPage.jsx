@@ -1,35 +1,45 @@
+/* Libraries */
 import React, { useState, useEffect, useCallback } from 'react';
 import { TextField, Button, Autocomplete } from '@mui/material';
-
-import styles from './CreateObjectPage.module.css';
-import { textStyleDefault } from 'src/styles';
-import { root } from 'src/styles';
 import ImageUploading from "react-images-uploading";
-import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
-import { useMessageToastify } from 'src/hooks/message.toastify.hook';
-import { authSlice } from 'src/store/reducers/AuthSlice';
-import useHttp from '../../../../hooks/http.hook';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import { useDropzone } from 'react-dropzone';
 import CircularProgress from '@mui/material/CircularProgress';
-import AdminApi from 'src/constants/addresses/apis/admin.api';
+import { useNavigate } from 'react-router-dom';
+
+/* Context */
+import { authSlice } from 'src/store/reducers/AuthSlice';
+
+/* Components */
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import CompanyInfo from 'src/components/Company/CompanyInfo/CompanyInfo';
 import ProjectInfo from 'src/components/Company/ProjectInfo/ProjectInfo';
 import TemplateTable from 'src/components/TemplateTable';
 import TextFieldComponent from 'src/components/ui/textfields/TextFieldComponent';
 import LabelSelectComponent from 'src/components/LabelSelectComponent';
 import MapSelectComponent from 'src/components/MapSelectComponent';
-import cities from 'src/data/russian-cities.json';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import { useDropzone } from 'react-dropzone';
+
+
+/* Images */
+import cross from 'src/resources/images/cross.svg';
+import update from 'src/resources/images/update.svg';
+
+/* Hooks */
+import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
+import { useMessageToastify } from 'src/hooks/message.toastify.hook';
+import useHttp from '../../../../hooks/http.hook';
+
+/* Constants */
 import MainApi from 'src/constants/addresses/apis/main.api';
-import { useNavigate } from 'react-router-dom';
-import MainRoute from 'src/constants/addresses/routes/main.route';
-import { MainRouteDefault } from 'src/constants/addresses/routes/main.route';
+import AdminApi from 'src/constants/addresses/apis/admin.api';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
-import { animateScroll } from 'react-scroll';
-import ru from "date-fns/locale/ru";
-registerLocale("ru", ru);
+import cities from 'src/data/russian-cities.json';
+
+/* Styles */
+import styles from './CreateObjectPage.module.css';
+import { textStyleDefault } from 'src/styles';
+import { root } from 'src/styles';
+import ImageUpload from 'src/components/ImageUpload';
 
 const CreateObjectPage = () => {
     // animateScroll.scrollToTop();
@@ -219,80 +229,12 @@ const CreateObjectPage = () => {
                 </div>
                 <div className={styles["block__item"]}>
                     <div className={styles["block__item-element"]}>
-                        <div>
-                            <span className='span__text__gray'>Фото *</span>
-                            <div>
-                                <ImageUploading
-                                    multiple
-                                    value={logo}
-                                    onChange={onChangeImage}
-                                    dataURLKey="data_url"
-                                >
-                                    {({
-                                        imageList,
-                                        onImageUpload,
-                                        onImageRemoveAll,
-                                        onImageUpdate,
-                                        onImageRemove,
-                                        isDragging,
-                                        dragProps,
-                                    }) => (
-                                        <div className={styles["div-upload_image_wrapper"]}>
-                                            <button
-                                                className={styles["upload_image_wrapper"]}
-                                                style={{
-                                                    display: logo.length > 0 ? "none" : "block",
-                                                }}
-
-                                                onClick={onImageUpload}
-                                                {...dragProps}
-                                            >
-                                                <span className='span__text__gray'>Добавить фото</span>
-                                            </button>
-                                            {imageList.map((image, index) => {
-                                                return (
-                                                    <div key={index} className={styles["btn-img-delete"]}>
-                                                        <img
-                                                            src={image.data_url}
-                                                            alt=""
-                                                            width="11em"
-                                                            height="11em"
-                                                            className={styles["upload_image"]}
-                                                        />
-                                                        <Button
-                                                            onClick={() => {
-                                                                onImageRemove(index);
-                                                            }}
-                                                            sx={{
-                                                                marginTop: '1em',
-                                                                backgroundColor: root.colorGreen,
-                                                                fontSize: '14px !important',
-                                                                borderRadius: '0px !important',
-                                                                border: '1px solid #424041 !important',
-                                                                width: '100%',
-                                                                height: '2em',
-                                                                ...textStyleDefault,
-                                                                ":hover": {
-                                                                    backgroundColor: root.colorGreen,
-                                                                    fontSize: '14px !important',
-                                                                    borderRadius: '0px !important',
-                                                                    border: '1px solid #424041 !important',
-                                                                    width: '100%',
-                                                                    height: '2em',
-                                                                    ...textStyleDefault,
-                                                                }
-                                                            }}
-                                                        >
-                                                            Удалить
-                                                        </Button>
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    )}
-                                </ImageUploading>
-                            </div>
-                        </div>
+                        <ImageUpload
+                            title={"Изображение *"}
+                            value={logo}
+                            onChange={onChangeImage}
+                            multiple={true}
+                        />
                     </div>
                     <div className={styles["block__item-element"]}>
                         <div>

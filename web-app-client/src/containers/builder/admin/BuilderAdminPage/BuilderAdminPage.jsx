@@ -1,23 +1,34 @@
+/* Libraries */
 import React, { useState, useEffect } from 'react';
-import styles from './BuilderAdminPage.module.css';
-import { textStyleDefault } from 'src/styles';
+import Autocomplete from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Button, TextField } from '@mui/material';
-import { root } from 'src/styles/index';
+import { useFormState } from 'react-hook-form';
 import ImageUploading from "react-images-uploading";
 import { Controller } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+
+/* Context */
+import userAction from 'src/store/actions/UserAction';
+import { authSlice } from 'src/store/reducers/AuthSlice';
+
+/* Components */
+import ImageUpload from 'src/components/ImageUpload';
+
+/* Hooks */
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { useAppSelector } from 'src/hooks/redux.hook';
 import { useAppDispatch } from 'src/hooks/redux.hook';
-import { authSlice } from 'src/store/reducers/AuthSlice';
-import { useFormState } from 'react-hook-form';
-import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
 import useHttp from 'src/hooks/http.hook';
+
+/* Constants */
 import AdminApi from 'src/constants/addresses/apis/admin.api';
-import { styleTextGray } from './styles';
 import MainApi from 'src/constants/addresses/apis/main.api';
-import userAction, { getUserCompany } from 'src/store/actions/UserAction';
+
+/* Styles */
+import styles from './BuilderAdminPage.module.css';
+import { textStyleDefault } from 'src/styles';
+import { root } from 'src/styles/index';
 
 const BuilderAdminPage = () => {
     const authSelector = useAppSelector((state) => state.authReducer);
@@ -37,7 +48,7 @@ const BuilderAdminPage = () => {
     }, [authSelector.error]);
 
     useEffect(() => {
-        dispatch(userAction.getUserCompany());
+        dispatch(userAction.getUserCompany(authSelector.access_token));
     }, []);
 
 
@@ -134,79 +145,11 @@ const BuilderAdminPage = () => {
             </div>
             <div className={styles["admin-page__container--row"]}>
                 <div className={styles["admin-page__container--column"]}>
-                    <div>
-                        <span className={styles['admin-page__h4']}>Логотип *</span>
-                    </div>
-                    <div>
-                        <ImageUploading
-                            value={logo}
-                            onChange={onChangeImage}
-                            dataURLKey="data_url"
-                        >
-                            {({
-                                imageList,
-                                onImageUpload,
-                                onImageRemoveAll,
-                                onImageUpdate,
-                                onImageRemove,
-                                isDragging,
-                                dragProps,
-                            }) => (
-                                <div>
-                                    <button
-                                        className={styles["upload_image_wrapper"]}
-                                        style={{
-                                            display: logo.length > 0 ? "none" : "block",
-                                        }}
-
-                                        onClick={onImageUpload}
-                                        {...dragProps}
-                                    >
-                                        <span className='span__text__gray'>Добавить фото</span>
-                                    </button>
-                                    {imageList.map((image, index) => {
-                                        return (
-                                            <div key={index} className={styles["btn-img-delete"]}>
-                                                <img
-                                                    src={image.data_url}
-                                                    alt=""
-                                                    width="11em"
-                                                    height="11em"
-                                                    className={styles["upload_image"]}
-                                                />
-                                                <Button
-                                                    onClick={() => {
-                                                        onImageRemove(index);
-                                                    }}
-                                                    sx={{
-                                                        marginTop: '1em',
-                                                        backgroundColor: root.colorGreen,
-                                                        fontSize: '14px !important',
-                                                        borderRadius: '0px !important',
-                                                        border: '1px solid #424041 !important',
-                                                        width: '100%',
-                                                        height: '2em',
-                                                        ...textStyleDefault,
-                                                        ":hover": {
-                                                            backgroundColor: root.colorGreen,
-                                                            fontSize: '14px !important',
-                                                            borderRadius: '0px !important',
-                                                            border: '1px solid #424041 !important',
-                                                            width: '100%',
-                                                            height: '2em',
-                                                            ...textStyleDefault,
-                                                        }
-                                                    }}
-                                                >
-                                                    Удалить
-                                                </Button>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            )}
-                        </ImageUploading>
-                    </div>
+                    <ImageUpload
+                        title={"Логотип *"}
+                        value={logo}
+                        onChange={onChangeImage}
+                    />
                 </div>
                 <div className={styles["admin-page__container--column"]}>
                     <div>
@@ -421,7 +364,7 @@ const BuilderAdminPage = () => {
                                     onClose={() => {
                                         setOpen(false);
                                     }}
-                                    defaultValue={{"email": form.admin}}
+                                    defaultValue={{ "email": form.admin }}
                                     getOptionLabel={(option) => option.email}
                                     isOptionEqualToValue={(option, value) => option.email === value.email}
                                     options={options}

@@ -1,24 +1,32 @@
-import useHttp from '../../../hooks/http.hook';
+/* Libraries */
 import React, { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
-import { authSignIn, authSignUp } from '../../../store/actions/AuthAction';
-import { authSlice } from '../../../store/reducers/AuthSlice';
 import { TextField, Button, InputAdornment, IconButton, Box, Typography, LinearProgress } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useForm, Controller, SubmitHandler, useFormState } from "react-hook-form";
-import { emailValidation, passwordValidation, retryPasswordValidation } from './validation';
-import { alpha, styled } from '@mui/material/styles';
 import { linearProgressClasses } from '@mui/material/LinearProgress';
-
-import { root, textStyleDefault } from '../../../styles';
-import styles from './SignUpPage.module.css';
-import { Link } from 'react-router-dom';
-import { borderRadius } from '@mui/system';
-import { styleTextBlack, styleTextGray } from './styles';
+import { useForm, Controller, SubmitHandler, useFormState } from "react-hook-form";
 import ImageUploading from "react-images-uploading";
-import { useMessageToastify } from '../../../hooks/message.toastify.hook';
+
+/* Context */
+import { authSignIn, authSignUp } from 'src/store/actions/AuthAction';
+import { authSlice } from 'src/store/reducers/AuthSlice';
+
+/* Components */
+import ImageUpload from "src/components/ImageUpload";
+
+/* Validators */
+import { emailValidation, passwordValidation, retryPasswordValidation } from './validation';
+
+/* Hooks */
+import useHttp from "src/hooks/http.hook";
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';
+import { useMessageToastify } from 'src/hooks/message.toastify.hook';
+
+/* Models */
 import AuthSignUpDto from 'src/dtos/auth.sign-up.dto';
+
+/* Styles */
+import styles from './SignUpPage.module.css';
+import { styleTextBlack } from './styles';
+import { root, textStyleDefault } from 'src/styles';
 
 const LinearProgressWithLabel = (props) => {
     return (
@@ -88,10 +96,12 @@ const SignUpPage = ({ setStateCurrentPage }) => {
     const [retryPassword, setRetryPassword] = useState('');
 
     useEffect(() => {
-        if (profileImage.length > 0) {
-            setProgress(progress + 40);
-        } else if (progress > 0) {
-            setProgress(progress - 40);
+        if (profileImage.length <= 0) {
+            setProgress(progress - 50);
+        }
+
+        if (profileImage.length > 0 && (progress < 50)) {
+            setProgress((prev) => prev + 50);
         }
     }, [profileImage]);
 
@@ -162,74 +172,12 @@ const SignUpPage = ({ setStateCurrentPage }) => {
                 </div>
                 {
                     (!part) && <div className={styles["auth-block-img__header"]}>
-                        <ImageUploading
+                        <ImageUpload
+                            title={"Фото профиля"}
+                            subtitle={"Добавить фото профиля"}
                             value={profileImage}
                             onChange={onChangeImage}
-                            dataURLKey="data_url"
-                        >
-                            {({
-                                imageList,
-                                onImageUpload,
-                                onImageRemoveAll,
-                                onImageUpdate,
-                                onImageRemove,
-                                isDragging,
-                                dragProps,
-                            }) => (
-                                <div>
-                                    <button
-                                        className={styles["upload_image_wrapper"]}
-                                        style={{
-                                            display: profileImage.length > 0 ? "none" : "block",
-                                        }}
-
-                                        onClick={onImageUpload}
-                                        {...dragProps}
-                                    >
-                                        Добавить фото
-                                    </button>
-                                    {imageList.map((image, index) => {
-                                        return (
-                                            <div key={index} className={styles["auth-img-delete"]}>
-                                                <img
-                                                    src={image.data_url}
-                                                    alt=""
-                                                    width="9em"
-                                                    height="9em"
-                                                    className={styles["upload_image"]}
-                                                />
-                                                <Button
-                                                    onClick={() => {
-                                                        onImageRemove(index);
-                                                    }}
-                                                    sx={{
-                                                        marginTop: '1em',
-                                                        backgroundColor: root.colorGreen,
-                                                        fontSize: '14px !important',
-                                                        borderRadius: '0px !important',
-                                                        border: '1px solid #424041 !important',
-                                                        width: '100%',
-                                                        height: '2em',
-                                                        ...textStyleDefault,
-                                                        ":hover": {
-                                                            backgroundColor: root.colorGreen,
-                                                            fontSize: '14px !important',
-                                                            borderRadius: '0px !important',
-                                                            border: '1px solid #424041 !important',
-                                                            width: '100%',
-                                                            height: '2em',
-                                                            ...textStyleDefault,
-                                                        }
-                                                    }}
-                                                >
-                                                    Удалить
-                                                </Button>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            )}
-                        </ImageUploading>
+                        />
                     </div>
                 }
                 <div>

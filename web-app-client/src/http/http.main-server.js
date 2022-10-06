@@ -11,12 +11,13 @@ const apiMainServer = axios.create({
     baseURL: MainApi.main_server
 });
 
-apiMainServer.interceptors.request.use((config) => {
+/*apiMainServer.interceptors.request.use((config) => {
     const data = JSON.parse(localStorage.getItem('persist:' + storageConfig["main-store"]));
 
+    console.log(`KEY: ${JSON.parse(data.authReducer).access_token}`);
     config.headers.Authorization = `Bearer ${JSON.parse(data.authReducer).access_token}`;
     return config;
-});
+});*/
 
 /*apiMainServer.interceptors.response.use((config) => {
     return config;

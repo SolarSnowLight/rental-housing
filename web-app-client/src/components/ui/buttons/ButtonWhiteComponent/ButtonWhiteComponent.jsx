@@ -1,5 +1,8 @@
-import { root, textStyleDefault } from '../../../../styles';
+/* Libraries */
 import { Button } from '@mui/material';
+
+/* Styles */
+import { root, textStyleDefault } from 'src/styles';
 
 const ButtonWhiteComponent = ({ title, style = { width: '15em', height: '3.688em' }, clickHandler = (e) => { }, type = "button", variant = "container" }) => {
     return (

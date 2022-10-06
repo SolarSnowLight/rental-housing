@@ -1,23 +1,38 @@
+/* Libraries */
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Autocomplete } from '@mui/material';
-
-import styles from './CreateProjectPage.module.css';
-import { textStyleDefault } from 'src/styles';
-import { root } from 'src/styles';
 import ImageUploading from "react-images-uploading";
-import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
-import { useMessageToastify } from 'src/hooks/message.toastify.hook';
-import { authSlice } from 'src/store/reducers/AuthSlice';
-import useHttp from 'src/hooks/http.hook';
 import CircularProgress from '@mui/material/CircularProgress';
-import AdminApi from 'src/constants/addresses/apis/admin.api';
+import { useNavigate } from 'react-router-dom';
+
+/* Context */
+import projectAction from 'src/store/actions/ProjectAction';
+import { authSlice } from 'src/store/reducers/AuthSlice';
+
+/* Components */
 import MapComponent from 'src/components/MapComponent';
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import { useNavigate } from 'react-router-dom';
+import ImageUpload from 'src/components/ImageUpload';
+
+/* Images */
+import cross from 'src/resources/images/cross.svg';
+import update from 'src/resources/images/update.svg';
+
+/* Hooks */
+import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
+import { useMessageToastify } from 'src/hooks/message.toastify.hook';
+import useHttp from 'src/hooks/http.hook';
+
+/* Constants */
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 import CompanyApi from 'src/constants/addresses/apis/company.api.';
-import projectAction from 'src/store/actions/ProjectAction';
+import AdminApi from 'src/constants/addresses/apis/admin.api';
+
+/* Styles */
+import styles from './CreateProjectPage.module.css';
+import { textStyleDefault } from 'src/styles';
+import { root } from 'src/styles';
 
 const CreateProjectPage = () => {
     // Section of working with the network over the HTTP protocol
@@ -27,16 +42,20 @@ const CreateProjectPage = () => {
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
-
     const message = useMessageToastify();
+
+    // The data section presented on the page
+    const [btnDisabled, setBtnDisabled] = useState(true);
+
+    // Data section of functional operation of components
+    const [open, setOpen] = useState(false);
+    const [options, setOptions] = useState([]);
+    const loadingAutocomplete = open && options?.length === 0;
 
     useEffect(() => {
         message(error, "error");
         clearError();
     }, [error, message, clearError]);
-
-    // The data section presented on the page
-    const [btnDisabled, setBtnDisabled] = useState(true);
 
     // Event Handlers Section
     const onChangeImage = (imageList, addUpdateIndex) => {
@@ -72,11 +91,6 @@ const CreateProjectPage = () => {
 
         message("Проект создан успешно!", "success");
     };
-
-    // Data section of functional operation of components
-    const [open, setOpen] = useState(false);
-    const [options, setOptions] = useState([]);
-    const loadingAutocomplete = open && options?.length === 0;
 
     useEffect(() => {
         let active = true;
@@ -120,79 +134,10 @@ const CreateProjectPage = () => {
                 <div className={styles["wrapper-section__item-element__column"]}>
                     <div>
                         <div className={styles["wrapper-section__item-element"]}>
-                            <div>
-                                <span className='span__text__gray'>Лого *</span>
-                            </div>
-                            <div>
-                                <ImageUploading
-                                    value={projectSelector.logo}
-                                    onChange={onChangeImage}
-                                    dataURLKey="data_url"
-                                >
-                                    {({
-                                        imageList,
-                                        onImageUpload,
-                                        onImageRemoveAll,
-                                        onImageUpdate,
-                                        onImageRemove,
-                                        isDragging,
-                                        dragProps,
-                                    }) => (
-                                        <div>
-                                            <button
-                                                className={styles["upload_image_wrapper"]}
-                                                style={{
-                                                    display: projectSelector.logo.length > 0 ? "none" : "block",
-                                                }}
-
-                                                onClick={onImageUpload}
-                                                {...dragProps}
-                                            >
-                                                <span className='span__text__gray'>Добавить фото</span>
-                                            </button>
-                                            {imageList.map((image, index) => {
-                                                return (
-                                                    <div key={index} className={styles["btn-img-delete"]}>
-                                                        <img
-                                                            src={image.data_url}
-                                                            alt=""
-                                                            width="11em"
-                                                            height="11em"
-                                                            className={styles["upload_image"]}
-                                                        />
-                                                        <Button
-                                                            onClick={() => {
-                                                                onImageRemove(index);
-                                                            }}
-                                                            sx={{
-                                                                marginTop: '1em',
-                                                                backgroundColor: root.colorGreen,
-                                                                fontSize: '14px !important',
-                                                                borderRadius: '0px !important',
-                                                                border: '1px solid #424041 !important',
-                                                                width: '60%',
-                                                                height: '2em',
-                                                                ...textStyleDefault,
-                                                                ":hover": {
-                                                                    backgroundColor: root.colorGreen,
-                                                                    fontSize: '14px !important',
-                                                                    borderRadius: '0px !important',
-                                                                    border: '1px solid #424041 !important',
-                                                                    width: '60%',
-                                                                    height: '2em',
-                                                                    ...textStyleDefault,
-                                                                }
-                                                            }}
-                                                        >
-                                                            Удалить
-                                                        </Button>
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    )}
-                                </ImageUploading>
-                            </div>
+                            <ImageUpload
+                                value={projectSelector.logo}
+                                onChange={onChangeImage}
+                            />
                         </div>
                         <div className={styles["wrapper-section__item-element"]}>
                             <div>

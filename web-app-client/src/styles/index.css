@@ -142,3 +142,7 @@
 
   color: var(--black);
 }
+
+img:hover {
+  cursor: pointer;
+}

@@ -117,5 +117,6 @@
 
 .auth-img-delete {
     display: grid;
+    grid-auto-flow: column;
     justify-content: center;
 }

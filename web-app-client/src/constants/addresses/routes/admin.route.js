@@ -1,6 +1,6 @@
 export const AdminRouteDefault = "/admin";
 
-/* Главные маршруты в веб-приложении */
+/* Routes for admin */
 const AdminRoute = {
     default: AdminRouteDefault
 };

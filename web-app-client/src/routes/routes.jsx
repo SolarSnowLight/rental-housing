@@ -1,14 +1,7 @@
-import React from "react";
+/* Libraries */
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import AuthRoute from "src/constants/addresses/routes/auth.route";
-import BuilderRoute from "src/constants/addresses/routes/builder.route";
-import CompanyRoute from "src/constants/addresses/routes/company.route";
-import MainRoute from "src/constants/addresses/routes/main.route";
-import ManagerRoute, { ManagerRouteDefault } from "src/constants/addresses/routes/manager.route";
-import BuilderAdminRoute, { BuilderAdminRouteDefault } from "src/constants/addresses/routes/builder.admin.route";
-import AdminRoute, { AdminRouteDefault } from "src/constants/addresses/routes/admin.route";
-
+/* Containers */
 import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
 import CompanyPage from "src/containers/client/CompanyPage";
 import HomePage from "src/containers/client/HomePage";
@@ -23,7 +16,17 @@ import CreateObjectPage from "src/containers/builder/admin/CreateObjectPage";
 import DeveloperEditPage from "src/containers/manager/DeveloperEditPage";
 import ProjectInfoPage from "src/containers/builder/admin/ProjectInfoPage";
 
-/* Базовые маршруты, которые доступны любому пользователю */
+/* Constants */
+import AuthRoute from "src/constants/addresses/routes/auth.route";
+import BuilderRoute from "src/constants/addresses/routes/builder.route";
+import CompanyRoute from "src/constants/addresses/routes/company.route";
+import MainRoute from "src/constants/addresses/routes/main.route";
+import ManagerRoute, { ManagerRouteDefault } from "src/constants/addresses/routes/manager.route";
+import BuilderAdminRoute, { BuilderAdminRouteDefault } from "src/constants/addresses/routes/builder.admin.route";
+import AdminRoute, { AdminRouteDefault } from "src/constants/addresses/routes/admin.route";
+
+
+/* Base routes for every users */
 const useBaseRoutes = () => {
     return (
         <>
@@ -42,7 +45,7 @@ const useBaseRoutes = () => {
     );
 }
 
-/* Хук, определяющий маршрутизацию приложения на внешнем уровне (глобальная маршрутизация) */
+/* Hook for all routes*/
 const useRoutes = (isAuthenticated) => {
     return (
         <Routes>

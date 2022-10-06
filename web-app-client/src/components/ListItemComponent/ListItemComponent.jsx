@@ -1,6 +1,9 @@
+/* Images */
+import defaultProfileImg from 'src/resources/images/default_profile.png';
+
+/* Styles */
 import styles from './ListItemComponent.module.css';
 
-import defaultProfileImg from 'src/resources/images/default_profile.png';
 
 const ListItemComponent = ({ column1 = '', column2 = '', column3 = '', clickHandler = () => { }, img = {defaultProfileImg}}) => {
     const columnCheck = (column) => {

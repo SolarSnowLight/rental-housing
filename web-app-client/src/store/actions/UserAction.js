@@ -9,9 +9,17 @@ import AuthApi from "src/constants/addresses/apis/auth.api";
 import { authSlice } from "../reducers/AuthSlice";
 
 /* Function for get company for current user */
-export const getUserCompany = () => async (dispatch) => {
-    const originalRequest = async () => {
-        const response = await apiMainServer.post(UserApi.get_user_company);
+export const getUserCompany = (access_token) => async (dispatch) => {
+    const originalRequest = async (accessToken) => {
+        const response = await apiMainServer.post(
+            UserApi.get_user_company,
+            null,
+            {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            }
+        );
 
         if (response.status != 200 && response.status != 201) {
             dispatch(userSlice.error(response.data.message));
@@ -23,11 +31,19 @@ export const getUserCompany = () => async (dispatch) => {
 
     try {
         dispatch(userSlice.actions.loading());
-        await originalRequest();
+        await originalRequest(access_token);
     } catch (e) {
         dispatch(userSlice.actions.clearData());
         if (e.response.status == 401) {
-            const response = await apiMainServer.post(AuthApi.refresh);
+            const response = await apiMainServer.post(
+                AuthApi.refresh,
+                null,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`
+                    }
+                }
+            );
 
             if (response.status != 200 && response.status != 201) {
                 dispatch(userSlice.error(response.data.message));
@@ -35,7 +51,7 @@ export const getUserCompany = () => async (dispatch) => {
             }
 
             dispatch(authSlice.actions.signInSuccess(response.data));
-            await originalRequest();
+            await originalRequest(response.data.access_token);
         }
         dispatch(userSlice.actions.error(e.message));
     }

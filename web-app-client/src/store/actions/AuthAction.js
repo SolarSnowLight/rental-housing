@@ -1,8 +1,12 @@
+/* Libraries */
+import axios from "axios";
+
+/* Context */
 import { authSlice } from "../reducers/AuthSlice";
 
-import MainApi from "../../constants/addresses/apis/main.api";
-import AuthApi from "../../constants/addresses/apis/auth.api";
-import axios from "axios";
+/* Constants */
+import MainApi from "src/constants/addresses/apis/main.api";
+import AuthApi from "src/constants/addresses/apis/auth.api";
 
 /* Function for auth user on high level */
 export const authSignIn = (data) => async (dispatch) => {

@@ -17,12 +17,13 @@ import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent
 import { useLocation, useNavigate } from 'react-router-dom';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 import MainApi from 'src/constants/addresses/apis/main.api';
+import ImageUpload from 'src/components/ImageUpload';
 
 const ProjectInfoPage = () => {
     window.scrollTo(0, 0);
-    
+
     // Section of working with the network over the HTTP protocol
-    const auth = useAppSelector((state) => state.authReducer);
+    const authSelector = useAppSelector((state) => state.authReducer);
     const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
@@ -50,7 +51,7 @@ const ProjectInfoPage = () => {
     );
 
     const [form, setForm] = useState({
-        title: state?.data.title, 
+        title: state?.data.title,
         description: state?.data.description,
         managers: state?.data.managers
     });
@@ -126,79 +127,11 @@ const ProjectInfoPage = () => {
                 <div className={styles["wrapper-section__item-element__column"]}>
                     <div>
                         <div className={styles["wrapper-section__item-element"]}>
-                            <div>
-                                <span className='span__text__gray'>Лого *</span>
-                            </div>
-                            <div>
-                                <ImageUploading
-                                    value={logo}
-                                    onChange={onChangeImage}
-                                    dataURLKey="data_url"
-                                >
-                                    {({
-                                        imageList,
-                                        onImageUpload,
-                                        onImageRemoveAll,
-                                        onImageUpdate,
-                                        onImageRemove,
-                                        isDragging,
-                                        dragProps,
-                                    }) => (
-                                        <div>
-                                            <button
-                                                className={styles["upload_image_wrapper"]}
-                                                style={{
-                                                    display: logo.length > 0 ? "none" : "block",
-                                                }}
-
-                                                onClick={onImageUpload}
-                                                {...dragProps}
-                                            >
-                                                <span className='span__text__gray'>Добавить фото</span>
-                                            </button>
-                                            {imageList.map((image, index) => {
-                                                return (
-                                                    <div key={index} className={styles["btn-img-delete"]}>
-                                                        <img
-                                                            src={image.data_url}
-                                                            alt=""
-                                                            width="11em"
-                                                            height="11em"
-                                                            className={styles["upload_image"]}
-                                                        />
-                                                        <Button
-                                                            onClick={() => {
-                                                                onImageRemove(index);
-                                                            }}
-                                                            sx={{
-                                                                marginTop: '1em',
-                                                                backgroundColor: root.colorGreen,
-                                                                fontSize: '14px !important',
-                                                                borderRadius: '0px !important',
-                                                                border: '1px solid #424041 !important',
-                                                                width: '60%',
-                                                                height: '2em',
-                                                                ...textStyleDefault,
-                                                                ":hover": {
-                                                                    backgroundColor: root.colorGreen,
-                                                                    fontSize: '14px !important',
-                                                                    borderRadius: '0px !important',
-                                                                    border: '1px solid #424041 !important',
-                                                                    width: '60%',
-                                                                    height: '2em',
-                                                                    ...textStyleDefault,
-                                                                }
-                                                            }}
-                                                        >
-                                                            Удалить
-                                                        </Button>
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    )}
-                                </ImageUploading>
-                            </div>
+                            <ImageUpload
+                                title={"Логотип *"}
+                                value={logo}
+                                onChange={onChangeImage}
+                            />
                         </div>
                         <div className={styles["wrapper-section__item-element"]}>
                             <div>

@@ -1,19 +1,30 @@
+/* Libraries */
 import React, { useEffect, useState } from "react";
 import useRoutes from '../../routes/routes';
 import { BrowserRouter } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
-import { useDispatch } from "react-redux";
+import { registerLocale } from "react-datepicker";
+import { ToastContainer } from "react-toastify";
+import ru from "date-fns/locale/ru";
+
+/* Context */
 import { authUpdate } from "../../store/actions/AuthAction";
+import userAction from "src/store/actions/UserAction";
+
+/* Components */
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import { ToastContainer } from "react-toastify";
-import "react-datepicker/dist/react-datepicker.css";
 
-import styles from './App.module.css';
+/* Hooks */
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
+import { useMessageToastify } from "src/hooks/message.toastify.hook";
+
+/* Styles */
+import "react-datepicker/dist/react-datepicker.css";
 import 'react-toastify/dist/ReactToastify.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import userAction from "src/store/actions/UserAction";
-import { useMessageToastify } from "src/hooks/message.toastify.hook";
+import styles from './App.module.css';
+
+registerLocale("ru", ru);
 
 const App = () => {
   const config = useAppSelector(state => state.configReducer);
@@ -28,9 +39,10 @@ const App = () => {
 
   useEffect(() => {
     if (authSelector.access_token) {
-      dispatch(userAction.getUserCompany());
+      console.log(authSelector.access_token);
+      dispatch(userAction.getUserCompany(authSelector.access_token));
     }
-  }, [authSelector]);
+  }, [authSelector.access_token]);
 
   useEffect(() => {
     if (authSelector.error && authSelector.error.length) {
