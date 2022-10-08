@@ -25,6 +25,7 @@ import ManagerRoute, { ManagerRouteDefault } from "src/constants/addresses/route
 import BuilderAdminRoute, { BuilderAdminRouteDefault } from "src/constants/addresses/routes/builder.admin.route";
 import AdminRoute, { AdminRouteDefault } from "src/constants/addresses/routes/admin.route";
 
+import WithToastify from "src/hoc-helpers/WithToastify";
 
 /* Base routes for every users */
 const useBaseRoutes = () => {
@@ -71,4 +72,4 @@ const useRoutes = (isAuthenticated) => {
     );
 };
 
-export default useRoutes;
+export default WithToastify(useRoutes);

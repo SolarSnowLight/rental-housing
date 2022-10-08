@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	roleConstant "main-server/pkg/constant/role"
 
 	"github.com/gin-contrib/cors"
@@ -156,6 +157,32 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 		// URL: /company/create
 		company.POST(route.CREATE_ROUTE, h.userIdentityHasRole(roleConstant.ROLE_ADMIN), h.createCompany)
+
+		// URL: /company/update/image
+		company.POST(fmt.Sprintf("%s/%s", route.UPDATE_ROUTE, route.RESOURCE_IMAGE_ROUTE),
+			h.userIdentityHasRoles(
+				"OR",
+				roleConstant.ROLE_BUILDER_ADMIN,
+				roleConstant.ROLE_BUILDER_MANAGER,
+				roleConstant.ROLE_ADMIN,
+				roleConstant.ROLE_MANAGER,
+				roleConstant.ROLE_SUPER_ADMIN,
+			),
+			h.companyUpdateImage,
+		)
+
+		// URL: /company/update
+		company.POST(route.UPDATE_ROUTE,
+			h.userIdentityHasRoles(
+				"OR",
+				roleConstant.ROLE_BUILDER_ADMIN,
+				roleConstant.ROLE_BUILDER_MANAGER,
+				roleConstant.ROLE_ADMIN,
+				roleConstant.ROLE_MANAGER,
+				roleConstant.ROLE_SUPER_ADMIN,
+			),
+			h.companyUpdate,
+		)
 	}
 
 	return router

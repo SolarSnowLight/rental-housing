@@ -26,7 +26,7 @@ import useHttp from 'src/hooks/http.hook';
 
 /* Constants */
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
-import CompanyApi from 'src/constants/addresses/apis/company.api.';
+import CompanyApi from 'src/constants/addresses/apis/company.api';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 
 /* Styles */

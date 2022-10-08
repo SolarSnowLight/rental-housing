@@ -21,10 +21,6 @@ const Navbar = () => {
     const authSelector = useAppSelector((state) => state.authReducer);
     const userSelector = useAppSelector((state) => state.userReducer);
 
-    useEffect(() => {
-        // console.log(userSelector);
-    }, [userSelector]);
-
     return (
         <nav className={cs(styles["nav__header"], styles["nav-menu__header"])}>
             <div className={styles['nav-logo__header']}>

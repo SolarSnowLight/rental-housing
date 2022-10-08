@@ -3,8 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 /* Base state for current slice */
 const initialState = {
     response: null,
-    isLoading: false,
-    error: ""
+    isLoading: false
 };
 
 /* Create a new clice for admin API */
@@ -12,19 +11,15 @@ export const adminSlice = createSlice({
     name: "admin",
     initialState,
     reducers: {
-        loading(state) {
+        loadingStart(state) {
             state.isLoading = true;
         },
 
-        error(state, action) {
+        loadingEnd(state) {
             state.isLoading = false;
-            state.error = action.payload;
         },
 
-        clearError(state) {
-            state.error = "";
-        },
-        clearData(state) {
+        clear(state) {
             state.isLoading = false;
             state.error = "";
             state.response = null;

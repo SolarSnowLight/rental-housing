@@ -1,5 +1,10 @@
 package user
 
+type UserIdentityModel struct {
+	UserId   int
+	DomainId int
+}
+
 /* A model for working with an instance of user data from the users table */
 type UserModel struct {
 	Id       int    `json:"id" db:"id"`

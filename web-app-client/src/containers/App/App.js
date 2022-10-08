@@ -14,6 +14,9 @@ import userAction from "src/store/actions/UserAction";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
+/* HOC */
+import WithToastify from "src/hoc-helpers/WithToastify";
+
 /* Hooks */
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
 import { useMessageToastify } from "src/hooks/message.toastify.hook";
@@ -27,11 +30,8 @@ import styles from './App.module.css';
 registerLocale("ru", ru);
 
 const App = () => {
-  const config = useAppSelector(state => state.configReducer);
   const authSelector = useAppSelector(state => state.authReducer);
   const dispatch = useAppDispatch();
-  const [authenticated, setAuthenticated] = useState(authSelector.isAuthenticated);
-  const message = useMessageToastify();
 
   useEffect(() => {
     dispatch(authUpdate());
@@ -39,17 +39,10 @@ const App = () => {
 
   useEffect(() => {
     if (authSelector.access_token) {
-      console.log(authSelector.access_token);
       dispatch(userAction.getUserCompany(authSelector.access_token));
     }
   }, [authSelector.access_token]);
 
-  useEffect(() => {
-    if (authSelector.error && authSelector.error.length) {
-      message(authSelector.error, "error");
-    }
-  }, [authSelector.error]);
-  
   const routes = useRoutes(authSelector.isAuthenticated);
 
   return (

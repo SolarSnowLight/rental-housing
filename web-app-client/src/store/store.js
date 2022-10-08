@@ -1,11 +1,16 @@
+/* Libraries */
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
+/* Context */
 import authReducer from "../store/reducers/AuthSlice";
 import configReducer from "../store/reducers/ConfigSlice";
 import adminReducer from "./reducers/AdminSlice";
 import userReducer from "./reducers/UserSlice";
 import companyReducer from "./reducers/CompanySlice";
 import projectReducer from "./reducers/ProjectSlice";
+import messageQueueReducer from "./reducers/MessageQueueSlice";
+
+/* Constants */
 import storageConfig from "../configs/store.config.json";
 
 import {
@@ -27,7 +32,8 @@ const rootReducer = combineReducers({
     adminReducer,
     userReducer,
     companyReducer,
-    projectReducer
+    projectReducer,
+    messageQueueReducer
 });
 
 const persistConfig = {

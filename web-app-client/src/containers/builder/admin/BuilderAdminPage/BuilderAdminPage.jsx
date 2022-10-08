@@ -14,12 +14,16 @@ import { authSlice } from 'src/store/reducers/AuthSlice';
 
 /* Components */
 import ImageUpload from 'src/components/ImageUpload';
+import CircularIndeterminate from 'src/components/CircularIndeterminate';
 
 /* Hooks */
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { useAppSelector } from 'src/hooks/redux.hook';
 import { useAppDispatch } from 'src/hooks/redux.hook';
 import useHttp from 'src/hooks/http.hook';
+
+/* Dtos */
+import CompanyUpdateDto from 'src/dtos/company.update-dto';
 
 /* Constants */
 import AdminApi from 'src/constants/addresses/apis/admin.api';
@@ -29,6 +33,8 @@ import MainApi from 'src/constants/addresses/apis/main.api';
 import styles from './BuilderAdminPage.module.css';
 import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles/index';
+import { MuiTelInput } from 'mui-tel-input';
+import { emailValidation, linkValidation } from './validation';
 
 const BuilderAdminPage = () => {
     const authSelector = useAppSelector((state) => state.authReducer);
@@ -53,31 +59,20 @@ const BuilderAdminPage = () => {
 
 
     const [btnDisabled, setBtnDisabled] = useState(true);
-    const [logo, setLogo] = useState(
-        (userSelector.company?.data.logo) ?
-            [
-                {
-                    data_url: `${MainApi.main_server}/${userSelector.company.data.logo.replace('\\', '/')}`
-                }
-            ]
-            :
-            []
-    );
-    const [form, setForm] = useState({
-        title: userSelector.company?.data.title,
-        description: userSelector.company?.data.description,
-        email: userSelector.company?.data.email_company,
-        phone: userSelector.company?.data.phone,
-        link: userSelector.company?.data.link,
-        admin: userSelector.company?.data.email_admin
-    });
 
-    const onChangeImage = (imageList, addUpdateIndex) => {
-        setLogo(imageList);
+    const onChangeImage = (imageList) => {
+        if (imageList.length > 0) {
+            setBtnDisabled(false);
+        } else {
+            setBtnDisabled(true);
+        }
+
+        dispatch(userAction.setItemCompanyInfo("logo", imageList));
     };
 
     const changeHandler = (key, value) => {
-        setForm({ ...form, [key]: value });
+        setBtnDisabled(false);
+        dispatch(userAction.setItemCompanyInfo(key, value));
     };
 
     const { handleSubmit, control } = useForm();
@@ -87,8 +82,23 @@ const BuilderAdminPage = () => {
     });
 
     const onSubmit = (data) => {
-        console.log(form);
-        // dispatch(authSignIn(data));
+        if (userSelector.company.data.logo.length <= 0) {
+            message("Необходимо добавить логотип компании!", "error");
+            return;
+        }
+
+        dispatch(userAction.companyInfoUpdate(
+            authSelector.access_token,
+            {
+                ...new CompanyUpdateDto({
+                    uuid: userSelector.company.uuid,
+                    ...userSelector.company.data
+                })
+            },
+            (userSelector.company.data.logo[0].file) ? userSelector.company.data.logo[0].file : null
+        ));
+
+        setBtnDisabled(true);
     };
 
     // Autocomplete settings
@@ -122,24 +132,11 @@ const BuilderAdminPage = () => {
         }
     }, [open]);
 
-    useEffect(() => {
-        if (btnDisabled) {
-            let countExists = 0;
-
-            for (var key of Object.keys(form)) {
-                if (form[key]?.length > 0) {
-                    countExists++;
-                }
-            }
-
-            if (countExists >= 1) {
-                setBtnDisabled(false);
-            }
-        }
-    }, [form]);
-
     return (
         <form className={styles["admin-page__container"]} onSubmit={handleSubmit(onSubmit)}>
+            {
+                (authSelector.isLoading || userSelector.isLoading) && <CircularIndeterminate />
+            }
             <div className={styles["admin-page__container--row"]}>
                 <span className={styles["admin-page__h2"]}>Изменение информации о компании</span>
             </div>
@@ -147,7 +144,7 @@ const BuilderAdminPage = () => {
                 <div className={styles["admin-page__container--column"]}>
                     <ImageUpload
                         title={"Логотип *"}
-                        value={logo}
+                        value={userSelector.company?.data.logo}
                         onChange={onChangeImage}
                     />
                 </div>
@@ -156,33 +153,42 @@ const BuilderAdminPage = () => {
                         <span className={styles['admin-page__h4']}>Описание</span>
                     </div>
                     <div>
-                        <TextField
-                            id="outlined-multiline-static"
-                            multiline
-                            rows={9}
-                            name={"description"}
-                            placeholder="Описание"
-                            onChange={(e) => {
-                                changeHandler("description", e.target.value);
-                            }}
-                            defaultValue={form.description}
-                            sx={{
-                                width: '15em',
-                                border: '1px solid #424041 !important',
-                                borderRadius: '0px',
-                                ':hover': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
-                                '&:hover fieldset': {
-                                    border: '0px !important',
-                                    borderRadius: '0px'
-                                },
-                                'fieldset': {
-                                    border: '0px !important',
-                                    borderRadius: '0px'
-                                }
-                            }}
+                        <Controller
+                            control={control}
+                            name="description"
+                            defaultValue={userSelector.company?.data.description}
+                            render={({ field }) => (
+                                <TextField
+                                    id="outlined-multiline-static"
+                                    multiline
+                                    rows={9}
+                                    placeholder="Описание"
+                                    onChange={(e) => {
+                                        field.onChange(e);
+                                        changeHandler("description", e.target.value);
+                                    }}
+                                    defaultValue={userSelector.company?.data.description}
+                                    error={!!errors.description?.message}
+                                    helperText={errors.description?.message}
+                                    sx={{
+                                        width: '20em',
+                                        border: '1px solid #424041 !important',
+                                        borderRadius: '0px',
+                                        ':hover': {
+                                            border: '1px solid #424041 !important',
+                                            borderRadius: '0px'
+                                        },
+                                        '&:hover fieldset': {
+                                            border: '0px !important',
+                                            borderRadius: '0px'
+                                        },
+                                        'fieldset': {
+                                            border: '0px !important',
+                                            borderRadius: '0px'
+                                        }
+                                    }}
+                                />
+                            )}
                         />
                     </div>
                 </div>
@@ -196,7 +202,7 @@ const BuilderAdminPage = () => {
                         <Controller
                             control={control}
                             name="title"
-                            defaultValue={form.title}
+                            defaultValue={userSelector.company?.data.title}
                             render={({ field }) => (
                                 <TextField
                                     required
@@ -234,8 +240,9 @@ const BuilderAdminPage = () => {
                     <div>
                         <Controller
                             control={control}
-                            name="email"
-                            defaultValue={form.email}
+                            name="email_company"
+                            defaultValue={userSelector.company?.data.email_company}
+                            rules={emailValidation}
                             render={({ field }) => (
                                 <TextField
                                     required
@@ -243,11 +250,11 @@ const BuilderAdminPage = () => {
                                     placeholder="Введите email"
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        changeHandler("email", e.target.value);
+                                        changeHandler("email_company", e.target.value);
                                     }}
                                     value={field.value}
-                                    error={!!errors.email?.message}
-                                    helperText={errors.email?.message}
+                                    error={!!errors.email_company?.message}
+                                    helperText={errors.email_company?.message}
                                     sx={{
                                         borderRadius: '0px !important',
                                         border: 'none',
@@ -274,19 +281,17 @@ const BuilderAdminPage = () => {
                         <Controller
                             control={control}
                             name="phone"
-                            defaultValue={form.phone}
+                            defaultValue={userSelector.company?.data.phone}
                             render={({ field }) => (
-                                <TextField
+                                <MuiTelInput
                                     required
-                                    id="outlined-required"
-                                    placeholder="+7 XXX XXX XX XX"
+                                    value={field.value}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        changeHandler("phone", e.target.value);
+                                        changeHandler("phone", e);
                                     }}
-                                    value={field.value}
-                                    error={!!errors.email?.message}
-                                    helperText={errors.email?.message}
+                                    error={!!errors.phone?.message}
+                                    helperText={errors.phone?.message}
                                     sx={{
                                         borderRadius: '0px !important',
                                         border: 'none',
@@ -313,7 +318,8 @@ const BuilderAdminPage = () => {
                         <Controller
                             control={control}
                             name="link"
-                            defaultValue={form.link}
+                            defaultValue={userSelector.company?.data.link}
+                            rules={linkValidation}
                             render={({ field }) => (
                                 <TextField
                                     required
@@ -353,9 +359,10 @@ const BuilderAdminPage = () => {
                     <div>
                         <Controller
                             control={control}
-                            name="admin"
+                            name="email_admin"
                             render={({ field }) => (
                                 <Autocomplete
+                                    readOnly
                                     id="tags-outlined"
                                     open={open}
                                     onOpen={() => {
@@ -364,14 +371,14 @@ const BuilderAdminPage = () => {
                                     onClose={() => {
                                         setOpen(false);
                                     }}
-                                    defaultValue={{ "email": form.admin }}
+                                    defaultValue={{ "email": userSelector.company?.data.email_admin }}
                                     getOptionLabel={(option) => option.email}
                                     isOptionEqualToValue={(option, value) => option.email === value.email}
                                     options={options}
                                     loading={loadingAutocomplete}
                                     onChange={(e, value) => {
                                         field.value = value.email;
-                                        changeHandler("admin", value.email);
+                                        changeHandler("email_admin", value.email);
                                     }}
                                     renderInput={(params) => (
                                         <TextField

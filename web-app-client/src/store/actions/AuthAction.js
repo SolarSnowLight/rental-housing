@@ -3,6 +3,8 @@ import axios from "axios";
 
 /* Context */
 import { authSlice } from "../reducers/AuthSlice";
+import { messageQueueSlice } from "../reducers/MessageQueueSlice";
+import messageQueueAction from "./MessageQueueAction";
 
 /* Constants */
 import MainApi from "src/constants/addresses/apis/main.api";
@@ -12,7 +14,7 @@ import AuthApi from "src/constants/addresses/apis/auth.api";
 export const authSignIn = (data) => async (dispatch) => {
     try {
         // Call action for set state about begin request
-        dispatch(authSlice.actions.authLoading());
+        dispatch(authSlice.actions.loadingStart());
 
         const response = await axios.post(
             (MainApi.main_server + AuthApi.sign_in),
@@ -26,21 +28,25 @@ export const authSignIn = (data) => async (dispatch) => {
 
         // Handling error
         if ((response.status != 200) && (response.status != 201)) {
-            dispatch(authSlice.actions.authError(response.data.message));
+            dispatch(messageQueueAction.ResponseHandling(response, "error"));
             return;
         }
+
+        dispatch(messageQueueAction.ResponseHandling(response, "success", "Успешная авторизация!"));
 
         // Call action for set state about success request (her ending)
         dispatch(authSlice.actions.signInSuccess(response.data));
     } catch (e) {
-        dispatch(authSlice.actions.authError(e.response.data.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(authSlice.actions.loadingEnd());
 };
 
 /* Function for register new user */
 export const authSignUp = (data, profileImage) => async (dispatch) => {
     try {
-        dispatch(authSlice.actions.authLoading());
+        dispatch(authSlice.actions.loadingStart());
 
         const response = await axios.post(
             (MainApi.main_server + AuthApi.sign_up),
@@ -57,7 +63,7 @@ export const authSignUp = (data, profileImage) => async (dispatch) => {
 
         // Error handling
         if ((response.status != 200) && (response.status != 201)) {
-            dispatch(authSlice.actions.authError(response.data.message));
+            dispatch(messageQueueAction.ResponseHandling(response, "error"));
             return;
         }
 
@@ -77,25 +83,31 @@ export const authSignUp = (data, profileImage) => async (dispatch) => {
             );
         }
 
+        dispatch(messageQueueAction.ResponseHandling(response, "success", "Успешная регистрация нового пользователя!"));
         dispatch(authSlice.actions.signUpSuccess(response.data));
     } catch (e) {
-        dispatch(authSlice.actions.authError(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(authSlice.actions.loadingEnd());
 };
 
 /* Function for update data user from local storage */
 export const authUpdate = () => async (dispatch) => {
     try {
+        dispatch(authSlice.actions.loadingStart());
         dispatch(authSlice.actions.getAuthData());
     } catch (e) {
-        dispatch(authSlice.actions.authError(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(authSlice.actions.loadingEnd());
 };
 
 /* Function for logout user */
 export const authLogout = (access_token) => async (dispatch) => {
     try {
-        dispatch(authSlice.actions.authLoading());
+        dispatch(authSlice.actions.loadingStart());
 
         const response = await axios.post(
             (MainApi.main_server + AuthApi.logout),
@@ -108,24 +120,22 @@ export const authLogout = (access_token) => async (dispatch) => {
                 withCredentials: true
             }
         );
-
-        // Error handling
-        if (response.status != 200 && response.status != 201) {
-            dispatch(authSlice.actions.authError(response.data.message));
-        }
-
     } catch (e) {
-        dispatch(authSlice.actions.authError(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
-    
+
     dispatch(authSlice.actions.logout());
+    dispatch(messageQueueAction.ResponseHandling(null, "dark", "Выход из аккаунта"));
 }
 
 /* Function for set new data auth */
 export const setAuthData = (accessToken) => async (dispatch) => {
     try {
+        dispatch(authSlice.actions.loadingStart());
         dispatch(authSlice.actions.setAuthData(accessToken));
     } catch (e) {
-        dispatch(authSlice.actions.authError(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(authSlice.actions.loadingEnd());
 };

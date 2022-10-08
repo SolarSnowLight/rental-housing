@@ -35,6 +35,7 @@ const ImageUpload = ({
                     }) => (
                         <div className={styles["div-upload_image_wrapper"]}>
                             <button
+                                type='button'
                                 style={{
                                     display:
                                         (multiple && imageList.length > 0) ? "block"

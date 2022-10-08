@@ -1,14 +1,18 @@
+/* Context */
 import { companySlice } from "../reducers/CompanySlice";
+import messageQueueAction from "./MessageQueueAction";
 
+/* HTTP */
 import apiMainServer from "src/http/http.main-server";
-import AdminApi from "src/constants/addresses/apis/admin.api";
-import CompanyApi from "src/constants/addresses/apis/company.api.";
+
+/* Constants */
+import CompanyApi from "src/constants/addresses/apis/company.api";
 
 /* Get all projects for define company */
 const getAllProjectsByCompany = (access_token, uuid, add = false, count = 0, limit = 10) => async (dispatch) => {
-    try {
-        dispatch(companySlice.actions.loading());
+    dispatch(companySlice.actions.loadingStart());
 
+    try {
         const response = await apiMainServer.post(
             CompanyApi.get_all_projects,
             JSON.stringify({
@@ -24,8 +28,7 @@ const getAllProjectsByCompany = (access_token, uuid, add = false, count = 0, lim
         );
 
         if (response.status != 200 && response.status != 201) {
-            dispatch(companySlice.actions.clearData());
-            dispatch(companySlice.error(response.data.message));
+            dispatch(messageQueueAction.ResponseHandling(response.data.message, "error"));
             return;
         }
 
@@ -35,15 +38,17 @@ const getAllProjectsByCompany = (access_token, uuid, add = false, count = 0, lim
             dispatch(companySlice.actions.getAllProjectsSuccess(response.data));
         }
     } catch (e) {
-        dispatch(companySlice.actions.clearData());
-        dispatch(companySlice.actions.error(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(companySlice.actions.loadingEnd());
 }
 
 /* Get all managers for define company */
 const getAllManagersByCompany = (access_token, uuid, add = false, count = 0, limit = 10) => async (dispatch) => {
+    dispatch(companySlice.actions.loadingStart());
+
     try {
-        dispatch(companySlice.actions.loading());
 
         const response = await apiMainServer.post(
             CompanyApi.get_all_managers,
@@ -60,8 +65,7 @@ const getAllManagersByCompany = (access_token, uuid, add = false, count = 0, lim
         );
 
         if (response.status != 200 && response.status != 201) {
-            dispatch(companySlice.actions.clearData());
-            dispatch(companySlice.error(response.data.message));
+            dispatch(messageQueueAction.ResponseHandling(response.data.message, "error"));
             return;
         }
 
@@ -71,9 +75,10 @@ const getAllManagersByCompany = (access_token, uuid, add = false, count = 0, lim
             dispatch(companySlice.actions.getAllManagersSuccess(response.data));
         }
     } catch (e) {
-        dispatch(companySlice.actions.clearData());
-        dispatch(companySlice.actions.error(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(companySlice.actions.loadingEnd());
 }
 
 const clearCompanyInformation = () => async (dispatch) => {

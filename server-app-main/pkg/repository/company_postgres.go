@@ -2,13 +2,17 @@ package repository
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	actionConstant "main-server/pkg/constant/action"
 	roleConstant "main-server/pkg/constant/role"
 	tableConstant "main-server/pkg/constant/table"
 	companyModel "main-server/pkg/model/company"
 	rbacModel "main-server/pkg/model/rbac"
+	userModel "main-server/pkg/model/user"
 	utilSlice "main-server/pkg/util"
 	"sort"
+	"strconv"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/jmoiron/sqlx"
@@ -104,4 +108,106 @@ func (r *CompanyPostgres) GetManagers(userId, domainId int, data companyModel.Ma
 		Managers: managersEx[data.Count:sum],
 		Count:    (sum - data.Count),
 	}, nil
+}
+
+/* Method for update image for current company */
+func (r *CompanyPostgres) CompanyUpdateImage(user userModel.UserIdentityModel, data companyModel.CompanyImageModel) (companyModel.CompanyImageModel, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return companyModel.CompanyImageModel{}, err
+	}
+
+	userIdStr := strconv.Itoa(user.UserId)
+	domainIdStr := strconv.Itoa(user.DomainId)
+
+	// Check access for user
+	access, err := r.enforcer.Enforce(userIdStr, domainIdStr, data.Uuid, actionConstant.MODIFY)
+	if err != nil {
+		tx.Rollback()
+		return companyModel.CompanyImageModel{}, err
+	}
+
+	if !access {
+		tx.Rollback()
+		return companyModel.CompanyImageModel{}, errors.New("Ошибка! Нет доступа!")
+	}
+
+	// Update logo for project
+	query := fmt.Sprintf(`UPDATE %s tl SET data = jsonb_set(data, '{logo}', to_jsonb($1::text), true) WHERE tl.uuid = $2`, tableConstant.COMPANIES_TABLE)
+
+	_, err = r.db.Exec(query, data.Filepath, data.Uuid)
+	if err != nil {
+		tx.Rollback()
+		return companyModel.CompanyImageModel{}, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		return companyModel.CompanyImageModel{}, err
+	}
+
+	return data, nil
+}
+
+/* Method for update info for current company */
+func (r *CompanyPostgres) CompanyUpdate(user userModel.UserIdentityModel, data companyModel.CompanyUpdateModel) (companyModel.CompanyUpdateModel, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return companyModel.CompanyUpdateModel{}, err
+	}
+
+	userIdStr := strconv.Itoa(user.UserId)
+	domainIdStr := strconv.Itoa(user.DomainId)
+
+	// Check access for user
+	access, err := r.enforcer.Enforce(userIdStr, domainIdStr, data.Uuid, actionConstant.MODIFY)
+	if err != nil {
+		tx.Rollback()
+		return companyModel.CompanyUpdateModel{}, err
+	}
+
+	if !access {
+		tx.Rollback()
+		return companyModel.CompanyUpdateModel{}, errors.New("Ошибка! Нет доступа!")
+	}
+
+	var companyInfo []companyModel.CompanyDbModel
+	query := fmt.Sprintf("SELECT uuid, data, created_at FROM %s WHERE uuid=$1 LIMIT 1", tableConstant.COMPANIES_TABLE)
+
+	err = r.db.Select(&companyInfo, query, data.Uuid)
+	if err != nil {
+		return companyModel.CompanyUpdateModel{}, err
+	}
+
+	var companyData companyModel.CompanyModel
+	err = json.Unmarshal([]byte(companyInfo[0].Data), &companyData)
+
+	companyData.Description = data.Description
+	companyData.EmailCompany = data.EmailCompany
+	companyData.Link = data.Link
+	companyData.Phone = data.Phone
+	companyData.Title = data.Title
+
+	companyDataJson, err := json.Marshal(companyData)
+	if err != nil {
+		tx.Rollback()
+		return companyModel.CompanyUpdateModel{}, err
+	}
+
+	query = fmt.Sprintf("UPDATE %s tl SET data=$1 WHERE tl.uuid=$2", tableConstant.COMPANIES_TABLE)
+
+	_, err = tx.Exec(query, companyDataJson, data.Uuid)
+	if err != nil {
+		tx.Rollback()
+		return companyModel.CompanyUpdateModel{}, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		return companyModel.CompanyUpdateModel{}, err
+	}
+
+	return data, nil
 }

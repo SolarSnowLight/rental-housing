@@ -1,33 +1,41 @@
+/* Context */
 import { projectSlice } from "../reducers/ProjectSlice";
+import messageQueueAction from "./MessageQueueAction";
 
 const setItemProjectInfo = (item, value) => async (dispatch) => {
+    dispatch(projectSlice.actions.loadingStart());
+
     try {
-        dispatch(projectSlice.actions.loading());
         dispatch(projectSlice.actions.setItemProjectInfo({ item, value }));
     } catch (e) {
-        dispatch(projectSlice.actions.clear());
-        dispatch(projectSlice.actions.error(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(projectSlice.actions.loadingEnd());
 };
 
 const addObjectInfo = (object) => async (dispatch) => {
+    dispatch(projectSlice.actions.loadingStart());
+
     try {
-        dispatch(projectSlice.actions.loading());
         dispatch(projectSlice.actions.addObjectInfo(object));
     } catch (e) {
-        dispatch(projectSlice.actions.clear());
-        dispatch(projectSlice.actions.error(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(projectSlice.actions.loadingEnd());
 }
 
 const deleteObjectInfo = (object) => async (dispatch) => {
+    dispatch(projectSlice.actions.loadingStart());
+
     try {
-        dispatch(projectSlice.actions.loading());
         dispatch(projectSlice.actions.deleteObjectInfo(object));
     } catch (e) {
-        dispatch(projectSlice.actions.clear());
-        dispatch(projectSlice.actions.error(e.message));
+        dispatch(messageQueueAction.ErrorHandling(e));
     }
+
+    dispatch(projectSlice.actions.loadingEnd());
 }
 
 const clearProjectInfo = () => async (dispatch) => {

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	pathConstant "main-server/pkg/constant/path"
 	projectModel "main-server/pkg/model/project"
 	"net/http"
 
@@ -151,7 +152,7 @@ func (h *Handler) addLogoProject(c *gin.Context) {
 	projectUuid := c.PostForm("uuid")
 
 	newFilename := uuid.NewV4().String()
-	filepath := "public/project/" + newFilename
+	filepath := pathConstant.PUBLIC_PROJECT + newFilename
 
 	userId, domainId, err := getContextUserInfo(c)
 	if err != nil {

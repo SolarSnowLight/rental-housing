@@ -1,6 +1,7 @@
 package handler
 
 import (
+	pathConstant "main-server/pkg/constant/path"
 	adminModel "main-server/pkg/model/admin"
 	"net/http"
 
@@ -71,7 +72,7 @@ func (h *Handler) createCompany(c *gin.Context) {
 	var data adminModel.CompanyModel
 
 	newFilename := uuid.NewV4().String()
-	filepath := "public/company/" + newFilename
+	filepath := pathConstant.PUBLIC_COMPANY + newFilename
 
 	data, err = h.services.Admin.CreateCompany(c, adminModel.CompanyModel{
 		Logo:         filepath,

@@ -2,7 +2,8 @@ package handler
 
 import (
 	config "main-server/config"
-	middlewareConstants "main-server/pkg/constant/middleware"
+	middlewareConstant "main-server/pkg/constant/middleware"
+	pathConstant "main-server/pkg/constant/path"
 	userModel "main-server/pkg/model/user"
 	"net/http"
 
@@ -70,7 +71,7 @@ func (h *Handler) uploadProfileImage(c *gin.Context) {
 	images := form.File["file"]
 	profileImage := images[len(images)-1]
 
-	filepath := "public/profile/" + uuid.NewV4().String()
+	filepath := pathConstant.PUBLIC_USER+ uuid.NewV4().String()
 
 	// Save profile image
 	c.SaveUploadedFile(profileImage, filepath)
@@ -220,9 +221,9 @@ func (h *Handler) refresh(c *gin.Context) {
 		return
 	}
 
-	accessToken, _ := c.Get(middlewareConstants.ACCESS_TOKEN_CTX)
-	authTypeValue, _ := c.Get(middlewareConstants.AUTH_TYPE_VALUE_CTX)
-	tokenApi, _ := c.Get(middlewareConstants.TOKEN_API_CTX)
+	accessToken, _ := c.Get(middlewareConstant.ACCESS_TOKEN_CTX)
+	authTypeValue, _ := c.Get(middlewareConstant.AUTH_TYPE_VALUE_CTX)
+	tokenApi, _ := c.Get(middlewareConstant.TOKEN_API_CTX)
 
 	data, err := h.services.Authorization.Refresh(userModel.TokenLogoutDataModel{
 		AccessToken:   accessToken.(string),
@@ -268,9 +269,9 @@ func (h *Handler) logout(c *gin.Context) {
 		return
 	}
 
-	accessToken, _ := c.Get(middlewareConstants.ACCESS_TOKEN_CTX)
-	authTypeValue, _ := c.Get(middlewareConstants.AUTH_TYPE_VALUE_CTX)
-	tokenApi, _ := c.Get(middlewareConstants.TOKEN_API_CTX)
+	accessToken, _ := c.Get(middlewareConstant.ACCESS_TOKEN_CTX)
+	authTypeValue, _ := c.Get(middlewareConstant.AUTH_TYPE_VALUE_CTX)
+	tokenApi, _ := c.Get(middlewareConstant.TOKEN_API_CTX)
 
 	data, err := h.services.Authorization.Logout(userModel.TokenLogoutDataModel{
 		AccessToken:   accessToken.(string),

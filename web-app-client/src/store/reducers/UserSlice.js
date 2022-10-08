@@ -3,8 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 /* Base state for current slice */
 const initialState = {
     company: null,
-    isLoading: false,
-    error: ""
+    isLoading: false
 };
 
 /* Create a new clice for user API */
@@ -12,21 +11,19 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        loading(state) {
+        loadingStart(state) {
             state.isLoading = true;
         },
-        error(state, action) {
+
+        loadingEnd(state) {
             state.isLoading = false;
-            state.error = action.payload;
         },
-        clearError(state) {
-            state.error = "";
-        },
-        clearData(state) {
+
+        clear(state) {
             state.company = null;
             state.isLoading = false;
-            state.error = "";
         },
+
         getUserCompanySuccess(state, action) {
             state.isLoading = false;
             state.error = "";
@@ -34,7 +31,28 @@ export const userSlice = createSlice({
             if (action.payload) {
                 state.company = action.payload;
             }
-        }
+        },
+
+        updateCompanySuccess(state, action) {
+            state.isLoading = false;
+            state.error = "";
+
+            if (action.payload) {
+                state.company = {
+                    ...state.company,
+                    ...action.payload
+                };
+            }
+        },
+
+        setItemCompanyInfo(state, action) {
+            state.isLoading = false;
+            state.error = "";
+
+            if (action.payload) {
+                state.company.data[action.payload.item] = action.payload.value;
+            }
+        },
     },
 });
 

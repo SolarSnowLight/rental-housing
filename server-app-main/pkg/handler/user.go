@@ -103,6 +103,37 @@ func (h *Handler) getUserCompany(c *gin.Context) {
 	}
 }
 
+// @Summary GetUserRoles
+// @Tags profile
+// @Description Получение информации о всех ролях пользователя
+// @ID user-role-get-all
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} company.CompanyDbModelEx "data"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /user/company/get [post]
+func (h *Handler) getUserRoles(c *gin.Context) {
+	userId, domainId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
+
+	data, err := h.services.User.GetUserCompany(userId, domainId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if len(data.Uuid) <= 0 {
+		c.JSON(http.StatusOK, nil)
+	} else {
+		c.JSON(http.StatusOK, data)
+	}
+}
+
 // @Summary CheckAccess
 // @Tags profile
 // @Description Проверка пользовательских прав на подключение к тому или иному административному модулю

@@ -1,6 +1,6 @@
 /* Libraries */
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { useMediaQuery, Button, MenuItem, Menu, Fade, Box, Drawer } from '@mui/material';
 import { useState } from 'react';
 
@@ -10,7 +10,7 @@ import BuilderAdminMenuItem from 'src/constants/menu/builder.admin.menu-item';
 
 const BuilderAdminList = ({ styles, setStateCurrentPage }) => {
     const [currentPoint, setCurrentPoint] = useState(BuilderAdminMenuItem.company);
-    
+
     const navigate = useNavigate();
 
     const toCompany = () => {
@@ -31,36 +31,36 @@ const BuilderAdminList = ({ styles, setStateCurrentPage }) => {
     return (
         <div className={styles["nav-menu-center__header"]}>
             <div
-                className={(currentPoint === BuilderAdminMenuItem.company ? styles["nav-menu__element__select"] : styles["nav-menu__element"])}
+                className={styles["nav-menu__element"]}
             >
-                <span
+                <NavLink
                     className={styles["text-menu--black"]}
-                    onClick={toCompany}
-                >{BuilderAdminMenuItem.company}</span>
+                    to={BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.company}
+                >{BuilderAdminMenuItem.company}</NavLink>
             </div>
             <div
-                className={(currentPoint === BuilderAdminMenuItem.projects ? styles["nav-menu__element__select"] : styles["nav-menu__element"])}
+                className={styles["nav-menu__element"]}
             >
-                <span
+                <NavLink
                     className={styles["text-menu--black"]}
-                    onClick={toProjectList}
-                >{BuilderAdminMenuItem.projects}</span>
+                    to={BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_list}
+                >{BuilderAdminMenuItem.projects}</NavLink>
             </div>
             <div
-                className={(currentPoint === BuilderAdminMenuItem.managers ? styles["nav-menu__element__select"] : styles["nav-menu__element"])}
+                className={styles["nav-menu__element"]}
             >
-                <span
+                <NavLink
                     className={styles["text-menu--black"]}
-                    onClick={toManagerList}
-                >{BuilderAdminMenuItem.managers}</span>
+                    to={BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.manager_list}
+                >{BuilderAdminMenuItem.managers}</NavLink>
             </div>
             <div
-                className={(currentPoint === BuilderAdminMenuItem.messenger ? styles["nav-menu__element__select"] : styles["nav-menu__element"])}
+                className={styles["nav-menu__element"]}
             >
-                <span
+                <NavLink
                     className={styles["text-menu--black"]}
-                    onClick={toManagerList}
-                >{BuilderAdminMenuItem.messenger}</span>
+                    to={BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.messenger}
+                >{BuilderAdminMenuItem.messenger}</NavLink>
             </div>
         </div>
     )

@@ -29,10 +29,7 @@ import styles from './SignInPage.module.css';
 
 const SignInPage = ({ setStateCurrentPage }) => {
     const authSelector = useAppSelector((state) => state.authReducer);
-    const authActions = authSlice.actions;
     const dispatch = useAppDispatch();
-    dispatch(authActions.authClearError());
-    const message = useMessageToastify();
     const recaptchaRef = createRef();
 
     const [isVerified, setVerified] = useState(false);

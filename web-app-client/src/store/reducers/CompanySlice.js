@@ -5,7 +5,6 @@ const initialState = {
     projects: [],
     managers: [],
     isLoading: false,
-    error: ""
 };
 
 /* Create a new clice for company API */
@@ -13,37 +12,23 @@ export const companySlice = createSlice({
     name: "company",
     initialState,
     reducers: {
-        loading(state) {
+        loadingStart(state) {
             state.isLoading = true;
         },
 
-        error(state, action) {
+        loadingEnd(state) {
             state.isLoading = false;
-            state.error = action.payload;
-        },
-
-        clearError(state) {
-            state.error = "";
         },
 
         clear(state){
             state.projects = [];
             state.managers = [];
             state.isLoading = false;
-            state.error = "";
-        },
-        
-        clearData(state) {
-            state.projects = [];
-            state.managers = [];
-            state.isLoading = false;
-            state.error = "";
         },
 
         // Get all projects
         getAllProjectsSuccess(state, action) {
             state.isLoading = false;
-            state.error = "";
 
             if (action.payload) {
                 state.projects = action.payload.projects;
@@ -52,7 +37,6 @@ export const companySlice = createSlice({
 
         getAllProjectsAddSuccess(state, action) {
             state.isLoading = false;
-            state.error = "";
 
             if (action.payload) {
                 state.projects = state.projects.concat(action.payload.projects);
@@ -62,7 +46,6 @@ export const companySlice = createSlice({
         // Get all managers
         getAllManagersSuccess(state, action) {
             state.isLoading = false;
-            state.error = "";
 
             if (action.payload) {
                 state.managers = action.payload.managers;
@@ -71,7 +54,6 @@ export const companySlice = createSlice({
 
         getAllManagersAddSuccess(state, action) {
             state.isLoading = false;
-            state.error = "";
 
             if (action.payload) {
                 state.managers = state.managers.concat(action.payload.managers);

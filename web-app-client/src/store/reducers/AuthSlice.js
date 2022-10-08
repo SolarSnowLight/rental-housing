@@ -7,7 +7,6 @@ const initialState = {
     access_token: null,
     isAuthenticated: false,
     isLoading: false,
-    error: ""
 };
 
 /* Create a new clice for sign-in and sign-up */
@@ -15,23 +14,20 @@ export const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        // Global functions
-        authLoading(state) {
+        loadingStart(state) {
             state.isLoading = true;
         },
-        authError(state, action) {
+
+        loadingEnd(state) {
             state.isLoading = false;
-            state.error = action.payload;
         },
-        authClearError(state) {
-            state.error = "";
-        },
-        clearData(state) {
+
+        clear(state) {
             state.isLoading = false;
-            state.error = "";
             state.access_token = null;
             state.isAuthenticated = false;
         },
+
         getAuthData(state) {
             const mainStore = localStorage.getItem(storeConfig["main-store"]);
 
@@ -42,8 +38,8 @@ export const authSlice = createSlice({
             }
 
             state.isAuthenticated = !!state.access_token;
-            state.error = "";
         },
+
         setAuthData(state, action) {
             state.access_token = action.payload.access_token;
             state.isAuthenticated = !!state.access_token;
@@ -59,8 +55,6 @@ export const authSlice = createSlice({
         // Function for SignIn
         signInSuccess(state, action) {
             state.isLoading = false;
-            state.error = "";
-
             state.access_token = action.payload.access_token;
             state.isAuthenticated = !!state.access_token;
 
@@ -75,8 +69,6 @@ export const authSlice = createSlice({
         // Functions for SignUp
         signUpSuccess(state, action) {
             state.isLoading = false;
-            state.error = "";
-
             state.access_token = action.payload.access_token;
             state.isAuthenticated = !!state.access_token;
 
@@ -91,7 +83,6 @@ export const authSlice = createSlice({
         // Functions for logout
         logout(state, action) {
             state.isLoading = false;
-            state.error = "";
             state.access_token = null;
             state.isAuthenticated = false;
 

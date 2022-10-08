@@ -1,8 +1,8 @@
 /* Libraries */
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useMediaQuery, Button, MenuItem, Menu, Fade, Box, Drawer } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 /* Context */
 import { authSlice } from 'src/store/reducers/AuthSlice';

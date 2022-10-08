@@ -5,11 +5,20 @@ export const emailValidation = {
     validate: (value) => {
 
         if (!value.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-            return 'Не корректный email адрес'
+            return 'Некорректный email адрес'
         }
 
 
         return true;
+    }
+}
+
+export const linkValidation = {
+    required: REQUIRED_FIELD,
+    validate: (value) => {
+        if(!value.match(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)) {
+            return "Некорректная ссылка"
+        }
     }
 }
 

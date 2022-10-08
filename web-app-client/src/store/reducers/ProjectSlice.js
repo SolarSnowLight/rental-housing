@@ -1,3 +1,4 @@
+/* Libraries */
 import { createSlice } from "@reduxjs/toolkit";
 
 /* Base state for current slice */
@@ -7,9 +8,7 @@ const initialState = {
     description: '',
     managers: [],
     objects: [],
-
-    isLoading: false,
-    error: ""
+    isLoading: false
 };
 
 /* Create a new clice for project API */
@@ -17,17 +16,12 @@ export const projectSlice = createSlice({
     name: "project",
     initialState,
     reducers: {
-        loading(state) {
+        loadingStart(state) {
             state.isLoading = true;
         },
 
-        error(state, action) {
+        loadingEnd(state) {
             state.isLoading = false;
-            state.error = action.payload;
-        },
-
-        clearError(state) {
-            state.error = "";
         },
 
         clear(state) {
@@ -36,14 +30,11 @@ export const projectSlice = createSlice({
             state.description = '';
             state.managers = [];
             state.objects = [];
-
             state.isLoading = false;
-            state.error = "";
         },
 
         setItemProjectInfo(state, action) {
             state.isLoading = false;
-            state.error = "";
 
             if (action.payload) {
                 state[action.payload.item] = action.payload.value;
@@ -52,7 +43,6 @@ export const projectSlice = createSlice({
 
         addObjectInfo(state, action) {
             state.isLoading = false;
-            state.error = "";
 
             if (action.payload) {
                 state.objects = state.objects.concat(action.payload.objects);
@@ -61,7 +51,6 @@ export const projectSlice = createSlice({
 
         deleteObjectInfo(state, action) {
             state.isLoading = false;
-            state.error = "";
 
             const index = state.objects.indexOf(action.payload);
 

@@ -9,6 +9,7 @@ const BuilderAdminRoute = {
     project_create: 'project/create',
     project_info: 'project/info',
     project_add_object: 'project/create/add/object',
+    messenger: '/messenger'
 };
 
 export default BuilderAdminRoute;

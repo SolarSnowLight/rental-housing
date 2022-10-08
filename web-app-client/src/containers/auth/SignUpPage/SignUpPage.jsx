@@ -3,22 +3,20 @@ import React, { useEffect, useState } from "react";
 import { TextField, Button, InputAdornment, IconButton, Box, Typography, LinearProgress } from '@mui/material';
 import { linearProgressClasses } from '@mui/material/LinearProgress';
 import { useForm, Controller, SubmitHandler, useFormState } from "react-hook-form";
-import ImageUploading from "react-images-uploading";
 
 /* Context */
 import { authSignIn, authSignUp } from 'src/store/actions/AuthAction';
-import { authSlice } from 'src/store/reducers/AuthSlice';
 
 /* Components */
 import ImageUpload from "src/components/ImageUpload";
+import CircularIndeterminate from "src/components/CircularIndeterminate";
+import LinearProgressWithLabel from "src/components/LinearProgressWithLabel";
 
 /* Validators */
 import { emailValidation, passwordValidation, retryPasswordValidation } from './validation';
 
 /* Hooks */
-import useHttp from "src/hooks/http.hook";
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';
-import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 
 /* Models */
 import AuthSignUpDto from 'src/dtos/auth.sign-up.dto';
@@ -28,62 +26,15 @@ import styles from './SignUpPage.module.css';
 import { styleTextBlack } from './styles';
 import { root, textStyleDefault } from 'src/styles';
 
-const LinearProgressWithLabel = (props) => {
-    return (
-        <Box sx={{ display: 'grid' }}>
-            <Box sx={{ minWidth: 35, display: 'grid', justifyContent: 'center' }}>
-                <Typography
-                    variant="body2" color="text.secondary"
-                    sx={{
-                        ...styleTextBlack
-                    }}
-                >
-                    {`${Math.round(props.value)}%`}
-                </Typography>
-            </Box>
-            <Box sx={{ width: '100%', mr: 1 }}>
-                <LinearProgress
-                    variant="determinate"
-                    {...props}
-                    sx={{
-                        height: "16px",
-                        backgroundColor: root.colorWhite,
-                        border: "1px solid #000000",
-                        [`& .${linearProgressClasses.bar}`]: {
-                            backgroundColor: root.colorGreen,
-                        }
-                    }}
-                />
-            </Box>
-        </Box>
-    );
-}
-
 const SignUpPage = ({ setStateCurrentPage }) => {
-    const auth = useAppSelector((state) => state.authReducer);
-    const authActions = authSlice.actions;
+    const authSelector = useAppSelector((state) => state.authReducer);
     const dispatch = useAppDispatch();
-    const message = useMessageToastify();
-
-    useEffect(() => {
-        if (auth.error.length > 0) {
-            message(auth.error, "error");
-            dispatch(authActions.authClearError());
-        }
-    }, [auth.error]);
-
-    const { loading, request, error, clearError } = useHttp();
-
     const [progress, setProgress] = useState(0);
-
     const [showIcon, setShowIcon] = useState({
         showPassword: false,
     });
-
     const [part, setPart] = useState(false);
-
     const [profileImage, setProfileImage] = useState([]);
-
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -161,6 +112,10 @@ const SignUpPage = ({ setStateCurrentPage }) => {
 
     return (
         <div className={styles["auth-block__main"]}>
+            {
+                authSelector.isLoading && <CircularIndeterminate />
+            }
+
             <div className={styles["auth-block__content"]}>
                 <div>
                     <span className={styles["auth-block-text__header"]} >Регистрация</span>
