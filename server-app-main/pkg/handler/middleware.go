@@ -20,8 +20,8 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	}
 
 	headerParts := strings.Split(header, " ")
-	if len(headerParts) != 2 {
-		newErrorResponse(c, http.StatusUnauthorized, "Не корректный авторизационный заголовок!")
+	if (len(headerParts) != 2) || (headerParts[1] == "null") || (headerParts[1] == "undefined") {
+		newErrorResponse(c, http.StatusUnauthorized, "Пользователь не авторизован!")
 		return
 	}
 

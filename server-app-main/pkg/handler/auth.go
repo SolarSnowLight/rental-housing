@@ -71,7 +71,7 @@ func (h *Handler) uploadProfileImage(c *gin.Context) {
 	images := form.File["file"]
 	profileImage := images[len(images)-1]
 
-	filepath := pathConstant.PUBLIC_USER+ uuid.NewV4().String()
+	filepath := pathConstant.PUBLIC_USER + uuid.NewV4().String()
 
 	// Save profile image
 	c.SaveUploadedFile(profileImage, filepath)
