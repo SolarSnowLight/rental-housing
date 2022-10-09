@@ -8,9 +8,9 @@ import ObjectCard from "src/components/ObjectCard";
 import { root } from "src/styles";
 
 import logoDefault from 'src/resources/images/logo-default.png'
-import buildingExample1 from 'src/resources/images/building-example-1.webp'
-import buildingExample2 from 'src/resources/images/building-exapmle-2.webp'
-import buildingExample3 from 'src/resources/images/building-example-3.jpg'
+import buildingExample1 from 'src/resources/images/examples/building-example-1.webp'
+import buildingExample2 from 'src/resources/images/examples/building-example-2.webp'
+import buildingExample3 from 'src/resources/images/examples/building-example-3.jpg'
 
 
 

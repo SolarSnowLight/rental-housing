@@ -3,8 +3,23 @@ import css from './ObjectInfoPage.module.scss'
 import FlatsTable, {Flat, Floor} from "./components/FlatsTable/FlatsTable";
 import Space from "src/components/Space";
 import InfoItem from "./components/InfoItem/InfoItem";
-import imagePlaceholder from 'src/resources/images/image-placeholder.png'
 import ModalImageViewer from "./components/ModalImageViewer/ModalImageViewer";
+
+import buildingExample1 from 'src/resources/images/examples/building-example-1.webp';
+import buildingExample2 from 'src/resources/images/examples/building-example-2.webp';
+import buildingExample3 from 'src/resources/images/examples/building-example-3.jpg';
+import homePage from 'src/resources/images/home_page.jpg';
+import imagePlaceholder from 'src/resources/images/image-placeholder.png'
+import mainPageBgc from 'src/resources/images/main-page-bgc.jpg'
+import neonSunrise from 'src/resources/images/examples/neon-sunrise-web.jpg'
+import retrowave1 from 'src/resources/images/examples/retrowave-1.png';
+import hotlineMiami2 from 'src/resources/images/examples/wallpaper-Hotline-Miami-2---Wrong-Number2560x1440.jpg';
+import needMoreAcidMarkII from 'src/resources/images/examples/need_more_acid_mark_ii.jpg';
+import retrowave2 from 'src/resources/images/examples/Retrowave_(2).jpg';
+
+
+
+
 
 
 const floors: Floor[] = [
@@ -113,11 +128,20 @@ const flats2: Flat[] = [
     { number: 60, floor: 6, state: 'free' },
 ]
 
-const photos = [...Array(9).keys()].map(i=>({
+export type RemoteImage = {
+    id: string
+    url: string
+    description: string
+}
+/*const photos: RemoteImage[] = [...Array(9).keys()].map(i=>({
     id: i+'',
     url: imagePlaceholder,
     description: 'image placeholder'
-}))
+}))*/
+const photos = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
+    .map((it,i)=>({
+        id: i+'', url: it, description: 'image description'
+    }))
 
 
 
@@ -132,7 +156,7 @@ const ObjectInfoPage = () => {
     const onCloseModal = () => setModalImageId(undefined)
 
     return <>
-        { modalImageId && <ModalImageViewer onClose={onCloseModal}/> }
+        { modalImageId && <ModalImageViewer onClose={onCloseModal} images={photos} defaultSelectedImageId={modalImageId}/> }
         <div className={css.page}>
             <div className={css.pageFrame}>
 

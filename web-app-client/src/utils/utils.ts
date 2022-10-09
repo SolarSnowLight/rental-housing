@@ -32,6 +32,8 @@ const getPercent = (value: number, total: number, scale: number = 1) => {
 const isArray = <T,E>(obj: T|E[]): obj is Array<E> => obj instanceof Array
 
 
+const mod = (a: number,b: number) => (a+b)%b
+
 
 export const utils = {
     readAsUrl,
@@ -39,4 +41,5 @@ export const utils = {
     numberToPlainString,
     getPercent,
     isArray,
+    mod,
 }

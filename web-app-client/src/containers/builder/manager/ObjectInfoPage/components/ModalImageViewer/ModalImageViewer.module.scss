@@ -3,16 +3,162 @@
 @use 'src/styles/common';
 
 
-.transparent {
-    position: fixed;
-    top: 0; right: 0; bottom: 0; left: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 100;
+//html, body {margin: 0; height: 100%; overflow: hidden}
+//html { overflow: hidden }
+
+// doesn't work
+/*:global(html:has(.fade)) {
+    overflow: hidden;
+}*/
+
+
+
+
+.noScroll {
+    overflow: hidden;
 }
 
-.card {
-    border-radius: 10px;
-    background: white;
+
+.fade {
     position: fixed;
-    top: 30px; right: 40px; bottom: 30px; left: 40px;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+    @extend .center;
+    overflow: auto;
+
+    .frame {
+        min-width: 900px;
+        display: grid;
+        place-items: stretch;
+        --image-preview-width: 111px;
+        grid:
+            '. . .      close .' 52px
+            'l l photo  r     r' 600px
+            '. . .      .     .' 22px
+            '. . list   .     .' calc(var(--image-preview-width) + 8px)
+            '. . .      .     .' 13px
+            '. . scroll .     .' 7px
+
+            /*'. . .      .     .' 13px
+            '. . scroll1 .     .' 7px
+            '. . .      .     .' 13px
+            '. . scroll2 .     .' 7px*/
+           / 320px 52px 800px 52px 320px
+        ;
+        @media screen and (max-width: 1544px), screen and (max-height: 813px) {
+            --image-preview-width: 73px;
+            grid:
+                '. . .     close .' 34px
+                'l l photo r     r' 400px
+                '. . .     .     .' 14px
+                '. . list  .     .' calc(var(--image-preview-width) + 8px)
+                '. . .      .     .' 8px
+                '. . scroll .     .' 7px
+
+                /*'. . .      .     .' 8px
+                '. . scroll1 .     .' 7px
+                '. . .      .     .' 8px
+                '. . scroll2 .     .' 7px*/
+               / 211px 34px 528px 34px 211px
+            ;
+        }
+    }
 }
+
+
+
+.crossContainer {
+    //width: 52px; height: 52px;
+    grid-area: close;
+    @extend .center;
+    cursor: pointer;
+}
+
+
+.arrowFrame {
+    //width: 352px; height: 600px;
+    @extend .center;
+
+    .container {
+        width: 100px; height: 100px;
+        @extend .center;
+        cursor: pointer;
+
+        .box {
+            width: 32px; height: 32px;
+            border: 1px solid #F8F8F8;
+            @extend .center;
+        }
+    }
+}
+.arrowLeft {
+    @extend .arrowFrame;
+    grid-area: l;
+}
+.arrowRight {
+    @extend .arrowFrame;
+    grid-area: r;
+}
+
+
+
+.image {
+    width: 100%; height: 100%;
+    grid-area: photo;
+    object-position: center;
+    object-fit: contain;
+}
+
+
+.imageListFrame {
+    grid-area: list;
+    padding: 4px;
+    overflow: scroll;
+    display: flex;
+    //flex: 1;
+    @extend .hideScrollbar;
+    //border: 0.3em solid red;
+
+    .box {
+        @extend .row;
+        width: auto; height: 100%;
+        gap: 16px;
+
+        .imagePreview {
+            width: auto; height: var(--image-preview-width);
+            &:hover {
+                outline: 2px solid #909090;
+                outline-offset: 2px;
+            }
+
+            .image {
+                width: auto; height: var(--image-preview-width);
+                object-position: center;
+                object-fit: contain;
+                cursor: pointer;
+                //border: 3px solid red;
+            }
+        }
+        .selected {
+            outline: 2px solid white;
+            outline-offset: 2px;
+            &:hover {
+                outline: 2px solid white;
+                outline-offset: 2px;
+            }
+
+            /*position: relative;
+            &::after {
+                content: '';
+                pointer-events: none;
+                position: absolute;
+                top: -4px; right: -4px; bottom: -4px; left: -4px;
+                border: 2px solid white;
+            }*/
+        }
+    }
+}
+
+
+
