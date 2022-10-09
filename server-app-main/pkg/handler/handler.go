@@ -138,8 +138,27 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			// URL: /company/project/create
 			project.POST(route.CREATE_ROUTE, h.userIdentityHasRole(roleConstant.ROLE_BUILDER_ADMIN), h.createProject)
 
-			// URL: /company/project/add/logo
-			project.POST(route.PROJECT_ADD_LOGO_ROUTE, h.userIdentityHasRole(roleConstant.ROLE_BUILDER_ADMIN), h.addLogoProject)
+			// URL: /company/project/update
+			project.POST(
+				route.UPDATE_ROUTE,
+				h.userIdentityHasRoles(
+					"OR",
+					roleConstant.ROLE_BUILDER_MANAGER,
+					roleConstant.ROLE_BUILDER_ADMIN,
+				),
+				h.projectUpdate,
+			)
+
+			// URL: /company/project/update/image
+			project.POST(
+				fmt.Sprintf("%s/%s", route.UPDATE_ROUTE, route.RESOURCE_IMAGE_ROUTE),
+				h.userIdentityHasRoles(
+					"OR",
+					roleConstant.ROLE_BUILDER_MANAGER,
+					roleConstant.ROLE_BUILDER_ADMIN,
+				),
+				h.projectUpdateImage,
+			)
 
 			// URL: /company/project/get
 			project.POST(route.GET_ROUTE, h.getProject)
@@ -163,7 +182,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			h.userIdentityHasRoles(
 				"OR",
 				roleConstant.ROLE_BUILDER_ADMIN,
-				roleConstant.ROLE_BUILDER_MANAGER,
 				roleConstant.ROLE_ADMIN,
 				roleConstant.ROLE_MANAGER,
 				roleConstant.ROLE_SUPER_ADMIN,
@@ -176,7 +194,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			h.userIdentityHasRoles(
 				"OR",
 				roleConstant.ROLE_BUILDER_ADMIN,
-				roleConstant.ROLE_BUILDER_MANAGER,
 				roleConstant.ROLE_ADMIN,
 				roleConstant.ROLE_MANAGER,
 				roleConstant.ROLE_SUPER_ADMIN,

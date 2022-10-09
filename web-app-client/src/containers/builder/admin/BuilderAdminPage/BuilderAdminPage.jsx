@@ -4,20 +4,18 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Button, TextField } from '@mui/material';
 import { useFormState } from 'react-hook-form';
-import ImageUploading from "react-images-uploading";
 import { Controller } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 /* Context */
 import userAction from 'src/store/actions/UserAction';
-import { authSlice } from 'src/store/reducers/AuthSlice';
+import messageQueueAction from 'src/store/actions/MessageQueueAction';
 
 /* Components */
 import ImageUpload from 'src/components/ImageUpload';
 import CircularIndeterminate from 'src/components/CircularIndeterminate';
 
 /* Hooks */
-import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { useAppSelector } from 'src/hooks/redux.hook';
 import { useAppDispatch } from 'src/hooks/redux.hook';
 import useHttp from 'src/hooks/http.hook';
@@ -27,36 +25,22 @@ import CompanyUpdateDto from 'src/dtos/company.update-dto';
 
 /* Constants */
 import AdminApi from 'src/constants/addresses/apis/admin.api';
-import MainApi from 'src/constants/addresses/apis/main.api';
 
 /* Styles */
 import styles from './BuilderAdminPage.module.css';
 import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles/index';
 import { MuiTelInput } from 'mui-tel-input';
-import { emailValidation, linkValidation } from './validation';
+import { emailValidation, linkValidation } from 'src/validation-schemes/validation';
 
 const BuilderAdminPage = () => {
-    const authSelector = useAppSelector((state) => state.authReducer);
     const userSelector = useAppSelector((state) => state.userReducer);
     const dispatch = useAppDispatch();
-
-    const authActions = authSlice.actions;
     const { loading, request, error, clearError } = useHttp();
 
-    const message = useMessageToastify();
-
     useEffect(() => {
-        if (authSelector.error.length > 0) {
-            message(authSelector.error, "error");
-            dispatch(authActions.authClearError());
-        }
-    }, [authSelector.error]);
-
-    useEffect(() => {
-        dispatch(userAction.getUserCompany(authSelector.access_token));
+        dispatch(userAction.getUserCompany());
     }, []);
-
 
     const [btnDisabled, setBtnDisabled] = useState(true);
 
@@ -83,12 +67,11 @@ const BuilderAdminPage = () => {
 
     const onSubmit = (data) => {
         if (userSelector.company.data.logo.length <= 0) {
-            message("Необходимо добавить логотип компании!", "error");
+            dispatch(messageQueueAction.addMessage(null, "error", "Необходимо добавить логотип компании!"));
             return;
         }
 
         dispatch(userAction.companyInfoUpdate(
-            authSelector.access_token,
             {
                 ...new CompanyUpdateDto({
                     uuid: userSelector.company.uuid,
@@ -135,7 +118,7 @@ const BuilderAdminPage = () => {
     return (
         <form className={styles["admin-page__container"]} onSubmit={handleSubmit(onSubmit)}>
             {
-                (authSelector.isLoading || userSelector.isLoading) && <CircularIndeterminate />
+                (userSelector.isLoading) && <CircularIndeterminate />
             }
             <div className={styles["admin-page__container--row"]}>
                 <span className={styles["admin-page__h2"]}>Изменение информации о компании</span>

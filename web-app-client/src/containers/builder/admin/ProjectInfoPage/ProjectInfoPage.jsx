@@ -1,41 +1,45 @@
+/* Libraries */
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Autocomplete } from '@mui/material';
-
-import styles from './ProjectInfoPage.module.css';
-import { textStyleDefault } from 'src/styles';
-import { root } from 'src/styles';
-import ImageUploading from "react-images-uploading";
-import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
-import { useMessageToastify } from 'src/hooks/message.toastify.hook';
-import { authSlice } from 'src/store/reducers/AuthSlice';
-import useHttp from 'src/hooks/http.hook';
+import { TextField, Autocomplete } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import AdminApi from 'src/constants/addresses/apis/admin.api';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Controller } from 'react-hook-form';
+import { useForm, useFormState } from 'react-hook-form';
+
+/* Context */
+import messageQueueAction from 'src/store/actions/MessageQueueAction';
+
+/* Components */
 import MapComponent from 'src/components/MapComponent';
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import { useLocation, useNavigate } from 'react-router-dom';
-import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
-import MainApi from 'src/constants/addresses/apis/main.api';
 import ImageUpload from 'src/components/ImageUpload';
 
-const ProjectInfoPage = () => {
-    window.scrollTo(0, 0);
+/* Hooks */
+import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
+import useHttp from 'src/hooks/http.hook';
 
-    // Section of working with the network over the HTTP protocol
-    const authSelector = useAppSelector((state) => state.authReducer);
-    const authActions = authSlice.actions;
+/* DTO */
+import ProjectUpdateDto from 'src/dtos/project.update-dto';
+
+/* Constants */
+import AdminApi from 'src/constants/addresses/apis/admin.api';
+import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
+import MainApi from 'src/constants/addresses/apis/main.api';
+
+/* Styles */
+import styles from './ProjectInfoPage.module.css';
+import companyAction from 'src/store/actions/CompanyAction';
+
+const ProjectInfoPage = () => {
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
-
     const { state } = useLocation();
 
-    const message = useMessageToastify();
-
     useEffect(() => {
-        message(error, "error");
+        dispatch(messageQueueAction.addMessage(null, "error", error));
         clearError();
-    }, [error, message, clearError]);
+    }, [error, clearError]);
 
     // The data section presented on the page
     const [btnDisabled, setBtnDisabled] = useState(true);
@@ -57,13 +61,45 @@ const ProjectInfoPage = () => {
     });
 
     // Event Handlers Section
-    const onChangeImage = (imageList, addUpdateIndex) => {
+    const onChangeImage = (imageList) => {
+        if (imageList.length <= 0) {
+            setBtnDisabled(true);
+        } else {
+            setBtnDisabled(false);
+        }
+
         setLogo(imageList);
     };
 
     const changeHandler = (key, value) => {
+        setBtnDisabled(false);
         setForm({ ...form, [key]: value });
     };
+
+    const onSubmit = (data) => {
+        if (logo.length <= 0) {
+            dispatch(messageQueueAction.addMessage(null, "error", "Необходимо добавить логотип проекта!"));
+            return;
+        }
+
+        dispatch(companyAction.projectInfoUpdate(
+            {
+                ...(new ProjectUpdateDto({
+                    uuid: state.uuid,
+                    ...form
+                }))
+            },
+            (logo[0].file) ? logo[0].file : null
+        ))
+
+        setBtnDisabled(true);
+    };
+
+    const { handleSubmit, control } = useForm();
+
+    const { errors } = useFormState({
+        control
+    });
 
     // Data section of functional operation of components
     const [open, setOpen] = useState(false);
@@ -96,22 +132,6 @@ const ProjectInfoPage = () => {
         }
     }, [open]);
 
-    useEffect(() => {
-        if (btnDisabled) {
-            let countExists = 0;
-
-            for (var key of Object.keys(form)) {
-                if (form[key].length > 0) {
-                    countExists++;
-                }
-            }
-
-            if (countExists >= 1) {
-                setBtnDisabled(false);
-            }
-        }
-    }, [form]);
-
     // Navigation functions section
     const navigate = useNavigate();
     const toCreateObject = () => {
@@ -119,7 +139,7 @@ const ProjectInfoPage = () => {
     }
 
     return (
-        <div className={styles["wrapper-section"]}>
+        <form className={styles["wrapper-section"]} onSubmit={handleSubmit(onSubmit)}>
             <div className={styles["wrapper-section__item"]}>
                 <div>
                     <span className='span__text__black-h3'>Информация о проекте</span>
@@ -271,11 +291,15 @@ const ProjectInfoPage = () => {
                 <div className={styles["wrapper-section__item__map-element"]}>
                     <div className={styles["grid-item__left"]}></div>
                     <div className={styles["grid-item__right"]}>
-                        <ButtonGreenComponent title="Сохранить изменения" />
+                        <ButtonGreenComponent
+                            type="submit"
+                            title="Сохранить изменения"
+                            disabled={btnDisabled}
+                        />
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

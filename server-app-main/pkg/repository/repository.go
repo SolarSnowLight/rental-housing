@@ -60,14 +60,19 @@ type AuthType interface {
 }
 
 type Project interface {
+	/* CRUD */
 	CreateProject(userId, domainId int, data projectModel.ProjectModel) (projectModel.ProjectModel, error)
-	AddLogoProject(userId, domainId int, data projectModel.ProjectLogoModel) (projectModel.ProjectLogoModel, error)
+	ProjectUpdate(user userModel.UserIdentityModel, data projectModel.ProjectUpdateModel) (projectModel.ProjectUpdateModel, error)
+	ProjectUpdateImage(userId, domainId int, data projectModel.ProjectImageModel) (projectModel.ProjectImageModel, error)
+
 	GetProject(userId, domainId int, data projectModel.ProjectUuidModel) (projectModel.ProjectDbModel, error)
 	GetProjects(userId, domainId int, data projectModel.ProjectCountModel) (projectModel.ProjectAnyCountModel, error)
 }
 
 type Company interface {
 	GetManagers(userId, domainId int, data companyModel.ManagerCountModel) (companyModel.ManagerAnyCountModel, error)
+
+	/* CRUD */
 	CompanyUpdateImage(user userModel.UserIdentityModel, data companyModel.CompanyImageModel) (companyModel.CompanyImageModel, error)
 	CompanyUpdate(user userModel.UserIdentityModel, data companyModel.CompanyUpdateModel) (companyModel.CompanyUpdateModel, error)
 }

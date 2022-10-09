@@ -11,7 +11,6 @@ import MainApi from 'src/constants/addresses/apis/main.api';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 
 const ManagerListPage = () => {
-    const authSelector = useAppSelector((state) => state.authReducer);
     const userSelector = useAppSelector((state) => state.userReducer);
     const companySelector = useAppSelector((state) => state.companyReducer);
     const dispatch = useAppDispatch();
@@ -19,12 +18,11 @@ const ManagerListPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(companyAction.getAllManagersByCompany(authSelector.access_token, userSelector.company?.uuid));
+        dispatch(companyAction.getAllManagersByCompany(userSelector.company?.uuid));
     }, []);
 
     const getProjectsHandler = () => {
         dispatch(companyAction.getAllManagersByCompany(
-            authSelector.access_token,
             userSelector.company?.uuid,
             true,
             companySelector.managers.length

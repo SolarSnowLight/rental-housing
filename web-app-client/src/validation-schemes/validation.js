@@ -33,3 +33,21 @@ export const passwordValidation = {
         return true;
     }
 }
+
+export const retryPasswordValidation = (password) => {
+    return {
+        required: REQUIRED_FIELD,
+        validate: (value) => {
+            
+            if(value.length < 6) {
+                return 'Пароль должен содержать 6-ть или более символов';
+            }
+
+            if(value !== password){
+                return 'Пароли должны совпадать';
+            }
+    
+            return true;
+        }
+    }
+}

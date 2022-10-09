@@ -1,3 +1,6 @@
+/* Libraries */
+import Avatar from '@mui/material/Avatar';
+
 /* Images */
 import defaultProfileImg from 'src/resources/images/default_profile.png';
 
@@ -5,7 +8,7 @@ import defaultProfileImg from 'src/resources/images/default_profile.png';
 import styles from './ListItemComponent.module.css';
 
 
-const ListItemComponent = ({ column1 = '', column2 = '', column3 = '', clickHandler = () => { }, img = {defaultProfileImg}}) => {
+const ListItemComponent = ({ column1 = '', column2 = '', column3 = '', clickHandler = () => { }, img = { defaultProfileImg } }) => {
     const columnCheck = (column) => {
         if (column.length <= 0) {
             return false;
@@ -18,8 +21,8 @@ const ListItemComponent = ({ column1 = '', column2 = '', column3 = '', clickHand
         <div className={styles["list-item"]}>
             <div className={styles["list-item__left"]}>
                 <div>
-                    <img
-                        className={styles["item-img"]}
+                    <Avatar
+                        sx={{ width: '4.688em', height: '4.688em' }}
                         onClick={() => {
                             clickHandler();
                         }}

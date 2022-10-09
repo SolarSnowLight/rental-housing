@@ -64,7 +64,7 @@ const useHttp = (baseUrl = MainApi.main_server) => {
                 dispatch(authActions.setAuthData({
                     access_token: data.access_token
                 }));
-            }else if(response?.status === 401){
+            } else if (response?.status === 401) {
                 throw new Error("Пользователь не авторизован!");
             }
 
@@ -78,7 +78,13 @@ const useHttp = (baseUrl = MainApi.main_server) => {
         }
     }, []);
 
-    const request = useCallback(async (url, method = 'GET', body = null, headers = { 'Content-Type': 'application/json' }, multipart = false) => {
+    const request = useCallback(async (
+        url,
+        method = 'GET',
+        body = null,
+        headers = { 'Content-Type': 'application/json' },
+        multipart = false
+    ) => {
         setLoading(true);
         try {
             if (body && (!headers['Content-Type']) && (!multipart)) {

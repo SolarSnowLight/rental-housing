@@ -13,7 +13,7 @@ import CircularIndeterminate from "src/components/CircularIndeterminate";
 import LinearProgressWithLabel from "src/components/LinearProgressWithLabel";
 
 /* Validators */
-import { emailValidation, passwordValidation, retryPasswordValidation } from './validation';
+import { emailValidation, passwordValidation, retryPasswordValidation } from 'src/validation-schemes/validation';
 
 /* Hooks */
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';

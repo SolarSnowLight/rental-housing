@@ -21,7 +21,6 @@ import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.rout
 import styles from './ProjectListPage.module.css';
 
 const ProjectListPage = () => {
-    const authSelector = useAppSelector((state) => state.authReducer);
     const userSelector = useAppSelector((state) => state.userReducer);
     const companySelector = useAppSelector((state) => state.companyReducer);
     const dispatch = useAppDispatch();
@@ -29,12 +28,11 @@ const ProjectListPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(companyAction.getAllProjectsByCompany(authSelector.access_token, userSelector.company?.uuid));
+        dispatch(companyAction.getAllProjectsByCompany(userSelector.company?.uuid));
     }, []);
 
     const getProjectsHandler = () => {
         dispatch(companyAction.getAllProjectsByCompany(
-            authSelector.access_token,
             userSelector.company?.uuid,
             true,
             companySelector.projects.length

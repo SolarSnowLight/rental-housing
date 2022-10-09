@@ -1,6 +1,5 @@
 /* Context */
 import { userSlice } from "src/store/reducers/UserSlice";
-import { authSlice } from "src/store/reducers/AuthSlice";
 import messageQueueAction from "./MessageQueueAction";
 
 /* Http */
@@ -9,22 +8,15 @@ import apiMainServer from "src/http/http.main-server";
 /* Constants */
 import MainApi from "src/constants/addresses/apis/main.api";
 import UserApi from "src/constants/addresses/apis/user.api";
-import AuthApi from "src/constants/addresses/apis/auth.api";
 import CompanyApi from "src/constants/addresses/apis/company.api";
 
 /* Function for get company for current user */
-export const getUserCompany = (access_token) => async (dispatch) => {
+export const getUserCompany = () => async (dispatch) => {
     dispatch(userSlice.actions.loadingStart());
 
-    const originalRequest = async (accessToken) => {
+    try {
         const response = await apiMainServer.post(
-            UserApi.get_user_company,
-            null,
-            {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            }
+            UserApi.get_user_company
         );
 
         if (response.status != 200 && response.status != 201) {
@@ -39,53 +31,21 @@ export const getUserCompany = (access_token) => async (dispatch) => {
         dispatch(userSlice.actions.getUserCompanySuccess({
             ...response.data,
         }));
-    };
-
-    try {
-        await originalRequest(access_token);
     } catch (e) {
-        dispatch(userSlice.actions.clear());
-
-        if (e.response.status == 401) {
-            const response = await apiMainServer.post(
-                AuthApi.refresh,
-                null,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${access_token}`
-                    }
-                }
-            );
-
-            if (response.status != 200 && response.status != 201) {
-                dispatch(messageQueueAction(response.data.message, "error"));
-                return;
-            }
-
-            dispatch(authSlice.actions.signInSuccess(response.data));
-            await originalRequest(response.data.access_token);
-        }
-
-        dispatch(messageQueueAction.ErrorHandling(e));
+        dispatch(messageQueueAction.errorMessage(e));
     }
 
     dispatch(userSlice.actions.loadingEnd());
-}
+};
 
 /* Function for update information about company for current user */
-const companyInfoUpdate = (access_token, data, logo) => async (dispatch) => {
+const companyInfoUpdate = (data, logo) => async (dispatch) => {
     dispatch(userSlice.actions.loadingStart());
 
     try {
-
         let response = await apiMainServer.post(
             CompanyApi.update,
-            JSON.stringify(data),
-            {
-                headers: {
-                    'Authorization': `Bearer ${access_token}`
-                }
-            }
+            JSON.stringify(data)
         );
 
         if ((logo) && (!(response.status != 200 && response.status != 201))) {
@@ -96,12 +56,7 @@ const companyInfoUpdate = (access_token, data, logo) => async (dispatch) => {
 
             response = await apiMainServer.post(
                 CompanyApi.update_image,
-                formData,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${access_token}`
-                    }
-                }
+                formData
             );
         }
 
@@ -110,14 +65,14 @@ const companyInfoUpdate = (access_token, data, logo) => async (dispatch) => {
             return;
         }
 
-        dispatch(messageQueueAction.ResponseHandling(response, "success", "Информации о компании успешно обновлена"));
+        dispatch(messageQueueAction.addMessage(response, "success", "Информации о компании успешно обновлена"));
         dispatch(userSlice.actions.updateCompanySuccess(response.data));
     } catch (e) {
-        dispatch(messageQueueAction.ErrorHandling(e));
+        dispatch(messageQueueAction.errorMessage(e));
     }
 
     dispatch(userSlice.actions.loadingEnd());
-}
+};
 
 const setItemCompanyInfo = (item, value) => async (dispatch) => {
     dispatch(userSlice.actions.loadingStart());
@@ -125,7 +80,7 @@ const setItemCompanyInfo = (item, value) => async (dispatch) => {
     try {
         dispatch(userSlice.actions.setItemCompanyInfo({ item, value }));
     } catch (e) {
-        dispatch(messageQueueAction.ErrorHandling(e));
+        dispatch(messageQueueAction.errorMessage(e));
     }
 
     dispatch(userSlice.actions.loadingEnd());

@@ -39,6 +39,8 @@ export const projectSlice = createSlice({
             if (action.payload) {
                 state[action.payload.item] = action.payload.value;
             }
+
+            console.log("Всё окей, это redux-persist выёб*вается");
         },
 
         addObjectInfo(state, action) {

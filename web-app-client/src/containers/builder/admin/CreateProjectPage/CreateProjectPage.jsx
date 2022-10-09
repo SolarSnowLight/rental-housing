@@ -1,23 +1,19 @@
 /* Libraries */
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Autocomplete } from '@mui/material';
-import ImageUploading from "react-images-uploading";
+import { TextField, Autocomplete } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 
 /* Context */
 import projectAction from 'src/store/actions/ProjectAction';
 import { authSlice } from 'src/store/reducers/AuthSlice';
+import messageQueueAction from 'src/store/actions/MessageQueueAction';
 
 /* Components */
 import MapComponent from 'src/components/MapComponent';
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
 import ImageUpload from 'src/components/ImageUpload';
-
-/* Images */
-import cross from 'src/resources/images/cross.svg';
-import update from 'src/resources/images/update.svg';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
@@ -31,8 +27,7 @@ import AdminApi from 'src/constants/addresses/apis/admin.api';
 
 /* Styles */
 import styles from './CreateProjectPage.module.css';
-import { textStyleDefault } from 'src/styles';
-import { root } from 'src/styles';
+import companyAction from 'src/store/actions/CompanyAction';
 
 const CreateProjectPage = () => {
     // Section of working with the network over the HTTP protocol
@@ -53,7 +48,7 @@ const CreateProjectPage = () => {
     const loadingAutocomplete = open && options?.length === 0;
 
     useEffect(() => {
-        message(error, "error");
+        dispatch(messageQueueAction.addMessage(null, "error", error));
         clearError();
     }, [error, message, clearError]);
 
@@ -67,10 +62,19 @@ const CreateProjectPage = () => {
     };
 
     const createProjectHandler = async () => {
-        const response = await request(CompanyApi.create_project, 'POST', JSON.stringify({
+        dispatch(companyAction.createProject(
+            {
+                title: projectSelector.title,
+                description: projectSelector.description,
+                managers: projectSelector.managers,
+                uuid: userSelector.company?.uuid
+            },
+            projectSelector.logo[0].file
+        ));
+        /*const response = await request(CompanyApi.create_project, 'POST', JSON.stringify({
             title: projectSelector.title,
-            description: projectSelector.desctiprion,
-            manager: projectSelector.managers,
+            description: projectSelector.description,
+            managers: projectSelector.managers,
             uuid: userSelector.company?.uuid
         }));
 
@@ -83,13 +87,13 @@ const CreateProjectPage = () => {
         formData.append('logo', projectSelector.logo[0].file);
         formData.append('uuid', response.uuid);
 
-        const responseImage = await request(CompanyApi.project_add_logo, 'POST', formData, {}, true);
+        const responseImage = await request(CompanyApi.project_update_image, 'POST', formData, {}, true);
         if (response.message) {
             message(response.message, "error");
             return;
         }
 
-        message("Проект создан успешно!", "success");
+        message("Проект создан успешно!", "success");*/
     };
 
     useEffect(() => {
@@ -122,7 +126,16 @@ const CreateProjectPage = () => {
     const navigate = useNavigate();
     const toCreateObject = () => {
         window.scrollTo(0, 0);
-        navigate(BuilderAdminRoute.builder_admin + "/" + BuilderAdminRoute.project_add_object);
+        navigate(
+            (BuilderAdminRoute.builder_admin + "/" + BuilderAdminRoute.project_add_object),
+            {
+                state: {
+                    title: projectSelector.title,
+                    description: projectSelector.description,
+                    logo: projectSelector.logo
+                }
+            }
+        );
     }
 
     return (

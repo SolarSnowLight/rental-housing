@@ -9,36 +9,37 @@ import MainApi from "src/constants/addresses/apis/main.api";
 import AdminApi from "src/constants/addresses/apis/admin.api";
 import messageQueueAction from "./MessageQueueAction";
 
-/* Function for get all users */
-export const adminGetAllUser = (access_token) => async (dispatch) => {
+/**
+ * Function for getting a list of all users
+ * @returns {Promise<void>}
+ */
+export const adminGetAllUser = () => async (dispatch) => {
     dispatch(adminSlice.actions.loadingStart());
 
     try {
         const response = await apiMainServer.post(
-            AdminApi.get_all_users,
-            null,
-            {
-                headers: {
-                    'Authorization': `Bearer ${access_token}`
-                }
-            }
+            AdminApi.get_all_users
         );
 
         if (response.status != 200 && response.status != 201) {
-            dispatch(messageQueueAction.ResponseHandling(response.data.message, "error"));
+            dispatch(messageQueueAction.addMessage(response.data.message, "error"));
             return;
         }
 
         dispatch(adminSlice.actions.getAllUserSuccess(response.data))
     } catch (e) {
-        dispatch(messageQueueAction.ErrorHandling(e));
+        dispatch(messageQueueAction.errorMessage(e));
     }
 
     dispatch(adminSlice.actions.loadingEnd());
 }
 
-/* Function for create new company */
-export const adminCreateCompany = (access_token, data) => async (dispatch) => {
+/**
+ * Function for create new company
+ * @param {any} data - data in format javascript object for making request
+ * @returns {Promise<void>}
+ */
+export const adminCreateCompany = (data) => async (dispatch) => {
     dispatch(adminSlice.actions.loadingStart());
 
     try {
@@ -53,24 +54,21 @@ export const adminCreateCompany = (access_token, data) => async (dispatch) => {
 
         const response = await apiMainServer.post(
             (MainApi.main_server + AdminApi.create_company),
-            formData,
-            {
-                headers: {
-                    'Authorization': `Bearer ${access_token}`
-                }
-            }
+            formData
         );
 
         if (response.status != 200 && response.status != 201) {
-            dispatch(messageQueueAction.ResponseHandling(response.data.message, "error"));
+            dispatch(messageQueueAction.addMessage(response.data.message, "error"));
             return;
         }
 
-        dispatch(messageQueueAction.ResponseHandling(response.data.message, "success"));
+        dispatch(messageQueueAction.addMessage(response.data.message, "success"));
         dispatch(adminSlice.actions.createCompanySuccess(response.data))
     } catch (e) {
-        dispatch(messageQueueAction.ErrorHandling(e));
+        dispatch(messageQueueAction.errorMessage(e));
     }
 
     dispatch(adminSlice.actions.loadingEnd());
 }
+
+

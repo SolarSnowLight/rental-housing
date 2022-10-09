@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 
 /* Validators */
-import { emailValidation, passwordValidation } from './validation';
+import { emailValidation, passwordValidation } from 'src/validation-schemes/validation';
 
 /* Constants */
 import UserPanelValue from "src/constants/values/user.panel.value";

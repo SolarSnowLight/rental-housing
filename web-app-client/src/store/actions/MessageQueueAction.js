@@ -7,29 +7,27 @@ import { messageQueueSlice } from "../reducers/MessageQueueSlice";
 /* DTO */
 import ApiResponseDto from 'src/dtos/api.response-dto';
 
-const addMessage = (message) => async (dispatch) => {
-    dispatch(messageQueueSlice.actions.addMessage(message));
+const addMessage = (response, type, message = null) => async (dispatch) => {
+    if (response || message) {
+        dispatch(messageQueueSlice.actions.addMessage({
+            ...(new ApiResponseDto({
+                uuid: uuidv4(),
+                data: {
+                    message: (message) ? message : response.data.message
+                },
+                status: (response) ? response.status : 200,
+                type: type,
+                created_at: (new Date()).toUTCString()
+            }))
+        }));
+    }
 }
 
 const removeMessage = (uuid) => async (dispatch) => {
     dispatch(messageQueueSlice.actions.removeMessage(uuid));
 }
 
-const ResponseHandling = (response, type, message = null) => async (dispatch) => {
-    dispatch(messageQueueSlice.actions.addMessage({
-        ...(new ApiResponseDto({
-            uuid: uuidv4(),
-            data: {
-                message: (message)? message : response.data.message
-            },
-            status: (response) ? response.status : 200,
-            type: type,
-            created_at: (new Date()).toUTCString()
-        }))
-    }));
-}
-
-const ErrorHandling = (e) => async (dispatch) => {
+const errorMessage = (e) => async (dispatch) => {
     if (e?.response?.data?.message) {
         dispatch(messageQueueSlice.actions.addMessage({
             ...(new ApiResponseDto({
@@ -37,7 +35,7 @@ const ErrorHandling = (e) => async (dispatch) => {
                 data: {
                     message: e.response.data.message
                 },
-                status: e.response.status,
+                status: (e?.response?.status)? e?.response?.status : 400,
                 type: "error",
                 created_at: (new Date()).toUTCString()
             }))
@@ -59,10 +57,9 @@ const ErrorHandling = (e) => async (dispatch) => {
 }
 
 const messageQueueAction = {
-    addMessage,
     removeMessage,
-    ErrorHandling,
-    ResponseHandling
+    addMessage,
+    errorMessage,
 };
 
 export default messageQueueAction;

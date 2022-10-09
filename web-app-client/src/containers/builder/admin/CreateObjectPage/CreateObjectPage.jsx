@@ -5,7 +5,7 @@ import ImageUploading from "react-images-uploading";
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { useDropzone } from 'react-dropzone';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 /* Context */
 import { authSlice } from 'src/store/reducers/AuthSlice';
@@ -42,17 +42,15 @@ import { root } from 'src/styles';
 import ImageUpload from 'src/components/ImageUpload';
 
 const CreateObjectPage = () => {
-    // animateScroll.scrollToTop();
-
     // Section of working with the network over the HTTP protocol
-    const auth = useAppSelector((state) => state.authReducer);
-    const authActions = authSlice.actions;
+    const userSelector = useAppSelector((state) => state.userReducer);
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
     const [modalActive, setModalActive] = useState(false);
     const [modalText, setModalText] = useState(null);
     const navigate = useNavigate();
     const message = useMessageToastify();
+    const { state } = useLocation();
 
     // The data section presented on the page
     const [btnDisabled, setBtnDisabled] = useState(true);
@@ -86,7 +84,7 @@ const CreateObjectPage = () => {
     const loadingAutocomplete = open && options?.length === 0;
 
     // Event Handlers Section
-    const onChangeImage = (imageList, addUpdateIndex) => {
+    const onChangeImage = (imageList) => {
         setLogo(imageList);
     };
 
@@ -222,7 +220,11 @@ const CreateObjectPage = () => {
                     city && <MapSelectComponent city={city} setActive={setModalActive} setLatLng={setLatLng} />
                 }
             </LabelSelectComponent>
-            <ProjectInfo />
+            <ProjectInfo
+                logo={(state.logo[0].data_url)? state.logo[0].data_url : state.logo[0]}
+                title={state.title}
+                description={state.description}
+            />
             <div className={styles["block"]}>
                 <div className={styles["block__item"]}>
                     <span className='span__text__black-h3'>Создание объекта</span>
@@ -242,7 +244,7 @@ const CreateObjectPage = () => {
                             <TextField
                                 required
                                 id="outlined-required"
-                                placeholder="Название компании"
+                                placeholder="Название объекта"
                                 onChange={(e) => {
                                 }}
                                 sx={{

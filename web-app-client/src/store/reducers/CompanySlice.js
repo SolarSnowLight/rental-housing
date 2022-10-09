@@ -20,7 +20,7 @@ export const companySlice = createSlice({
             state.isLoading = false;
         },
 
-        clear(state){
+        clear(state) {
             state.projects = [];
             state.managers = [];
             state.isLoading = false;
@@ -28,7 +28,6 @@ export const companySlice = createSlice({
 
         // Get all projects
         getAllProjectsSuccess(state, action) {
-            state.isLoading = false;
 
             if (action.payload) {
                 state.projects = action.payload.projects;
@@ -36,7 +35,6 @@ export const companySlice = createSlice({
         },
 
         getAllProjectsAddSuccess(state, action) {
-            state.isLoading = false;
 
             if (action.payload) {
                 state.projects = state.projects.concat(action.payload.projects);
@@ -45,19 +43,31 @@ export const companySlice = createSlice({
 
         // Get all managers
         getAllManagersSuccess(state, action) {
-            state.isLoading = false;
-
             if (action.payload) {
                 state.managers = action.payload.managers;
             }
         },
 
         getAllManagersAddSuccess(state, action) {
-            state.isLoading = false;
-
             if (action.payload) {
                 state.managers = state.managers.concat(action.payload.managers);
             }
+        },
+
+        updateProjectInfoItem(state, action) {
+            const data = JSON.parse(JSON.stringify(state.projects));
+            const index = data.findIndex((value) => {
+                return value.uuid === action.payload.uuid
+            });
+
+            if (index >= 0) {
+                data[index].data = {
+                    ...data[index].data ,
+                    ...action.data,
+                }
+            }
+
+            state.projects = data;
         }
     },
 });

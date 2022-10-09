@@ -35,6 +35,7 @@ const useBaseRoutes = () => {
             <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
 
             <Route path={'/object-search'} element={<ObjectSearchPage />} />
+            <Route path={'/object-info'} element={<ObjectInfoPage />} />
 
             {
                 <Route
