@@ -1,6 +1,6 @@
 
 
-@use 'src/styles/common';
+@use '../../styles/common';
 
 
 //html, body {margin: 0; height: 100%; overflow: hidden}
@@ -31,35 +31,35 @@
         min-width: 900px;
         display: grid;
         place-items: stretch;
-        --image-preview-width: 111px;
+        --image-preview-h: 111px;
         grid:
-            '. . .      close .' 52px
+            '. . pos    close .' 52px
             'l l photo  r     r' 600px
-            '. . .      .     .' 22px
-            '. . list   .     .' calc(var(--image-preview-width) + 8px)
+            '. . .      .     .' 18px
+            '. . list   .     .' var(--image-preview-h)
             '. . .      .     .' 13px
             '. . scroll .     .' 7px
 
-            /*'. . .      .     .' 13px
+            '. . .      .     .' 13px
             '. . scroll1 .     .' 7px
             '. . .      .     .' 13px
-            '. . scroll2 .     .' 7px*/
+            '. . scroll2 .     .' 7px
            / 320px 52px 800px 52px 320px
         ;
         @media screen and (max-width: 1544px), screen and (max-height: 813px) {
-            --image-preview-width: 73px;
+            --image-preview-h: 73px;
             grid:
-                '. . .     close .' 34px
+                '. . pos   close .' 34px
                 'l l photo r     r' 400px
-                '. . .     .     .' 14px
-                '. . list  .     .' calc(var(--image-preview-width) + 8px)
+                '. . .     .     .' 12px
+                '. . list  .     .' var(--image-preview-h)
                 '. . .      .     .' 8px
                 '. . scroll .     .' 7px
 
-                /*'. . .      .     .' 8px
+                '. . .      .     .' 8px
                 '. . scroll1 .     .' 7px
                 '. . .      .     .' 8px
-                '. . scroll2 .     .' 7px*/
+                '. . scroll2 .     .' 7px
                / 211px 34px 528px 34px 211px
             ;
         }
@@ -67,6 +67,12 @@
 }
 
 
+.position {
+    grid-area: pos;
+    place-self: center;
+    font: 400 30px var(--font-family-text);
+    color: #F8F8F8;
+}
 
 .crossContainer {
     //width: 52px; height: 52px;
@@ -113,39 +119,40 @@
 
 .imageListFrame {
     grid-area: list;
-    padding: 4px;
     overflow: scroll;
     display: flex;
     //flex: 1;
     @extend .hideScrollbar;
-    //border: 0.3em solid red;
+    //padding-left: 10px; background: red;
 
     .box {
         @extend .row;
-        width: auto; height: 100%;
-        gap: 16px;
+        width: auto; height: var(--image-preview-h);
+        gap: 12px;
 
         .imagePreview {
-            width: auto; height: var(--image-preview-width);
+            width: auto; height: var(--image-preview-h);
+            padding: 4px;
             &:hover {
                 outline: 2px solid #909090;
-                outline-offset: 2px;
+                outline-offset: -2px;
             }
 
             .image {
-                width: auto; height: var(--image-preview-width);
+                width: auto; height: 100%;
                 object-position: center;
                 object-fit: contain;
                 cursor: pointer;
+                //display: flex;
                 //border: 3px solid red;
             }
         }
         .selected {
             outline: 2px solid white;
-            outline-offset: 2px;
+            outline-offset: -2px;
             &:hover {
                 outline: 2px solid white;
-                outline-offset: 2px;
+                outline-offset: -2px;
             }
 
             /*position: relative;

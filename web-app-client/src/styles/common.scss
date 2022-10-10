@@ -21,7 +21,7 @@
     display: flex;
     flex-flow: column nowrap;
 }
-@mixin col{
+@mixin col {
     display: flex;
     flex-flow: column nowrap;
 }
@@ -41,13 +41,17 @@
     top: 0; right: 0; bottom: 0; left: 0;
 }
 
+
+
 .hideScrollbar {
     scrollbar-width: none;
     &::-webkit-scrollbar {
         display: none;
     }
 }
-
+.noScroll {
+    overflow: hidden;
+}
 
 
 .underborderOnHover {

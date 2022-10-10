@@ -3,7 +3,7 @@ import css from './ObjectInfoPage.module.scss'
 import FlatsTable, {Flat, Floor} from "./components/FlatsTable/FlatsTable";
 import Space from "src/components/Space";
 import InfoItem from "./components/InfoItem/InfoItem";
-import ModalImageViewer from "./components/ModalImageViewer/ModalImageViewer";
+import ModalImageViewer from "src/components/ModalImageViewer/ModalImageViewer";
 
 import buildingExample1 from 'src/resources/images/examples/building-example-1.webp';
 import buildingExample2 from 'src/resources/images/examples/building-example-2.webp';
@@ -128,16 +128,6 @@ const flats2: Flat[] = [
     { number: 60, floor: 6, state: 'free' },
 ]
 
-export type RemoteImage = {
-    id: string
-    url: string
-    description: string
-}
-/*const photos: RemoteImage[] = [...Array(9).keys()].map(i=>({
-    id: i+'',
-    url: imagePlaceholder,
-    description: 'image placeholder'
-}))*/
 const photos = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
     .map((it,i)=>({
         id: i+'', url: it, description: 'image description'

@@ -255,7 +255,7 @@
   }
   
   /**
-   * Remove the default vertical scrollbar in IE 10+.
+   * Remove the default vertical useScrollbar in IE 10+.
    */
   
   textarea {

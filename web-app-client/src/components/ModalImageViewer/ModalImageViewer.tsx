@@ -2,15 +2,21 @@ import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'reac
 import css from './ModalImageViewer.module.scss'
 import CrossIc from "src/components/icons/CrossIc";
 import styled from "styled-components";
-import {RemoteImage} from "../../ObjectInfoPage";
-import {ArrowDownIc} from "src/components/icons";
 import Arrow2ForwardIc from "src/components/icons/Arrow2ForwardIc";
 import {utils} from "src/utils/utils";
 import classNames from "classnames";
-import HorizontalScrollbar from "../HorizontalScrollbar/HorizontalScrollbar";
+import HorizontalScrollbar from "src/components/HorizontalScrollbar/HorizontalScrollbar";
+import {GetDimensions} from "src/utils/GetDimensions";
+import {useScrollbar} from "src/hooks/useScrollbar/useScrollbar";
+import {useDisableHtmlScroll} from "src/hooks/useDisableHtmlScroll/useDisableHtmlScroll";
 
 
 
+export type RemoteImage = {
+    id: string
+    url: string
+    description: string
+}
 export type ModalImageViewerProps = {
     onClose?: (()=>void) | undefined
     images?: RemoteImage[] | undefined
@@ -21,41 +27,28 @@ const ModalImageViewer = ({
 }: ModalImageViewerProps) => {
 
     // disable scroll of faded page
-    useLayoutEffect(()=>{
-        document.querySelector('html')!.classList.add(css.noScroll)
-        return ()=>document.querySelector('html')!.classList.remove(css.noScroll)
-    },[])
+    useDisableHtmlScroll()
 
-
+    const [selectedImageId, setSelectedImageId] = useState(defaultSelectedImageId ?? images[0]?.id)
+    const selectedI = useMemo(()=>images.findIndex(it=>it.id===selectedImageId),[selectedImageId,images])
 
 
     const containerRef = useRef<HTMLDivElement>(null)
     const contentRef = useRef<HTMLDivElement>(null)
     const selectedRef = useRef<HTMLDivElement>(null)
 
-    const [scrollProps, setScrollProps] = useState({ clientWidth: 0, scrollLeft: 0, scrollLeftMax: 0, scrollWidth: 0 })
-    const setScrollPropsWrap = (element: HTMLElement) => setScrollProps({
-        clientWidth: element.clientWidth,
-        scrollLeft: element.scrollLeft,
-        // @ts-ignore
-        scrollLeftMax: element.scrollLeftMax,
-        scrollWidth: element.scrollWidth,
-    })
-    useEffect(()=>{
-        const timerId = setTimeout(()=>setScrollPropsWrap(containerRef.current!),500)
-        return ()=>clearTimeout(timerId)
-    },[])
 
-    const [selectedImageId, setSelectedImageId] = useState(defaultSelectedImageId ?? images[0]?.id)
-    const selectedImage = useMemo(()=>images.find(it=>it.id===selectedImageId),[selectedImageId,images])
+    const [scrollProps, setScrollPropsWrap] = useScrollbar(containerRef, contentRef)
+
+
+    // autoscroll to selected image if it is not visible at all
     useEffect(()=>{
         const container = containerRef.current!
         const selected = selectedRef.current!
-        const containerW = container.clientWidth
-        console.log('container',container)
-        console.log('selected',selected)
-        const containerComputedStyles = window.getComputedStyle(container)
-        console.log('containerComputedStyles',containerComputedStyles)
+        const cd = new GetDimensions(container)
+        const sd = new GetDimensions(selected)
+        if (sd.right<=cd.left) container.scrollTo({ left: cd.scrollLeft-(cd.left-sd.left) })
+        else if (sd.left>=cd.right) container.scrollTo({ left: cd.scrollLeft+(sd.right-cd.right) })
     },[selectedImageId])
 
 
@@ -71,19 +64,7 @@ const ModalImageViewer = ({
     }
 
     const onScroll = (ev: React.UIEvent<HTMLDivElement>) => {
-        //console.log(ev)
-
-        const container = ev.target as any
-        // console.log('clientHeight (container height)',container.clientHeight)
-        // console.log('clientTop (container top offset)',container.clientTop)
-        // console.log('clientWidth (container width)',container.clientWidth)
-        // console.log('clientLeft (container left offset)',container.clientLeft)
-        // console.log('scrollLeft (current left hidden content)',container.scrollLeft) // ширина проскроленного контента, который слева за границей контейнера
-        // console.log('scrollLeftMax (max left hidden content width)',container.scrollLeftMax) // максимальная ширина проскроленного контента, который слева за границей контейнера
-        // console.log('scrollWidth (content width)',container.scrollWidth)
-        // console.log('scrollTop',container.scrollTop)
-        // console.log('scrollTopMax',container.scrollTopMax)
-        // console.log('scrollHeight',container.scrollHeight)
+        const container = ev.target as HTMLDivElement
         setScrollPropsWrap(container)
     }
     const setScrollLeft = (scrollLeft: number) => {
@@ -91,11 +72,16 @@ const ModalImageViewer = ({
         containerRef.current!.scrollTo({ left: scrollLeft })
     }
 
+
     return <div className={css.fade}>
         <div className={css.frame}>
+
+            <div className={css.position}>{selectedI+1} / {images.length}</div>
+
             <div className={css.crossContainer} onClick={onClose}>
                 <CrossIc1/>
             </div>
+
             <div className={css.arrowLeft}>
                 <div className={css.container}>
                     <div className={css.box} onClick={moveLeft}>
@@ -104,7 +90,7 @@ const ModalImageViewer = ({
                 </div>
             </div>
 
-            <img className={css.image} src={selectedImage?.url} />
+            <img className={css.image} src={images[selectedI]?.url} />
 
             <div className={css.arrowRight}>
                 <div className={css.container}>
@@ -116,9 +102,9 @@ const ModalImageViewer = ({
             <div ref={containerRef} className={css.imageListFrame} onScroll={onScroll}>
                 <div ref={contentRef} className={css.box}>
                     { images.map(it=><div
-                        ref={it===selectedImage ? selectedRef : undefined}
+                        ref={it===images[selectedI] ? selectedRef : undefined}
                         key={it.id}
-                        className={classNames(css.imagePreview, {[css.selected]: it===selectedImage })}
+                        className={classNames(css.imagePreview, {[css.selected]: it===images[selectedI] })}
                     >
                         <img
                             className={css.image}
