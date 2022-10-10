@@ -2,10 +2,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { TextField, Button, Autocomplete } from '@mui/material';
 import ImageUploading from "react-images-uploading";
-import DatePicker, { registerLocale } from 'react-datepicker';
 import { useDropzone } from 'react-dropzone';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useFormState, Controller, useForm } from 'react-hook-form';
 
 /* Context */
 import { authSlice } from 'src/store/reducers/AuthSlice';
@@ -18,16 +18,12 @@ import TemplateTable from 'src/components/TemplateTable';
 import TextFieldComponent from 'src/components/ui/textfields/TextFieldComponent';
 import LabelSelectComponent from 'src/components/LabelSelectComponent';
 import MapSelectComponent from 'src/components/MapSelectComponent';
-
-
-/* Images */
-import cross from 'src/resources/images/cross.svg';
-import update from 'src/resources/images/update.svg';
+import DatePickerComponent from 'src/components/DatePickerComponent';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
-import useHttp from '../../../../hooks/http.hook';
+import useHttp from 'src/hooks/http.hook';
 
 /* Constants */
 import MainApi from 'src/constants/addresses/apis/main.api';
@@ -41,8 +37,11 @@ import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles';
 import ImageUpload from 'src/components/ImageUpload';
 
+/**
+ * Functional component for create object in project
+ * @returns {JSX.Element}
+ */
 const CreateObjectPage = () => {
-    // Section of working with the network over the HTTP protocol
     const userSelector = useAppSelector((state) => state.userReducer);
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
@@ -52,22 +51,28 @@ const CreateObjectPage = () => {
     const message = useMessageToastify();
     const { state } = useLocation();
 
-    // The data section presented on the page
     const [btnDisabled, setBtnDisabled] = useState(true);
     const [logo, setLogo] = useState([]);
     const [form, setForm] = useState({
-        title: '', description: '',
-        email: '', phone: '',
-        link: '', admin: '',
+        title: '',
         date_end: new Date()
     });
 
+    // Form controls
+    const { handleSubmit, control } = useForm();
+    const { errors } = useFormState({
+        control
+    });
+
+    // Characteristics
     const [characteristics, setCharacteristics] = useState([]);
     const [currentCharacteristic, setCurrentCharacteristic] = useState();
 
+    // Payment methods
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [currentPaymentMethod, setCurrentPaymentMethod] = useState();
 
+    // Communications
     const [communications, setCommunications] = useState([]);
     const [currentCommunication, setCurrentCommunication] = useState();
 
@@ -75,7 +80,11 @@ const CreateObjectPage = () => {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
     const [cityOptions, setCityOptions] = useState(cities);
+
+    // City
     const [city, setCity] = useState(cities.find(o => o.name === 'Иркутск'));
+
+    // (latitude; longtitude)
     const [latLng, setLatLng] = useState({
         lat: 0,
         lng: 0
@@ -214,14 +223,14 @@ const CreateObjectPage = () => {
     });
 
     return (
-        <div>
+        <form>
             <LabelSelectComponent active={modalActive} setActive={setModalActive}>
                 {
                     city && <MapSelectComponent city={city} setActive={setModalActive} setLatLng={setLatLng} />
                 }
             </LabelSelectComponent>
             <ProjectInfo
-                logo={(state.logo[0].data_url)? state.logo[0].data_url : state.logo[0]}
+                logo={(state.logo[0].data_url) ? state.logo[0].data_url : state.logo[0]}
                 title={state.title}
                 description={state.description}
             />
@@ -246,6 +255,7 @@ const CreateObjectPage = () => {
                                 id="outlined-required"
                                 placeholder="Название объекта"
                                 onChange={(e) => {
+                                    changeHandler("title", e.target.value);
                                 }}
                                 sx={{
                                     marginTop: '8px',
@@ -338,32 +348,10 @@ const CreateObjectPage = () => {
                         </div>
                         <div>
                             <span className='span__text__gray'>Дата сдачи</span>
-                            <DatePicker
-                                locale="ru"
-                                selected={form.date_end}
-                                onChange={(date) => changeHandler("date_end", date)}
-                                customInput={
-                                    <TextField
-                                        required
-                                        id="outlined-required"
-                                        placeholder="Дата сдачи"
-                                        autoComplete='off'
-                                        sx={{
-                                            marginTop: '8px',
-                                            borderRadius: '0px !important',
-                                            border: 'none',
-                                            width: '20em',
-                                            '&:hover fieldset': {
-                                                border: '1px solid #424041 !important',
-                                                borderRadius: '0px'
-                                            },
-                                            'fieldset': {
-                                                border: '1px solid #424041 !important',
-                                                borderRadius: '0px'
-                                            },
-                                        }}
-                                    />
-                                }
+                            <DatePickerComponent
+                                value={form.date_end}
+                                changeHandler={(date) => changeHandler("date_end", date)}
+                                placeholder="Дата сдачи"
                             />
                         </div>
                     </div>
@@ -672,11 +660,14 @@ const CreateObjectPage = () => {
                             width: 'max-content'
                         }}
                     >
-                        <ButtonGreenComponent title={"Добавить объект"} />
+                        <ButtonGreenComponent
+                            type={'submit'}
+                            title={"Добавить объект"}
+                        />
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

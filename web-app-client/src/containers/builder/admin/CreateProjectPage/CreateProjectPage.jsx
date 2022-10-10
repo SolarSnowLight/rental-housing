@@ -71,29 +71,6 @@ const CreateProjectPage = () => {
             },
             projectSelector.logo[0].file
         ));
-        /*const response = await request(CompanyApi.create_project, 'POST', JSON.stringify({
-            title: projectSelector.title,
-            description: projectSelector.description,
-            managers: projectSelector.managers,
-            uuid: userSelector.company?.uuid
-        }));
-
-        if (response.message) {
-            message(response.message, "error");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('logo', projectSelector.logo[0].file);
-        formData.append('uuid', response.uuid);
-
-        const responseImage = await request(CompanyApi.project_update_image, 'POST', formData, {}, true);
-        if (response.message) {
-            message(response.message, "error");
-            return;
-        }
-
-        message("Проект создан успешно!", "success");*/
     };
 
     useEffect(() => {

@@ -3,9 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Button, TextField } from '@mui/material';
-import { useFormState } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import { useFormState, Controller, useForm } from 'react-hook-form';
 
 /* Context */
 import userAction from 'src/store/actions/UserAction';
@@ -14,6 +12,9 @@ import messageQueueAction from 'src/store/actions/MessageQueueAction';
 /* Components */
 import ImageUpload from 'src/components/ImageUpload';
 import CircularIndeterminate from 'src/components/CircularIndeterminate';
+import TextFieldControlComponent from 'src/components/TextField/TextFieldControlComponent';
+import AutocompleteControlComponent from 'src/components/Autocomplete/AutocompleteControlComponent';
+import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 
 /* Hooks */
 import { useAppSelector } from 'src/hooks/redux.hook';
@@ -36,7 +37,7 @@ import { emailValidation, linkValidation } from 'src/validation-schemes/validati
 const BuilderAdminPage = () => {
     const userSelector = useAppSelector((state) => state.userReducer);
     const dispatch = useAppDispatch();
-    const { loading, request, error, clearError } = useHttp();
+    const { request } = useHttp();
 
     useEffect(() => {
         dispatch(userAction.getUserCompany());
@@ -124,302 +125,98 @@ const BuilderAdminPage = () => {
                 <span className={styles["admin-page__h2"]}>Изменение информации о компании</span>
             </div>
             <div className={styles["admin-page__container--row"]}>
-                <div className={styles["admin-page__container--column"]}>
-                    <ImageUpload
-                        title={"Логотип *"}
-                        value={userSelector.company?.data.logo}
-                        onChange={onChangeImage}
-                    />
-                </div>
-                <div className={styles["admin-page__container--column"]}>
-                    <div>
-                        <span className={styles['admin-page__h4']}>Описание</span>
-                    </div>
-                    <div>
-                        <Controller
-                            control={control}
-                            name="description"
-                            defaultValue={userSelector.company?.data.description}
-                            render={({ field }) => (
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    multiline
-                                    rows={9}
-                                    placeholder="Описание"
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        changeHandler("description", e.target.value);
-                                    }}
-                                    defaultValue={userSelector.company?.data.description}
-                                    error={!!errors.description?.message}
-                                    helperText={errors.description?.message}
-                                    sx={{
-                                        width: '20em',
-                                        border: '1px solid #424041 !important',
-                                        borderRadius: '0px',
-                                        ':hover': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                        '&:hover fieldset': {
-                                            border: '0px !important',
-                                            borderRadius: '0px'
-                                        },
-                                        'fieldset': {
-                                            border: '0px !important',
-                                            borderRadius: '0px'
-                                        }
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
+                <ImageUpload
+                    title={"Логотип *"}
+                    value={userSelector.company?.data.logo}
+                    onChange={onChangeImage}
+                />
+                <TextFieldControlComponent
+                    title={"Описание"}
+                    control={control}
+                    errors={errors}
+                    name={"description"}
+                    defaultValue={userSelector.company?.data.description}
+                    multiline={true}
+                    rows={9}
+                    placeholder={"Описание"}
+                    changeHandler={changeHandler}
+                />
             </div>
             <div className={styles["admin-page__container--row"]}>
-                <div>
-                    <div>
-                        <span className={styles['admin-page__h4']}>Название *</span>
-                    </div>
-                    <div>
-                        <Controller
-                            control={control}
-                            name="title"
-                            defaultValue={userSelector.company?.data.title}
-                            render={({ field }) => (
-                                <TextField
-                                    required
-                                    id="outlined-required"
-                                    placeholder="Введите название компании"
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        changeHandler("title", e.target.value);
-                                    }}
-                                    value={field.value}
-                                    error={!!errors.title?.message}
-                                    helperText={errors.title?.message}
-                                    sx={{
-                                        borderRadius: '0px !important',
-                                        border: 'none',
-                                        width: '20em',
-                                        '&:hover fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                        'fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <span className={styles['admin-page__h4']}>Email *</span>
-                    </div>
-                    <div>
-                        <Controller
-                            control={control}
-                            name="email_company"
-                            defaultValue={userSelector.company?.data.email_company}
-                            rules={emailValidation}
-                            render={({ field }) => (
-                                <TextField
-                                    required
-                                    id="outlined-required"
-                                    placeholder="Введите email"
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        changeHandler("email_company", e.target.value);
-                                    }}
-                                    value={field.value}
-                                    error={!!errors.email_company?.message}
-                                    helperText={errors.email_company?.message}
-                                    sx={{
-                                        borderRadius: '0px !important',
-                                        border: 'none',
-                                        width: '20em',
-                                        '&:hover fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                        'fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <span className={styles['admin-page__h4']}>Номер телефона *</span>
-                    </div>
-                    <div>
-                        <Controller
-                            control={control}
-                            name="phone"
-                            defaultValue={userSelector.company?.data.phone}
-                            render={({ field }) => (
-                                <MuiTelInput
-                                    required
-                                    value={field.value}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        changeHandler("phone", e);
-                                    }}
-                                    error={!!errors.phone?.message}
-                                    helperText={errors.phone?.message}
-                                    sx={{
-                                        borderRadius: '0px !important',
-                                        border: 'none',
-                                        width: '20em',
-                                        '&:hover fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                        'fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <span className={styles['admin-page__h4']}>Ссылка на сайт *</span>
-                    </div>
-                    <div>
-                        <Controller
-                            control={control}
-                            name="link"
-                            defaultValue={userSelector.company?.data.link}
-                            rules={linkValidation}
-                            render={({ field }) => (
-                                <TextField
-                                    required
-                                    id="outlined-required"
-                                    placeholder="Введите ссылку"
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        changeHandler("link", e.target.value);
-                                    }}
-                                    value={field.value}
-                                    error={!!errors.link?.message}
-                                    helperText={errors.link?.message}
-                                    sx={{
-                                        borderRadius: '0px !important',
-                                        border: 'none',
-                                        width: '20em',
-                                        '&:hover fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                        'fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
+                <TextFieldControlComponent
+                    title={"Название *"}
+                    required={true}
+                    control={control}
+                    errors={errors}
+                    name={"title"}
+                    defaultValue={userSelector.company?.data.title}
+                    placeholder={"Введите название компании"}
+                    changeHandler={changeHandler}
+                />
+                <TextFieldControlComponent
+                    title={"Email *"}
+                    required={true}
+                    control={control}
+                    errors={errors}
+                    name={"email_company"}
+                    defaultValue={userSelector.company?.data.email_company}
+                    placeholder={"Введите email"}
+                    changeHandler={changeHandler}
+                />
+                <TextFieldControlComponent
+                    title={"Номер телефона *"}
+                    required={true}
+                    control={control}
+                    errors={errors}
+                    name={"phone"}
+                    defaultValue={userSelector.company?.data.phone}
+                    placeholder={"Введите номер телефона"}
+                    changeHandler={changeHandler}
+                    View={MuiTelInput}
+                />
+                <TextFieldControlComponent
+                    title={"Ссылка на сайт *"}
+                    required={true}
+                    control={control}
+                    errors={errors}
+                    name={"link"}
+                    defaultValue={userSelector.company?.data.link}
+                    placeholder={"Введите ссылку"}
+                    changeHandler={changeHandler}
+                />
             </div>
             <div className={styles["admin-page__container--row"]}>
-                <div>
-                    <div>
-                        <span className={styles['admin-page__h4']}>Администратор компании</span>
-                    </div>
-                    <div>
-                        <Controller
-                            control={control}
-                            name="email_admin"
-                            render={({ field }) => (
-                                <Autocomplete
-                                    readOnly
-                                    id="tags-outlined"
-                                    open={open}
-                                    onOpen={() => {
-                                        setOpen(true);
-                                    }}
-                                    onClose={() => {
-                                        setOpen(false);
-                                    }}
-                                    defaultValue={{ "email": userSelector.company?.data.email_admin }}
-                                    getOptionLabel={(option) => option.email}
-                                    isOptionEqualToValue={(option, value) => option.email === value.email}
-                                    options={options}
-                                    loading={loadingAutocomplete}
-                                    onChange={(e, value) => {
-                                        field.value = value.email;
-                                        changeHandler("email_admin", value.email);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            sx={{
-                                                borderRadius: '0px !important',
-                                                border: 'none',
-                                                width: '20em',
-                                                '&:hover fieldset': {
-                                                    border: '1px solid #424041 !important',
-                                                    borderRadius: '0px'
-                                                },
-                                                'fieldset': {
-                                                    border: '1px solid #424041 !important',
-                                                    borderRadius: '0px'
-                                                },
-                                            }}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                endAdornment: (
-                                                    <React.Fragment>
-                                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                        {params.InputProps.endAdornment}
-                                                    </React.Fragment>
-                                                ),
-                                            }}
-                                        />
-                                    )}
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
+                <AutocompleteControlComponent
+                    title={"Администратор компании"}
+                    control={control}
+                    errors={errors}
+                    name={"email_admin"}
+                    optionName={"email"}
+                    defaultValue={{ "email": userSelector.company?.data.email_admin }}
+                    placeholder={"Введите ссылку"}
+                    changeHandler={changeHandler}
+                    getOptionLabel={(option) => option.email}
+                    isOptionEqualToValue={(option, value) => option.email === value.email}
+                    options={options}
+                    loading={loadingAutocomplete}
+                    open={open}
+                    onOpen={() => {
+                        setOpen(true);
+                    }}
+                    onClose={() => {
+                        setOpen(false);
+                    }}
+                    readOnly={true}
+                />
             </div>
             <div className={styles["admin-page__container--row"]}>
                 <div className={styles["admin-page__container--row-btn"]}>
-                    <Button
-                        type='submit'
-                        variant="contained"
+                    <ButtonGreenComponent
+                        type={'submit'}
+                        variant={"contained"}
                         disabled={btnDisabled}
-                        sx={{
-                            backgroundColor: root.colorGreen,
-                            fontSize: '14px !important',
-                            borderRadius: '0px !important',
-                            border: '1px solid #424041 !important',
-                            width: '23em',
-                            height: '4em',
-                            ...textStyleDefault,
-                            ":hover": {
-                                backgroundColor: root.colorGreen,
-                                fontSize: '14px !important',
-                                borderRadius: '0px !important',
-                                border: '1px solid #424041 !important',
-                                width: '23em',
-                                height: '4em',
-                                ...textStyleDefault,
-                            }
-                        }}>Сохранить изменения</Button>
+                        title={"Сохранить изменения"}
+                    />
                 </div>
             </div>
         </form>
