@@ -1,5 +1,14 @@
 import { animated } from '@react-spring/web'
-import React, {useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState} from 'react'
+import React, {
+    useCallback,
+    useEffect,
+    useId,
+    useImperativeHandle,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState
+} from 'react'
 import css from './HorizontalScrollbar.module.scss'
 import classNames from "classnames";
 import {GetDimensions} from "src/utils/GetDimensions";
@@ -28,15 +37,17 @@ export type HorizontalScrollbarProps = JSX.IntrinsicElements['div'] & {
         contentLeftInvisibleMaxW: number
         contentW: number
     }
-    setScrollLeft: (scrollLeft: number)=>void
+    setContainerScroll: (scrollLeft: number)=>void
 }
 export type HorizontalScrollbarRef = HTMLDivElement
 
 const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalScrollbarProps>((
-    { scrollProps, setScrollLeft, ...props },
+    { scrollProps, setContainerScroll, ...props },
     forawardedRef,
 ) => {
     const { className, ...restProps } = props
+
+    const id = useId()
 
     const containerRef = useRef<HorizontalScrollbarRef>(null)
     useImperativeHandle(forawardedRef, ()=>containerRef.current!)
@@ -93,7 +104,7 @@ const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalS
                     const addScrollLeft = ev.clientX-scrollStart.x
                     //console.log('x add', addScrollLeft)
                     const newScrollLeft = scrollStart.scrollLeft + addScrollLeft/containerProps.width*scrollProps.scrollWidth
-                    setScrollLeft(newScrollLeft)
+                    setContainerScroll(newScrollLeft)
                 }
             }
             const onPointerUp = (ev: PointerEvent)=>{
@@ -124,10 +135,11 @@ const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalS
         ref={containerRef}
         className={classNames(css.container,className)}
         {...restProps}
+        /* todo merge with onPointerDown from props */
         onPointerDown={onPointerDown}
     >
-        <div ref={barBoxRef} className={css.barBox} style={{ left, width }}>
-            <div className={css.bar}/>
+        <div id={`${id}-bar-box`} ref={barBoxRef} className={css.barBox} style={{ left, width }}>
+            <div id={`${id}-bar`} className={css.bar}/>
         </div>
     </div>
 })

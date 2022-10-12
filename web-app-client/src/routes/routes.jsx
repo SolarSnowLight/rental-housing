@@ -16,7 +16,7 @@ import CompanyPage from "src/containers/client/CompanyPage/CompanyPage";
 import HomePage from "src/containers/client/HomePage/HomePage";
 import ManagerPage from "src/containers/manager/ManagerPage/ManagerPage";
 import AdminPage from "../containers/admin/AdminPage";
-import ObjectSearchPage from "../containers/client/ObjectSearchPage/ObjectSearchPage";
+import ObjectSearchPage from "src/containers/client/ObjectSearchPage/ObjectSearchPage";
 import ManagerListPage from "src/containers/builder/admin/BuilderAdminPage/containers/ManagerListPage";
 import ProjectListPage from "../containers/builder/admin/BuilderAdminPage/containers/ProjectListPage";
 import CreateProjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateProjectPage";
@@ -27,6 +27,8 @@ import ClientList from "src/containers/builder/manager/ClientListPage";
 import BuilderManagerPage from "src/containers/builder/manager/ManagerPage/BuilderManagerPage";
 import ObjectInfoPage from "src/containers/builder/manager/ObjectInfoPage/ObjectInfoPage";
 import DeveloperStatistics from "src/containers/manager/DeveloperStatistics/DeveloperStatistics";
+import ProjectInfoPage from "src/containers/builder/admin/ProjectInfoPage/ProjectInfoPage";
+//import ProjectInfoPage from "src/containers/builder/admin/BuilderAdminPage/containers/ProjectInfoPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -68,6 +70,7 @@ const useRoutes = (isAuthenticated) => {
                 <Route path={BuilderAdminRoute.project_list} element={<ProjectListPage />} />
                 <Route path={BuilderAdminRoute.project_create} element={<CreateProjectPage />} />
                 <Route path={BuilderAdminRoute.project_add_object} element={<CreateObjectPage />} />
+                <Route path={BuilderAdminRoute.project_info} element={<ProjectInfoPage />} />
             </Route>
 
             <Route path={BuilderManagerRoutes.common}>

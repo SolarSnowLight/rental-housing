@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { ArrowDownIc } from 'src/components/icons';
 import {SearchIc} from "src/components/icons";
 import MapComponent from 'src/components/MapComponent';
-import ObjectCard from "src/components/ObjectCard";
+import ObjectCard from "src/components/ObjectCard/ObjectCard";
 
 
 import logoDefault from 'src/resources/images/logo-default.png'

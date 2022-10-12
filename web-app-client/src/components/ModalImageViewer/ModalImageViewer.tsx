@@ -38,7 +38,7 @@ const ModalImageViewer = ({
     const selectedRef = useRef<HTMLDivElement>(null)
 
 
-    const [scrollProps, setScrollPropsWrap] = useScrollbar(containerRef, contentRef)
+    const [scrollProps, onContainerScroll, setContainerScroll] = useScrollbar(containerRef, contentRef)
 
 
     // autoscroll to selected image if it is not visible at all
@@ -61,15 +61,6 @@ const ModalImageViewer = ({
         const currI = images.findIndex(it=>it.id===selectedImageId)
         const nextI = utils.mod(currI+1, images.length)
         setSelectedImageId(images[nextI].id)
-    }
-
-    const onScroll = (ev: React.UIEvent<HTMLDivElement>) => {
-        const container = ev.target as HTMLDivElement
-        setScrollPropsWrap(container)
-    }
-    const setScrollLeft = (scrollLeft: number) => {
-        //console.log('scrollLeft', scrollLeft)
-        containerRef.current!.scrollTo({ left: scrollLeft })
     }
 
 
@@ -99,7 +90,7 @@ const ModalImageViewer = ({
                     </div>
                 </div>
             </div>
-            <div ref={containerRef} className={css.imageListFrame} onScroll={onScroll}>
+            <div ref={containerRef} className={css.imageListFrame} onScroll={onContainerScroll}>
                 <div ref={contentRef} className={css.box}>
                     { images.map(it=><div
                         ref={it===images[selectedI] ? selectedRef : undefined}
@@ -114,7 +105,7 @@ const ModalImageViewer = ({
                     </div>) }
                 </div>
             </div>
-            <HorizontalScrollbar1 scrollProps={scrollProps} setScrollLeft={setScrollLeft}/>
+            <HorizontalScrollbar1 scrollProps={scrollProps} setContainerScroll={setContainerScroll}/>
             {/*<HorizontalScrollbar1 scrollProps={scrollProps} setScrollLeft={setScrollLeft} style={{ width: '60%', gridArea: 'scroll1' }}/>*/}
             {/*<HorizontalScrollbar1 scrollProps={scrollProps} setScrollLeft={setScrollLeft} style={{ width: '160%', gridArea: 'scroll2' }}/>*/}
         </div>

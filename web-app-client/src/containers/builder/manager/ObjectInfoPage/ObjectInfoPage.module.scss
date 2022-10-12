@@ -65,7 +65,7 @@
         }
 
 
-        .imagesContainer {
+        .imagesFrame {
             width: calc(401px + 16px + 401px); height: fit-content;
             @extend .rowWrap;
             gap: 16px;

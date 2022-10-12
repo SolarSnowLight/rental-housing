@@ -6,7 +6,7 @@ import styled from "styled-components";
 import {ArrowDownIc} from "src/components/icons";
 import { root } from "src/styles";
 import { toast } from "react-toastify";
-import ListItem from "src/components/ClientListItem/ClientListItem";
+import ListItem from "src/components/PersonListItem/PersonListItem";
 
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import PieDiagram, {FullData} from "./components/PieDiagram/PieDiagram";
@@ -91,7 +91,7 @@ const developers = Array(10).fill(undefined).map((_,i)=>({
     ava: avaDefault,
     fio: 'Иванов Иван Иванович',
     projectsCnt: 2,
-    objectsCnt: 12,
+    objectCnt: 12,
 }))
 const projects = Array(10).fill(undefined)
     .map((_,i)=>({ id: `project${i}`, name: `Проект ${i}` }))

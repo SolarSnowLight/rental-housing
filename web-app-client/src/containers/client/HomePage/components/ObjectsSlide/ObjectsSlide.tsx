@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {Button} from "@mui/material";
 import { Arrow2ForwardIc } from "src/components/icons";
 import Space from "src/components/Space";
-import ObjectCard from "src/components/ObjectCard";
+import ObjectCard from "src/components/ObjectCard/ObjectCard";
 import { root } from "src/styles";
 
 import logoDefault from 'src/resources/images/logo-default.png'

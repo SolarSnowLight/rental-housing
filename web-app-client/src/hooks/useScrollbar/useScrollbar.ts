@@ -12,16 +12,16 @@ export const useScrollbar = (
 ) => {
 
 
-    const [scrollProps, setScrollProps] = useState({
+    const [scrollProps, _setScrollProps] = useState({
         clientWidth: 0,
         scrollLeft: 0,
         scrollLeftMax: 0,
         scrollWidth: 0
     })
-    const setScrollPropsWrap = useCallback((container: HTMLElement) => {
+    const setScrollProps = useCallback((container: HTMLElement) => {
         const dimens = new GetDimensions(container)
         //console.log('container.scrollWidth',container.scrollWidth)
-        setScrollProps({
+        _setScrollProps({
             clientWidth: dimens.clientWidth,
             scrollLeft: dimens.scrollLeft,
             scrollLeftMax: dimens.scrollLeftMax,
@@ -35,25 +35,35 @@ export const useScrollbar = (
         const content = contentRef.current!
         const containerResizeObserver = new ResizeObserver((entries)=>{
             //const e = entries[0]
-            setScrollPropsWrap(container)
+            setScrollProps(container)
             //console.log('containerResize',e)
             //console.log('onresize container.scrollWidth',e.target.scrollWidth)
         })
         containerResizeObserver.observe(container)
         const contentResizeObserver = new ResizeObserver((entries)=>{
             //const e = entries[0]
-            setScrollPropsWrap(container)
+            setScrollProps(container)
         })
         contentResizeObserver.observe(content)
-        setScrollPropsWrap(container)
+        setScrollProps(container)
         //console.log('1container',containerRef.current!)
         //console.log('1content',contentRef.current!)
         return ()=>{
             containerResizeObserver.disconnect()
             contentResizeObserver.disconnect()
         }
-    },[contentRef.current, contentRef.current, setScrollPropsWrap])
+    },[contentRef.current, contentRef.current, setScrollProps])
 
 
-    return [scrollProps, setScrollPropsWrap] as const
+    const setContainerScroll = useCallback((scrollLeft: number) => {
+        //console.log('scrollLeft', scrollLeft)
+        containerRef.current!.scrollTo({ left: scrollLeft })
+    },[containerRef.current])
+
+    const onContainerScroll = (ev: React.UIEvent<HTMLElement>) => {
+        const container = ev.target as HTMLElement
+        setScrollProps(container)
+    }
+
+    return [scrollProps, onContainerScroll, setContainerScroll] as const
 }

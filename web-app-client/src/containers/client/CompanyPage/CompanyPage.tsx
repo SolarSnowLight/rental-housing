@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import Filter from "src/components/Filter/Filter";
 import { animated, useSpring } from '@react-spring/web';
 import Space from "src/components/Space";
-import ObjectCard from "src/components/ObjectCard";
+import ObjectCard from "src/components/ObjectCard/ObjectCard";
 
 import logoDefault from 'src/resources/images/logo-default.png'
 import buildingExample1 from 'src/resources/images/examples/building-example-1.webp'

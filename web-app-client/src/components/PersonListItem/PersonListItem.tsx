@@ -3,27 +3,26 @@ import styled from "styled-components";
 import {commonStyled} from "src/styles/commonStyled";
 
 
-type ListItemProps = JSX.IntrinsicElements['div'] & {
+export type PersonListItemProps = JSX.IntrinsicElements['div'] & {
     client: {
         ava?: string|undefined
         fio: string
         projectsCnt: number|string
-        objectsCnt: number|string
+        objectCnt: number|string
     }
 }
 
-const ClientListItem = React.forwardRef<HTMLDivElement, ListItemProps>((
+const PersonListItem = React.forwardRef<HTMLDivElement, PersonListItemProps>((
     { client, ...props  },
     forwardedRef
 ) => {
     return <Container ref={forwardedRef} {...props}>
         <Image src={client.ava}/>
         <Fio>{client.fio}</Fio>
-        <Info>{client.projectsCnt} проекта, {client.objectsCnt} объектов</Info>
+        <Info>{client.projectsCnt} проекта, {client.objectCnt} объектов</Info>
     </Container>
 })
-export default React.memo(ClientListItem)
-export type { ListItemProps }
+export default React.memo(PersonListItem)
 
 
 const Container = React.memo(styled.div`
