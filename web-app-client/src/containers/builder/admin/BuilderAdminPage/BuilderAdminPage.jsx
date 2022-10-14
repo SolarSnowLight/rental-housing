@@ -24,6 +24,9 @@ import useHttp from 'src/hooks/http.hook';
 /* Dtos */
 import CompanyUpdateDto from 'src/dtos/company.update-dto';
 
+/* Utils */
+import { dataURItoBlob, isDataURL } from 'src/utils/file';
+
 /* Constants */
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 
@@ -52,7 +55,13 @@ const BuilderAdminPage = () => {
             setBtnDisabled(true);
         }
 
-        dispatch(userAction.setItemCompanyInfo("logo", imageList));
+        const file = imageList.map((item) => {
+            return {
+                data_url: item.data_url
+            }
+        });
+
+        dispatch(userAction.setItemCompanyInfo("logo", file));
     };
 
     const changeHandler = (key, value) => {
@@ -72,6 +81,17 @@ const BuilderAdminPage = () => {
             return;
         }
 
+        let file = userSelector.company.data.logo[0];
+
+        if ((file)
+            && (Object.keys(file).length >= 1)
+            && (Object.getPrototypeOf(file) === Object.prototype)
+            && (!isDataURL(file.data_url))) {
+            file = dataURItoBlob(userSelector.company.data.logo[0].data_url);
+        } else {
+            file = null;
+        }
+
         dispatch(userAction.companyInfoUpdate(
             {
                 ...new CompanyUpdateDto({
@@ -79,7 +99,7 @@ const BuilderAdminPage = () => {
                     ...userSelector.company.data
                 })
             },
-            (userSelector.company.data.logo[0].file) ? userSelector.company.data.logo[0].file : null
+            file
         ));
 
         setBtnDisabled(true);

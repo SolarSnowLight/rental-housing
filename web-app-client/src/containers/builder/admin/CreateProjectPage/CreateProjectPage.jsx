@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Autocomplete } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
+import { useFormState, useForm } from 'react-hook-form';
 
 /* Context */
 import projectAction from 'src/store/actions/ProjectAction';
@@ -14,11 +15,15 @@ import MapComponent from 'src/components/MapComponent';
 import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
 import ImageUpload from 'src/components/ImageUpload';
+import TextFieldControlComponent from 'src/components/TextField/TextFieldControlComponent';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import useHttp from 'src/hooks/http.hook';
+
+/* Utils */
+import { dataURItoBlob, isDataURL } from 'src/utils/file';
 
 /* Constants */
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
@@ -47,6 +52,12 @@ const CreateProjectPage = () => {
     const [options, setOptions] = useState([]);
     const loadingAutocomplete = open && options?.length === 0;
 
+    const { handleSubmit, control } = useForm();
+
+    const { errors } = useFormState({
+        control
+    });
+
     useEffect(() => {
         dispatch(messageQueueAction.addMessage(null, "error", error));
         clearError();
@@ -54,14 +65,43 @@ const CreateProjectPage = () => {
 
     // Event Handlers Section
     const onChangeImage = (imageList, addUpdateIndex) => {
-        dispatch(projectAction.setItemProjectInfo("logo", imageList));
+        if (imageList.length > 0) {
+            setBtnDisabled(false);
+        } else {
+            setBtnDisabled(true);
+        }
+
+        const file = imageList.map((item) => {
+            return {
+                data_url: item.data_url
+            }
+        });
+
+
+        dispatch(projectAction.setItemProjectInfo("logo", file));
     };
 
     const changeHandler = (key, value) => {
         dispatch(projectAction.setItemProjectInfo(key, value));
     };
 
-    const createProjectHandler = async () => {
+    const onSubmit = () => {
+        if (projectSelector.logo.length <= 0) {
+            dispatch(messageQueueAction.addMessage(null, "error", "Необходимо добавить логотип проекта!"));
+            return;
+        }
+
+        let file = projectSelector.logo[0];
+
+        if ((file)
+            && (Object.keys(file).length >= 1)
+            && (Object.getPrototypeOf(file) === Object.prototype)
+            && (!isDataURL(file.data_url))) {
+            file = dataURItoBlob(projectSelector.logo[0].data_url);
+        } else {
+            file = null;
+        }
+
         dispatch(companyAction.createProject(
             {
                 title: projectSelector.title,
@@ -69,7 +109,7 @@ const CreateProjectPage = () => {
                 managers: projectSelector.managers,
                 uuid: userSelector.company?.uuid
             },
-            projectSelector.logo[0].file
+            file
         ));
     };
 
@@ -116,7 +156,7 @@ const CreateProjectPage = () => {
     }
 
     return (
-        <div className={styles["wrapper-section"]}>
+        <form className={styles["wrapper-section"]} onSubmit={handleSubmit(onSubmit)}>
             <div className={styles["wrapper-section__item"]}>
                 <div>
                     <span className='span__text__black-h3'>Создание проекта</span>
@@ -130,33 +170,16 @@ const CreateProjectPage = () => {
                             />
                         </div>
                         <div className={styles["wrapper-section__item-element"]}>
-                            <div>
-                                <span className='span__text__gray'>Название *</span>
-                            </div>
-                            <div>
-                                <TextField
-                                    required
-                                    id="outlined-required"
-                                    placeholder="Название проекта"
-                                    defaultValue={projectSelector.title}
-                                    onChange={(e) => {
-                                        changeHandler("title", e.target.value);
-                                    }}
-                                    sx={{
-                                        borderRadius: '0px !important',
-                                        border: 'none',
-                                        width: '20em',
-                                        '&:hover fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                        'fieldset': {
-                                            border: '1px solid #424041 !important',
-                                            borderRadius: '0px'
-                                        },
-                                    }}
-                                />
-                            </div>
+                            <TextFieldControlComponent
+                                title={"Название *"}
+                                required={true}
+                                control={control}
+                                errors={errors}
+                                name={"title"}
+                                defaultValue={projectSelector.title}
+                                placeholder={"Введите название компании"}
+                                changeHandler={changeHandler}
+                            />
                         </div>
                         <div className={styles["wrapper-section__item-element"]}>
                             <div>
@@ -269,13 +292,13 @@ const CreateProjectPage = () => {
                     <div className={styles["grid-item__left"]}></div>
                     <div className={styles["grid-item__right"]}>
                         <ButtonGreenComponent
+                            type="submit"
                             title="Создать проект"
-                            clickHandler={createProjectHandler}
                         />
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

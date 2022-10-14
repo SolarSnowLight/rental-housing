@@ -37,7 +37,7 @@ const TextFieldControlComponent = ({
                         placeholder={placeholder}
                         onChange={(e) => {
                             field.onChange(e);
-                            changeHandler(name, e.target.value);
+                            changeHandler(name, (e?.target?.value)? e.target.value : e);
                         }}
                         value={field.value}
                         error={!!errors[name]?.message}

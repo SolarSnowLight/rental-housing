@@ -1,6 +1,3 @@
-
-
-
 // read file as DataURL (base64 url)
 const readAsUrl = async (file: Blob) => new Promise<string>(
     (res, rej) => {
@@ -11,10 +8,6 @@ const readAsUrl = async (file: Blob) => new Promise<string>(
         reader.readAsDataURL(file)
     }
 )
-
-
-
-
 
 export const utils = {
     readAsUrl,
