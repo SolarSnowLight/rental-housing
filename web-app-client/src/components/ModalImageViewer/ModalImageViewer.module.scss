@@ -1,6 +1,6 @@
 
 
-@use '../../styles/common';
+@use 'src/styles/common';
 
 
 //html, body {margin: 0; height: 100%; overflow: hidden}
@@ -39,11 +39,6 @@
             '. . list   .     .' var(--image-preview-h)
             '. . .      .     .' 13px
             '. . scroll .     .' 7px
-
-            '. . .      .     .' 13px
-            '. . scroll1 .     .' 7px
-            '. . .      .     .' 13px
-            '. . scroll2 .     .' 7px
            / 320px 52px 800px 52px 320px
         ;
         @media screen and (max-width: 1544px), screen and (max-height: 813px) {
@@ -55,11 +50,6 @@
                 '. . list  .     .' var(--image-preview-h)
                 '. . .      .     .' 8px
                 '. . scroll .     .' 7px
-
-                '. . .      .     .' 8px
-                '. . scroll1 .     .' 7px
-                '. . .      .     .' 8px
-                '. . scroll2 .     .' 7px
                / 211px 34px 528px 34px 211px
             ;
         }

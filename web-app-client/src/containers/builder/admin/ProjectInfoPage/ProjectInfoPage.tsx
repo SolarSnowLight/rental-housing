@@ -54,7 +54,7 @@ const objects = [...Array(6).keys()].map(i=>({
     images: [buildingExample1,buildingExample2,buildingExample3],
     objectName: 'Название объекта',
     year: 2025,
-    objectCnt: 6,
+    objectCnt: i+1,
 }))
 objects[0].images = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
 

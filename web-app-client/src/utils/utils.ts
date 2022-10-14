@@ -27,12 +27,15 @@ const numberToPlainString = (n: number) => {
 const getPercent = (value: number, total: number, scale: number = 1) => {
     return utils.numberToPlainString(utils.round(value*100/total,scale))
 }
+const mod = (a: number,b: number) => (a+b)%b
+const fitInto = (min: number, curr: number, max: number) => curr<min ? min : curr>max ? max : curr
+const inRange = (min: number, curr: number, max: number) => curr>=min && curr<=max
+
 
 
 const isArray = <T,E>(obj: T|E[]): obj is Array<E> => obj instanceof Array
 
 
-const mod = (a: number,b: number) => (a+b)%b
 
 
 export const utils = {
@@ -40,6 +43,8 @@ export const utils = {
     round,
     numberToPlainString,
     getPercent,
-    isArray,
     mod,
+    fitInto,
+    inRange,
+    isArray,
 }

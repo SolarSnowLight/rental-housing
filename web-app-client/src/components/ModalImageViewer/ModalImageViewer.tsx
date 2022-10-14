@@ -106,8 +106,6 @@ const ModalImageViewer = ({
                 </div>
             </div>
             <HorizontalScrollbar1 scrollProps={scrollProps} setContainerScroll={setContainerScroll}/>
-            {/*<HorizontalScrollbar1 scrollProps={scrollProps} setScrollLeft={setScrollLeft} style={{ width: '60%', gridArea: 'scroll1' }}/>*/}
-            {/*<HorizontalScrollbar1 scrollProps={scrollProps} setScrollLeft={setScrollLeft} style={{ width: '160%', gridArea: 'scroll2' }}/>*/}
         </div>
     </div>
 }

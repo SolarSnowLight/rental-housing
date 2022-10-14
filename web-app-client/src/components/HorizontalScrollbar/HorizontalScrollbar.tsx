@@ -1,7 +1,5 @@
-import { animated } from '@react-spring/web'
 import React, {
     useCallback,
-    useEffect,
     useId,
     useImperativeHandle,
     useLayoutEffect,
@@ -12,10 +10,10 @@ import React, {
 import css from './HorizontalScrollbar.module.scss'
 import classNames from "classnames";
 import {GetDimensions} from "src/utils/GetDimensions";
+import {utils} from "src/utils/utils";
 
 
 
-// todo press on scroll container to move the center of scrollbar there
 // todo min scrollbar width
 
 export type HorizontalScrollbarProps = JSX.IntrinsicElements['div'] & {
@@ -25,18 +23,6 @@ export type HorizontalScrollbarProps = JSX.IntrinsicElements['div'] & {
         scrollLeftMax: number // максимальная ширина проскроленного контента, который слева за границей контейнера
         scrollWidth: number // content width
     }
-    scrollProps2?: {
-        contentFrameWidth: number
-        leftInvisibleContentWidth: number
-        leftInvisibleContentMaxWidth: number
-        fullContentWidth: number
-    }
-    scrollProps3?: {
-        containerContentW: number
-        contentLeftInvisibleW: number
-        contentLeftInvisibleMaxW: number
-        contentW: number
-    }
     setContainerScroll: (scrollLeft: number)=>void
 }
 export type HorizontalScrollbarRef = HTMLDivElement
@@ -45,71 +31,75 @@ const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalS
     { scrollProps, setContainerScroll, ...props },
     forawardedRef,
 ) => {
-    const { className, ...restProps } = props
-
     const id = useId()
 
-    const containerRef = useRef<HorizontalScrollbarRef>(null)
-    useImperativeHandle(forawardedRef, ()=>containerRef.current!)
-    const barBoxRef = useRef<HTMLDivElement>(null)
+    const trackRef = useRef<HorizontalScrollbarRef>(null)
+    useImperativeHandle(forawardedRef, ()=>trackRef.current!)
+    const thumbBoxRef = useRef<HTMLDivElement>(null)
 
 
-    const [containerProps, setContainerProps] = useState({ width: 0, clientX: 0, clientY: 0 })
-    const left = useMemo(()=>{
-        if (scrollProps.scrollWidth<=0) return 0
-        return (scrollProps.scrollLeft/scrollProps.scrollWidth)*containerProps.width
-    },[scrollProps])
-    const width = useMemo(()=>{
-        if (scrollProps.scrollWidth<=0) return 0
-        return (scrollProps.clientWidth/scrollProps.scrollWidth)*containerProps.width
-    },[scrollProps])
-
-
-    const setContainerPropsWrap = useCallback(() => {
-        const container = containerRef.current!
-        const d = new GetDimensions(container)
-        setContainerProps({
+    const [trackProps, _setTrackProps] = useState({ width: 0, clientX: 0, clientY: 0 })
+    const setTrackProps = useCallback(() => {
+        const track = trackRef.current!
+        const d = new GetDimensions(track)
+        _setTrackProps({
             width: d.clientWidth,
             clientX: d.left,
             clientY: d.top,
         })
     },[])
 
+    const toTrackScale = useCallback((v: number) => {
+        if (scrollProps.scrollWidth===0) return 0
+        else return v/scrollProps.scrollWidth*trackProps.width
+    },[scrollProps, trackProps])
+    const toScrollScale = useCallback((v: number) => {
+        if (trackProps.width===0) return 0
+        else return v/trackProps.width*scrollProps.scrollWidth
+    },[scrollProps, trackProps])
+
+    const thumbBoxProps = useMemo(()=>({
+        left: toTrackScale(scrollProps.scrollLeft),
+        width: toTrackScale(scrollProps.clientWidth),
+    }),[scrollProps,toTrackScale])
+
 
     useLayoutEffect(()=>{
-        const container = containerRef.current!
-        const containerResizeObserver = new ResizeObserver((entries)=>{
-            setContainerPropsWrap()
+        const track = trackRef.current!
+        const trackResizeObserver = new ResizeObserver((entries)=>{
+            setTrackProps()
         })
-        setContainerPropsWrap()
-        containerResizeObserver.observe(container)
+        setTrackProps()
+        trackResizeObserver.observe(track)
         return ()=>{
-            containerResizeObserver.disconnect()
+            trackResizeObserver.disconnect()
         }
-    },[containerRef.current])
+    },[trackRef.current])
 
 
-    const [scrollStart, setScrollStart] = useState(undefined as undefined|{ x: number, y: number, scrollLeft: number })
+    const [dragStart, setDragStart] = useState(undefined as undefined|{ x: number, y: number, scrollLeft: number })
     const onPointerDown = (ev: React.PointerEvent) => {
         //console.log('onPointerDown',ev)
         // todo not only for mouse
         if (ev.pointerType==='mouse' && ev.buttons===1){
-            setScrollStart({ x: ev.clientX, y: ev.clientY, scrollLeft: scrollProps.scrollLeft })
+            const drag = { x: ev.clientX, y: ev.clientY, scrollLeft: scrollProps.scrollLeft }
+            const thumbD = new GetDimensions(thumbBoxRef.current!)
+            if (utils.inRange(thumbD.left, drag.x, thumbD.right)) setDragStart(drag)
         }
     }
     useLayoutEffect(()=>{
-        if (scrollStart){
+        if (dragStart){
             const onPointerMove = (ev: PointerEvent)=>{
-                if (scrollStart && ev.buttons===1){
-                    const addScrollLeft = ev.clientX-scrollStart.x
+                if (dragStart && ev.buttons===1){
+                    const addScrollLeft = ev.clientX-dragStart.x
                     //console.log('x add', addScrollLeft)
-                    const newScrollLeft = scrollStart.scrollLeft + addScrollLeft/containerProps.width*scrollProps.scrollWidth
+                    const newScrollLeft = dragStart.scrollLeft + addScrollLeft/trackProps.width*scrollProps.scrollWidth
                     setContainerScroll(newScrollLeft)
                 }
             }
             const onPointerUp = (ev: PointerEvent)=>{
                 //console.log('onPointerUp', ev)
-                setScrollStart(undefined)
+                setDragStart(undefined)
             }
             document.querySelector('*')!.classList.add(css.noSelect)
             window.addEventListener('pointermove', onPointerMove)
@@ -122,24 +112,32 @@ const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalS
         } else {
             document.querySelector('*')!.classList.remove(css.noSelect)
         }
-    },[scrollStart,scrollProps])
+    },[dragStart,scrollProps])
 
-
-    /*const onPointerDown = (ev: React.PointerEvent) => {
-        console.log('pointerDown',ev)
-    }*/
-
+    const onTrackClick = (ev: React.MouseEvent<HTMLDivElement>) => {
+        const evX = ev.clientX
+        const thumbD = new GetDimensions(thumbBoxRef.current!)
+        if (!utils.inRange(thumbD.left, evX, thumbD.right)){
+            const trackD = new GetDimensions(trackRef.current!)
+            const newScrollLeft = utils.fitInto(
+                0,
+                toScrollScale(evX - thumbBoxProps.width/2 - trackD.left),
+                scrollProps.scrollLeftMax
+            )
+            setContainerScroll(newScrollLeft)
+        }
+    }
 
 
     return <div
-        ref={containerRef}
-        className={classNames(css.container,className)}
-        {...restProps}
-        /* todo merge with onPointerDown from props */
-        onPointerDown={onPointerDown}
+        ref={trackRef}
+        {...props}
+        className={classNames(css.track, props.className)}
+        onPointerDown={ev=>{onPointerDown(ev); if(props.onPointerDown) props.onPointerDown(ev)}}
+        onClick={ev=>{onTrackClick(ev); if(props.onClick) props.onClick(ev)}}
     >
-        <div id={`${id}-bar-box`} ref={barBoxRef} className={css.barBox} style={{ left, width }}>
-            <div id={`${id}-bar`} className={css.bar}/>
+        <div id={`${id}-thumb-box`} ref={thumbBoxRef} className={css.thumbBox} style={{...thumbBoxProps}}>
+            <div id={`${id}-thumb`} className={css.thumb}/>
         </div>
     </div>
 })
