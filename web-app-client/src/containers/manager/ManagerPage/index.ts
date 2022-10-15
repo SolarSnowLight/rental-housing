@@ -1,1 +1,1 @@
-export { default } from './ManagerPage';
+export { default } from './ManagerPage'

@@ -1,9 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import css from './ObjectInfoPage.module.scss'
 import FlatsTable, {Flat, Floor} from "./components/FlatsTable/FlatsTable";
 import Space from "src/components/Space";
-import InfoItem from "./components/InfoItem";
+import InfoItem from "./components/InfoItem/InfoItem";
+import ModalImageViewer from "src/components/ModalImageViewer/ModalImageViewer";
+
+import buildingExample1 from 'src/resources/images/examples/building-example-1.webp';
+import buildingExample2 from 'src/resources/images/examples/building-example-2.webp';
+import buildingExample3 from 'src/resources/images/examples/building-example-3.jpg';
+import homePage from 'src/resources/images/home_page.jpg';
 import imagePlaceholder from 'src/resources/images/image-placeholder.png'
+import mainPageBgc from 'src/resources/images/main-page-bgc.jpg'
+import neonSunrise from 'src/resources/images/examples/neon-sunrise-web.jpg'
+import retrowave1 from 'src/resources/images/examples/retrowave-1.png';
+import hotlineMiami2 from 'src/resources/images/examples/wallpaper-Hotline-Miami-2---Wrong-Number2560x1440.jpg';
+import needMoreAcidMarkII from 'src/resources/images/examples/need_more_acid_mark_ii.jpg';
+import retrowave2 from 'src/resources/images/examples/Retrowave_(2).jpg';
+
+
+
+
 
 
 const floors: Floor[] = [
@@ -112,102 +128,105 @@ const flats2: Flat[] = [
     { number: 60, floor: 6, state: 'free' },
 ]
 
+const photos = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
+    .map((it,i)=>({
+        id: i+'', url: it, description: 'image description'
+    }))
 
 
-
-
-
-
-const photos = [imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder,imagePlaceholder]
 
 const ObjectInfoPage = () => {
-    return <div className={css.page}>
-        <div className={css.pageFrame}>
 
-            <Space h={64}/>
+    const [currImageId, setCurrImageId] = useState(photos[0].id)
 
-            <div className={css.pageTopContainer}>
-                <div className={css.photosContainer}>
+    const onImage = (id: string) => {
+        setModalImageId(id)
+    }
+    const [modalImageId, setModalImageId] = useState(undefined as string|undefined)
+    const onCloseModal = () => setModalImageId(undefined)
 
-                    <div className={css.objectName}>Название объекта</div>
+    return <>
+        { modalImageId && <ModalImageViewer onClose={onCloseModal} images={photos} defaultSelectedImageId={modalImageId}/> }
+        <div className={css.page}>
+            <div className={css.pageFrame}>
 
-                    <Space h={8}/>
+                <Space h={64}/>
 
-                    <div className={css.developer}>
-                        <div className={css.name}>Название застройщика</div>
-                        <div className={css.address}>Сочи, ул. Яна Фабрициуса, 33</div>
+                <div className={css.pageTopContainer}>
+                    <div className={css.photosContainer}>
+
+                        <div className={css.objectName}>Название объекта</div>
+
+                        <Space h={8}/>
+
+                        <div className={css.developerAndAddress}>
+                            <div className={css.name}>Название застройщика</div>
+                            <div className={css.address}>Сочи, ул. Яна Фабрициуса, 33</div>
+                        </div>
+
+                        <Space h={34}/>
+
+                        <div className={css.imagesContainer}>
+                            { photos.slice(0,5).map((it,i)=><div key={it.id} className={css.imageFrame} onClick={()=>onImage(it.id)}>
+                                <div className={i<2 ? css.normalImage : css.smallImage} style={{ backgroundImage: `url(${it.url})`}} />
+                                { i===4 && <div className={css.count}>+{photos.length-4}</div> }
+                            </div>)}
+                        </div>
+
                     </div>
-
-                    <Space h={34}/>
-
-                    { photos.length>0 && <div className={css.bigPhotos}>
-                        { photos.slice(0,2).map(it=>
-                            <div className={css.photo} style={{ backgroundImage: `url(${it})`}} />
-                        ) }
-                    </div>}
-                    { photos.length>2 && <div className={css.smallPhotos}>
-                        { photos.slice(2,4).map(it=>
-                            <div className={css.photo} style={{ backgroundImage: `url(${it})`}} />
-                        ) }
-                        { photos[4] && <div className={css.restCounterBox}>
-                            <div className={css.photo} style={{ backgroundImage: `url(${photos[4]})`}} />
-                            { photos.length>5 && <div className={css.count}>+{photos.length-4}</div> }
-                        </div> }
-                    </div> }
-
+                    <div className={css.infoContainer}>
+                        <InfoItem title={'Срок сдачи'} items={['Март 2023 года']}/>
+                        <InfoItem title={'Оплата'} items={['ДКП','Ипотека','Рассрочка: 70% первый взнос, 30% на 3 месяца']}/>
+                        <InfoItem title={'Характеристики'} items={['Бизнес-класс','Управляющая компания','Закрытая охраняемая территория','1,5 км до моря','Черновая отделка','Вид на горы, море, парк, атриум']}/>
+                        <InfoItem title={'Коммуникации'} items={['Центральное отопление','Водоснабжение и канализация','Электричество']}/>
+                    </div>
                 </div>
-                <div className={css.infoContainer}>
-                    <InfoItem title={'Срок сдачи'} items={['Март 2023 года']}/>
-                    <InfoItem title={'Оплата'} items={['ДКП','Ипотека','Рассрочка: 70% первый взнос, 30% на 3 месяца']}/>
-                    <InfoItem title={'Характеристики'} items={['Бизнес-класс','Управляющая компания','Закрытая охраняемая территория','1,5 км до моря','Черновая отделка','Вид на горы, море, парк, атриум']}/>
-                    <InfoItem title={'Коммуникации'} items={['Центральное отопление','Водоснабжение и канализация','Электричество']}/>
+
+                <Space h={106}/>
+
+                <div className={css.tablesTitle}>Таблица квартир</div>
+
+                <Space h={24}/>
+
+                <div className={css.legend}>
+                    <div className={css.item}>
+                        <div className={css.color} style={{ background: '#B4EFA6' }}/>
+                        <div className={css.name}>Свободные</div>
+                    </div>
+                    <div className={css.item}>
+                        <div className={css.color} style={{ background: '#EFA6A6' }}/>
+                        <div className={css.name}>Акции</div>
+                    </div>
+                    <div className={css.item}>
+                        <div className={css.color} style={{ background: '#A6E2EF' }}/>
+                        <div className={css.name}>Резерв</div>
+                    </div>
+                    <div className={css.item}>
+                        <div className={css.color} style={{ background: '#FCFCFC' }}/>
+                        <div className={css.name}>Проданные</div>
+                    </div>
+                    <div className={css.item}>
+                        <div className={css.color} style={{ background: '#e9e9e9' }}/>
+                        <div className={css.name}>Недоступны</div>
+                    </div>
                 </div>
+
+                <Space h={24}/>
+
+                <div className={css.flats}>
+                    <FlatsTable floors={floors} flats={flats}/>
+                    <FlatsTable floors={floors} flats={flats}/>
+                    <FlatsTable floors={floors} flats={flats}/>
+                    <FlatsTable floors={floors.filter(it=>it.number===4)} flats={flats} style={{ alignSelf: 'stretch' }}/>
+
+                    <FlatsTable floors={floors2} flats={flats2}/>
+                    <FlatsTable floors={floors2} flats={flats2}/>
+                    <FlatsTable floors={floors2} flats={flats2}/>
+                    <FlatsTable floors={floors2} flats={flats2}/>
+                </div>
+
             </div>
-
-            <Space h={106}/>
-
-            <div className={css.tablesTitle}>Таблица квартир</div>
-
-            <Space h={24}/>
-
-            <div className={css.legend}>
-                <div className={css.item}>
-                    <div className={css.color} style={{ background: '#B4EFA6' }}/>
-                    <div className={css.name}>Свободные</div>
-                </div>
-                <div className={css.item}>
-                    <div className={css.color} style={{ background: '#EFA6A6' }}/>
-                    <div className={css.name}>Акции</div>
-                </div>
-                <div className={css.item}>
-                    <div className={css.color} style={{ background: '#A6E2EF' }}/>
-                    <div className={css.name}>Резерв</div>
-                </div>
-                <div className={css.item}>
-                    <div className={css.color} style={{ background: '#FCFCFC' }}/>
-                    <div className={css.name}>Проданные</div>
-                </div>
-                <div className={css.item}>
-                    <div className={css.color} style={{ background: '#e9e9e9' }}/>
-                    <div className={css.name}>Недоступны</div>
-                </div>
-            </div>
-
-            <Space h={24}/>
-
-            <div className={css.flats}>
-                <FlatsTable floors={floors} flats={flats}/>
-                <FlatsTable floors={floors} flats={flats}/>
-                <FlatsTable floors={floors} flats={flats}/>
-                <FlatsTable floors={floors.filter(it=>it.number===4)} flats={flats} style={{ alignSelf: 'stretch' }}/>
-
-                <FlatsTable floors={floors2} flats={flats2}/>
-                <FlatsTable floors={floors2} flats={flats2}/>
-                <FlatsTable floors={floors2} flats={flats2}/>
-                <FlatsTable floors={floors2} flats={flats2}/>
-            </div>
-
         </div>
-    </div>
+    </>
 }
 export default React.memo(ObjectInfoPage)

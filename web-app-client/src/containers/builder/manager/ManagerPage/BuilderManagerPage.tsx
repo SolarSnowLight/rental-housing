@@ -1,9 +1,9 @@
 import React from "react";
 
 
-const BuilderManagerDefaultPage = () => {
+const BuilderManagerPage = () => {
     return <div>
         Builder Manager Default Page
     </div>
 }
-export default React.memo(BuilderManagerDefaultPage)
+export default React.memo(BuilderManagerPage)
