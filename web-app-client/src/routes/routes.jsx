@@ -3,17 +3,14 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 /* Containers */
 import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
-import CompanyPage from "src/containers/client/CompanyPage";
 import HomePage from "src/containers/client/HomePage";
 import ManagerPage from "src/containers/manager/ManagerPage";
 import AdminPage from "src/containers/admin/AdminPage";
 import ObjectInfoPage from "src/containers/builder/manager/ObjectInfoPage";
-import ObjectSearchPage from "src/containers/client/ObjectSearchPage";
 import ManagerListPage from "src/containers/builder/admin/ManagerListPage";
 import ProjectListPage from "src/containers/builder/admin/ProjectListPage";
 import CreateProjectPage from "src/containers/builder/admin/CreateProjectPage";
 import CreateObjectPage from "src/containers/builder/admin/CreateObjectPage";
-import DeveloperEditPage from "src/containers/manager/DeveloperEditPage";
 import ProjectInfoPage from "src/containers/builder/admin/ProjectInfoPage";
 
 /* Constants */
@@ -32,10 +29,6 @@ const useBaseRoutes = () => {
     return (
         <>
             <Route path={MainRoute.home_page} element={<HomePage />} />
-            <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
-
-            <Route path={'/object-search'} element={<ObjectSearchPage />} />
-            <Route path={'/object-info'} element={<ObjectInfoPage />} />
 
             {
                 <Route
@@ -55,7 +48,6 @@ const useRoutes = (isAuthenticated) => {
             <Route path={AdminRouteDefault} element={<AdminPage />} />
             <Route path={ManagerRouteDefault} >
                 <Route path={ManagerRouteDefault} element={<ManagerPage/>} />
-                <Route path={ManagerRoute.developerEdit} element={<DeveloperEditPage/>} />
             </Route>
 
 
