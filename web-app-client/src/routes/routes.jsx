@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 /* Containers */
 import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
 import HomePage from "src/containers/client/HomePage/HomePage";
-import ManagerPage from "src/containers/manager/ManagerPage/ManagerPage";
+import ManagerPage from "src/containers/manager/ManagerPage";
 import AdminPage from "src/containers/admin/AdminPage";
 import ObjectInfoBuilderManagerPage from "src/containers/builder/manager/ObjectInfoPage";
 import ManagerListPage from "src/containers/builder/admin/BuilderAdminPage/containers/ManagerListPage";
