@@ -1,4 +1,4 @@
-import { ReactComponent as SvgComponent } from 'src/resources/images/cross.svg'
+import { ReactComponent as SvgComponent } from 'src/resources/images/cross2.svg'
 import React from 'react'
 
 

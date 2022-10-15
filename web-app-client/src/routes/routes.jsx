@@ -1,6 +1,26 @@
-import React from "react";
+/* Libraries */
 import { Routes, Route, Navigate } from "react-router-dom";
 
+/* Containers */
+import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
+import HomePage from "src/containers/client/HomePage/HomePage";
+import ManagerPage from "src/containers/manager/ManagerPage/ManagerPage";
+import AdminPage from "src/containers/admin/AdminPage";
+import ObjectInfoBuilderManagerPage from "src/containers/builder/manager/ObjectInfoPage";
+import ManagerListPage from "src/containers/builder/admin/BuilderAdminPage/containers/ManagerListPage";
+import ProjectListPage from "../containers/builder/admin/BuilderAdminPage/containers/ProjectListPage";
+import CreateProjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateProjectPage";
+import CreateObjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateObjectPage";
+
+import CompanyPage from "src/containers/client/CompanyPage";
+import ObjectSearchPage from "src/containers/client/ObjectSearchPage";
+import BuilderEditPage from "src/containers/manager/BuilderEditPage";
+import ClientListPage from "src/containers/builder/manager/ClientListPage";
+import BuilderManagerPage from "src/containers/builder/manager/ManagerPage";
+import BuilderStatisticsPage from "src/containers/manager/BuilderStatisticsPage";
+import ProjectInfoBuilderManagerPage from "src/containers/builder/manager/ProjectInfoPage";
+
+/* Constants */
 import AuthRoute from "src/constants/addresses/routes/auth.route";
 import BuilderRoute from "src/constants/addresses/routes/builder.route";
 import CompanyRoute from "src/constants/addresses/routes/company.route";
@@ -8,26 +28,7 @@ import MainRoute from "src/constants/addresses/routes/main.route";
 import ManagerRoute, { ManagerRouteDefault } from "src/constants/addresses/routes/manager.route";
 import BuilderAdminRoute, { BuilderAdminRouteDefault } from "src/constants/addresses/routes/builder.admin.route";
 import AdminRoute, { AdminRouteDefault } from "src/constants/addresses/routes/admin.route";
-
-import SignInPage from "src/containers/auth/SignInPage";
-import SignUpPage from "src/containers/auth/SignUpPage";
-import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
-import CompanyPage from "src/containers/client/CompanyPage/CompanyPage";
-import HomePage from "src/containers/client/HomePage/HomePage";
-import ManagerPage from "src/containers/manager/ManagerPage/ManagerPage";
-import AdminPage from "../containers/admin/AdminPage";
-import ObjectSearchPage from "src/containers/client/ObjectSearchPage/ObjectSearchPage";
-import ManagerListPage from "src/containers/builder/admin/BuilderAdminPage/containers/ManagerListPage";
-import ProjectListPage from "../containers/builder/admin/BuilderAdminPage/containers/ProjectListPage";
-import CreateProjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateProjectPage";
-import CreateObjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateObjectPage";
-import BuilderEditPage from "src/containers/manager/BuilderEditPage";
-import {BuilderManagerRoutes} from "src/constants/addresses/routes/builder.manager.routes";
-import ClientList from "src/containers/builder/manager/ClientListPage";
-import BuilderManagerPage from "src/containers/builder/manager/ManagerPage/BuilderManagerPage";
-import ObjectInfoPage from "src/containers/builder/manager/ObjectInfoPage/ObjectInfoPage";
-import BuilderStatistics from "src/containers/manager/BuilderStatisticsPage/BuilderStatisticsPage";
-import ProjectInfoPage from "src/containers/builder/manager/ProjectInfoPage/ProjectInfoPage";
+import { BuilderManagerRoutes } from "src/constants/addresses/routes/builder.manager.routes";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -52,7 +53,7 @@ const useRoutes = (isAuthenticated) => {
             <Route path={ManagerRouteDefault}>
                 <Route path={ManagerRouteDefault} element={<ManagerPage/>} />
                 <Route path={ManagerRoute.builderEdit} element={<BuilderEditPage/>} />
-                <Route path={ManagerRoute.builderStatistics} element={<BuilderStatistics/>} />
+                <Route path={ManagerRoute.builderStatistics} element={<BuilderStatisticsPage/>} />
             </Route>
 
 
@@ -67,9 +68,9 @@ const useRoutes = (isAuthenticated) => {
 
             <Route path={BuilderManagerRoutes.common}>
                 <Route path={BuilderManagerRoutes.default} element={<BuilderManagerPage/>} />
-                <Route path={BuilderManagerRoutes.clients} element={<ClientList/>} />
-                <Route path={BuilderManagerRoutes.objectInfo} element={<ObjectInfoPage/>} />
-                <Route path={BuilderManagerRoutes.projectInfo} element={<ProjectInfoPage />} />
+                <Route path={BuilderManagerRoutes.clients} element={<ClientListPage/>} />
+                <Route path={BuilderManagerRoutes.objectInfo} element={<ObjectInfoBuilderManagerPage/>} />
+                <Route path={BuilderManagerRoutes.projectInfo} element={<ProjectInfoBuilderManagerPage />} />
             </Route>
 
         </Routes>
