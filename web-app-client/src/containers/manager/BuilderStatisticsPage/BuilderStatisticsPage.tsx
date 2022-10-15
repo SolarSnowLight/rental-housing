@@ -159,7 +159,7 @@ const BuilderStatisticsPage = () => {
 
             <div className={css.statisticsFrame}>
 
-                <div className={css.listData}>
+                {/*<div className={css.listData}>
                     <div className={css.infoTitle}>Проекты</div>
                     <ProjectsSelect/>
                     <div className={css.diagramFrame}>
@@ -179,7 +179,7 @@ const BuilderStatisticsPage = () => {
                             .map(it=><ListItem2 key={it.name} name={it.name} value={it.value}/>)
                         }
                     </div>
-                </div>
+                </div>*/}
 
                 <div className={css.listStatisticsContainer}>
                     <div className={css.listData}>
@@ -200,7 +200,6 @@ const BuilderStatisticsPage = () => {
                         </div>
                     </div>
                 </div>
-
 
             </div>
 
