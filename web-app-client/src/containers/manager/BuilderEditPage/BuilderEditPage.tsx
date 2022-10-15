@@ -1,5 +1,5 @@
 import React, {FormEvent, useState} from 'react'
-import css from './DeveloperEditPage.module.scss'
+import css from './BuilderEditPage.module.scss'
 import Space from "src/components/Space/Space";
 import {Button, IconButton, InputAdornment, TextField} from "@mui/material";
 import styled from "styled-components";
@@ -10,7 +10,7 @@ import ImagePicker from "src/components/ImagePicker";
 
 
 
-const DeveloperEditPage = () => {
+const BuilderEditPage = () => {
 
 
     const onSave = (ev: FormEvent<unknown>) => {
@@ -107,7 +107,7 @@ const DeveloperEditPage = () => {
         </div>
     </div>
 }
-export default React.memo(DeveloperEditPage)
+export default React.memo(BuilderEditPage)
 
 
 

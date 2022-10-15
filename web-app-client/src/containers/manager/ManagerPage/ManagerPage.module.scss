@@ -1,19 +1,5 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-}
-.row {
-    display: flex;
-    flex-flow: row nowrap;
-}
-.col {
-    display: flex;
-    flex-flow: column nowrap;
-}
-.center {
-    display: grid;
-    place-items: center;
-}
+
+@use "src/styles/common";
 
 
 

@@ -106,9 +106,9 @@ const ProjectInfoPage = () => {
                 <ButtonWhite2 className={css.add} onClick={onAddObject}>
                     Добавить объект
                 </ButtonWhite2>
-                <ButtonWhite2 className={css.edit} onClick={onEditObject}>
+                {/*<ButtonWhite2 className={css.edit} onClick={onEditObject}>
                     Редактировать объект
-                </ButtonWhite2>
+                </ButtonWhite2>*/}
             </div>
             <Space h={24}/>
         </> }
@@ -143,9 +143,9 @@ const ProjectInfoPage = () => {
                 <ButtonWhite2 className={css.add} onClick={onAddObject}>
                     Добавить объект
                 </ButtonWhite2>
-                <ButtonWhite2 className={css.edit} onClick={onEditObject}>
+                {/*<ButtonWhite2 className={css.edit} onClick={onEditObject}>
                     Редактировать объект
-                </ButtonWhite2>
+                </ButtonWhite2>*/}
             </div>
         </> }
 

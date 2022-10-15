@@ -21,14 +21,13 @@ import ManagerListPage from "src/containers/builder/admin/BuilderAdminPage/conta
 import ProjectListPage from "../containers/builder/admin/BuilderAdminPage/containers/ProjectListPage";
 import CreateProjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateProjectPage";
 import CreateObjectPage from "src/containers/builder/admin/BuilderAdminPage/containers/CreateObjectPage";
-import DeveloperEditPage from "src/containers/manager/DeveloperEditPage";
+import BuilderEditPage from "src/containers/manager/BuilderEditPage";
 import {BuilderManagerRoutes} from "src/constants/addresses/routes/builder.manager.routes";
 import ClientList from "src/containers/builder/manager/ClientListPage";
 import BuilderManagerPage from "src/containers/builder/manager/ManagerPage/BuilderManagerPage";
 import ObjectInfoPage from "src/containers/builder/manager/ObjectInfoPage/ObjectInfoPage";
-import DeveloperStatistics from "src/containers/manager/DeveloperStatistics/DeveloperStatistics";
-import ProjectInfoPage from "src/containers/builder/admin/ProjectInfoPage/ProjectInfoPage";
-//import ProjectInfoPage from "src/containers/builder/admin/BuilderAdminPage/containers/ProjectInfoPage";
+import BuilderStatistics from "src/containers/manager/BuilderStatisticsPage/BuilderStatisticsPage";
+import ProjectInfoPage from "src/containers/builder/manager/ProjectInfoPage/ProjectInfoPage";
 
 /* Базовые маршруты, которые доступны любому пользователю */
 const useBaseRoutes = () => {
@@ -36,15 +35,9 @@ const useBaseRoutes = () => {
         <>
             <Route path={MainRoute.home_page} element={<HomePage />} />
             <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
+            <Route path={MainRoute.objects_search} element={<ObjectSearchPage />} />
 
-            <Route path={'/object-search'} element={<ObjectSearchPage />} />
-
-            {
-                <Route
-                    path="*"
-                    element={<Navigate to={MainRoute.home_page} />}
-                />
-            }
+            <Route path="*" element={<Navigate to={MainRoute.home_page} />} />
         </>
     );
 }
@@ -58,8 +51,8 @@ const useRoutes = (isAuthenticated) => {
             <Route path={AdminRouteDefault} element={<AdminPage />} />
             <Route path={ManagerRouteDefault}>
                 <Route path={ManagerRouteDefault} element={<ManagerPage/>} />
-                <Route path={ManagerRoute.developerEdit} element={<DeveloperEditPage/>} />
-                <Route path={ManagerRoute.developersStatistics} element={<DeveloperStatistics/>} />
+                <Route path={ManagerRoute.builderEdit} element={<BuilderEditPage/>} />
+                <Route path={ManagerRoute.builderStatistics} element={<BuilderStatistics/>} />
             </Route>
 
 
@@ -70,13 +63,13 @@ const useRoutes = (isAuthenticated) => {
                 <Route path={BuilderAdminRoute.project_list} element={<ProjectListPage />} />
                 <Route path={BuilderAdminRoute.project_create} element={<CreateProjectPage />} />
                 <Route path={BuilderAdminRoute.project_add_object} element={<CreateObjectPage />} />
-                <Route path={BuilderAdminRoute.project_info} element={<ProjectInfoPage />} />
             </Route>
 
             <Route path={BuilderManagerRoutes.common}>
                 <Route path={BuilderManagerRoutes.default} element={<BuilderManagerPage/>} />
                 <Route path={BuilderManagerRoutes.clients} element={<ClientList/>} />
                 <Route path={BuilderManagerRoutes.objectInfo} element={<ObjectInfoPage/>} />
+                <Route path={BuilderManagerRoutes.projectInfo} element={<ProjectInfoPage />} />
             </Route>
 
         </Routes>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import css from './DeveloperStatistics.module.scss'
+import css from './BuilderStatisticsPage.module.scss'
 import Space from "src/components/Space";
 import {Button, MenuItem, Select} from "@mui/material";
 import styled from "styled-components";
@@ -100,7 +100,7 @@ const projects = Array(10).fill(undefined)
 
 
 
-const DeveloperStatistics = () => {
+const BuilderStatisticsPage = () => {
     const [developer, setDeveloper] = useState({ id: null, name: ''})
     const onDeveloper = (ev) => {
         setDeveloper(ev.target.value)
@@ -228,7 +228,7 @@ const DeveloperStatistics = () => {
         </div>
     </div>
 }
-export default React.memo(DeveloperStatistics)
+export default React.memo(BuilderStatisticsPage)
 
 
 

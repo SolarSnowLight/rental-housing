@@ -5,6 +5,7 @@ const MainRoute = {
     // Адрес домашней страницы
     home_page: '/home',
     company_page: '/company',
+    objects_search: '/objects-search', // страница поиска объектов
 
     // Адрес по-умолчанию
     default: MainRouteDefault
