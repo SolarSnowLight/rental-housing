@@ -4,12 +4,11 @@ import {animated} from "@react-spring/web";
 import React from "react";
 import css from './PieDiagram.module.scss'
 import {utils} from "src/utils/utils";
-import {signal} from "@preact/signals-react";
 
 
 
 
-const totals = signal<Totals|undefined>(undefined)
+
 
 
 export type FullData = {
@@ -29,7 +28,7 @@ export type Data = {
 }
 const MyResponsivePie = ({ fullData }: { fullData: FullData }) => {
 
-    totals.value = fullData.totals
+    const totals = fullData.totals
 
     // https://nivo.rocks/pie/
     return <ResponsivePie
@@ -93,20 +92,20 @@ const MyResponsivePie = ({ fullData }: { fullData: FullData }) => {
             <div className={css.tooltipBox}>
                 <div className={css.indicator} style={{ background: color }}/>
                 <div className={css.text} style={{ color }}>
-                    {utils.getPercent(value, totals.value!.value)}% {label}
+                    {utils.getPercent(value, totals.value)}% {label}
                 </div>
             </div>
         )}
 
 
-        layers={['arcs', 'arcLabels', /*'arcLinkLabels',*/ 'legends', CenteredMetric]}
+        layers={['arcs', 'arcLabels', /*'arcLinkLabels',*/ 'legends', props=><CenteredMetric {...props} totals={totals}/>]}
     />
 }
 export default React.memo(MyResponsivePie)
 
 
 
-const CenteredMetric = ({ dataWithArc, centerX, centerY }) => {
+const CenteredMetric = ({ dataWithArc, centerX, centerY, totals }) => {
     //let total = dataWithArc.reduce((sum,curr)=>sum+curr.value, 0)
     return <foreignObject
         x={centerX}
@@ -116,7 +115,7 @@ const CenteredMetric = ({ dataWithArc, centerX, centerY }) => {
         style={{ overflow: 'visible' }}
     >
         <div className={css.centeredMetricContainer}>
-            <div className={css.value}>{totals.value!.value}</div>
+            <div className={css.value}>{totals.value}</div>
             <div className={css.text}>ивентов</div>
         </div>
     </foreignObject>

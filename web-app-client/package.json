@@ -9,7 +9,6 @@
     "@mui/material": "^5.10.1",
     "@nivo/core": "^0.80.0",
     "@nivo/pie": "^0.80.0",
-    "@preact/signals-react": "^1.1.1",
     "@react-spring/web": "^9.5.2",
     "@reduxjs/toolkit": "^1.8.4",
     "@testing-library/jest-dom": "^5.16.5",
