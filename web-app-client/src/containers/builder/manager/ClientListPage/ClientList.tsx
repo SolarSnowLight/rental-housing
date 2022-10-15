@@ -2,7 +2,7 @@ import React from "react";
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import css from './ClientList.module.scss'
 import styled from "styled-components";
-import ListItem from "src/components/ClientListItem/ClientListItem";
+import ListItem from "src/components/PersonListItem/PersonListItem";
 import Space from "src/components/Space";
 import {Button} from "@mui/material";
 import { root } from "src/styles";
@@ -15,35 +15,35 @@ const clients = [
         ava: avaDefault,
         fio: 'Иванов Иван Иванович',
         projectsCnt: 2,
-        objectsCnt: 12,
+        objectCnt: 12,
     },
     {
         id: 2,
         ava: avaDefault,
         fio: 'Иванов Иван Иванович',
         projectsCnt: 2,
-        objectsCnt: 12,
+        objectCnt: 12,
     },
     {
         id: 3,
         ava: avaDefault,
         fio: 'Иванов Иван Иванович',
         projectsCnt: 2,
-        objectsCnt: 12,
+        objectCnt: 12,
     },
     {
         id: 4,
         ava: avaDefault,
         fio: 'Иванов Иван Иванович',
         projectsCnt: 2,
-        objectsCnt: 12,
+        objectCnt: 12,
     },
     {
         id: 5,
         ava: avaDefault,
         fio: 'Иванов Иван Иванович',
         projectsCnt: 2,
-        objectsCnt: 12,
+        objectCnt: 12,
     },
 ]
 

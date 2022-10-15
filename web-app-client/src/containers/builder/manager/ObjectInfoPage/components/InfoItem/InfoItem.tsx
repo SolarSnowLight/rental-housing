@@ -15,7 +15,7 @@ const InfoItem = React.forwardRef<HTMLDivElement, InfoItemProps & JSX.IntrinsicE
     return <Frame ref={forwardedRef} {...props}>
         <Title>{title}</Title>
         <ItemsBox>
-            { items.map(it=><Item>{it}</Item>) }
+            { items.map(it=><Item key={it}>{it}</Item>) }
         </ItemsBox>
     </Frame>
 })

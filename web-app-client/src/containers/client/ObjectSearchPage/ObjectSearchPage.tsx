@@ -8,13 +8,13 @@ import styled from "styled-components";
 import { ArrowDownIc } from 'src/components/icons';
 import {SearchIc} from "src/components/icons";
 import MapComponent from 'src/components/MapComponent';
-import ObjectCard from "src/components/ObjectCard";
+import ObjectCard from "src/components/ObjectCard/ObjectCard";
 
 
 import logoDefault from 'src/resources/images/logo-default.png'
-import buildingExample1 from 'src/resources/images/building-example-1.webp'
-import buildingExample2 from 'src/resources/images/building-exapmle-2.webp'
-import buildingExample3 from 'src/resources/images/building-example-3.jpg'
+import buildingExample1 from 'src/resources/images/examples/building-example-1.webp'
+import buildingExample2 from 'src/resources/images/examples/building-example-2.webp'
+import buildingExample3 from 'src/resources/images/examples/building-example-3.jpg'
 
 
 const allRooms = ['1','2','3','4+']

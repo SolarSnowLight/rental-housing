@@ -2,12 +2,14 @@ import React, {forwardRef, useEffect, useState} from "react";
 import styled from "styled-components";
 import {commonStyled} from "src/styles/commonStyled";
 
-type Floor = {
+
+
+export type Floor = {
     number: number
     firstFlatNumber: number
     lastFlatNumber: number
 }
-type Flat = {
+export type Flat = {
     number: number
     floor: number
     state: 'free'|'promotions'|'reserve'|'sold'|'na'
@@ -26,7 +28,7 @@ const FlatsTable = React.forwardRef<HTMLDivElement, FlatsTableProps & JSX.Intrin
 ) => {
     return <Floors ref={forwardedRef} {...props}>
         { floors.map(f=>
-            <FloorContainer>
+            <FloorContainer key={f.number}>
                 <FloorLabel><big>{f.number}</big>этаж</FloorLabel>
                 <FloorFlats floor={f} flats={flats}/>
             </FloorContainer>
@@ -34,7 +36,6 @@ const FlatsTable = React.forwardRef<HTMLDivElement, FlatsTableProps & JSX.Intrin
     </Floors>
 })
 export default React.memo(FlatsTable)
-export type { Flat, Floor }
 
 
 
@@ -46,10 +47,10 @@ const FloorFlats = React.memo(({ floor, flats }: FloorsProps) => {
 
     const [flats2, setFlats2] = useState(undefined as Flat[] | undefined)
     useEffect(()=>{
-        const flatsF = flats.filter(it=>it.floor===floor.number)
+        const floorFlats = flats.filter(it=>it.floor===floor.number)
         const flats2 = [] as Flat[]
-        for (let i = floor.firstFlatNumber; i <= floor.lastFlatNumber ; i++) {
-            let flat = flatsF.find(it=>it.number===i)
+        for (let i = floor.firstFlatNumber; i <= floor.lastFlatNumber; i++) {
+            let flat = floorFlats.find(it=>it.number===i)
             flat ??= { number: i, floor: floor.number, state: 'na' }
             flats2.push(flat)
             setFlats2(flats2)
@@ -57,7 +58,7 @@ const FloorFlats = React.memo(({ floor, flats }: FloorsProps) => {
     },[floor,flats])
 
     return <Flats>
-        { flats2?.map(it=><FlatElem data-state={it.state}>{it.number}</FlatElem>) }
+        { flats2?.map(it=><FlatElem key={it.number} data-state={it.state}>{it.number}</FlatElem>) }
     </Flats>
 })
 
@@ -68,7 +69,7 @@ const Floors = React.memo(styled.div`
   ${commonStyled.col};
 
   position: relative;
-  ::before{
+  &::before{
     content:'';
     ${commonStyled.abs};
     pointer-events: none;
@@ -80,7 +81,7 @@ const FloorContainer = React.memo(styled.div`
   ${commonStyled.row};
 
   position: relative;
-  ::before{
+  &::before{
     content:'';
     ${commonStyled.abs};
     pointer-events: none;
@@ -110,7 +111,7 @@ const FloorLabel = React.memo(styled.div`
   }
 
   position: relative;
-  ::before{
+  &::before{
     content:'';
     ${commonStyled.abs};
     pointer-events: none;
@@ -127,7 +128,7 @@ const Flats = React.memo(styled.div`
   place-items: stretch;
   
   position: relative;
-  ::before{
+  &::before{
     content:'';
     ${commonStyled.abs};
     pointer-events: none;
@@ -147,7 +148,7 @@ const FlatElem = React.memo(styled.div`
 
 
   position: relative;
-  ::before{
+  &::before{
     content:'';
     ${commonStyled.abs};
     pointer-events: none;
