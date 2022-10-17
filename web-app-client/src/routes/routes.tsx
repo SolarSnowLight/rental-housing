@@ -40,7 +40,7 @@ const useBaseRoutes = () => {
             <Route path={CompanyRoute.company_page} element={<CompanyPage />} />
             <Route path={MainRoute.objects_search} element={<ObjectSearchPage />} />
 
-            <Route path="" element={<Navigate to={MainRoute.home_page} />} />
+            <Route path='*' element={<Navigate to={MainRoute.home_page} />} />
         </>
     );
 }
@@ -73,7 +73,7 @@ const useRoutes = (isAuthenticated) => {
                 <Route path={BuilderManagerRoutes.clients} element={<ClientListPage/>} />
                 <Route path={BuilderManagerRoutes.objectInfo} element={<ObjectInfoBuilderManagerPage/>} />
                 <Route path={BuilderManagerRoutes.projectInfo} element={<ProjectInfoBuilderManagerPage />} />
-                <Route path='*' element={<BuilderManagerPage/>} />
+                <Route path='' element={<BuilderManagerPage/>} />
             </Route>
 
         </Routes>
