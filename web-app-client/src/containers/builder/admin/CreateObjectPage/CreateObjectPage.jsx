@@ -1,24 +1,29 @@
 /* Libraries */
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextField, Button, Autocomplete } from '@mui/material';
+import { TextField as TextFieldMUI, Button, Autocomplete } from '@mui/material';
 import ImageUploading from "react-images-uploading";
 import { useDropzone } from 'react-dropzone';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useFormState, Controller, useForm } from 'react-hook-form';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import { FormControl, MenuItem } from '@mui/material';
 
 /* Context */
 import { authSlice } from 'src/store/reducers/AuthSlice';
 
 /* Components */
-import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
-import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
+import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
+import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
 import ProjectInfo from 'src/components/Company/ProjectInfo/ProjectInfo';
 import TemplateTable from 'src/components/TemplateTable';
-import TextFieldComponent from 'src/components/ui/textfields/TextFieldComponent';
 import LabelSelectComponent from 'src/components/LabelSelectComponent';
 import MapSelectComponent from 'src/components/MapSelectComponent';
-import DatePickerComponent from 'src/components/DatePickerComponent';
+import DateSelect from 'src/components/UI/DateSelect';
+import TextField from 'src/components/UI/TextField/TextField';
+import Select from 'src/components/UI/Select';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
@@ -35,7 +40,9 @@ import cities from 'src/data/russian-cities.json';
 import styles from './CreateObjectPage.module.css';
 import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles';
-import ImageUpload from 'src/components/ImageUpload';
+import ImageUpload from 'src/components/UI/ImageUpload';
+import messageQueueAction from 'src/store/actions/MessageQueueAction';
+import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
 
 /**
  * Functional component for create object in project
@@ -50,6 +57,7 @@ const CreateObjectPage = () => {
     const navigate = useNavigate();
     const message = useMessageToastify();
     const { state } = useLocation();
+    const [stateUseLink, setStateUseLink] = useState(false);
 
     const [btnDisabled, setBtnDisabled] = useState(true);
     const [logo, setLogo] = useState([]);
@@ -103,6 +111,11 @@ const CreateObjectPage = () => {
 
     // Charactetistic
     const addNewCharacteristicHandler = () => {
+        if ((!currentCharacteristic) || (currentCharacteristic.length <= 0)) {
+            dispatch(messageQueueAction.addMessage(null, "error", "Необходимо ввести название характеристики"));
+            return;
+        }
+
         const data = JSON.parse(JSON.stringify(characteristics));
         data.push(currentCharacteristic);
 
@@ -123,6 +136,11 @@ const CreateObjectPage = () => {
 
     // Payment method
     const addNewPaymentMethodHandler = () => {
+        if ((!currentPaymentMethod) || (currentPaymentMethod.length <= 0)) {
+            dispatch(messageQueueAction.addMessage(null, "error", "Необходимо ввести название способа оплаты"));
+            return;
+        }
+
         const data = JSON.parse(JSON.stringify(paymentMethods));
         data.push(currentPaymentMethod);
 
@@ -143,6 +161,11 @@ const CreateObjectPage = () => {
 
     // Communication
     const addNewCommunicationHandler = () => {
+        if ((!currentCommunication) || (currentCommunication.length <= 0)) {
+            dispatch(messageQueueAction.addMessage(null, "error", "Необходимо ввести название коммуникации"));
+            return;
+        }
+
         const data = JSON.parse(JSON.stringify(communications));
         data.push(currentCommunication);
 
@@ -248,31 +271,16 @@ const CreateObjectPage = () => {
                         />
                     </div>
                     <div className={styles["block__item-element"]}>
-                        <div>
-                            <span className='span__text__gray'>Название *</span>
-                            <TextField
-                                required
-                                id="outlined-required"
-                                placeholder="Название объекта"
-                                onChange={(e) => {
-                                    changeHandler("title", e.target.value);
-                                }}
-                                sx={{
-                                    marginTop: '8px',
-                                    borderRadius: '0px !important',
-                                    border: 'none',
-                                    width: '20em',
-                                    '&:hover fieldset': {
-                                        border: '1px solid #424041 !important',
-                                        borderRadius: '0px'
-                                    },
-                                    'fieldset': {
-                                        border: '1px solid #424041 !important',
-                                        borderRadius: '0px'
-                                    },
-                                }}
-                            />
-                        </div>
+                        <TextField
+                            title={"Название *"}
+                            placeholder={"Название объекта"}
+                            required={true}
+                            value={form.title}
+
+                            changeHandler={(e) => {
+                                changeHandler("title", e.target.value)
+                            }}
+                        />
                         <div>
                             <span className='span__text__gray'>Город *</span>
                             <Autocomplete
@@ -287,7 +295,7 @@ const CreateObjectPage = () => {
                                     setCity(value);
                                 }}
                                 renderInput={(params) => (
-                                    <TextField
+                                    <TextFieldMUI
                                         {...params}
                                         sx={{
                                             marginTop: '8px',
@@ -315,45 +323,28 @@ const CreateObjectPage = () => {
                                 )}
                             />
                         </div>
-                        <div style={{
-                            marginLeft: '32px',
-                        }}>
-                            <span className='span__text__gray'>Координаты *</span>
-                            <TextField
-                                required
-                                id="outlined-required"
-                                placeholder="Выбрать latitude; longtitude"
-                                autoComplete='off'
-                                value={(latLng.lat && latLng.lng) ? `${latLng.lat.toFixed(10)}; ${latLng.lng.toFixed(10)}` : null}
-                                onClick={(e) => {
-                                    setModalActive(true);
-                                }}
-                                onChange={(e) => {
-                                }}
-                                sx={{
-                                    marginTop: '8px',
-                                    borderRadius: '0px !important',
-                                    border: 'none',
-                                    width: '20em',
-                                    '&:hover fieldset': {
-                                        border: '1px solid #424041 !important',
-                                        borderRadius: '0px'
-                                    },
-                                    'fieldset': {
-                                        border: '1px solid #424041 !important',
-                                        borderRadius: '0px'
-                                    },
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <span className='span__text__gray'>Дата сдачи</span>
-                            <DatePickerComponent
-                                value={form.date_end}
-                                changeHandler={(date) => changeHandler("date_end", date)}
-                                placeholder="Дата сдачи"
-                            />
-                        </div>
+
+                        <TextField
+                            title={"Координаты *"}
+                            placeholder={"Выбрать latiitude; longtitude"}
+                            autocomplete={"off"}
+                            required={true}
+                            value={(latLng.lat && latLng.lng) ? `${latLng.lat.toFixed(10)}; ${latLng.lng.toFixed(10)}` : null}
+
+                            clickHandler={() => {
+                                setModalActive(true);
+                            }}
+
+                            styleContainer={{
+                                marginLeft: '32px',
+                            }}
+                        />
+                        <DateSelect
+                            value={form.date_end}
+                            changeHandler={(date) => changeHandler("date_end", date)}
+                            placeholder="Дата сдачи"
+                            title={"Дата сдачи"}
+                        />
                     </div>
                 </div>
             </div>
@@ -372,10 +363,13 @@ const CreateObjectPage = () => {
                                             marginTop: '16px'
                                         }}
                                     >
-                                        <TextFieldComponent
+                                        <TextField
                                             value={item}
                                             title="Способ оплаты"
-                                            headerVisible={false}
+                                            styleTitle={{
+                                                display: "none"
+                                            }}
+                                            autocomplete="off"
                                         />
                                         <span
                                             className='span__text__gray'
@@ -391,27 +385,19 @@ const CreateObjectPage = () => {
                                 );
                             })
                         }
+
                         <TextField
-                            required
-                            id="outlined-required"
-                            placeholder="Способ оплаты"
+                            placeholder={"Введите способ оплаты"}
+                            autocomplete={"off"}
+                            required={true}
                             value={currentPaymentMethod}
-                            onChange={(e) => {
+
+                            changeHandler={(e) => {
                                 setCurrentPaymentMethod(e.target.value);
                             }}
-                            sx={{
-                                marginTop: '16px',
-                                borderRadius: '0px !important',
-                                border: 'none',
-                                width: '20em',
-                                '&:hover fieldset': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
-                                'fieldset': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
+
+                            styleTitle={{
+                                display: 'none'
                             }}
                         />
                         <ButtonWhiteComponent clickHandler={addNewPaymentMethodHandler} style={{ marginTop: "2em", width: "100%", height: "2.8em" }} title="Добавить способ оплаты" />
@@ -426,10 +412,13 @@ const CreateObjectPage = () => {
                                             marginTop: '16px'
                                         }}
                                     >
-                                        <TextFieldComponent
+                                        <TextField
                                             value={item}
                                             title="Характеристика"
-                                            headerVisible={false}
+                                            styleTitle={{
+                                                display: "none"
+                                            }}
+                                            autocomplete="off"
                                         />
                                         <span
                                             className='span__text__gray'
@@ -445,27 +434,20 @@ const CreateObjectPage = () => {
                                 );
                             })
                         }
+
+
                         <TextField
-                            required
-                            id="outlined-required"
-                            placeholder="Характеристика"
+                            placeholder={"Введите новую характеристику"}
+                            autocomplete={"off"}
+                            required={true}
                             value={currentCharacteristic}
-                            onChange={(e) => {
+
+                            changeHandler={(e) => {
                                 setCurrentCharacteristic(e.target.value);
                             }}
-                            sx={{
-                                marginTop: '16px',
-                                borderRadius: '0px !important',
-                                border: 'none',
-                                width: '20em',
-                                '&:hover fieldset': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
-                                'fieldset': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
+
+                            styleTitle={{
+                                display: 'none'
                             }}
                         />
                         <ButtonWhiteComponent clickHandler={addNewCharacteristicHandler} style={{ marginTop: "2em", width: "100%", height: "2.8em" }} title="Добавить характеристику" />
@@ -480,10 +462,13 @@ const CreateObjectPage = () => {
                                             marginTop: '16px'
                                         }}
                                     >
-                                        <TextFieldComponent
+                                        <TextField
                                             value={item}
                                             title="Коммуникация"
-                                            headerVisible={false}
+                                            styleTitle={{
+                                                display: "none"
+                                            }}
+                                            autocomplete="off"
                                         />
                                         <span
                                             className='span__text__gray'
@@ -500,26 +485,17 @@ const CreateObjectPage = () => {
                             })
                         }
                         <TextField
-                            required
-                            id="outlined-required"
-                            placeholder="Коммуникация"
+                            placeholder={"Введите коммуникацию"}
+                            autocomplete={"off"}
+                            required={true}
                             value={currentCommunication}
-                            onChange={(e) => {
+
+                            changeHandler={(e) => {
                                 setCurrentCommunication(e.target.value);
                             }}
-                            sx={{
-                                marginTop: '16px',
-                                borderRadius: '0px !important',
-                                border: 'none',
-                                width: '20em',
-                                '&:hover fieldset': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
-                                'fieldset': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
+
+                            styleTitle={{
+                                display: 'none'
                             }}
                         />
                         <ButtonWhiteComponent clickHandler={addNewCommunicationHandler} style={{ marginTop: "2em", width: "100%", height: "2.8em" }} title="Добавить коммуникацию" />
@@ -549,6 +525,17 @@ const CreateObjectPage = () => {
                     <span className='span__text__black'>Вы также можете скачать шаблон для заполнения
                         ячеек информации о каждой отдельной квартире</span>
                 </div>
+
+                <FormGroup>
+                    <FormControlLabel control={
+                        <Switch
+                            onChange={(e) => {
+                                setStateUseLink(e.target.checked);
+                            }}
+                        />
+                    } label="Использовать ссылку" />
+                </FormGroup>
+
                 <a
                     style={{
                         textDecoration: 'none'
@@ -565,65 +552,123 @@ const CreateObjectPage = () => {
                         title={"Скачать готовый шаблон"}
                     />
                 </a>
-                <div style={{
-                    marginTop: '16px',
-                    display: 'grid',
-                    gridAutoFlow: 'column',
-                    alignItems: 'center'
-                }}>
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridAutoFlow: 'row'
-                        }}
-                    >
-                        <span className='span__text__gray'>Файл *</span>
+
+                {
+                    (!stateUseLink) &&
+                    <div style={{
+                        marginTop: '16px',
+                        display: 'grid',
+                        gridAutoFlow: 'column',
+                        alignItems: 'center'
+                    }}>
                         <TextField
-                            required
-                            inputProps={{ readOnly: true }}
-                            id="outlined-required"
+                            title="Файл *"
                             placeholder="Название файла"
                             value={(excelFile) ? excelFile.name : ''}
-                            sx={{
-                                borderRadius: '0px !important',
-                                border: 'none',
-                                width: '20em',
-                                '&:hover fieldset': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
-                                'fieldset': {
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px'
-                                },
+
+                            styleContainer={{
+                                display: 'grid',
+                                gridAutoFlow: 'row'
                             }}
                         />
-                    </div>
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridAutoFlow: 'row',
-                            alignItems: 'flex-end',
-                            height: '100%',
-                            width: 'max-content'
-                        }}
-                    >
                         <div
-                            {...getRootProps()}
                             style={{
                                 display: 'grid',
                                 gridAutoFlow: 'row',
+                                alignItems: 'flex-end',
+                                height: '100%',
+                                width: 'max-content'
                             }}
                         >
-                            <input {...getInputProps()} />
-                            {
-                                isDragActive ?
-                                    <span>is drag active</span>
-                                    : <ButtonGreenComponent title={"Загрузить файл"} />
-                            }
+                            <div
+                                {...getRootProps()}
+                                style={{
+                                    display: 'grid',
+                                    gridAutoFlow: 'row',
+                                }}
+                            >
+                                <input {...getInputProps()} />
+                                {
+                                    isDragActive ?
+                                        <span>is drag active</span>
+                                        : <ButtonGreenComponent title={"Загрузить файл"} />
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+
+                {
+                    (stateUseLink) &&
+                    <div style={{
+                        marginTop: '16px',
+                        display: 'grid',
+                        gridAutoFlow: 'column',
+                        alignItems: 'center'
+                    }}>
+                        <TextField
+                            title="Ссылка на файл"
+                            placeholder="Вставьте ссылку на файл"
+                            value={(excelFile) ? excelFile.name : ''}
+
+                            styleContainer={{
+                                display: 'grid',
+                                gridAutoFlow: 'row'
+                            }}
+                        />
+
+                        <TextField
+                            title="Количество времени"
+                            placeholder="Введите числовое значение"
+
+                            styleContainer={{
+                                display: 'grid',
+                                gridAutoFlow: 'row'
+                            }}
+                        />
+
+                        <Select
+                            title='Единица времени'
+                            items={[
+                                {
+                                    value: "минуты"
+                                },
+                                {
+                                    value: "часы"
+                                },
+                                {
+                                    value: "дни"
+                                },
+                            ]}
+                        />
+
+                        <div
+                            style={{
+                                display: 'grid',
+                                gridAutoFlow: 'row',
+                                alignItems: 'flex-end',
+                                height: '100%',
+                                width: 'max-content'
+                            }}
+                        >
+                            <div
+                                {...getRootProps()}
+                                style={{
+                                    display: 'grid',
+                                    gridAutoFlow: 'row',
+                                }}
+                            >
+                                <input {...getInputProps()} />
+                                {
+                                    isDragActive ?
+                                        <span>is drag active</span>
+                                        : <ButtonGreenComponent title={"Загрузить файл"} />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 <div style={{
                     marginTop: '16px',
                     display: 'grid',

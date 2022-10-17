@@ -1,42 +1,56 @@
 /* Libraries */
-import { TextField } from '@mui/material';
+import { TextField as TextFieldMUI } from '@mui/material';
 
 /* Styles */
-import styles from './TextFieldComponent.module.css';
+import styles from './TextField.module.css';
 
-const TextFieldComponent = ({
+const TextField = ({
     title = "Текст *",
     value = "",
     placeholder = "Описание",
+    autocomplete = 'on',
     changeHandler = () => { },
-    required = false
+    clickHandler = () => { },
+    required = false,
+    styleContainer = {},
+    styleTitle = {},
+    styleTextField = {}
 }) => {
     return (
-        <div>
-            <span className='span__text__gray'>{title}</span>
-            <TextField
+        <div
+            style={styleContainer}
+        >
+            <span
+                className='span__text__gray'
+                style={styleTitle}
+            >{title}</span>
+            <TextFieldMUI
                 required={required}
                 id="outlined-required"
                 placeholder={placeholder}
+                autoComplete={autocomplete}
                 value={value}
+                onClick={clickHandler}
                 onChange={changeHandler}
                 sx={{
-                    marginTop: '16px',
+                    marginTop: '8px',
                     borderRadius: '0px !important',
                     border: 'none',
                     width: '20em',
                     '&:hover fieldset': {
                         border: '1px solid #424041 !important',
-                        borderRadius: '0px'
+                        borderRadius: '0px',
                     },
                     'fieldset': {
                         border: '1px solid #424041 !important',
-                        borderRadius: '0px'
+                        borderRadius: '0px',
                     },
+
+                    ...styleTextField
                 }}
             />
         </div>
     )
 }
 
-export default TextFieldComponent;
+export default TextField;

@@ -10,11 +10,11 @@ import userAction from 'src/store/actions/UserAction';
 import messageQueueAction from 'src/store/actions/MessageQueueAction';
 
 /* Components */
-import ImageUpload from 'src/components/ImageUpload';
-import CircularIndeterminate from 'src/components/CircularIndeterminate';
-import TextFieldControlComponent from 'src/components/TextField/TextFieldControlComponent';
-import AutocompleteControlComponent from 'src/components/Autocomplete/AutocompleteControlComponent';
-import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
+import ImageUpload from 'src/components/UI/ImageUpload';
+import CircularIndeterminate from 'src/components/UI/CircularIndeterminate';
+import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
+import AutocompleteControl from 'src/components/UI/Autocomplete/AutocompleteControl';
+import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
 
 /* Hooks */
 import { useAppSelector } from 'src/hooks/redux.hook';
@@ -150,7 +150,7 @@ const BuilderAdminPage = () => {
                     value={userSelector.company?.data.logo}
                     onChange={onChangeImage}
                 />
-                <TextFieldControlComponent
+                <TextFieldControl
                     title={"Описание"}
                     control={control}
                     errors={errors}
@@ -163,7 +163,7 @@ const BuilderAdminPage = () => {
                 />
             </div>
             <div className={styles["admin-page__container--row"]}>
-                <TextFieldControlComponent
+                <TextFieldControl
                     title={"Название *"}
                     required={true}
                     control={control}
@@ -173,7 +173,7 @@ const BuilderAdminPage = () => {
                     placeholder={"Введите название компании"}
                     changeHandler={changeHandler}
                 />
-                <TextFieldControlComponent
+                <TextFieldControl
                     title={"Email *"}
                     required={true}
                     control={control}
@@ -183,7 +183,7 @@ const BuilderAdminPage = () => {
                     placeholder={"Введите email"}
                     changeHandler={changeHandler}
                 />
-                <TextFieldControlComponent
+                <TextFieldControl
                     title={"Номер телефона *"}
                     required={true}
                     control={control}
@@ -194,7 +194,7 @@ const BuilderAdminPage = () => {
                     changeHandler={changeHandler}
                     View={MuiTelInput}
                 />
-                <TextFieldControlComponent
+                <TextFieldControl
                     title={"Ссылка на сайт *"}
                     required={true}
                     control={control}
@@ -206,7 +206,7 @@ const BuilderAdminPage = () => {
                 />
             </div>
             <div className={styles["admin-page__container--row"]}>
-                <AutocompleteControlComponent
+                <AutocompleteControl
                     title={"Администратор компании"}
                     control={control}
                     errors={errors}

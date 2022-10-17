@@ -6,9 +6,9 @@ import { TextField } from '@mui/material';
 import { Controller } from 'react-hook-form';
 
 /* Styles */
-import styles from './AutocompleteControlComponent.module.css';
+import styles from './AutocompleteControl.module.css';
 
-const AutocompleteControlComponent = ({
+const AutocompleteControl = ({
     title = "Текст *",
     placeholder = "Описание",
     changeHandler = () => { },
@@ -84,4 +84,4 @@ const AutocompleteControlComponent = ({
     )
 }
 
-export default AutocompleteControlComponent;
+export default AutocompleteControl;

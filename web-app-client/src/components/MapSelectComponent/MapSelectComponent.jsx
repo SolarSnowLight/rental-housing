@@ -9,8 +9,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useAppSelector } from '../../hooks/redux.hook';
 
 /* Components */
-import ButtonGreenComponent from '../ui/buttons/ButtonGreenComponent';
-import ButtonWhiteComponent from '../ui/buttons/ButtonWhiteComponent';
+import ButtonGreenComponent from '../UI/Button/ButtonGreenComponent';
+import ButtonWhiteComponent from '../UI/Button/ButtonWhiteComponent';
 
 /* Constants */
 import cities from "src/data/russian-cities.json";

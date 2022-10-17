@@ -110,7 +110,7 @@
     grid-auto-flow: row;
     justify-content: center;
   }
-  
+
   .wrapper-section__item__map-element {
     grid-template-columns: none;
     grid-auto-flow: row;
@@ -121,7 +121,7 @@
     margin-top: 16px;
     justify-content: start;
   }
-  
+
   .grid-item__left {
     justify-content: start;
   }
@@ -129,4 +129,20 @@
   .wrapper-section__item-element__map {
     width: 80%;
   }
+}
+
+.container {
+  margin-top: 1em;
+  display: grid;
+  height: -moz-fit-content;
+  height: fit-content;
+  overflow-x: scroll;
+  place-items: start;
+}
+
+.list {
+  display: grid;
+  grid-auto-flow: column;
+  -moz-column-gap: 48px;
+       column-gap: 48px;
 }

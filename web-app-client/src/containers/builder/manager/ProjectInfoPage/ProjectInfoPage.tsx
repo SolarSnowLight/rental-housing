@@ -1,6 +1,6 @@
 import React, {useRef} from 'react'
 import css from './ProjectInfoPage.module.scss'
-import ButtonWhite2 from "src/components/ui/buttons/ButtonWhite2/ButtonWhite2";
+import ButtonWhite2 from "src/components/UI-Styled/Button/ButtonWhite2/ButtonWhite2";
 import {toast} from "react-toastify";
 import Space from "src/components/Space";
 import {useMediaQuery} from "@mui/material";

@@ -11,9 +11,9 @@ import messageQueueAction from 'src/store/actions/MessageQueueAction';
 
 /* Components */
 import MapComponent from 'src/components/MapComponent';
-import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
-import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import ImageUpload from 'src/components/ImageUpload';
+import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
+import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
+import ImageUpload from 'src/components/UI/ImageUpload';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';

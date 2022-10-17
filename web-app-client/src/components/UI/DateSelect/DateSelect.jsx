@@ -3,20 +3,33 @@ import DatePicker from 'react-datepicker';
 import { TextField } from '@mui/material';
 
 /* Styles */
-import styles from './DatePickerComponent.module.css';
+import styles from './DateSelect.module.css';
 
 /**
  * Component for use DatePicker
  * @param {{value, changeHandler, placeholder}} props - props for components 
  * @returns {JSX.Element}
  */
-const DatePickerComponent = ({
+const DateSelect = ({
     value = new Date(),
     changeHandler = () => { },
-    placeholder = "Дата сдачи"
+    placeholder = "Дата сдачи",
+    title = "Дата",
+
+    // Styles
+    styleContainer = {},
+    styleTitle = {},
+    styleText = {}
 }) => {
+
     return (
-        <>
+        <div
+            style={styleContainer}
+        >
+            <span
+                className='span__text__gray'
+                style={styleTitle}
+            >{title}</span>
             <DatePicker
                 locale="ru"
                 selected={value}
@@ -34,18 +47,22 @@ const DatePickerComponent = ({
                             width: '20em',
                             '&:hover fieldset': {
                                 border: '1px solid #424041 !important',
-                                borderRadius: '0px'
+                                borderRadius: '0px',
+                                ...styleText
                             },
                             'fieldset': {
                                 border: '1px solid #424041 !important',
-                                borderRadius: '0px'
+                                borderRadius: '0px',
+                                ...styleText
                             },
+
+                            ...styleText
                         }}
                     />
                 }
             />
-        </>
+        </div>
     )
 }
 
-export default DatePickerComponent;
+export default DateSelect;

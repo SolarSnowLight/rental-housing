@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import companyAction from 'src/store/actions/CompanyAction';
 
 /* Components */
-import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
+import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
 import ListItemComponent from 'src/components/ListItemComponent';
 
 /* Hooks */

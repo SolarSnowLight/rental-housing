@@ -6,7 +6,7 @@ import { textStyleDefault } from 'src/styles';
 import { Button } from '@mui/material';
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { authSlice } from 'src/store/reducers/AuthSlice';
-import CircularIndeterminate from 'src/components/CircularIndeterminate';
+import CircularIndeterminate from 'src/components/UI/CircularIndeterminate';
 import { useEffect } from 'react';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { authLogout } from 'src/store/actions/AuthAction';

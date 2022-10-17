@@ -3,9 +3,9 @@ import { TextField } from '@mui/material';
 import { Controller } from 'react-hook-form';
 
 /* Styles */
-import styles from './TextFieldControlComponent.module.css';
+import styles from './TextFieldControl.module.css';
 
-const TextFieldControlComponent = ({
+const TextFieldControl = ({
     title = "Текст *",
     placeholder = "Описание",
     changeHandler = () => { },
@@ -63,4 +63,4 @@ const TextFieldControlComponent = ({
     )
 }
 
-export default TextFieldControlComponent;
+export default TextFieldControl;

@@ -43,7 +43,7 @@ const App = () => {
     }
   }, [authSelector.access_token]);
 
-  const routes = useRoutes(authSelector?.isAuthenticated ?? false);
+  const routes = useRoutes(authSelector.isAuthenticated);
 
   return (
     <BrowserRouter>

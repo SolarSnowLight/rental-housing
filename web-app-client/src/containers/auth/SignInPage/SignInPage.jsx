@@ -11,7 +11,7 @@ import { authSignIn } from 'src/store/actions/AuthAction';
 import { authSlice } from 'src/store/reducers/AuthSlice';
 
 /* Components */
-import CircularIndeterminate from 'src/components/CircularIndeterminate';
+import CircularIndeterminate from 'src/components/UI/CircularIndeterminate';
 
 /* Hooks */
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';

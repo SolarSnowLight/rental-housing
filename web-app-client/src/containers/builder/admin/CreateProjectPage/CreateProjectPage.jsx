@@ -12,10 +12,11 @@ import messageQueueAction from 'src/store/actions/MessageQueueAction';
 
 /* Components */
 import MapComponent from 'src/components/MapComponent';
-import ButtonGreenComponent from 'src/components/ui/buttons/ButtonGreenComponent';
-import ButtonWhiteComponent from 'src/components/ui/buttons/ButtonWhiteComponent';
-import ImageUpload from 'src/components/ImageUpload';
-import TextFieldControlComponent from 'src/components/TextField/TextFieldControlComponent';
+import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
+import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
+import ImageUpload from 'src/components/UI/ImageUpload';
+import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
+import ObjectCard from 'src/components/ObjectCard';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
@@ -33,6 +34,72 @@ import AdminApi from 'src/constants/addresses/apis/admin.api';
 /* Styles */
 import styles from './CreateProjectPage.module.css';
 import companyAction from 'src/store/actions/CompanyAction';
+
+import logoDefault from 'src/resources/images/logo-default.png'
+import buildingExample1 from 'src/resources/images/building-example-1.webp'
+import buildingExample2 from 'src/resources/images/building-exapmle-2.webp'
+import buildingExample3 from 'src/resources/images/building-example-3.jpg'
+
+const buildings = [
+    {
+        id: 1,
+        developerCompanyLogo: logoDefault,
+        images: [buildingExample1, buildingExample2, buildingExample3],
+        projectName: 'Объект',
+        year: 2025,
+        developer: 'Застройщик 1',
+        address: 'ул. Мира 15, 76',
+        square: 50,
+        price: 10,
+    },
+    {
+        id: 2,
+        developerCompanyLogo: logoDefault,
+        projectName: 'Объект',
+        year: 2023,
+        developer: 'Застройщик',
+        address: 'ул. Мира 15, 76',
+        square: 42,
+        price: 5,
+    },
+    {
+        id: 3,
+        projectName: 'Название проекта',
+        year: 2023,
+        developer: 'Объехт',
+        address: 'ул. Мира 15, 76',
+        square: 42,
+        price: 5,
+    },
+    {
+        id: 4,
+        projectName: 'Название проекта',
+        year: 2023,
+        developer: 'Объехт',
+        address: 'ул. Мира 15, 76',
+        square: 42,
+        price: 5,
+    },
+    {
+        id: 5,
+        projectName: 'Название проекта',
+        year: 2023,
+        developer: 'Объехт',
+        address: 'ул. Мира 15, 76',
+        square: 42,
+        price: 5,
+    },
+    {
+        id: 6,
+        projectName: 'Название проекта',
+        year: 2023,
+        developer: 'Объехт',
+        address: 'ул. Мира 15, 76',
+        square: 42,
+        price: 5,
+    },
+]
+
 
 const CreateProjectPage = () => {
     // Section of working with the network over the HTTP protocol
@@ -170,7 +237,7 @@ const CreateProjectPage = () => {
                             />
                         </div>
                         <div className={styles["wrapper-section__item-element"]}>
-                            <TextFieldControlComponent
+                            <TextFieldControl
                                 title={"Название *"}
                                 required={true}
                                 control={control}
@@ -285,6 +352,13 @@ const CreateProjectPage = () => {
                 </div>
                 <div className={styles["wrapper-section__item-element__map"]}>
                     <MapComponent />
+                </div>
+            </div>
+            <div className={styles["wrapper-section__item__map"]}>
+                <div className={styles["container"]}>
+                    <div className={styles["list"]}>
+                        {buildings.map(it => <ObjectCard key={it.id} building={it} />)}
+                    </div>
                 </div>
             </div>
             <div className={styles["wrapper-section__item__map"]}>

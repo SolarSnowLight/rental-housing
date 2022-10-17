@@ -8,8 +8,8 @@ import { useForm, Controller, SubmitHandler, useFormState } from "react-hook-for
 import { authSignIn, authSignUp } from 'src/store/actions/AuthAction';
 
 /* Components */
-import ImageUpload from "src/components/ImageUpload";
-import CircularIndeterminate from "src/components/CircularIndeterminate";
+import ImageUpload from "src/components/UI/ImageUpload";
+import CircularIndeterminate from "src/components/UI/CircularIndeterminate";
 import LinearProgressWithLabel from "src/components/LinearProgressWithLabel";
 
 /* Validators */
