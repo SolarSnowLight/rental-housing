@@ -1,0 +1,106 @@
+.allDefault, .fieldsContainer .widgetBox .apply {
+  all: unset;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.row, .objectCardFrame .container .list {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.col, .fieldsContainer .widgetBox, .mainFrame {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.center, .mapBox, .fieldsContainer .widgetBox .apply, .page {
+  display: grid;
+  place-items: center;
+}
+
+.abs, .objectCardFrame .container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.elementsFrame, .objectCardFrame, .mapBox, .fieldsContainer, .mainTitle {
+  width: clamp(400px, 100%, 1920px);
+  padding: 0 64px 0 64px;
+}
+
+.page {
+  width: 100%;
+  background: #F8F8F8;
+}
+
+.mainFrame {
+  width: 100%;
+}
+
+.mainTitle {
+  width: -moz-fit-content;
+  width: fit-content;
+  font: 500 36px var(--font-family-text);
+  color: black;
+}
+
+.fieldsContainer {
+  display: flex;
+  flex-flow: row wrap;
+  height: -moz-fit-content;
+  height: fit-content;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px 60px;
+}
+.fieldsContainer .widgetBox .title {
+  display: grid;
+  place-items: center start;
+  height: 27px;
+  font: 500 18px var(--font-family-text);
+  color: #424041;
+  letter-spacing: 0.05em;
+}
+.fieldsContainer .widgetBox .apply {
+  width: 280px;
+  height: 59px;
+  background: #B4EFA6;
+  border: 1px solid #424041;
+  cursor: pointer;
+  font: 500 18px var(--font-family-text);
+  color: black;
+  letter-spacing: 0.05em;
+  line-height: 150%;
+}
+
+.mapBox {
+  height: 628px;
+}
+
+.objectCardFrame {
+  margin-top: -62px;
+  z-index: 2;
+  height: 365px;
+  position: relative;
+}
+.objectCardFrame .container {
+  display: grid;
+  height: -moz-fit-content;
+  height: fit-content;
+  overflow-x: scroll;
+  place-items: start;
+}
+.objectCardFrame .container .list {
+  -moz-column-gap: 48px;
+       column-gap: 48px;
+  padding: 0 64px;
+}

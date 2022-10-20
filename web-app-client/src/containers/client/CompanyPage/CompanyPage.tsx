@@ -100,47 +100,49 @@ const CompanyPage = () => {
 
 
     return <div className={css.page}>
+        <div className={css.pageFrame}>
 
-        <Space h={64.5}/>
+            <Space h={64.5}/>
 
-        <div className={css.companyInfoFrame}>
-            { /* Информация о компании + кнопка чата */}
-            <CompanyInfo companyInfo={companyInfo}/>
-        </div>
-
-        <Space h={32}/>
-
-        <div className={css.filterTitle}>
-            <div
-                className={css.title}
-                onClick={()=>setFilterVisible(!filterVisible)}
-            >
-                { filterVisible ? "Скрыть фильтр" : "Фильтр" }
+            <div className={css.companyInfoFrame}>
+                { /* Информация о компании + кнопка чата */}
+                <CompanyInfo companyInfo={companyInfo}/>
             </div>
-        </div>
 
-        <Space h={32}/>
+            <Space h={32}/>
 
-        { filterVisible && <div className={css.filterFrame}>
-            <animated.div style={styleSpringFilter}>
-                <Filter/>
-            </animated.div>
-        </div> }
-
-        <Space h={24}/>
-
-        <div className={css.mapBox}>
-            <MapComponent style={{ width: '100%', height: '100%' }}/>
-        </div>
-
-        <div className={css.objectCardFrame}>
-            <div className={css.container}>
-                <div className={css.list}>
-                    { buildings.map(it=><ObjectCard key={it.id} building={it} />) }
+            <div className={css.filterTitle}>
+                <div
+                    className={css.title}
+                    onClick={()=>setFilterVisible(!filterVisible)}
+                >
+                    { filterVisible ? "Скрыть фильтр" : "Фильтр" }
                 </div>
             </div>
-        </div>
 
+            <Space h={32}/>
+
+            { filterVisible && <div className={css.filterFrame}>
+                <animated.div style={styleSpringFilter}>
+                    <Filter/>
+                </animated.div>
+            </div> }
+
+            <Space h={24}/>
+
+            <div className={css.mapBox}>
+                <MapComponent style={{ width: '100%', height: '100%' }}/>
+            </div>
+
+            <div className={css.objectCardFrame}>
+                <div className={css.container}>
+                    <div className={css.list}>
+                        { buildings.map(it=><ObjectCard key={it.id} building={it} />) }
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 }
 

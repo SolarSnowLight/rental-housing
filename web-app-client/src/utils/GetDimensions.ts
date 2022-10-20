@@ -22,10 +22,18 @@
 
 
 //export const GetDimensions = (domElement: HTMLElement) => new GetDimensions(domElement)
+
+/**
+ * Класс, для получения разрешения экрана
+ */
 export class GetDimensions {
+    // Конструктор с параметром HTMLElement, чьи размеры будут вычисляться
     constructor(public domElement: HTMLElement) { }
 
+    // Приватная переменная _rect, характеризующая общий четырёхугольник HTML Element'а
     private _rect: DOMRect|undefined
+
+    // Получение четырёхугольника, характеризующего размеры всего клиентского окна
     get rect(){ return this._rect ??= this.domElement.getBoundingClientRect() }
 
 

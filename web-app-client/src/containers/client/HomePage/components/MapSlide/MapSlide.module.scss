@@ -1,5 +1,5 @@
 
-@use 'src/styles/common';
+@use '../../../../../styles/common';
 
 
 
@@ -12,7 +12,6 @@
 
 
 .mapSlide {
-    * { @extend .reset }
     @extend .pageElement;
     background: #f8f8f8;
     padding-top: 64px; padding-bottom: 64px;

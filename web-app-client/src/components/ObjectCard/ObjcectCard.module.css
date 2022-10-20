@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.row, .frame .imageFrame .container .list {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.col, .frame {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.abs, .frame .imageFrame .logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.center {
+  display: grid;
+  place-items: center;
+}
+
+.centerV, .frame .info .addr, .frame .info .dev, .frame .info .name {
+  display: grid;
+  place-items: center start;
+}
+
+.frame {
+  width: 400px;
+  height: 365px;
+  background: #F8F8F8;
+  border: 1px solid #424041;
+}
+.frame .imageFrame {
+  width: 100%;
+  height: 240px;
+  position: relative;
+}
+.frame .imageFrame .container {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.frame .imageFrame .container .list {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+.frame .imageFrame .container .list .image {
+  width: 398px;
+  height: 240px;
+  -o-object-position: center;
+     object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.frame .imageFrame .logo {
+  right: unset;
+  bottom: unset;
+  height: 32px;
+}
+.frame .info {
+  display: grid;
+  padding: 8px 8px 0 8px;
+  grid: "name year    " auto "dev  measures" auto "addr measures" auto/1fr auto;
+  grid-gap: 8px;
+}
+.frame .info .name {
+  grid-area: name;
+  height: 31px;
+  font: 500 24px var(--font-family-text);
+  letter-spacing: 0.05em;
+  color: black;
+}
+.frame .info .dev {
+  grid-area: dev;
+  height: 27px;
+  font: 500 18px var(--font-family-text);
+  letter-spacing: 0.05em;
+  color: #424041;
+}
+.frame .info .addr {
+  grid-area: addr;
+  height: 27px;
+  font: 500 18px var(--font-family-text);
+  letter-spacing: 0.05em;
+  color: #424041;
+}
+.frame .info .year {
+  grid-area: year;
+  place-self: start end;
+  height: 24px;
+  font: 400 16px var(--font-family-text);
+  letter-spacing: 0.055em;
+  color: #8B8B8B;
+}
+.frame .info .measures {
+  grid-area: measures;
+  place-self: end end;
+  font: 500 18px var(--font-family-text);
+  letter-spacing: 0.05em;
+  color: black;
+}
+.frame .info .measures big {
+  font-weight: 500;
+  font-size: 36px;
+  white-space: pre;
+}

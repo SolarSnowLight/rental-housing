@@ -1,0 +1,109 @@
+
+@use '../../../styles/common.scss';
+
+
+
+.frame {
+    width: 400px; height: 319px;
+    background: #F8F8F8;
+    border: 1px solid #424041;
+    display: grid;
+    padding-bottom: 8px;
+    grid: 'image image' 240px
+          'name  name '
+          'year  count';
+
+    .imagesScrollBox {
+        grid-area: image;
+        display: grid;
+        grid: 'center';
+        width: 100%; height: fit-content;
+
+        .imagesFrame {
+            grid-area: center;
+            width: 100%; height: fit-content;
+            display: flex;
+            overflow: auto;
+            position: relative;
+            @extend .hideScrollbar;
+
+            .contentContainer {
+                width: fit-content; height: fit-content;
+                display: flex;
+                position: relative;
+
+                .imageContainer {
+                    width: 400px; height: 240px;
+                    position: relative;
+
+                    .imageBgc {
+                        @extend .abs;
+                        width: 100%; height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                    }
+                    .blur {
+                        @extend .abs;
+                        backdrop-filter: blur(20px);
+                        background: rgba(0,0,0,0.5);
+                    }
+                    .image {
+                        @extend .abs; top: unset;
+                        width: 100%; height: 100%;
+                        object-fit: contain;
+                        object-position: center;
+                    }
+                }
+            }
+        }
+        .scroll {
+            grid-area: center;
+            place-self: end stretch;
+            background: rgba(0, 0, 0, 0.2);
+            height: 10px;
+
+            /*[id$=thumb-box]{
+                padding: 2px 3px;
+            }
+            [id$=thumb]{
+                background: rgba(0,0,0,0.5);
+            }*/
+        }
+    }
+
+    .logo {
+        grid-area: image;
+        place-self: start;
+        width: auto; height: 32px;
+        z-index: 2;
+    }
+    .name {
+        grid-area: name;
+        place-self: start;
+        margin-top: 8px; margin-left: 16px;
+        height: 31px;
+        font: 500 24px var(--font-family-text);
+        letter-spacing: 0.05em;
+        color: black;
+    }
+    .year {
+        grid-area: year;
+        place-self: start;
+        margin-top: 8px; margin-left: 16px;
+        height: 24px;
+        font: 400 16px var(--font-family-text);
+        letter-spacing: 0.055em;
+        color: #8B8B8B;
+    }
+    .count {
+        grid-area: count;
+        place-self: start end;
+        margin-top: 8px; margin-right: 16px;
+        height: 24px;
+        font: 400 16px var(--font-family-text);
+        letter-spacing: 0.055em;
+        color: #8B8B8B;
+    }
+}
+
+

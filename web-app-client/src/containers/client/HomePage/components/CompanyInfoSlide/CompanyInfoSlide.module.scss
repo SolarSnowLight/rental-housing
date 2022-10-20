@@ -1,6 +1,6 @@
 
 
-@use 'src/styles/common';
+@use '../../../../../styles/common';
 
 
 
@@ -13,7 +13,6 @@
 
 
 .companyInfoSlide {
-    * { @extend .reset }
     @extend .pageElement;
     background: #171717;
     padding-top: 64px; padding-bottom: 64px;

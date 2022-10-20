@@ -11,7 +11,6 @@
 
 
 .developersSlide {
-    * { @extend .reset }
     @extend .pageElement;
     background: #f8f8f8;
     padding-top: 101px; padding-bottom: 64px;
@@ -30,7 +29,7 @@
             grid-template-columns: 1fr;
         }
     }
-    .showMore {
+    .openAll {
         align-self: center;
         font: 500 18px var(--font-family-text);
         color: #8B8B8B;

@@ -11,7 +11,6 @@
 
 
 .objectsSlide {
-    * { @extend .reset }
     @extend .pageElement;
     background: #f8f8f8;
     padding-top: 143.5px; padding-bottom: 143.5px;

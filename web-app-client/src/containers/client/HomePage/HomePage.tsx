@@ -20,17 +20,19 @@ const HomePage = () => {
 
 
     return <div className={css.page}>
+        <div className={css.pageFrame}>
 
-        <TitleSlide />
+            <TitleSlide />
 
-        <CompanyInfoSlide />
+            <CompanyInfoSlide />
 
-        <ObjectsSlide />
+            <ObjectsSlide />
 
-        <MapSlide />
+            <MapSlide />
 
-        <DevelopersSlide />
+            <DevelopersSlide />
 
+        </div>
     </div>
 }
 export default React.memo(HomePage);
