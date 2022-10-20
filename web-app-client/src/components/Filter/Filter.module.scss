@@ -3,6 +3,7 @@
 
 
 .mapFilters {
+    * { @extend .reset }
     @extend .rowWrap;
     width: 100%;
     justify-content: space-between;

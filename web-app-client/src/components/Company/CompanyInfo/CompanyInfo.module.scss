@@ -3,6 +3,7 @@
 
 
 .mainFrame {
+    * { @extend .reset }
     @extend .rowWrap;
     gap: 48px 64px;
 }

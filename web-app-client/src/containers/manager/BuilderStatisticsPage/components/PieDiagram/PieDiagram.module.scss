@@ -4,6 +4,7 @@
 
 
 .arcLabelText {
+    * { @extend .reset }
     font: 400 16px var(--font-family-text);
     letter-spacing: 0.055em;
 }
@@ -11,6 +12,7 @@
 
 
 .tooltipBox {
+    * { @extend .reset }
     @extend .row;
     padding: 12px;
     background: #222222;
@@ -30,6 +32,7 @@
 
 
 .centeredMetricContainer {
+    * { @extend .reset }
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%,-50%);

@@ -80,8 +80,8 @@ const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalS
     const [dragStart, setDragStart] = useState(undefined as undefined|{ x: number, y: number, scrollLeft: number })
     const onPointerDown = (ev: React.PointerEvent) => {
         //console.log('onPointerDown',ev)
-        // todo not only for mouse
-        if (ev.pointerType==='mouse' && ev.buttons===1){
+        //if (ev.pointerType==='mouse' && ev.buttons===1)
+        if (ev.buttons===1){
             const drag = { x: ev.clientX, y: ev.clientY, scrollLeft: scrollProps.scrollLeft }
             const thumbD = new GetDimensions(thumbBoxRef.current!)
             if (utils.inRange(thumbD.left, drag.x, thumbD.right)) setDragStart(drag)
@@ -89,30 +89,34 @@ const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalS
     }
     useLayoutEffect(()=>{
         if (dragStart){
+            // Using css touch-action: none; to prevent browser gesture handling on mobile devices
             const onPointerMove = (ev: PointerEvent)=>{
                 if (dragStart && ev.buttons===1){
                     const addScrollLeft = ev.clientX-dragStart.x
+                    //console.log('onPointerMove', ev)
                     //console.log('x add', addScrollLeft)
                     const newScrollLeft = dragStart.scrollLeft + addScrollLeft/trackProps.width*scrollProps.scrollWidth
                     setContainerScroll(newScrollLeft)
                 }
             }
-            const onPointerUp = (ev: PointerEvent)=>{
-                //console.log('onPointerUp', ev)
+            const onPointerUpOrCancel = (ev: PointerEvent)=>{
+                //console.log('onPointerUpOrCancel', ev)
                 setDragStart(undefined)
             }
             document.querySelector('*')!.classList.add(css.noSelect)
             window.addEventListener('pointermove', onPointerMove)
-            window.addEventListener('pointerup', onPointerUp)
+            window.addEventListener('pointerup', onPointerUpOrCancel)
+            window.addEventListener('pointercancel', onPointerUpOrCancel)
             return ()=>{
                 document.querySelector('*')!.classList.remove(css.noSelect)
                 window.removeEventListener('pointermove', onPointerMove)
-                window.removeEventListener('pointermove', onPointerUp)
+                window.removeEventListener('pointerup', onPointerUpOrCancel)
+                window.removeEventListener('pointercancel', onPointerUpOrCancel)
             }
         } else {
             document.querySelector('*')!.classList.remove(css.noSelect)
         }
-    },[dragStart,scrollProps])
+    },[dragStart,scrollProps,trackProps])
 
     const onTrackClick = (ev: React.MouseEvent<HTMLDivElement>) => {
         const evX = ev.clientX
@@ -130,6 +134,7 @@ const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalS
 
 
     return <div
+        id={`${id}-track`}
         ref={trackRef}
         {...props}
         className={classNames(css.track, props.className)}

@@ -148,84 +148,82 @@ const ObjectInfoPage = () => {
     return <>
         { modalImageId && <ModalImageViewer onClose={onCloseModal} images={photos} defaultSelectedImageId={modalImageId}/> }
         <div className={css.page}>
-            <div className={css.pageFrame}>
 
-                <Space h={64}/>
+            <Space h={64}/>
 
-                <div className={css.pageTopContainer}>
-                    <div className={css.photosContainer}>
+            <div className={css.pageTopContainer}>
+                <div className={css.photosContainer}>
 
-                        <div className={css.objectName}>Название объекта</div>
+                    <div className={css.objectName}>Название объекта</div>
 
-                        <Space h={8}/>
+                    <Space h={8}/>
 
-                        <div className={css.developerAndAddress}>
-                            <div className={css.name}>Название застройщика</div>
-                            <div className={css.address}>Сочи, ул. Яна Фабрициуса, 33</div>
-                        </div>
-
-                        <Space h={34}/>
-
-                        <div className={css.imagesContainer}>
-                            { photos.slice(0,5).map((it,i)=><div key={it.id} className={css.imageFrame} onClick={()=>onImage(it.id)}>
-                                <div className={i<2 ? css.normalImage : css.smallImage} style={{ backgroundImage: `url(${it.url})`}} />
-                                { i===4 && <div className={css.count}>+{photos.length-4}</div> }
-                            </div>)}
-                        </div>
-
+                    <div className={css.developerAndAddress}>
+                        <div className={css.name}>Название застройщика</div>
+                        <div className={css.address}>Сочи, ул. Яна Фабрициуса, 33</div>
                     </div>
-                    <div className={css.infoContainer}>
-                        <InfoItem title={'Срок сдачи'} items={['Март 2023 года']}/>
-                        <InfoItem title={'Оплата'} items={['ДКП','Ипотека','Рассрочка: 70% первый взнос, 30% на 3 месяца']}/>
-                        <InfoItem title={'Характеристики'} items={['Бизнес-класс','Управляющая компания','Закрытая охраняемая территория','1,5 км до моря','Черновая отделка','Вид на горы, море, парк, атриум']}/>
-                        <InfoItem title={'Коммуникации'} items={['Центральное отопление','Водоснабжение и канализация','Электричество']}/>
+
+                    <Space h={34}/>
+
+                    <div className={css.imagesContainer}>
+                        { photos.slice(0,5).map((it,i)=><div key={it.id} className={css.imageFrame} onClick={()=>onImage(it.id)}>
+                            <div className={i<2 ? css.normalImage : css.smallImage} style={{ backgroundImage: `url(${it.url})`}} />
+                            { i===4 && <div className={css.count}>+{photos.length-4}</div> }
+                        </div>)}
                     </div>
+
                 </div>
-
-                <Space h={106}/>
-
-                <div className={css.tablesTitle}>Таблица квартир</div>
-
-                <Space h={24}/>
-
-                <div className={css.legend}>
-                    <div className={css.item}>
-                        <div className={css.color} style={{ background: '#B4EFA6' }}/>
-                        <div className={css.name}>Свободные</div>
-                    </div>
-                    <div className={css.item}>
-                        <div className={css.color} style={{ background: '#EFA6A6' }}/>
-                        <div className={css.name}>Акции</div>
-                    </div>
-                    <div className={css.item}>
-                        <div className={css.color} style={{ background: '#A6E2EF' }}/>
-                        <div className={css.name}>Резерв</div>
-                    </div>
-                    <div className={css.item}>
-                        <div className={css.color} style={{ background: '#FCFCFC' }}/>
-                        <div className={css.name}>Проданные</div>
-                    </div>
-                    <div className={css.item}>
-                        <div className={css.color} style={{ background: '#e9e9e9' }}/>
-                        <div className={css.name}>Недоступны</div>
-                    </div>
+                <div className={css.infoContainer}>
+                    <InfoItem title={'Срок сдачи'} items={['Март 2023 года']}/>
+                    <InfoItem title={'Оплата'} items={['ДКП','Ипотека','Рассрочка: 70% первый взнос, 30% на 3 месяца']}/>
+                    <InfoItem title={'Характеристики'} items={['Бизнес-класс','Управляющая компания','Закрытая охраняемая территория','1,5 км до моря','Черновая отделка','Вид на горы, море, парк, атриум']}/>
+                    <InfoItem title={'Коммуникации'} items={['Центральное отопление','Водоснабжение и канализация','Электричество']}/>
                 </div>
-
-                <Space h={24}/>
-
-                <div className={css.flats}>
-                    <FlatsTable floors={floors} flats={flats}/>
-                    <FlatsTable floors={floors} flats={flats}/>
-                    <FlatsTable floors={floors} flats={flats}/>
-                    <FlatsTable floors={floors.filter(it=>it.number===4)} flats={flats} style={{ alignSelf: 'stretch' }}/>
-
-                    <FlatsTable floors={floors2} flats={flats2}/>
-                    <FlatsTable floors={floors2} flats={flats2}/>
-                    <FlatsTable floors={floors2} flats={flats2}/>
-                    <FlatsTable floors={floors2} flats={flats2}/>
-                </div>
-
             </div>
+
+            <Space h={106}/>
+
+            <div className={css.tablesTitle}>Таблица квартир</div>
+
+            <Space h={24}/>
+
+            <div className={css.legend}>
+                <div className={css.item}>
+                    <div className={css.color} style={{ background: '#B4EFA6' }}/>
+                    <div className={css.name}>Свободные</div>
+                </div>
+                <div className={css.item}>
+                    <div className={css.color} style={{ background: '#EFA6A6' }}/>
+                    <div className={css.name}>Акции</div>
+                </div>
+                <div className={css.item}>
+                    <div className={css.color} style={{ background: '#A6E2EF' }}/>
+                    <div className={css.name}>Резерв</div>
+                </div>
+                <div className={css.item}>
+                    <div className={css.color} style={{ background: '#FCFCFC' }}/>
+                    <div className={css.name}>Проданные</div>
+                </div>
+                <div className={css.item}>
+                    <div className={css.color} style={{ background: '#e9e9e9' }}/>
+                    <div className={css.name}>Недоступны</div>
+                </div>
+            </div>
+
+            <Space h={24}/>
+
+            <div className={css.flats}>
+                <FlatsTable floors={floors} flats={flats}/>
+                <FlatsTable floors={floors} flats={flats}/>
+                <FlatsTable floors={floors} flats={flats}/>
+                <FlatsTable floors={floors.filter(it=>it.number===4)} flats={flats} style={{ alignSelf: 'stretch' }}/>
+
+                <FlatsTable floors={floors2} flats={flats2}/>
+                <FlatsTable floors={floors2} flats={flats2}/>
+                <FlatsTable floors={floors2} flats={flats2}/>
+                <FlatsTable floors={floors2} flats={flats2}/>
+            </div>
+
         </div>
     </>
 }

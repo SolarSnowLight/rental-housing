@@ -7,6 +7,7 @@
 
 
 .page {
+    * { @extend .reset }
     width: 100%;
     background: #F8F8F8;
     @extend .col;

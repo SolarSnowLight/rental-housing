@@ -2,6 +2,7 @@
 @use 'src/styles/common';
 
 .mainFrame {
+    * { @extend .reset }
     @extend .rowWrap;
     gap: 16px;
 }

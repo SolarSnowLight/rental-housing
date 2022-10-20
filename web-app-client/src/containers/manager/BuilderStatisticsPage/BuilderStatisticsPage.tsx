@@ -127,104 +127,102 @@ const BuilderStatisticsPage = () => {
 
 
     return <div className={css.page}>
-        <div className={css.pageFrame}>
 
-            <Space h={22.5} />
+        <Space h={22.5} />
 
-            <div className={css.titleFrame}>
-                <div className={css.title}>Статистика застройщиков</div>
-                <div className={css.selectBox}>
-                    <Select1
-                        displayEmpty
-                        value={developer}
-                        onChange={onDeveloper}
-                        renderValue={(selected)=>{
-                            if (selected.id===null){
-                                return <span data-placeholder-text>Застройщик</span>
-                            }
-                            return selected.name
-                        }}
-                    >
-                        {/*@ts-ignore*/}
-                        <MenuItem value={{ id: null, name: ''}}>
-                            <em>Не выбрано</em>
-                        </MenuItem>
-                        {/*@ts-ignore*/}
-                        { allDevelopers.map(it=><MenuItem key={it.id} value={it}>{it.name}</MenuItem>) }
-                    </Select1>
+        <div className={css.titleFrame}>
+            <div className={css.title}>Статистика застройщиков</div>
+            <div className={css.selectBox}>
+                <Select1
+                    displayEmpty
+                    value={developer}
+                    onChange={onDeveloper}
+                    renderValue={(selected)=>{
+                        if (selected.id===null){
+                            return <span data-placeholder-text>Застройщик</span>
+                        }
+                        return selected.name
+                    }}
+                >
+                    {/*@ts-ignore*/}
+                    <MenuItem value={{ id: null, name: ''}}>
+                        <em>Не выбрано</em>
+                    </MenuItem>
+                    {/*@ts-ignore*/}
+                    { allDevelopers.map(it=><MenuItem key={it.id} value={it}>{it.name}</MenuItem>) }
+                </Select1>
+            </div>
+        </div>
+
+        <Space h={26} />
+
+        <div className={css.statisticsFrame}>
+
+            <div className={css.listData}>
+                <div className={css.infoTitle}>Проекты</div>
+                <ProjectsSelect/>
+                <div className={css.diagramFrame}>
+                    <div className={css.diagramLayout}>
+                        <div className={css.diagramContainer}>
+                            <div className={css.diagramBox}>
+                                <PieDiagram fullData={pieData}/>
+                            </div>
+                        </div>
+                        <div className={css.legendBox}>
+                            { pieData.data.map(it=><LegendElement key={it.id} color={it.color} title={it.label}/>) }
+                        </div>
+                    </div>
+                </div>
+                <div className={css.list}>
+                    { Array(3).fill({ name: 'Тип квартиры', value: 'кол-во сделок' })
+                        .map(it=><ListItem2 key={it.name} name={it.name} value={it.value}/>)
+                    }
                 </div>
             </div>
 
-            <Space h={26} />
-
-            <div className={css.statisticsFrame}>
-
+            <div className={css.listStatisticsContainer}>
                 <div className={css.listData}>
-                    <div className={css.infoTitle}>Проекты</div>
-                    <ProjectsSelect/>
-                    <div className={css.diagramFrame}>
-                        <div className={css.diagramLayout}>
-                            <div className={css.diagramContainer}>
-                                <div className={css.diagramBox}>
-                                    <PieDiagram fullData={pieData}/>
-                                </div>
-                            </div>
-                            <div className={css.legendBox}>
-                                { pieData.data.map(it=><LegendElement key={it.id} color={it.color} title={it.label}/>) }
-                            </div>
-                        </div>
-                    </div>
+                    <div className={css.infoTitle}>Последние сделки</div>
                     <div className={css.list}>
-                        { Array(3).fill({ name: 'Тип квартиры', value: 'кол-во сделок' })
+                        { Array(3).fill({ name: 'Менеджер, клиент, тип сделки', value: 'название проекта' })
                             .map(it=><ListItem2 key={it.name} name={it.name} value={it.value}/>)
                         }
                     </div>
                 </div>
 
-                <div className={css.listStatisticsContainer}>
-                    <div className={css.listData}>
-                        <div className={css.infoTitle}>Последние сделки</div>
-                        <div className={css.list}>
-                            { Array(3).fill({ name: 'Менеджер, клиент, тип сделки', value: 'название проекта' })
-                                .map(it=><ListItem2 key={it.name} name={it.name} value={it.value}/>)
-                            }
-                        </div>
-                    </div>
-
-                    <div className={css.listData}>
-                        <div className={css.infoTitle}>Статистика по менеджерам</div>
-                        <div className={css.list}>
-                            { Array(3).fill({ name: 'Менеджер ФИО', value: 'кол-во сделок' })
-                                .map(it=><ListItem2 key={it.name} name={it.name} value={it.value}/>)
-                            }
-                        </div>
+                <div className={css.listData}>
+                    <div className={css.infoTitle}>Статистика по менеджерам</div>
+                    <div className={css.list}>
+                        { Array(3).fill({ name: 'Менеджер ФИО', value: 'кол-во сделок' })
+                            .map(it=><ListItem2 key={it.name} name={it.name} value={it.value}/>)
+                        }
                     </div>
                 </div>
-
             </div>
-
-            <Space h={64} />
-
-            <div className={css.developersTitleContainer}>
-                <div className={css.title}>Застройщики</div>
-                <Button1White onClick={onCreateDeveloper}>Создать застройщика</Button1White>
-            </div>
-
-            <Space h={40} />
-
-            <div className={css.developersListContainer}>
-                <div className={css.list}>
-                    { developers.map(it=><ListItem key={it.id} client={it} />) }
-                </div>
-                <Space h={24}/>
-                <div className={css.center}>
-                    <div className={css.showMore} onClick={onShowMore}>Показать ещё</div>
-                </div>
-            </div>
-
-            <Space h={64} />
 
         </div>
+
+        <Space h={64} />
+
+        <div className={css.developersTitleContainer}>
+            <div className={css.title}>Застройщики</div>
+            <Button1White onClick={onCreateDeveloper}>Создать застройщика</Button1White>
+        </div>
+
+        <Space h={40} />
+
+        <div className={css.developersListContainer}>
+            <div className={css.list}>
+                { developers.map(it=><ListItem key={it.id} client={it} />) }
+            </div>
+            <Space h={24}/>
+            <div className={css.center}>
+                <div className={css.showMore} onClick={onShowMore}>Показать ещё</div>
+            </div>
+        </div>
+
+        <Space h={64} />
+
     </div>
 }
 export default React.memo(BuilderStatisticsPage)

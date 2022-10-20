@@ -1,5 +1,5 @@
 
-@use '../../../../../styles/common';
+@use 'src/styles/common';
 
 
 .pageElement {
@@ -12,6 +12,7 @@
 
 
 .titleSlide {
+    * { @extend .reset }
     @extend .pageElement; padding: 0;
     height: clamp(900px,100vh,1080px);
     position: relative;
