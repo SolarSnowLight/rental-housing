@@ -1,5 +1,6 @@
 /* Libraries */
 import ImageUploading from "react-images-uploading";
+import React from 'react';
 
 /* Images */
 import cross from 'src/resources/images/cross.svg';
@@ -96,4 +97,4 @@ const ImageUpload = ({
     )
 }
 
-export default ImageUpload;
+export default React.memo(ImageUpload);

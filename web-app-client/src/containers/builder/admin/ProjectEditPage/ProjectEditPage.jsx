@@ -290,4 +290,4 @@ const ProjectEditPage = () => {
     )
 }
 
-export default ProjectEditPage;
+export default React.memo(ProjectEditPage);

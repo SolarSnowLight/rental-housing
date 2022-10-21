@@ -14,3 +14,32 @@ export const textStyleDefault = {
     textTransform: "none",
     color: "#000000"
 }
+
+export const sxTextField = {
+    borderRadius: '0px !important',
+    border: 'none',
+    width: '18em',
+    '&:hover fieldset': {
+        border: '1px solid #424041 !important',
+        borderRadius: '0px'
+    },
+    'fieldset': {
+        border: '1px solid #424041 !important',
+        borderRadius: '0px'
+    },
+}
+
+export const sxButton = {
+    borderRadius: '0px !important',
+    border: 'none',
+    width: '18em',
+    height: '3.688em',
+    '&:hover fieldset': {
+        border: '1px solid #424041 !important',
+        borderRadius: '0px'
+    },
+    'fieldset': {
+        border: '1px solid #424041 !important',
+        borderRadius: '0px'
+    },
+}

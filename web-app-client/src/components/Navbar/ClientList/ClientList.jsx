@@ -66,4 +66,4 @@ const ClientList = ({ styles, setStateCurrentPage }) => {
     )
 }
 
-export default ClientList;
+export default React.memo(ClientList);

@@ -1,6 +1,7 @@
 /* Libraries */
 import DatePicker from 'react-datepicker';
 import { TextField } from '@mui/material';
+import React from 'react';
 
 /* Styles */
 import styles from './DateSelect.module.css';
@@ -65,4 +66,4 @@ const DateSelect = ({
     )
 }
 
-export default DateSelect;
+export default React.memo(DateSelect);

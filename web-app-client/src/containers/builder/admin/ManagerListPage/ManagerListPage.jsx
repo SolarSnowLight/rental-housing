@@ -1,7 +1,10 @@
-import styles from './ManagerListPage.module.css';
+/* Libraries */
+import React from "react";
+
+import styles from './ManagerListPage.module.scss';
 
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
-import ListItemComponent from 'src/components/ListItemComponent';
+import ListItemComponent from 'src/components/Project/ListItem';
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { useNavigate } from 'react-router-dom';
@@ -30,18 +33,14 @@ const ManagerListPage = () => {
     };
 
     return (
-        <div className={styles["list"]}>
-            <div className={styles["list-header"]}>
-                <div className={styles["list-header__item__left"]}>
-                    <span className={styles["text-h3"]}>Менеджеры</span>
-                </div>
-                <div className={styles["list-header__item__right"]}>
-                    <ButtonWhiteComponent
-                        title={"Добавить менеджера"}
-                    />
-                </div>
+        <div className={styles["flex-container"]}>
+            <div className={styles["flex-item"]}>
+                <span className={styles["text-h3"]}>Менеджеры</span>
+                <ButtonWhiteComponent
+                    title={"Добавить менеджера"}
+                />
             </div>
-            <div className={styles["list-body"]}>
+            <div className={styles["flex-item"]}>
                 {
                     companySelector.managers && companySelector.managers?.length > 0 && companySelector.managers.map((item) => {
                         if (!item) {
@@ -66,13 +65,11 @@ const ManagerListPage = () => {
                     })
                 }
             </div>
-            <div className={styles["list-footer"]}>
-                <div>
-                    <span className={"span__text__black-h4"}>Показать ещё</span>
-                </div>
+            <div className={styles["flex-item"]}>
+                <span className={"span__text__black-h4"}>Показать ещё</span>
             </div>
         </div>
     )
 }
 
-export default ManagerListPage;
+export default React.memo(ManagerListPage);

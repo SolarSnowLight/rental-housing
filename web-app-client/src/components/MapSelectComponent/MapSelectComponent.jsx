@@ -119,4 +119,4 @@ const MapSelectComponent = ({ city, style, setActive, setLatLng }) => {
     )
 }
 
-export default MapSelectComponent;
+export default React.memo(MapSelectComponent);

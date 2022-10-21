@@ -1,8 +1,10 @@
 /* Libraries */
 import { TextField as TextFieldMUI } from '@mui/material';
+import React from 'react';
 
 /* Styles */
 import styles from './TextField.module.css';
+import { sxTextField } from 'src/styles';
 
 const TextField = ({
     title = "Текст *",
@@ -12,12 +14,15 @@ const TextField = ({
     changeHandler = () => { },
     clickHandler = () => { },
     required = false,
+    multiline = false,
+    rows = 1,
     styleContainer = {},
     styleTitle = {},
     styleTextField = {}
 }) => {
     return (
         <div
+            className={styles["wrapper"]}
             style={styleContainer}
         >
             <span
@@ -25,6 +30,8 @@ const TextField = ({
                 style={styleTitle}
             >{title}</span>
             <TextFieldMUI
+                rows={rows}
+                multiline={multiline}
                 required={required}
                 id="outlined-required"
                 placeholder={placeholder}
@@ -33,19 +40,7 @@ const TextField = ({
                 onClick={clickHandler}
                 onChange={changeHandler}
                 sx={{
-                    marginTop: '8px',
-                    borderRadius: '0px !important',
-                    border: 'none',
-                    width: '20em',
-                    '&:hover fieldset': {
-                        border: '1px solid #424041 !important',
-                        borderRadius: '0px',
-                    },
-                    'fieldset': {
-                        border: '1px solid #424041 !important',
-                        borderRadius: '0px',
-                    },
-
+                    ...sxTextField,
                     ...styleTextField
                 }}
             />
@@ -53,4 +48,4 @@ const TextField = ({
     )
 }
 
-export default TextField;
+export default React.memo(TextField);

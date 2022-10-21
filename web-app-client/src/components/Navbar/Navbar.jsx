@@ -1,5 +1,6 @@
 /* Libraries */
 import cs from 'classnames';
+import React from 'react';
 
 /* Context */
 import { authSlice } from 'src/store/reducers/AuthSlice';
@@ -31,4 +32,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar;
+export default React.memo(Navbar);

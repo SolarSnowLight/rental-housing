@@ -5,6 +5,7 @@ import CreateProjectPage from "src/containers/builder/admin/CreateProjectPage";
 import ManagerListPage from "src/containers/builder/admin/ManagerListPage";
 import ProjectEditPage from "src/containers/builder/admin/ProjectEditPage";
 import ProjectListPage from "src/containers/builder/admin/ProjectListPage";
+import CompanyEditPage from "src/containers/builder/admin/CompanyEditPage";
 
 /* Models */
 import IRouteModel from "src/models/IRouteModel";
@@ -26,7 +27,7 @@ const builderAdminRouteConfig: IRouteModel[] = [
     {
         // URL: /builder/admin/company
         path: BuilderAdminRoute.company,
-        element: BuilderAdminPage
+        element: CompanyEditPage
     },
 
     {

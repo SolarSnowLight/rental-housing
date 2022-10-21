@@ -243,4 +243,4 @@ const BuilderAdminPage = () => {
     );
 }
 
-export default BuilderAdminPage;
+export default React.memo(BuilderAdminPage);

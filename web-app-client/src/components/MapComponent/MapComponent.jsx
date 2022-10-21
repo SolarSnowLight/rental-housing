@@ -1,3 +1,4 @@
+import React from 'react';
 import Map, { Marker, Source, Layer } from 'react-map-gl';
 import { useAppSelector } from '../../hooks/redux.hook';
 
@@ -22,4 +23,4 @@ const MapComponent = (props) => {
     )
 }
 
-export default MapComponent;
+export default React.memo(MapComponent);

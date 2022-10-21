@@ -716,4 +716,4 @@ const CreateObjectPage = () => {
     )
 }
 
-export default CreateObjectPage;
+export default React.memo(CreateObjectPage);

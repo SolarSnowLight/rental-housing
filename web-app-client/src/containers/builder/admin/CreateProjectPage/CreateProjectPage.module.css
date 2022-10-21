@@ -1,35 +1,8 @@
-.upload_image_wrapper {
-  cursor: pointer;
-  width: 15em;
-  height: 15em;
-  margin-top: 8px;
-  font-family: "Futura PT";
-  font-style: "normal";
-  font-weight: "450";
-  font-size: "18px";
-  line-height: "150%";
-  letter-spacing: "0.05em";
-  color: "#424041";
-  text-transform: "none";
-  border: 2px dashed #000000;
-  border-radius: 0px;
-  background-color: transparent;
-}
-
-.upload_image {
-  cursor: pointer;
-  width: 15em;
-  height: 15em;
-  margin-top: 8px;
-  object-fit: cover;
-  border-radius: 0px;
-  border: 2px solid #000000;
-}
-
 .wrapper-section {
   margin-top: 16px;
   display: grid;
   grid-auto-flow: row;
+  height: -moz-max-content;
   height: max-content;
 }
 
@@ -37,6 +10,9 @@
   display: grid;
   grid-auto-flow: row;
   justify-content: center;
+}
+.wrapper-section__item .wrapper-section__item-element__column:nth-child(2) {
+  margin-top: 32px;
 }
 
 .wrapper-section__item__map {
@@ -59,6 +35,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-flow: row;
+  gap: 48px;
 }
 
 .wrapper-section__item-element__row {
@@ -68,13 +45,6 @@
 
 .wrapper-section__item-element {
   margin-top: 32px;
-}
-
-.wrapper-section__element-description {
-  margin-top: 32px;
-  display: grid;
-  grid-template-rows: 0.08fr 1fr;
-  grid-auto-flow: row;
 }
 
 .wrapper-section__element-description-input {
@@ -104,33 +74,35 @@
   align-items: center;
 }
 
+.item-element__column {
+  display: grid;
+  gap: 40px;
+}
+
 @media screen and (max-width: 960px) {
   .wrapper-section__item-element__column {
     grid-template-columns: none;
     grid-auto-flow: row;
     justify-content: center;
+    justify-items: center;
   }
-
   .wrapper-section__item__map-element {
     grid-template-columns: none;
     grid-auto-flow: row;
     justify-content: center;
+    justify-items: center;
   }
-
   .grid-item__right {
     margin-top: 16px;
     justify-content: start;
   }
-
   .grid-item__left {
     justify-content: start;
   }
-
   .wrapper-section__item-element__map {
     width: 80%;
   }
 }
-
 .container {
   margin-top: 1em;
   display: grid;
@@ -144,5 +116,5 @@
   display: grid;
   grid-auto-flow: column;
   -moz-column-gap: 48px;
-       column-gap: 48px;
+  column-gap: 48px;
 }

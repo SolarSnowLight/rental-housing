@@ -1,6 +1,5 @@
 /* Libraries */
 import React, { useState, useEffect } from 'react';
-import { TextField, Autocomplete } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { useFormState, useForm } from 'react-hook-form';
@@ -17,6 +16,7 @@ import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent'
 import ImageUpload from 'src/components/UI/ImageUpload';
 import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
 import ObjectCard from 'src/components/ObjectCard';
+import AutocompleteControl from 'src/components/UI/Autocomplete/AutocompleteControl';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
@@ -169,6 +169,12 @@ const CreateProjectPage = () => {
             file = null;
         }
 
+        console.log({
+            title: projectSelector.title,
+            description: projectSelector.description,
+            managers: projectSelector.managers,
+            uuid: userSelector.company?.uuid
+        });
         dispatch(companyAction.createProject(
             {
                 title: projectSelector.title,
@@ -225,119 +231,62 @@ const CreateProjectPage = () => {
     return (
         <form className={styles["wrapper-section"]} onSubmit={handleSubmit(onSubmit)}>
             <div className={styles["wrapper-section__item"]}>
-                <div>
+                <div className={styles["wrapper-section__item-element__column"]}>
                     <span className='span__text__black-h3'>Создание проекта</span>
                 </div>
                 <div className={styles["wrapper-section__item-element__column"]}>
-                    <div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <ImageUpload
-                                value={projectSelector.logo}
-                                onChange={onChangeImage}
-                            />
-                        </div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <TextFieldControl
-                                title={"Название *"}
-                                required={true}
-                                control={control}
-                                errors={errors}
-                                name={"title"}
-                                defaultValue={projectSelector.title}
-                                placeholder={"Введите название компании"}
-                                changeHandler={changeHandler}
-                            />
-                        </div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <div>
-                                <span className='span__text__gray'>Менеджеры проекта</span>
-                            </div>
-                            <div>
-                                <Autocomplete
-                                    id="tags-outlined"
-                                    multiple
-                                    open={open}
-                                    onOpen={() => {
-                                        setOpen(true);
-                                    }}
-                                    onClose={() => {
-                                        setOpen(false);
-                                    }}
-                                    getOptionLabel={(option) => option.email}
-                                    isOptionEqualToValue={(option, value) => option.email === value.email}
-                                    options={options}
-                                    loading={loadingAutocomplete}
-                                    defaultValue={projectSelector.managers}
-                                    onChange={(e, value) => {
-                                        changeHandler("managers", value);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            sx={{
-                                                borderRadius: '0px !important',
-                                                border: 'none',
-                                                width: '20em',
-                                                '&:hover fieldset': {
-                                                    border: '1px solid #424041 !important',
-                                                    borderRadius: '0px'
-                                                },
-                                                'fieldset': {
-                                                    border: '1px solid #424041 !important',
-                                                    borderRadius: '0px'
-                                                },
-                                            }}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                endAdornment: (
-                                                    <React.Fragment>
-                                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                        {params.InputProps.endAdornment}
-                                                    </React.Fragment>
-                                                ),
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </div>
-                        </div>
+                    <div className={styles["item-element__column"]}>
+                        <ImageUpload
+                            value={projectSelector.logo}
+                            onChange={onChangeImage}
+                        />
+                        <TextFieldControl
+                            title={"Название *"}
+                            required={true}
+                            control={control}
+                            errors={errors}
+                            name={"title"}
+                            defaultValue={projectSelector.title}
+                            placeholder={"Введите название компании"}
+                            changeHandler={changeHandler}
+                        />
+                        <AutocompleteControl
+                            multiple={true}
+                            title={"Менеджеры компании"}
+                            control={control}
+                            errors={errors}
+                            name={"managers"}
+                            optionName={"email"}
+                            defaultValue={projectSelector?.managers}
+                            changeHandler={changeHandler}
+                            getOptionLabel={(option) => option.email}
+                            isOptionEqualToValue={(option, value) => option.email === value.email}
+                            options={options}
+                            loading={loadingAutocomplete}
+                            open={open}
+                            onOpen={() => {
+                                setOpen(true);
+                            }}
+                            onClose={() => {
+                                setOpen(false);
+                            }}
+                        />
                     </div>
-                    <div className={styles["wrapper-section__element-description"]}>
-                        <div>
-                            <span className='span__text__gray'>Описание</span>
-                        </div>
-                        <div className={styles["wrapper-section__element-description-input"]}>
-                            <TextField
-                                id="outlined-multiline-static"
-                                multiline
-                                rows={9}
-                                name={"description"}
-                                placeholder="Описание"
-                                defaultValue={projectSelector.description}
-                                onChange={(e) => {
-                                    changeHandler("description", e.target.value);
-                                }}
-
-                                sx={{
-                                    width: '100%',
-                                    height: '100%',
-                                    border: '1px solid #424041 !important',
-                                    borderRadius: '0px',
-                                    ':hover': {
-                                        border: '1px solid #424041 !important',
-                                        borderRadius: '0px'
-                                    },
-                                    '&:hover fieldset': {
-                                        border: '0px !important',
-                                        borderRadius: '0px'
-                                    },
-                                    'fieldset': {
-                                        border: '0px !important',
-                                        borderRadius: '0px'
-                                    }
-                                }}
-                            />
-                        </div>
+                    <div className={styles["item-element__column"]}>
+                        <TextFieldControl
+                            title={"Описание"}
+                            control={control}
+                            errors={errors}
+                            name={"description"}
+                            defaultValue={projectSelector.description}
+                            multiline={true}
+                            rows={9}
+                            placeholder={"Описание"}
+                            changeHandler={changeHandler}
+                            styleContainer={{
+                                height: '18em'
+                            }}
+                        />
                     </div>
                 </div>
             </div>
@@ -376,4 +325,4 @@ const CreateProjectPage = () => {
     )
 }
 
-export default CreateProjectPage;
+export default React.memo(CreateProjectPage);

@@ -7,6 +7,7 @@ import { Controller } from 'react-hook-form';
 
 /* Styles */
 import styles from './AutocompleteControl.module.css';
+import { sxTextField } from 'src/styles';
 
 const Autocomplete = ({
     title = "Текст *",
@@ -25,6 +26,7 @@ const Autocomplete = ({
     onOpen,
     isOptionEqualToValue,
     getOptionLabel,
+    styleTextField = {}
 }) => {
     return (
         <div
@@ -50,17 +52,8 @@ const Autocomplete = ({
                     <TextField
                         {...params}
                         sx={{
-                            borderRadius: '0px !important',
-                            border: 'none',
-                            width: '20em',
-                            '&:hover fieldset': {
-                                border: '1px solid #424041 !important',
-                                borderRadius: '0px'
-                            },
-                            'fieldset': {
-                                border: '1px solid #424041 !important',
-                                borderRadius: '0px'
-                            },
+                            ...sxTextField,
+                            ...styleTextField
                         }}
                         InputProps={{
                             ...params.InputProps,
@@ -78,4 +71,4 @@ const Autocomplete = ({
     )
 }
 
-export default Autocomplete;
+export default React.memo(Autocomplete);

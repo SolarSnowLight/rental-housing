@@ -162,4 +162,4 @@ const RecoverPasswordPage = ({ setStateCurrentPage }) => {
     );
 }
 
-export default RecoverPasswordPage;
+export default React.memo(RecoverPasswordPage);

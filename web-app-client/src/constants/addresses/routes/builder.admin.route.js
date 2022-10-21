@@ -4,6 +4,7 @@ export const BuilderAdminRouteDefault = "/builder/admin";
 const BuilderAdminRoute = {
     builder_admin: BuilderAdminRouteDefault,
     company: "company",
+    company_edit: 'company/edit',
     manager_list: 'manager/list',
     project_list: 'project/list',
     project_create: 'project/create',

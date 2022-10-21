@@ -40,4 +40,4 @@ const LinearProgressWithLabel = (props) => {
     );
 }
 
-export default LinearProgressWithLabel;
+export default React.memo(LinearProgressWithLabel);

@@ -1,5 +1,6 @@
 /* Libraries */
 import { Select as SelectMUI, FormControl, MenuItem } from "@mui/material";
+import React from 'react';
 
 /* Styles */
 import styles from './Select.module.css';
@@ -43,4 +44,4 @@ const Select = ({
     )
 }
 
-export default Select;
+export default React.memo(Select);

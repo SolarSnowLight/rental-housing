@@ -1,13 +1,15 @@
 /* Libraries */
+import React from 'react';
 import { Button } from '@mui/material';
 
 /* Styles */
 import { root, textStyleDefault } from 'src/styles';
+import { sxButton } from 'src/styles';
 
 
 const ButtonGreenComponent = ({
     title,
-    style = { width: '15em', height: '3.688em' },
+    style = { width: '16em', height: '3em' },
     clickHandler = (e) => { },
     type = "button",
     variant = "container",
@@ -42,4 +44,4 @@ const ButtonGreenComponent = ({
     )
 }
 
-export default ButtonGreenComponent;
+export default React.memo(ButtonGreenComponent);

@@ -66,4 +66,4 @@ const BuilderAdminList = ({ styles, setStateCurrentPage }) => {
     )
 }
 
-export default BuilderAdminList;
+export default React.memo(BuilderAdminList);

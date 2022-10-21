@@ -15,4 +15,4 @@ const LabelSelectComponent = ({active, setActive, children}) => {
     );
 };
 
-export default LabelSelectComponent;
+export default React.memo(LabelSelectComponent);

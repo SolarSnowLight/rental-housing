@@ -7,6 +7,7 @@ import { Controller } from 'react-hook-form';
 
 /* Styles */
 import styles from './AutocompleteControl.module.css';
+import { sxTextField } from 'src/styles';
 
 const AutocompleteControl = ({
     title = "Текст *",
@@ -15,6 +16,7 @@ const AutocompleteControl = ({
     readOnly = false,
     control,
     errors,
+    multiple,
     defaultValue,
     name,
     optionName,
@@ -25,6 +27,7 @@ const AutocompleteControl = ({
     onOpen,
     isOptionEqualToValue,
     getOptionLabel,
+    styleTextField = {}
 }) => {
     return (
         <div
@@ -36,6 +39,7 @@ const AutocompleteControl = ({
                 name={name}
                 render={({ field }) => (
                     <Autocomplete
+                        multiple={multiple}
                         readOnly={readOnly}
                         id="tags-outlined"
                         open={open}
@@ -54,17 +58,8 @@ const AutocompleteControl = ({
                             <TextField
                                 {...params}
                                 sx={{
-                                    borderRadius: '0px !important',
-                                    border: 'none',
-                                    width: '20em',
-                                    '&:hover fieldset': {
-                                        border: '1px solid #424041 !important',
-                                        borderRadius: '0px'
-                                    },
-                                    'fieldset': {
-                                        border: '1px solid #424041 !important',
-                                        borderRadius: '0px'
-                                    },
+                                    ...sxTextField,
+                                    ...styleTextField
                                 }}
                                 InputProps={{
                                     ...params.InputProps,
@@ -84,4 +79,4 @@ const AutocompleteControl = ({
     )
 }
 
-export default AutocompleteControl;
+export default React.memo(AutocompleteControl);

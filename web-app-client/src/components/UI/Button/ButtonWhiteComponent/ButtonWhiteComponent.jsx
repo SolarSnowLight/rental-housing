@@ -1,10 +1,11 @@
 /* Libraries */
 import { Button } from '@mui/material';
+import React from 'react';
 
 /* Styles */
 import { root, textStyleDefault } from 'src/styles';
 
-const ButtonWhiteComponent = ({ title, style = { width: '15em', height: '3.688em' }, clickHandler = (e) => { }, type = "button", variant = "container" }) => {
+const ButtonWhiteComponent = ({ title, style = { width: '16em', height: '3em' }, clickHandler = (e) => { }, type = "button", variant = "container" }) => {
     return (
         <>
             <Button
@@ -33,4 +34,4 @@ const ButtonWhiteComponent = ({ title, style = { width: '15em', height: '3.688em
     )
 }
 
-export default ButtonWhiteComponent;
+export default React.memo(ButtonWhiteComponent);

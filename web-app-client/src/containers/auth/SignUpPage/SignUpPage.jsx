@@ -486,4 +486,4 @@ const SignUpPage = ({ setStateCurrentPage }) => {
     );
 }
 
-export default SignUpPage;
+export default React.memo(SignUpPage);

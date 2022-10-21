@@ -1,5 +1,5 @@
 /* Libraries */
-import { useState, useEffect, createRef } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { TextField, Button, InputAdornment, IconButton } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -220,4 +220,4 @@ const SignInPage = ({ setStateCurrentPage }) => {
     );
 }
 
-export default SignInPage;
+export default React.memo(SignInPage);

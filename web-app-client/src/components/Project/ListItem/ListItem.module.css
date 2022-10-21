@@ -1,0 +1,45 @@
+@charset "UTF-8";
+/* Главный flex контейнер*/
+.flex-container {
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  width: clamp(40em, 40%, 45em);
+  border-bottom: 1px solid var(--gray);
+  /*.flex-item:nth-child(n + 3) {
+      background-color: yellow;
+  }*/
+}
+
+.flex-item {
+  align-self: center;
+}
+
+.text-h4 {
+  font-family: "Futura PT";
+  font-style: normal;
+  font-weight: 450;
+  font-size: 24px;
+  line-height: 31px;
+  letter-spacing: 0.05em;
+  color: #000000;
+}
+
+.text-span {
+  font-family: "Futura PT";
+  font-style: normal;
+  font-weight: 450;
+  font-size: 18px;
+  line-height: 150%;
+  text-align: right;
+  letter-spacing: 0.05em;
+  color: var(--gray);
+}
+
+span:hover {
+  cursor: pointer;
+}

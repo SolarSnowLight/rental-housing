@@ -143,4 +143,4 @@ const NavbarMenu = () => {
     )
 }
 
-export default NavbarMenu;
+export default React.memo(NavbarMenu);

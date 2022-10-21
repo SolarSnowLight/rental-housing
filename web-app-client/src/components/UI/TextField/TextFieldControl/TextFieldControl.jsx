@@ -1,9 +1,11 @@
 /* Libraries */
 import { TextField } from '@mui/material';
 import { Controller } from 'react-hook-form';
+import React from 'react';
 
 /* Styles */
 import styles from './TextFieldControl.module.css';
+import { sxTextField } from 'src/styles';
 
 const TextFieldControl = ({
     title = "Текст *",
@@ -17,13 +19,20 @@ const TextFieldControl = ({
     multiline = false,
     rows = 1,
     rules = null,
-    View = TextField
+    View = TextField,
+    styleContainer = {},
+    styleTitle = {},
+    styleTextField = {}
 }) => {
     return (
         <div
             className={styles["wrapper"]}
+            style={styleContainer}
         >
-            <span className='span__text__gray'>{title}</span>
+            <span
+                className='span__text__gray'
+                style={styleTitle}
+            >{title}</span>
             <Controller
                 control={control}
                 name={name}
@@ -37,24 +46,15 @@ const TextFieldControl = ({
                         placeholder={placeholder}
                         onChange={(e) => {
                             field.onChange(e);
-                            changeHandler(name, (e?.target?.value)? e.target.value : e);
+                            changeHandler(name, (e?.target?.value) ? e.target.value : e);
                         }}
                         value={field.value}
                         error={!!errors[name]?.message}
                         helperText={!!errors[name]?.message}
 
                         sx={{
-                            borderRadius: '0px !important',
-                            border: 'none',
-                            width: '20em',
-                            '&:hover fieldset': {
-                                border: '1px solid #424041 !important',
-                                borderRadius: '0px'
-                            },
-                            'fieldset': {
-                                border: '1px solid #424041 !important',
-                                borderRadius: '0px'
-                            },
+                            ...sxTextField,
+                            ...styleTextField
                         }}
                     />
                 )}
@@ -63,4 +63,4 @@ const TextFieldControl = ({
     )
 }
 
-export default TextFieldControl;
+export default React.memo(TextFieldControl);
