@@ -1,9 +1,6 @@
 import React from "react";
 import css from './DevelopersSlide.module.scss'
-import styled from "styled-components";
-import {Button} from "@mui/material";
 import Space from "src/components/Space";
-import { root } from "src/styles";
 
 import ListItem from "src/components/PersonListItem/PersonListItem";
 
@@ -53,8 +50,8 @@ const developers = [
 
 const DevelopersSlide = () => {
 
-    const onOpenAll = () => {
-        toast.info('Открыть всё')
+    const onShowMore = () => {
+        toast.info('Показать ещё')
     }
 
 
@@ -70,7 +67,7 @@ const DevelopersSlide = () => {
 
         <Space h={24}/>
 
-        <div className={css.openAll} onClick={onOpenAll}>Открыть всё</div>
+        <div className={css.showMore} onClick={onShowMore}>Показать ещё</div>
 
     </div>
 }

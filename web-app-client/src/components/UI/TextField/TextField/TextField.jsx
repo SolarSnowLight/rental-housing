@@ -4,11 +4,6 @@ import { TextField as TextFieldMUI } from '@mui/material';
 /* Styles */
 import styles from './TextField.module.css';
 
-/**
- * Component for use text field from MUI
- * @param {object} param0 - props for component
- * @returns {JSX.Element}
- */
 const TextField = ({
     title = "Текст *",
     value = "",
@@ -17,12 +12,7 @@ const TextField = ({
     changeHandler = () => { },
     clickHandler = () => { },
     required = false,
-    multiline = false,
-    rows = 1,
-    styleContainer = {
-        display: 'grid',
-        gridAutoFlow: 'rows'
-    },
+    styleContainer = {},
     styleTitle = {},
     styleTextField = {}
 }) => {
@@ -35,8 +25,6 @@ const TextField = ({
                 style={styleTitle}
             >{title}</span>
             <TextFieldMUI
-                multiline={multiline}
-                rows={rows}
                 required={required}
                 id="outlined-required"
                 placeholder={placeholder}
