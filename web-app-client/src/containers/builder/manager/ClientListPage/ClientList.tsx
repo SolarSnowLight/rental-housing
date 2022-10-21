@@ -51,25 +51,23 @@ const clients = [
 const ClientList = () => {
 
     return <div className={css.page}>
-        <div className={css.mainFrame}>
 
-            <Space h={98}/>
+        <Space h={98}/>
 
-            <div className={css.buttonsContainer}>
-                <Button1>Заинтересованные</Button1>
-                <Button1>Заключившие договор</Button1>
-                <Button1>Заключившие договор</Button1>
-            </div>
-
-            <Space h={89}/>
-
-            <div className={css.list}>
-                { clients.map(it=><ListItem key={it.id} client={it} />) }
-            </div>
-
-            <Space h={310}/>
-
+        <div className={css.buttonsContainer}>
+            <Button1>Заинтересованные</Button1>
+            <Button1>Заключившие договор</Button1>
+            <Button1>Заключившие договор</Button1>
         </div>
+
+        <Space h={89}/>
+
+        <div className={css.list}>
+            { clients.map(it=><ListItem key={it.id} client={it} />) }
+        </div>
+
+        <Space h={310}/>
+
     </div>
 }
 export default React.memo(ClientList)

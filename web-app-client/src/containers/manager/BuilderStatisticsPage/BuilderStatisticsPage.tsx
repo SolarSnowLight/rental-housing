@@ -3,7 +3,7 @@ import css from './BuilderStatisticsPage.module.scss'
 import Space from "src/components/Space";
 import {Button, MenuItem, Select} from "@mui/material";
 import styled from "styled-components";
-import {ArrowDownIc} from "src/components/icons";
+import {Arrow1DownIc} from "src/components/icons";
 import { root } from "src/styles";
 import { toast } from "react-toastify";
 import ListItem from "src/components/PersonListItem/PersonListItem";
@@ -230,7 +230,7 @@ export default React.memo(BuilderStatisticsPage)
 
 
 
-const ArrowDownIc1 = React.memo(styled(ArrowDownIc).attrs({
+const Arrow1DownIc1 = React.memo(styled(Arrow1DownIc).attrs({
     mainColor: 'black', // icon color
 })`
   height: 11px;
@@ -243,7 +243,7 @@ const ArrowDownIc1 = React.memo(styled(ArrowDownIc).attrs({
 `)
 const Select1 = React.memo(styled(Select).attrs({
     variant: 'outlined',
-    IconComponent: ArrowDownIc1,
+    IconComponent: Arrow1DownIc1,
 })`
   width: 100%; height: 100%;
   background: #F8F8F8;

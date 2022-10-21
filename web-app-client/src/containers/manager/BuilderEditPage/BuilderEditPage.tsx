@@ -32,79 +32,77 @@ const BuilderEditPage = () => {
 
 
     return <div className={css.page}>
-        <div className={css.mainFrame}>
 
-            <Space h={33}/>
+        <Space h={33}/>
 
-            <div className={css.mainTitle}>Редактирование застройщика</div>
+        <div className={css.mainTitle}>Редактирование застройщика</div>
 
-            <Space h={56}/>
+        <Space h={56}/>
 
-            <form onSubmit={onSave}>
-                <div className={css.fieldsContainer2}>
+        <form onSubmit={onSave}>
+            <div className={css.fieldsContainer2}>
 
-                    <div className={css.widgetBox}>
-                        <div className={css.title}>Логотип  *</div>
-                        <Space h={8}/>
-                        <ImagePicker image={logo} setImage={setLogo} />
-                    </div>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title}>Описание</div>
-                        <Space h={8}/>
-                        <Multiline1 placeholder='Описание' />
-                    </div>
-
+                <div className={css.widgetBox}>
+                    <div className={css.title}>Логотип  *</div>
+                    <Space h={8}/>
+                    <ImagePicker image={logo} setImage={setLogo} />
                 </div>
 
-                <Space h={24}/>
-
-                <div className={css.fieldsContainer}>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title2}>Название  *</div>
-                        <Space h={12}/>
-                        <Input1 placeholder='Название застройщика' />
-                    </div>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title2}>Email  *</div>
-                        <Space h={12}/>
-                        <Input1 placeholder='Вставьте почту' />
-                    </div>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title2}>Телефон  *</div>
-                        <Space h={12}/>
-                        <Input1 placeholder='Вставьте телефон' />
-                    </div>
-
-                    <div className={css.widgetBox}>
-                        <div className={css.title2}>Ссылка на сайт  *</div>
-                        <Space h={12}/>
-                        <Input1 placeholder='Вставьте ссылку' />
-                    </div>
-
+                <div className={css.widgetBox}>
+                    <div className={css.title}>Описание</div>
+                    <Space h={8}/>
+                    <Multiline1 placeholder='Описание' />
                 </div>
 
-                <Space h={24}/>
+            </div>
 
-                <div className={css.fieldsContainer}>
+            <Space h={24}/>
 
-                    <div className={css.widgetBox} onClick={onCancel}>
-                        <Button1White>Отмена</Button1White>
-                    </div>
+            <div className={css.fieldsContainer}>
 
-                    <div className={css.widgetBox}>
-                        <Button1 type='submit'>
-                            Сохранить изменения
-                        </Button1>
-                    </div>
-
+                <div className={css.widgetBox}>
+                    <div className={css.title2}>Название  *</div>
+                    <Space h={12}/>
+                    <Input1 placeholder='Название застройщика' />
                 </div>
-            </form>
 
-        </div>
+                <div className={css.widgetBox}>
+                    <div className={css.title2}>Email  *</div>
+                    <Space h={12}/>
+                    <Input1 placeholder='Вставьте почту' />
+                </div>
+
+                <div className={css.widgetBox}>
+                    <div className={css.title2}>Телефон  *</div>
+                    <Space h={12}/>
+                    <Input1 placeholder='Вставьте телефон' />
+                </div>
+
+                <div className={css.widgetBox}>
+                    <div className={css.title2}>Ссылка на сайт  *</div>
+                    <Space h={12}/>
+                    <Input1 placeholder='Вставьте ссылку' />
+                </div>
+
+            </div>
+
+            <Space h={24}/>
+
+            <div className={css.fieldsContainer}>
+
+                <div className={css.widgetBox} onClick={onCancel}>
+                    <Button1White>Отмена</Button1White>
+                </div>
+
+                <div className={css.widgetBox}>
+                    <Button1 type='submit'>
+                        Сохранить изменения
+                    </Button1>
+                </div>
+
+            </div>
+        </form>
+
     </div>
 }
 export default React.memo(BuilderEditPage)

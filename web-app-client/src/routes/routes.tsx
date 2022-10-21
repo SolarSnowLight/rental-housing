@@ -56,7 +56,7 @@ const useRoutes = (isAuthenticated: boolean) => {
             { /* Base routes */}
             { createRoutes(baseRouteConfig) }
 
-            <Route path="" element={<Navigate to={MainRoute.home_page} />} />
+            <Route path='*' element={<Navigate to={MainRoute.home_page} />} />
         </Routes>
     );
 };

@@ -8,7 +8,7 @@ import MapComponent from "src/components/MapComponent";
 import {toast} from "react-toastify";
 import RowSelect from "src/components/RowSelect";
 import { SearchIc } from "src/components/icons";
-import { ArrowDownIc } from "src/components/icons";
+import { Arrow1DownIc } from "src/components/icons";
 import Filter2 from "src/components/Filter/Filter";
 
 
@@ -119,7 +119,7 @@ const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
 
 
 
-const ArrowDownIc1 = styled(ArrowDownIc).attrs({
+const Arrow1DownIc1 = styled(Arrow1DownIc).attrs({
     mainColor: 'black', // icon color
 })`
   height: 11px;
@@ -132,7 +132,7 @@ const ArrowDownIc1 = styled(ArrowDownIc).attrs({
 `
 const Select1 = React.memo(styled(Select).attrs({
     variant: 'outlined',
-    IconComponent: ArrowDownIc1,
+    IconComponent: Arrow1DownIc1,
 })`
   width: 235px; height: 59px;
   background: #F8F8F8;

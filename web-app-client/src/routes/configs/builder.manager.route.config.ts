@@ -34,7 +34,8 @@ const builderManagerRouteConfig: IRouteModel[] = [
     },
 
     {
-        path: '*',
+        // URL: /builder/manager
+        path: '',
         element: BuilderManagerPage
     }
 ];
