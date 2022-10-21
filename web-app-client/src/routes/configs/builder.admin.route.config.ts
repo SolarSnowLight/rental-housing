@@ -1,0 +1,63 @@
+/* Containers */
+import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
+import CreateObjectPage from "src/containers/builder/admin/CreateObjectPage";
+import CreateProjectPage from "src/containers/builder/admin/CreateProjectPage";
+import ManagerListPage from "src/containers/builder/admin/ManagerListPage";
+import ProjectEditPage from "src/containers/builder/admin/ProjectEditPage";
+import ProjectListPage from "src/containers/builder/admin/ProjectListPage";
+
+/* Models */
+import IRouteModel from "src/models/IRouteModel";
+
+/* Constants */
+import BuilderAdminRoute, { BuilderAdminRouteDefault } from "src/constants/addresses/routes/builder.admin.route";
+
+
+/**
+ * Configuration constants for internal routing of company administrator pages
+ */
+const builderAdminRouteConfig: IRouteModel[] = [
+    {
+        // URL: /builder/admin
+        path: BuilderAdminRouteDefault,
+        element: BuilderAdminPage
+    },
+
+    {
+        // URL: /builder/admin/company
+        path: BuilderAdminRoute.company,
+        element: BuilderAdminPage
+    },
+
+    {
+        // URL: /builder/admin/manager/list
+        path: BuilderAdminRoute.manager_list,
+        element: ManagerListPage
+    },
+
+    {
+        // URL: /builder/admin/project/list
+        path: BuilderAdminRoute.project_list,
+        element: ProjectListPage
+    },
+
+    {
+        // URL: /builder/admin/project/create
+        path: BuilderAdminRoute.project_create,
+        element: CreateProjectPage
+    },
+
+    {
+        // URL: /builder/admin/project/info
+        path: BuilderAdminRoute.project_info,
+        element: ProjectEditPage
+    },
+
+    {
+        // URL: /builder/admin/project/create/add/object
+        path: BuilderAdminRoute.project_add_object,
+        element: CreateObjectPage
+    },
+];
+
+export default builderAdminRouteConfig;
