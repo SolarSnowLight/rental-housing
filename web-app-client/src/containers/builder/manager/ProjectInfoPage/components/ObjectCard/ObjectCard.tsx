@@ -6,6 +6,7 @@ import {useGalleryScrollbar} from "src/hooks/useScrollbar/useGalleryScrollbar";
 import GalleryHorizontalScrollbar from "src/components/GalleryHorizontalScrollbar/GalleryHorizontalScrollbar";
 import styled from "styled-components";
 import Arrow1DownIc from "src/components/icons/Arrow1DownIc";
+import {commonStyled} from "../../../../../../styles/commonStyled";
 
 type empty = null|undefined
 
@@ -46,7 +47,9 @@ const ObjectCard = (props: ObjectCardProps) => {
                                         scrollToElementByIndex={scrollToElementByIndex}/>
 
             {/*<HoverDetectorLeft />
-            <ArrowBoxLeft className={css.arrowLeftBox}>
+            <ArrowBoxLeft
+            //className={css.arrowLeftBox}
+            >
                 <Arrow1LeftIc1 />
             </ArrowBoxLeft>
 
@@ -67,6 +70,7 @@ export default React.memo(ObjectCard) as typeof ObjectCard
 
 
 
+/*
 
 let HoverDetectorLeft = styled.div`
   grid-area: left;
@@ -75,8 +79,14 @@ let HoverDetectorLeft = styled.div`
   cursor: pointer;
 `
 let ArrowBoxLeft = styled.div`
+  grid-area: left / left / scroll / left;
+  place-self: stretch;
+  background: #DEDEDE77;
+  z-index: 1;
+  ${commonStyled.center};
+  pointer-events: none;
   visibility: hidden;
-  ${HoverDetectorLeft}:hover + && {
+  div:hover + & {
     visibility: visible;
   }
 `
@@ -89,7 +99,7 @@ let HoverDetectorRight = styled.div`
 `
 let ArrowBoxRight = styled.div`
   visibility: hidden;
-  ${HoverDetectorRight}:hover + && {
+  ${HoverDetectorRight}:hover + & {
     visibility: visible;
   }
 `
@@ -101,7 +111,7 @@ let Arrow1LeftIc1 = styled(Arrow1DownIc).attrs({
   height: 16px;
   transform: rotate(90deg);
 `
-Arrow1LeftIc1 = React.memo(Arrow1LeftIc1) as unknown as typeof Arrow1LeftIc1
+//Arrow1LeftIc1 = React.memo(Arrow1LeftIc1) as unknown as typeof Arrow1LeftIc1
 
 
 let Arrow1RightIc1 = styled(Arrow1DownIc).attrs({
@@ -110,5 +120,6 @@ let Arrow1RightIc1 = styled(Arrow1DownIc).attrs({
   height: 16px;
   transform: rotate(-90deg);
 `
-Arrow1RightIc1 = React.memo(Arrow1RightIc1) as unknown as typeof Arrow1RightIc1
+//Arrow1RightIc1 = React.memo(Arrow1RightIc1) as unknown as typeof Arrow1RightIc1
 
+*/

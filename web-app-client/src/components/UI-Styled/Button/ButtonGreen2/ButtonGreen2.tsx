@@ -6,7 +6,7 @@ import { root } from 'src/styles';
 
 
 
-const ButtonGreen2 = React.memo(styled(Button)`
+const ButtonGreen2 = styled(Button)`
   &.MuiButtonBase-root {
     width: 400px; height: 59px;
 
@@ -23,7 +23,7 @@ const ButtonGreen2 = React.memo(styled(Button)`
       background-color: ${root.colorGreen};
     }
   }
-`)
-export default ButtonGreen2
+`
+export default React.memo(ButtonGreen2) as unknown as typeof ButtonGreen2
 
 

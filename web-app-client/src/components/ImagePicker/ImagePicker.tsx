@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import {Button} from "@mui/material";
 import { root } from 'src/styles';
-import {utils} from "../../utils/utils";
+import {utils} from "src/utils/utils";
+import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
 
 
 
-type ImagePickerProps = JSX.IntrinsicElements['div'] & {
+export type ImagePickerProps = JSX.IntrinsicElements['div'] & {
     image?: File|string|undefined
     setImage?: ((image:File|undefined)=>void) | undefined
 }
@@ -20,7 +21,7 @@ const ImagePicker = React.forwardRef<HTMLDivElement, ImagePickerProps>((
 
     const onClick = () => fileInputRef.current?.click()
 
-    const onDelete = (ev: MouseEvent) => {
+    const onDelete = (ev: React.MouseEvent) => {
         ev.stopPropagation()
         setImage(undefined)
     }
@@ -45,7 +46,8 @@ const ImagePicker = React.forwardRef<HTMLDivElement, ImagePickerProps>((
     }
 
     return <Frame ref={forwardedRef} {...props} onClick={onClick}>
-        <Border borderRadius={4} borderColor={'#1F8DCD'} borderWidth={2} strokeDasharray='8,8' /*cornerSize={8}*//>
+        {/*<Border borderRadius={4} borderColor={'#1F8DCD'} borderWidth={2} strokeDasharray='8,8' cornerSize={8}/>*/}
+        <Border />
         { !image
             ? <Label>Добавить фото</Label>
             : <>
@@ -58,11 +60,11 @@ const ImagePicker = React.forwardRef<HTMLDivElement, ImagePickerProps>((
         <FileInput ref={fileInputRef} type='file' accept='image/*' onInput={onFileInput}/>
     </Frame>
 })
-export default React.memo(ImagePicker)
+export default React.memo(ImagePicker) as typeof ImagePicker
 
 
 
-const Frame = React.memo(styled.div`
+let Frame = React.memo(styled.div`
   width: 400px; height: 295px;
   position: relative;
   border-radius: 4px;
@@ -70,56 +72,55 @@ const Frame = React.memo(styled.div`
   display: grid;
   place-items: center;
 `)
-const Border = React.memo(styled.div`
+Frame = React.memo(Frame) as unknown as typeof Frame
+
+let Border = React.memo(styled.div`
   position: absolute; top: 0; right: 0; bottom: 0; left: 0;
   pointer-events: none;
   border: 2px dashed black;
   border-radius: 0px;
 `)
-const Label = React.memo(styled.div`
+Border = React.memo(Border) as unknown as typeof Border
+
+let Label = React.memo(styled.div`
   font: 500 18px var(--font-family-text);
   color: #424041;
 `)
-const FileInput = React.memo(styled.input`
+Label = React.memo(Label) as unknown as typeof Label
+
+let FileInput = React.memo(styled.input`
   display: none;
 `)
+FileInput = React.memo(FileInput) as unknown as typeof FileInput
 
 
 
-const Image = React.memo(styled.div<{ imageUrl?: string }>`
+let Image = styled.div<{ imageUrl?: string|undefined }>`
   place-self: stretch;
   margin: 10px 16px;
   background-image: url("${p=>p.imageUrl+''}");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-`)
+`
+Image = React.memo(Image) as unknown as typeof Image
 
 
-const ButtonBox = React.memo(styled.div`
+let ButtonBox = styled.div`
   position: absolute; top: 0; right: 0; bottom: 0; left: 0;
   padding: 18px 22px;
   display: flex;
   flex-flow: row wrap;
   align-items: flex-end;
   justify-content: flex-end;
-`)
-const Button1 = React.memo(styled(Button)`
+`
+ButtonBox = React.memo(ButtonBox) as unknown as typeof ButtonBox
+
+
+let Button1 = styled(ButtonGreen2)`
   &.MuiButtonBase-root {
     width: 100px; height: 30px;
-    
-    background-color: ${root.colorGreen};
-    border: 1px solid #424041;
-    border-radius: 0;
-    
-    text-transform: none;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-    
-    :hover {
-      background-color: ${root.colorGreen};
-    }
   }
-`)
+`
+Button1 = React.memo(Button1) as unknown as typeof Button1
 

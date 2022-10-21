@@ -5,6 +5,7 @@ import CreateProjectPage from "src/containers/builder/admin/CreateProjectPage";
 import ManagerListPage from "src/containers/builder/admin/ManagerListPage";
 import ProjectEditPage from "src/containers/builder/admin/ProjectEditPage";
 import ProjectListPage from "src/containers/builder/admin/ProjectListPage";
+import ManagerInfoPage from "src/containers/builder/admin/ManagerInfoPage";
 
 /* Models */
 import IRouteModel from "src/models/IRouteModel";
@@ -57,6 +58,12 @@ const builderAdminRouteConfig: IRouteModel[] = [
         // URL: /builder/admin/project/create/add/object
         path: BuilderAdminRoute.project_add_object,
         element: CreateObjectPage
+    },
+
+    {
+        // URL: /builder/admin/manager/info
+        path: BuilderAdminRoute.manager_info,
+        element: ManagerInfoPage
     },
 ];
 

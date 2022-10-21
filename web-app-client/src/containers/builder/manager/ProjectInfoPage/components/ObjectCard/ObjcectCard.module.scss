@@ -72,7 +72,7 @@
                 background: rgba(0,0,0,0.5);
             }*/
         }
-        .arrowLeftBox {
+        /*.arrowLeftBox {
             grid-area: left / left / scroll / left;
             place-self: stretch;
             background: #DEDEDE77;
@@ -83,7 +83,7 @@
         .arrowBoxRight {
             @extend .arrowLeftBox;
             grid-area: right / right / scroll / right;
-        }
+        }*/
     }
 
 

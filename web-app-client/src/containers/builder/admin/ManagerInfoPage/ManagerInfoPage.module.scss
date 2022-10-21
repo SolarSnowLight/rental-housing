@@ -1,0 +1,38 @@
+
+@use 'src/styles/common';
+
+
+
+
+
+
+.page {
+    * { @extend .reset }
+    width: 100%;
+    background: #F8F8F8;
+    @extend .col;
+    align-items: center;
+}
+.pageElement {
+    width: clamp(400px, 100%, 1920px);
+    padding: 0 64px 0 64px;
+    @media screen and (max-width: 900px) {
+        padding: 0 16px 0 16px;
+    }
+}
+
+
+.mainTitle {
+    font: 500 36px var(--font-family-text);
+    color: black;
+}
+
+.managerNick {
+    font: 500 24px var(--font-family-text);
+    color: #8B8B8B;
+    white-space: nowrap;
+}
+
+.imagePicker {
+
+}
