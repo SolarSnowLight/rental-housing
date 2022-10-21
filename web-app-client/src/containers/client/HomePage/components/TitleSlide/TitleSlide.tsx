@@ -5,9 +5,9 @@ import {Button, MenuItem, Select} from "@mui/material";
 import Space from "src/components/Space";
 import { root } from "src/styles";
 import {toast} from "react-toastify";
-import ArrowUpRightIc from "src/components/icons/ArrowUpRightIc";
+import ArrowUpRightIc from "src/components/icons/Arrow3UpRightIc";
 import {LogoIc} from "src/components/icons";
-import {ArrowDownIc} from "src/components/icons";
+import {Arrow1DownIc} from "src/components/icons";
 // @ts-ignore
 import mainVideo from 'src/resources/videos/main-video.mp4'
 
@@ -125,7 +125,7 @@ export default React.memo(TitleSlide)
 
 
 
-const ArrowDownIcTitle = styled(ArrowDownIc).attrs({
+const Arrow1DownIcTitle = styled(Arrow1DownIc).attrs({
     mainColor: '#F8F8F8', // icon color
 })`
   height: 15px;
@@ -138,7 +138,7 @@ const ArrowDownIcTitle = styled(ArrowDownIc).attrs({
 `
 const SelectTitle = React.memo(styled(Select).attrs({
     variant: 'outlined',
-    IconComponent: ArrowDownIcTitle,
+    IconComponent: Arrow1DownIcTitle,
 })`
   width: 100%; height: 100%;
   background: none;

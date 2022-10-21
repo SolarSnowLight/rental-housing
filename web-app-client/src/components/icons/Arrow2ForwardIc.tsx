@@ -1,4 +1,4 @@
-import { ReactComponent as SvgComponent } from 'src/resources/images/arrow2-forward.svg'
+import { ReactComponent as SvgComponent } from 'src/resources/images/arrow-2-forward.svg'
 import React from 'react'
 
 
@@ -23,4 +23,4 @@ const Arrow2ForwardIc = ({ mainColor = 'black', size = undefined, ...props }: Cu
         {...restProps}
     />
 }
-export default React.memo(Arrow2ForwardIc)
+export default React.memo(Arrow2ForwardIc) as typeof Arrow2ForwardIc

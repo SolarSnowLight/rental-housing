@@ -1,16 +1,16 @@
 import Arrow2ForwardIc from "./Arrow2ForwardIc";
-import ArrowDownIc from './ArrowDownIc'
-import ArrowUpRightIc from './ArrowUpRightIc'
-import CrossIc from './CrossIc'
+import Arrow1DownIc from './Arrow1DownIc'
+import Arrow3UpRightIc from './Arrow3UpRightIc'
+import Cross2Ic from './Cross2Ic'
 import LogoIc from './LogoIc'
 import SearchIc from './SearchIc'
 
 
 export {
     Arrow2ForwardIc,
-    ArrowDownIc,
-    ArrowUpRightIc,
-    CrossIc,
+    Arrow1DownIc,
+    Arrow3UpRightIc,
+    Cross2Ic,
     LogoIc,
     SearchIc,
 }

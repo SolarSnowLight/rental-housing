@@ -20,4 +20,4 @@ const SearchIc = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProp
         {...restProps}
     />
 }
-export default React.memo(SearchIc)
+export default React.memo(SearchIc) as typeof SearchIc

@@ -1,5 +1,7 @@
-import { ReactComponent as SvgComponent } from 'src/resources/images/cross-2.svg'
+import { ReactComponent as SvgComponent } from 'src/resources/images/arrow-3-up-right.svg'
 import React from 'react'
+
+
 
 
 type SvgProps = React.SVGProps<SVGSVGElement> & { title?: string }
@@ -8,7 +10,8 @@ type CustomProps = {
     size?: number|string|undefined
 }
 
-const CrossIc = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProps) => {
+
+const Arrow3UpRightIc = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProps) => {
     const { style, ...restProps } = props
     return <SvgComponent
         style={{
@@ -20,4 +23,4 @@ const CrossIc = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProps
         {...restProps}
     />
 }
-export default React.memo(CrossIc)
+export default React.memo(Arrow3UpRightIc) as typeof Arrow3UpRightIc

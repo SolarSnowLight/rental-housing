@@ -1,31 +1,10 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-}
-.row {
-    display: flex;
-    flex-flow: row nowrap;
-}
-.col {
-    display: flex;
-    flex-flow: column nowrap;
-}
-.abs {
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-}
-.center {
-    display: grid;
-    place-items: center;
-}
-.centerStart {
-    display: grid;
-    place-items: center start;
-}
+
+@use 'src/styles/common';
 
 
 
 .frame {
+    * { @extend .reset }
     @extend .col;
     width: 400px; height: 365px;
     background: #F8F8F8;

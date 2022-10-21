@@ -1,6 +1,6 @@
 import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react'
 import css from './ModalImageViewer.module.scss'
-import CrossIc from "src/components/icons/CrossIc";
+import CrossIc from "src/components/icons/Cross2Ic";
 import styled from "styled-components";
 import Arrow2ForwardIc from "src/components/icons/Arrow2ForwardIc";
 import {utils} from "src/utils/utils";

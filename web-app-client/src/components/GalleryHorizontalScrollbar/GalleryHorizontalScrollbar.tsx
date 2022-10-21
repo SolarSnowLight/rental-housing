@@ -57,11 +57,12 @@ const GalleryHorizontalScrollbar = React.forwardRef<GalleryHorizontalScrollbarRe
                     className={css.trackSegment}
                     onClick={()=>scrollToElementByIndex(index)}
                 >
-                    { index===scrollProps.selectedElementIndex &&
-                        <div id={`${id}-thumb-box`} /*ref={thumbBoxRef}*/ className={css.thumbBox}>
-                            <div id={`${id}-thumb`} className={css.thumb}/>
-                        </div>
-                    }
+                    <div id={`${id}-thumb-box`} /*ref={thumbBoxRef}*/ className={css.thumbBox}>
+                        <div id={`${id}-thumb`}
+                             className={css.thumb}
+                             data-selected={index===scrollProps.selectedElementIndex}
+                        />
+                    </div>
                 </div>
             } else {
                 return <div id={`${id}-gap`} className={css.gap}/>

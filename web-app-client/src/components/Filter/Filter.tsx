@@ -4,7 +4,7 @@ import {Autocomplete, Button, IconButton, InputAdornment, MenuItem, Select, Text
 import {toast} from "react-toastify";
 import styled from "styled-components";
 import { root } from "src/styles";
-import { ArrowDownIc, SearchIc } from "../icons";
+import { Arrow1DownIc, SearchIc } from "../icons";
 import Space from "../Space";
 import RowSelect from "../RowSelect";
 
@@ -180,7 +180,7 @@ const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
 
 
 
-const ArrowDownIc1 = styled(ArrowDownIc).attrs({
+const ArrowDownIc1 = styled(Arrow1DownIc).attrs({
     mainColor: 'black', // icon color
 })`
   height: 11px;

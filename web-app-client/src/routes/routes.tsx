@@ -27,7 +27,7 @@ import { BuilderManagerRoutes } from "src/constants/addresses/routes/builder.man
 const useRoutes = (isAuthenticated: boolean) => {
     const createRoutes = useCallback((routes: IRouteModel[]) => {
         return (
-            routes && routes.map((value) => (<Route path={value.path} element={<value.element />}/>) )
+            routes && routes.map((value) => (<Route key={value.path} path={value.path} element={<value.element />}/>) )
         )
     }, []);
 
@@ -56,7 +56,7 @@ const useRoutes = (isAuthenticated: boolean) => {
             { /* Base routes */}
             { createRoutes(baseRouteConfig) }
 
-            <Route path="" element={<Navigate to={MainRoute.home_page} />} />
+            <Route path='*' element={<Navigate to={MainRoute.home_page} />} />
         </Routes>
     );
 };

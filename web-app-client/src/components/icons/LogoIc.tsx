@@ -21,4 +21,4 @@ const LogoIc = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProps)
         {...restProps}
     />
 }
-export default React.memo(LogoIc)
+export default React.memo(LogoIc) as typeof LogoIc

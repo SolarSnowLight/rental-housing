@@ -1,1 +1,1 @@
-export { default } from './ObjectSearchPage';
+export { default } from './ObjectsSearchPage';

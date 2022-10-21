@@ -26,6 +26,7 @@ const managerRouteConfig: IRouteModel[] = [
     },
 
     {
+        // URL: /manager/builder
         path: '',
         element: ManagerPage
     }

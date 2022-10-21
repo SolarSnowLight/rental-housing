@@ -1,4 +1,4 @@
-import { ReactComponent as SvgComponent } from 'src/resources/images/arrow-down.svg'
+import { ReactComponent as SvgComponent } from 'src/resources/images/arrow-1-down.svg'
 import React from 'react'
 
 
@@ -11,7 +11,7 @@ type CustomProps = {
 
 
 
-const ArrowDownIc = ({ mainColor = 'black', size = undefined, ...props }: CustomProps & SvgProps) => {
+const Arrow1DownIc = ({ mainColor = 'black', size = undefined, ...props }: CustomProps & SvgProps) => {
     const { style, ...restProps } = props
     return <SvgComponent
         style={{
@@ -23,4 +23,4 @@ const ArrowDownIc = ({ mainColor = 'black', size = undefined, ...props }: Custom
         {...restProps}
     />
 }
-export default React.memo(ArrowDownIc)
+export default React.memo(Arrow1DownIc) as typeof Arrow1DownIc
