@@ -1,6 +1,5 @@
 /* Libraries */
-import React, { useState, useEffect } from 'react';
-import { TextField as TextFieldMUI, Autocomplete } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Controller } from 'react-hook-form';
@@ -13,13 +12,18 @@ import messageQueueAction from 'src/store/actions/MessageQueueAction';
 import MapComponent from 'src/components/MapComponent';
 import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
-import TextField from 'src/components/UI/TextField/TextField';
 import ImageUpload from 'src/components/UI/ImageUpload';
-import ObjectCard from 'src/components/ObjectCard';
+import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
+import ObjectCard from '../../manager/ProjectInfoPage/components/ObjectCard/ObjectCard';
+import AutocompleteControl from 'src/components/UI/Autocomplete/AutocompleteControl';
+import HorizontalScrollbar from 'src/components/HorizontalScrollbar/HorizontalScrollbar';
+import Space from 'src/components/Space';
+
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import useHttp from 'src/hooks/http.hook';
+import { useScrollbar } from 'src/hooks/useScrollbar/useScrollbar';
 
 /* DTO */
 import ProjectUpdateDto from 'src/dtos/project.update-dto';
@@ -33,6 +37,9 @@ import MainApi from 'src/constants/addresses/apis/main.api';
 import styles from './ProjectEditPage.module.css';
 import companyAction from 'src/store/actions/CompanyAction';
 
+/* Images */
+import avaDefault from 'src/resources/images/ava-default.jpg'
+import logoDefault from 'src/resources/images/company-logo-default.png'
 import buildingExample1 from 'src/resources/images/examples/building-example-1.webp';
 import buildingExample2 from 'src/resources/images/examples/building-example-2.webp';
 import buildingExample3 from 'src/resources/images/examples/building-example-3.jpg';
@@ -44,8 +51,27 @@ import retrowave1 from 'src/resources/images/examples/retrowave-1.png';
 import hotlineMiami2 from 'src/resources/images/examples/wallpaper-Hotline-Miami-2---Wrong-Number2560x1440.jpg';
 import needMoreAcidMarkII from 'src/resources/images/examples/need_more_acid_mark_ii.jpg';
 import retrowave2 from 'src/resources/images/examples/Retrowave_(2).jpg';
-import logoDefault from 'src/resources/images/company-logo-default.png'
 
+
+const projectInfo = {
+    logo: logoDefault,
+    name: 'Название проекта',
+    builder: {
+        name: 'Имя застройщика'
+    },
+    description: 'Группа Аквилон - одна из ведущих девелоперских компаний, предоставляющих полный спектр услуг на рынке недвижимости, создана в Архангельске 13 октября 2003 года, более 18 лет на рынке.\n' +
+        'Входит в ТОП-20 крупнейших застройщиков страны, в 10-ку крупнейших застройщиков Санкт-Петербурга.\n' +
+        'Группа Аквилон признана системообразующим предприятием России. \n' +
+        'География присутствия: Москва, Санкт-Петербург, Ленинградская область, Архангельск, Северодвинск.'
+}
+
+const managers = [...Array(7).keys()].map(i => ({
+    id: i + '',
+    ava: avaDefault,
+    fio: 'Иванов Иван Иванович',
+    projectsCnt: 2,
+    objectCnt: 12,
+}))
 
 const objects = [...Array(6).keys()].map(i => ({
     id: i + '',
@@ -57,10 +83,14 @@ const objects = [...Array(6).keys()].map(i => ({
 }))
 objects[0].images = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
 
+
 const ProjectEditPage = () => {
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
     const { state } = useLocation();
+    const objectsContainerRef = useRef(null)
+    const objectsContentRef = useRef(null)
+    const [scrollProps, onContainerScroll, setContainerScroll] = useScrollbar(objectsContainerRef, objectsContentRef)
 
     useEffect(() => {
         dispatch(messageQueueAction.addMessage(null, "error", error));
@@ -166,102 +196,78 @@ const ProjectEditPage = () => {
 
     return (
         <form className={styles["wrapper-section"]} onSubmit={handleSubmit(onSubmit)}>
+            
+            { /* Обёртка элементов создания проекта */}
             <div className={styles["wrapper-section__item"]}>
-                <div>
-                    <span className='span__text__black-h3'>Информация о проекте</span>
-                </div>
+
+                { /* Заголовок создание проекта */}
                 <div className={styles["wrapper-section__item-element__column"]}>
-                    <div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <ImageUpload
-                                title={"Логотип *"}
-                                value={logo}
-                                onChange={onChangeImage}
-                            />
-                        </div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <TextField
-                                title={"Название *"}
-                                required={true}
-                                changeHandler={(e) => {
-                                    changeHandler("title", e.target.value);
-                                }}
-                                defaultValue={form.title}
-                            />
-                        </div>
-                        <div className={styles["wrapper-section__item-element"]}>
-                            <div>
-                                <span className='span__text__gray'>Менеджеры проекта</span>
-                            </div>
-                            <div>
-                                <Autocomplete
-                                    multiple
-                                    id="tags-outlined"
-                                    open={open}
-                                    onOpen={() => {
-                                        setOpen(true);
-                                    }}
-                                    onClose={() => {
-                                        setOpen(false);
-                                    }}
-                                    defaultValue={form.managers}
-                                    getOptionLabel={(option) => option.email}
-                                    isOptionEqualToValue={(option, value) => option.email === value.email}
-                                    options={options}
-                                    loading={loadingAutocomplete}
-                                    onChange={(e, value) => {
-                                        changeHandler("admin", value.email);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextFieldMUI
-                                            {...params}
-                                            sx={{
-                                                borderRadius: '0px !important',
-                                                border: 'none',
-                                                width: '20em',
-                                                '&:hover fieldset': {
-                                                    border: '1px solid #424041 !important',
-                                                    borderRadius: '0px'
-                                                },
-                                                'fieldset': {
-                                                    border: '1px solid #424041 !important',
-                                                    borderRadius: '0px'
-                                                },
-                                            }}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                endAdornment: (
-                                                    <React.Fragment>
-                                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                        {params.InputProps.endAdornment}
-                                                    </React.Fragment>
-                                                ),
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </div>
-                        </div>
+                    <span className='span__text__black-h3'>Редактирование проекта</span>
+                </div>
+
+                { /* Секция основных элементов ввода */}
+                <div className={styles["wrapper-section__item-element__column"]}>
+                    <div className={styles["item-element__column"]}>
+                        <ImageUpload
+                            value={logo}
+                            onChange={onChangeImage}
+                        />
+                        <TextFieldControl
+                            title={"Название *"}
+                            required={true}
+                            control={control}
+                            errors={errors}
+                            name={"title"}
+                            defaultValue={form.title}
+                            placeholder={"Введите название компании"}
+                            changeHandler={changeHandler}
+                        />
+                        <AutocompleteControl
+                            multiple={true}
+                            title={"Менеджеры компании"}
+                            control={control}
+                            errors={errors}
+                            name={"managers"}
+                            optionName={"email"}
+                            defaultValue={form.managers}
+                            changeHandler={changeHandler}
+                            getOptionLabel={(option) => option.email}
+                            isOptionEqualToValue={(option, value) => option.email === value.email}
+                            options={options}
+                            loading={loadingAutocomplete}
+                            open={open}
+                            onOpen={() => {
+                                setOpen(true);
+                            }}
+                            onClose={() => {
+                                setOpen(false);
+                            }}
+                            readOnly={true}
+                        />
                     </div>
-                    <div className={styles["wrapper-section__element-description"]}>
-                        <TextField
+                    <div className={styles["item-element__column"]}>
+                        <TextFieldControl
                             title={"Описание"}
+                            control={control}
+                            errors={errors}
+                            name={"description"}
+                            defaultValue={form.description}
                             multiline={true}
                             rows={9}
                             placeholder={"Описание"}
-                            changeHandler={(e) => {
-                                changeHandler("description", e.target.value);
-                            }}
-                            defaultValue={form.description}
-                            styleTextField={{
-                                width: '100%',
-                                height: '100%'
+                            changeHandler={changeHandler}
+                            styleContainer={{
+                                height: '18em'
                             }}
                         />
                     </div>
                 </div>
             </div>
+
+            { /* Секция компонента карты */}
             <div className={styles["wrapper-section__item__map"]}>
+
+                { /* Элементы управления */}
                 <div className={styles["wrapper-section__item__map-element"]}>
                     <div className={styles["grid-item__left"]}>
                         <span className='span__text__black-h4'>Объекты проекта на карте</span>
@@ -270,10 +276,31 @@ const ProjectEditPage = () => {
                         <ButtonWhiteComponent clickHandler={toCreateObject} title="Добавить объект" />
                     </div>
                 </div>
+
+                { /* Компонент карты */}
                 <div className={styles["wrapper-section__item-element__map"]}>
                     <MapComponent />
                 </div>
             </div>
+
+            { /* Секция карточек объектов проекта */ }
+            <div className={styles["wrapper-section__item__map"]}>
+
+                { /* Объекты */ }
+                <div ref={objectsContainerRef} className={styles.objectsListSlide} onScroll={onContainerScroll}>
+                    <div ref={objectsContentRef} className={styles.contentContainer}>
+                        {objects.map(it => <ObjectCard key={it.id} object={it} />)}
+                    </div>
+                </div>
+
+                <Space h={8} />
+
+                { /* Горизонтальный скроллбар */ }
+                <div className={styles.scrollbarContainer}>
+                    <HorizontalScrollbar className={styles.scroll} scrollProps={scrollProps} setContainerScroll={setContainerScroll} />
+                </div>
+            </div>
+
             <div className={styles["wrapper-section__item__map"]}>
                 <div className={styles["wrapper-section__item__map-element"]}>
                     <div className={styles["grid-item__left"]}></div>

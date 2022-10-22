@@ -16,7 +16,7 @@ const AutocompleteControl = ({
     readOnly = false,
     control,
     errors,
-    multiple,
+    multiple = false,
     defaultValue,
     name,
     optionName,
@@ -51,8 +51,13 @@ const AutocompleteControl = ({
                         options={options}
                         loading={loading}
                         onChange={(e, value) => {
-                            field.value = value[optionName];
-                            changeHandler(name, value[optionName]);
+                            if (multiple) {
+                                field.value = value;
+                                changeHandler(name, value);
+                            } else {
+                                field.value = value[optionName];
+                                changeHandler(name, value[optionName]);
+                            }
                         }}
                         renderInput={(params) => (
                             <TextField

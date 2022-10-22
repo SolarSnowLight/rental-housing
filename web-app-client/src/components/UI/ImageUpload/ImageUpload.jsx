@@ -7,7 +7,7 @@ import cross from 'src/resources/images/cross.svg';
 import update from 'src/resources/images/update.svg';
 
 /* Styles */
-import styles from './ImageUpload.module.css';
+import styles from './ImageUpload.module.scss';
 
 /* Component for uploading images (in one quantity or in many) */
 const ImageUpload = ({

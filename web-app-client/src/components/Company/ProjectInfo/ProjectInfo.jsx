@@ -1,6 +1,12 @@
+/* Libraries */
+import React from 'react';
+
+/* Images */
+import company_logo from 'src/resources/images/company_logo.svg';
+
+/* Styles */
 import styles from './ProjectInfo.module.css';
 
-import company_logo from '../../../resources/images/company_logo.svg';
 
 const ProjectInfo = ({
     logo = company_logo,
@@ -38,4 +44,4 @@ const ProjectInfo = ({
     )
 }
 
-export default ProjectInfo;
+export default React.memo(ProjectInfo);

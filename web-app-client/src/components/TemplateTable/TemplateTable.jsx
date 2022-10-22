@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { TextField } from '@mui/material';
 
@@ -147,4 +147,4 @@ const TemplateTable = () => {
     )
 }
 
-export default TemplateTable;
+export default React.memo(TemplateTable);

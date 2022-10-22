@@ -20,13 +20,16 @@
   margin-top: 8px;
   display: grid;
   grid-auto-flow: column;
+  width: -moz-max-content;
   width: max-content;
 }
 
 .div-upload_image_wrapper {
   display: grid;
   grid-auto-flow: row;
-  width: 18em;
+  gap: 40px;
+  width: 100%;
+  height: -moz-max-content;
   height: max-content;
   grid-template-columns: repeat(auto-fit, 18em);
 }
@@ -35,7 +38,8 @@
   cursor: pointer;
   width: 18em;
   height: 15em;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 0px;
   border: 2px solid #000000;
 }

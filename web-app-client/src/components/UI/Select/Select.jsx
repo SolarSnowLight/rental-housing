@@ -20,7 +20,7 @@ const Select = ({
                         marginTop: '8px',
                         borderRadius: '0px !important',
                         border: 'none',
-                        width: '20em',
+                        width: '18em',
                         '&:hover fieldset': {
                             border: '1px solid #424041 !important',
                             borderRadius: '0px',

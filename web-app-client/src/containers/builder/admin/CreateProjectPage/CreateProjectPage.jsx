@@ -1,8 +1,9 @@
 /* Libraries */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { useFormState, useForm } from 'react-hook-form';
+import { useMediaQuery } from '@mui/material';
 
 /* Context */
 import projectAction from 'src/store/actions/ProjectAction';
@@ -15,13 +16,16 @@ import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent'
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
 import ImageUpload from 'src/components/UI/ImageUpload';
 import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
-import ObjectCard from 'src/components/ObjectCard';
+import ObjectCard from '../../manager/ProjectInfoPage/components/ObjectCard/ObjectCard';
 import AutocompleteControl from 'src/components/UI/Autocomplete/AutocompleteControl';
+import HorizontalScrollbar from 'src/components/HorizontalScrollbar/HorizontalScrollbar';
+import Space from 'src/components/Space';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import useHttp from 'src/hooks/http.hook';
+import { useScrollbar } from 'src/hooks/useScrollbar/useScrollbar';
 
 /* Utils */
 import { dataURItoBlob, isDataURL } from 'src/utils/file';
@@ -32,77 +36,62 @@ import CompanyApi from 'src/constants/addresses/apis/company.api';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 
 /* Styles */
-import styles from './CreateProjectPage.module.css';
+import styles from './CreateProjectPage.module.scss';
 import companyAction from 'src/store/actions/CompanyAction';
 
-import logoDefault from 'src/resources/images/logo-default.png'
-import buildingExample1 from 'src/resources/images/building-example-1.webp'
-import buildingExample2 from 'src/resources/images/building-exapmle-2.webp'
-import buildingExample3 from 'src/resources/images/building-example-3.jpg'
-
-const buildings = [
-    {
-        id: 1,
-        developerCompanyLogo: logoDefault,
-        images: [buildingExample1, buildingExample2, buildingExample3],
-        projectName: 'Объект',
-        year: 2025,
-        developer: 'Застройщик 1',
-        address: 'ул. Мира 15, 76',
-        square: 50,
-        price: 10,
-    },
-    {
-        id: 2,
-        developerCompanyLogo: logoDefault,
-        projectName: 'Объект',
-        year: 2023,
-        developer: 'Застройщик',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-    {
-        id: 3,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Объехт',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-    {
-        id: 4,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Объехт',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-    {
-        id: 5,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Объехт',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-    {
-        id: 6,
-        projectName: 'Название проекта',
-        year: 2023,
-        developer: 'Объехт',
-        address: 'ул. Мира 15, 76',
-        square: 42,
-        price: 5,
-    },
-]
+/* Images */
+import avaDefault from 'src/resources/images/ava-default.jpg'
+import logoDefault from 'src/resources/images/company-logo-default.png'
+import buildingExample1 from 'src/resources/images/examples/building-example-1.webp';
+import buildingExample2 from 'src/resources/images/examples/building-example-2.webp';
+import buildingExample3 from 'src/resources/images/examples/building-example-3.jpg';
+import homePage from 'src/resources/images/home_page.jpg';
+import imagePlaceholder from 'src/resources/images/image-placeholder.png'
+import mainPageBgc from 'src/resources/images/main-page-bgc.jpg'
+import neonSunrise from 'src/resources/images/examples/neon-sunrise-web.jpg'
+import retrowave1 from 'src/resources/images/examples/retrowave-1.png';
+import hotlineMiami2 from 'src/resources/images/examples/wallpaper-Hotline-Miami-2---Wrong-Number2560x1440.jpg';
+import needMoreAcidMarkII from 'src/resources/images/examples/need_more_acid_mark_ii.jpg';
+import retrowave2 from 'src/resources/images/examples/Retrowave_(2).jpg';
 
 
+const projectInfo = {
+    logo: logoDefault,
+    name: 'Название проекта',
+    builder: {
+        name: 'Имя застройщика'
+    },
+    description: 'Группа Аквилон - одна из ведущих девелоперских компаний, предоставляющих полный спектр услуг на рынке недвижимости, создана в Архангельске 13 октября 2003 года, более 18 лет на рынке.\n' +
+        'Входит в ТОП-20 крупнейших застройщиков страны, в 10-ку крупнейших застройщиков Санкт-Петербурга.\n' +
+        'Группа Аквилон признана системообразующим предприятием России. \n' +
+        'География присутствия: Москва, Санкт-Петербург, Ленинградская область, Архангельск, Северодвинск.'
+}
+
+const managers = [...Array(7).keys()].map(i => ({
+    id: i + '',
+    ava: avaDefault,
+    fio: 'Иванов Иван Иванович',
+    projectsCnt: 2,
+    objectCnt: 12,
+}))
+
+const objects = [...Array(6).keys()].map(i => ({
+    id: i + '',
+    builderLogo: logoDefault,
+    images: [buildingExample1, buildingExample2, buildingExample3],
+    objectName: 'Название объекта',
+    year: 2025,
+    objectCnt: i + 1,
+}))
+objects[0].images = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
+
+
+/**
+ * Страница создания нового проекта
+ * @returns { JSX.Element }
+ */
 const CreateProjectPage = () => {
-    // Section of working with the network over the HTTP protocol
+    // Основные состояния компонента
     const authSelector = useAppSelector((state) => state.authReducer);
     const userSelector = useAppSelector((state) => state.userReducer);
     const projectSelector = useAppSelector((state) => state.projectReducer);
@@ -110,6 +99,9 @@ const CreateProjectPage = () => {
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
     const message = useMessageToastify();
+    const objectsContainerRef = useRef(null)
+    const objectsContentRef = useRef(null)
+    const [scrollProps, onContainerScroll, setContainerScroll] = useScrollbar(objectsContainerRef, objectsContentRef)
 
     // The data section presented on the page
     const [btnDisabled, setBtnDisabled] = useState(true);
@@ -169,12 +161,6 @@ const CreateProjectPage = () => {
             file = null;
         }
 
-        console.log({
-            title: projectSelector.title,
-            description: projectSelector.description,
-            managers: projectSelector.managers,
-            uuid: userSelector.company?.uuid
-        });
         dispatch(companyAction.createProject(
             {
                 title: projectSelector.title,
@@ -230,10 +216,16 @@ const CreateProjectPage = () => {
 
     return (
         <form className={styles["wrapper-section"]} onSubmit={handleSubmit(onSubmit)}>
+
+            { /* Обёртка элементов создания проекта */}
             <div className={styles["wrapper-section__item"]}>
+
+                { /* Заголовок создание проекта */}
                 <div className={styles["wrapper-section__item-element__column"]}>
                     <span className='span__text__black-h3'>Создание проекта</span>
                 </div>
+
+                { /* Секция основных элементов ввода */}
                 <div className={styles["wrapper-section__item-element__column"]}>
                     <div className={styles["item-element__column"]}>
                         <ImageUpload
@@ -290,7 +282,11 @@ const CreateProjectPage = () => {
                     </div>
                 </div>
             </div>
+
+            { /* Секция компонента карты */}
             <div className={styles["wrapper-section__item__map"]}>
+
+                { /* Элементы управления */}
                 <div className={styles["wrapper-section__item__map-element"]}>
                     <div className={styles["grid-item__left"]}>
                         <span className='span__text__black-h4'>Объекты проекта на карте</span>
@@ -299,17 +295,31 @@ const CreateProjectPage = () => {
                         <ButtonWhiteComponent clickHandler={toCreateObject} title="Добавить объект" />
                     </div>
                 </div>
+
+                { /* Компонент карты */}
                 <div className={styles["wrapper-section__item-element__map"]}>
                     <MapComponent />
                 </div>
             </div>
+
+            { /* Секция карточек объектов проекта */ }
             <div className={styles["wrapper-section__item__map"]}>
-                <div className={styles["container"]}>
-                    <div className={styles["list"]}>
-                        {buildings.map(it => <ObjectCard key={it.id} building={it} />)}
+
+                { /* Объекты */ }
+                <div ref={objectsContainerRef} className={styles.objectsListSlide} onScroll={onContainerScroll}>
+                    <div ref={objectsContentRef} className={styles.contentContainer}>
+                        {objects.map(it => <ObjectCard key={it.id} object={it} />)}
                     </div>
                 </div>
+
+                <Space h={8} />
+
+                { /* Горизонтальный скроллбар */ }
+                <div className={styles.scrollbarContainer}>
+                    <HorizontalScrollbar className={styles.scroll} scrollProps={scrollProps} setContainerScroll={setContainerScroll} />
+                </div>
             </div>
+
             <div className={styles["wrapper-section__item__map"]}>
                 <div className={styles["wrapper-section__item__map-element"]}>
                     <div className={styles["grid-item__left"]}></div>

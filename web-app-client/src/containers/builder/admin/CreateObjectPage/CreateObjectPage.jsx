@@ -1,6 +1,6 @@
 /* Libraries */
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextField as TextFieldMUI, Button, Autocomplete } from '@mui/material';
+import { TextField as TextFieldMUI, Button, Autocomplete as AutocompleteMUI } from '@mui/material';
 import ImageUploading from "react-images-uploading";
 import { useDropzone } from 'react-dropzone';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -24,6 +24,7 @@ import MapSelectComponent from 'src/components/MapSelectComponent';
 import DateSelect from 'src/components/UI/DateSelect';
 import TextField from 'src/components/UI/TextField/TextField';
 import Select from 'src/components/UI/Select';
+import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
@@ -35,17 +36,18 @@ import MainApi from 'src/constants/addresses/apis/main.api';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 import cities from 'src/data/russian-cities.json';
+import TimeUploadValue from 'src/constants/values/time.upload.value';
 
 /* Styles */
-import styles from './CreateObjectPage.module.css';
+import styles from './CreateObjectPage.module.scss';
 import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles';
 import ImageUpload from 'src/components/UI/ImageUpload';
 import messageQueueAction from 'src/store/actions/MessageQueueAction';
-import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
+
 
 /**
- * Functional component for create object in project
+ * Функциональный компонент для страницы создания объектов
  * @returns {JSX.Element}
  */
 const CreateObjectPage = () => {
@@ -247,22 +249,26 @@ const CreateObjectPage = () => {
 
     return (
         <form>
+            { /* Выбор метки на карте для позиционирования объекта */}
             <LabelSelectComponent active={modalActive} setActive={setModalActive}>
                 {
                     city && <MapSelectComponent city={city} setActive={setModalActive} setLatLng={setLatLng} />
                 }
             </LabelSelectComponent>
+
+            { /* Информация о проекте */}
             <ProjectInfo
                 logo={(state.logo[0].data_url) ? state.logo[0].data_url : state.logo[0]}
                 title={state.title}
                 description={state.description}
             />
+
             <div className={styles["block"]}>
                 <div className={styles["block__item"]}>
                     <span className='span__text__black-h3'>Создание объекта</span>
                 </div>
                 <div className={styles["block__item"]}>
-                    <div className={styles["block__item-element"]}>
+                    <div className={styles["block__item-element__img"]}>
                         <ImageUpload
                             title={"Изображение *"}
                             value={logo}
@@ -283,9 +289,9 @@ const CreateObjectPage = () => {
                         />
                         <div>
                             <span className='span__text__gray'>Город *</span>
-                            <Autocomplete
+                            <AutocompleteMUI
                                 id="asynchronous-demo"
-                                sx={{ width: '20em' }}
+                                sx={{ width: '18em' }}
                                 isOptionEqualToValue={(option, value) => `${option.name}, ${option.district}, ${option.subject}` === `${value.name}, ${value.district}, ${value.subject}`}
                                 getOptionLabel={(option) => `${option.name}, ${option.district}, ${option.subject}`}
                                 options={cityOptions}
@@ -334,10 +340,6 @@ const CreateObjectPage = () => {
                             clickHandler={() => {
                                 setModalActive(true);
                             }}
-
-                            styleContainer={{
-                                marginLeft: '32px',
-                            }}
                         />
                         <DateSelect
                             value={form.date_end}
@@ -358,11 +360,7 @@ const CreateObjectPage = () => {
                         {
                             paymentMethods && paymentMethods.map((item) => {
                                 return (
-                                    <div
-                                        style={{
-                                            marginTop: '16px'
-                                        }}
-                                    >
+                                    <div className={styles['element__row']}>
                                         <TextField
                                             value={item}
                                             title="Способ оплаты"
@@ -373,10 +371,6 @@ const CreateObjectPage = () => {
                                         />
                                         <span
                                             className='span__text__gray'
-                                            style={{
-                                                display: 'grid',
-                                                justifyContent: 'right'
-                                            }}
                                             onClick={() => {
                                                 deletePaymentMethodHandler(item);
                                             }}
@@ -400,18 +394,14 @@ const CreateObjectPage = () => {
                                 display: 'none'
                             }}
                         />
-                        <ButtonWhiteComponent clickHandler={addNewPaymentMethodHandler} style={{ marginTop: "2em", width: "100%", height: "2.8em" }} title="Добавить способ оплаты" />
+                        <ButtonWhiteComponent clickHandler={addNewPaymentMethodHandler} title="Добавить способ оплаты" />
                     </div>
                     <div className={styles["block__item-element__row"]}>
                         <span className='span__text__gray'>Характеристика *</span>
                         {
                             characteristics && characteristics.map((item) => {
                                 return (
-                                    <div
-                                        style={{
-                                            marginTop: '16px'
-                                        }}
-                                    >
+                                    <div className={styles['element__row']}>
                                         <TextField
                                             value={item}
                                             title="Характеристика"
@@ -422,10 +412,6 @@ const CreateObjectPage = () => {
                                         />
                                         <span
                                             className='span__text__gray'
-                                            style={{
-                                                display: 'grid',
-                                                justifyContent: 'right'
-                                            }}
                                             onClick={() => {
                                                 deleteCharacteristicHandler(item);
                                             }}
@@ -450,18 +436,14 @@ const CreateObjectPage = () => {
                                 display: 'none'
                             }}
                         />
-                        <ButtonWhiteComponent clickHandler={addNewCharacteristicHandler} style={{ marginTop: "2em", width: "100%", height: "2.8em" }} title="Добавить характеристику" />
+                        <ButtonWhiteComponent clickHandler={addNewCharacteristicHandler} title="Добавить характеристику" />
                     </div>
                     <div className={styles["block__item-element__row"]}>
                         <span className='span__text__gray'>Коммуникации *</span>
                         {
                             communications && communications.map((item) => {
                                 return (
-                                    <div
-                                        style={{
-                                            marginTop: '16px'
-                                        }}
-                                    >
+                                    <div className={styles['element__row']}>
                                         <TextField
                                             value={item}
                                             title="Коммуникация"
@@ -472,10 +454,6 @@ const CreateObjectPage = () => {
                                         />
                                         <span
                                             className='span__text__gray'
-                                            style={{
-                                                display: 'grid',
-                                                justifyContent: 'right'
-                                            }}
                                             onClick={() => {
                                                 deleteCommunicationHandler(item);
                                             }}
@@ -498,7 +476,7 @@ const CreateObjectPage = () => {
                                 display: 'none'
                             }}
                         />
-                        <ButtonWhiteComponent clickHandler={addNewCommunicationHandler} style={{ marginTop: "2em", width: "100%", height: "2.8em" }} title="Добавить коммуникацию" />
+                        <ButtonWhiteComponent clickHandler={addNewCommunicationHandler} title="Добавить коммуникацию" />
                     </div>
                 </div>
             </div>
@@ -506,25 +484,17 @@ const CreateObjectPage = () => {
                 <div className={styles["block__item"]}>
                     <span className='span__text__black-h3'>Информация о квартирах</span>
                 </div>
-                <div
-                    style={{ width: '54em' }}
-                >
-                    <span className='span__text__black'>Базовый шаблон для квартир, которые будут перенесены и систематезированны из файла(ссылки)
-                        на сайт. Все единицы объекта(квартиры) должны иметь данные соответствующие шаблону ниже.
-                        В противном случае не все данные на сайте отобразятся.
-                        Вы можете добавлять данные в дополнительные ячейки.</span>
-                </div>
+                <span className='span__text__black'>Базовый шаблон для квартир, которые будут перенесены и систематезированны из файла(ссылки)
+                    на сайт. Все единицы объекта(квартиры) должны иметь данные соответствующие шаблону ниже.
+                    В противном случае не все данные на сайте отобразятся.
+                    Вы можете добавлять данные в дополнительные ячейки.</span>
                 <div
                     style={{ marginTop: '16px' }}
                 >
                     <TemplateTable />
                 </div>
-                <div
-                    style={{ width: '54em', marginTop: '32px' }}
-                >
-                    <span className='span__text__black'>Вы также можете скачать шаблон для заполнения
-                        ячеек информации о каждой отдельной квартире</span>
-                </div>
+                <span className='span__text__black'>Вы также можете скачать шаблон для заполнения
+                    ячеек информации о каждой отдельной квартире</span>
 
                 <FormGroup>
                     <FormControlLabel control={
@@ -544,48 +514,21 @@ const CreateObjectPage = () => {
                     download
                 >
                     <ButtonGreenComponent
-                        style={{
-                            marginTop: '16px',
-                            width: '17.8em',
-                            height: '2.8em'
-                        }}
                         title={"Скачать готовый шаблон"}
                     />
                 </a>
 
                 {
                     (!stateUseLink) &&
-                    <div style={{
-                        marginTop: '16px',
-                        display: 'grid',
-                        gridAutoFlow: 'column',
-                        alignItems: 'center'
-                    }}>
+                    <div className={styles['element__input__column']}>
                         <TextField
                             title="Файл *"
                             placeholder="Название файла"
                             value={(excelFile) ? excelFile.name : ''}
-
-                            styleContainer={{
-                                display: 'grid',
-                                gridAutoFlow: 'row'
-                            }}
                         />
-                        <div
-                            style={{
-                                display: 'grid',
-                                gridAutoFlow: 'row',
-                                alignItems: 'flex-end',
-                                height: '100%',
-                                width: 'max-content'
-                            }}
-                        >
+                        <div>
                             <div
                                 {...getRootProps()}
-                                style={{
-                                    display: 'grid',
-                                    gridAutoFlow: 'row',
-                                }}
                             >
                                 <input {...getInputProps()} />
                                 {
@@ -600,63 +543,37 @@ const CreateObjectPage = () => {
 
                 {
                     (stateUseLink) &&
-                    <div style={{
-                        marginTop: '16px',
-                        display: 'grid',
-                        gridAutoFlow: 'column',
-                        alignItems: 'center'
-                    }}>
+                    <div className={styles['element__input__column']}>
                         <TextField
                             title="Ссылка на файл"
                             placeholder="Вставьте ссылку на файл"
                             value={(excelFile) ? excelFile.name : ''}
-
-                            styleContainer={{
-                                display: 'grid',
-                                gridAutoFlow: 'row'
-                            }}
                         />
 
                         <TextField
                             title="Количество времени"
                             placeholder="Введите числовое значение"
-
-                            styleContainer={{
-                                display: 'grid',
-                                gridAutoFlow: 'row'
-                            }}
                         />
 
                         <Select
                             title='Единица времени'
                             items={[
                                 {
-                                    value: "минуты"
+                                    value: TimeUploadValue.minute
                                 },
                                 {
-                                    value: "часы"
+                                    value: TimeUploadValue.hour
                                 },
                                 {
-                                    value: "дни"
+                                    value: TimeUploadValue.day
                                 },
                             ]}
+                            
                         />
 
-                        <div
-                            style={{
-                                display: 'grid',
-                                gridAutoFlow: 'row',
-                                alignItems: 'flex-end',
-                                height: '100%',
-                                width: 'max-content'
-                            }}
-                        >
+                        <div>
                             <div
                                 {...getRootProps()}
-                                style={{
-                                    display: 'grid',
-                                    gridAutoFlow: 'row',
-                                }}
                             >
                                 <input {...getInputProps()} />
                                 {
@@ -669,47 +586,18 @@ const CreateObjectPage = () => {
                     </div>
                 }
 
-                <div style={{
-                    marginTop: '16px',
-                    display: 'grid',
-                    gridAutoFlow: 'column',
-                    alignItems: 'center'
-                }}>
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridAutoFlow: 'row',
-                            alignItems: 'flex-end',
-                            height: '100%',
-                            width: 'max-content'
+                <div className={styles['element__input__column']}>
+                    <ButtonWhiteComponent
+                        clickHandler={() => {
+                            window.scrollTo(0, 0);
+                            navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_create);
                         }}
-                    >
-                        <ButtonWhiteComponent
-                            style={{
-                                width: '17.8em',
-                                height: '100%',
-                            }}
-                            clickHandler={() => {
-                                window.scrollTo(0, 0);
-                                navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_create);
-                            }}
-                            title={"Отмена"}
-                        />
-                    </div>
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridAutoFlow: 'row',
-                            alignItems: 'flex-end',
-                            height: '100%',
-                            width: 'max-content'
-                        }}
-                    >
-                        <ButtonGreenComponent
-                            type={'submit'}
-                            title={"Добавить объект"}
-                        />
-                    </div>
+                        title={"Отмена"}
+                    />
+                    <ButtonGreenComponent
+                        type={'submit'}
+                        title={"Добавить объект"}
+                    />
                 </div>
             </div>
         </form>

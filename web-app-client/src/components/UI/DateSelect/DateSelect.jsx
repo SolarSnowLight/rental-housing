@@ -18,14 +18,16 @@ const DateSelect = ({
     title = "Дата",
 
     // Styles
-    styleContainer = {},
+    styleContainer = { width: '18em'},
     styleTitle = {},
     styleText = {}
 }) => {
 
     return (
         <div
-            style={styleContainer}
+            style={{
+                ...styleContainer
+            }}
         >
             <span
                 className='span__text__gray'
@@ -45,7 +47,7 @@ const DateSelect = ({
                             marginTop: '8px',
                             borderRadius: '0px !important',
                             border: 'none',
-                            width: '20em',
+                            width: '18em',
                             '&:hover fieldset': {
                                 border: '1px solid #424041 !important',
                                 borderRadius: '0px',

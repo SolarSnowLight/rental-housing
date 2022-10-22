@@ -26,6 +26,7 @@ const Autocomplete = ({
     onOpen,
     isOptionEqualToValue,
     getOptionLabel,
+    multiple = false,
     styleTextField = {}
 }) => {
     return (
@@ -34,6 +35,7 @@ const Autocomplete = ({
         >
             <span className='span__text__gray'>{title}</span>
             <AutocompleteMUI
+                multiple={multiple}
                 readOnly={readOnly}
                 id="tags-outlined"
                 open={open}
@@ -45,8 +47,13 @@ const Autocomplete = ({
                 options={options}
                 loading={loading}
                 onChange={(e, value) => {
-                    field.value = value[optionName];
-                    changeHandler(name, value[optionName]);
+                    if (multiple) {
+                        field.value = value;
+                        changeHandler(name, value);
+                    } else {
+                        field.value = value[optionName];
+                        changeHandler(name, value[optionName]);
+                    }
                 }}
                 renderInput={(params) => (
                     <TextField
