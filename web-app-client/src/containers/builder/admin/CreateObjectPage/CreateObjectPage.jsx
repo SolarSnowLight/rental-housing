@@ -20,7 +20,7 @@ import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent'
 import ProjectInfo from 'src/components/Company/ProjectInfo/ProjectInfo';
 import TemplateTable from 'src/components/TemplateTable';
 import LabelSelectComponent from 'src/components/LabelSelectComponent';
-import MapSelectComponent from 'src/components/MapSelectComponent';
+import MapSelectObject from 'src/components/MapSelectObject';
 import DateSelect from 'src/components/UI/DateSelect';
 import TextField from 'src/components/UI/TextField/TextField';
 import Select from 'src/components/UI/Select';
@@ -249,21 +249,23 @@ const CreateObjectPage = () => {
 
     return (
         <form>
-            { /* Выбор метки на карте для позиционирования объекта */}
+            {/* Выбор метки на карте для позиционирования объекта */}
             <LabelSelectComponent active={modalActive} setActive={setModalActive}>
                 {
-                    city && <MapSelectComponent city={city} setActive={setModalActive} setLatLng={setLatLng} />
+                    city && <MapSelectObject city={city} setActive={setModalActive} setLatLng={setLatLng} />
                 }
             </LabelSelectComponent>
 
-            { /* Информация о проекте */}
+            {/* Информация о проекте */}
             <ProjectInfo
                 logo={(state.logo[0].data_url) ? state.logo[0].data_url : state.logo[0]}
                 title={state.title}
                 description={state.description}
             />
 
+            {/* Основная информация об объекте */}
             <div className={styles["block"]}>
+                {/* Заголовок формы создания объекта */}
                 <div className={styles["block__item"]}>
                     <span className='span__text__black-h3'>Создание объекта</span>
                 </div>
@@ -350,6 +352,8 @@ const CreateObjectPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Характеристика объекта */}
             <div className={styles["block"]}>
                 <div className={styles["block__item"]}>
                     <span className='span__text__black-h3'>Характеристика объекта</span>
@@ -421,7 +425,6 @@ const CreateObjectPage = () => {
                             })
                         }
 
-
                         <TextField
                             placeholder={"Введите новую характеристику"}
                             autocomplete={"off"}
@@ -480,6 +483,8 @@ const CreateObjectPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Информация о квартирах */}
             <div className={styles["block"]}>
                 <div className={styles["block__item"]}>
                     <span className='span__text__black-h3'>Информация о квартирах</span>
@@ -568,7 +573,7 @@ const CreateObjectPage = () => {
                                     value: TimeUploadValue.day
                                 },
                             ]}
-                            
+
                         />
 
                         <div>
