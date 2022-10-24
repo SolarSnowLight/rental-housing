@@ -1,7 +1,7 @@
 /* Containers */
 import MainRoute from "src/constants/addresses/routes/main.route";
 import CompanyPage from "src/containers/client/CompanyPage";
-import ObjectsSearchPage from "src/containers/client/ObjectSearchPage";
+import ObjectsSearchPage from "src/containers/client/ObjectsSearchPage";
 import HomePage from "src/containers/client/HomePage";
 
 /* Models */

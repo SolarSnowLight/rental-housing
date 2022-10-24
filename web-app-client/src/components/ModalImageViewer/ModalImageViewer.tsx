@@ -109,28 +109,33 @@ const ModalImageViewer = ({
         </div>
     </div>
 }
-export default React.memo(ModalImageViewer)
+export default React.memo(ModalImageViewer) as unknown as typeof ModalImageViewer
 
 
 
-const CrossIc1 = React.memo(styled(CrossIc).attrs({
+let CrossIc1 = styled(CrossIc).attrs({
     width: 17, height: 17,
     mainColor: '#F8F8F8',
-})``)
+})``
+CrossIc1 = React.memo(CrossIc1) as unknown as typeof CrossIc1
 
 
-const Arrow2Forward = React.memo(styled(Arrow2ForwardIc).attrs({
+let Arrow2Forward = styled(Arrow2ForwardIc).attrs({
     width: 18, height: 18,
     mainColor: '#F8F8F8',
-})``)
-const Arrow2Backward = React.memo(styled(Arrow2ForwardIc).attrs({
+})``
+Arrow2Forward = React.memo(Arrow2Forward) as unknown as typeof Arrow2Forward
+
+let Arrow2Backward = styled(Arrow2ForwardIc).attrs({
     width: 18, height: 18,
     mainColor: '#F8F8F8',
 })`
     transform: rotate(180deg);
-`)
+`
+Arrow2Backward = React.memo(Arrow2Backward) as unknown as typeof Arrow2Backward
 
-const HorizontalScrollbar1 = styled(HorizontalScrollbar)`
+let HorizontalScrollbar1 = styled(HorizontalScrollbar)`
   grid-area: scroll;
 `
+HorizontalScrollbar1 = React.memo(HorizontalScrollbar1) as unknown as typeof HorizontalScrollbar1
 

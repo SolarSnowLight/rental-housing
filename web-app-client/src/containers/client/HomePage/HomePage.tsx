@@ -33,7 +33,7 @@ const HomePage = () => {
 
     </div>
 }
-export default React.memo(HomePage);
+export default React.memo(HomePage) as unknown as typeof HomePage
 
 
 

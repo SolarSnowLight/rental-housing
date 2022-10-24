@@ -1,15 +1,13 @@
 import React, {useState} from "react";
 import css from './TitleSlide.module.scss'
 import styled from "styled-components";
-import {Button, MenuItem, Select} from "@mui/material";
+import {MenuItem, Select} from "@mui/material";
 import Space from "src/components/Space";
-import { root } from "src/styles";
 import {toast} from "react-toastify";
-import ArrowUpRightIc from "src/components/icons/Arrow3UpRightIc";
-import {LogoIc} from "src/components/icons";
 import {Arrow1DownIc} from "src/components/icons";
 // @ts-ignore
 import mainVideo from 'src/resources/videos/main-video.mp4'
+import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
 
 
 
@@ -105,7 +103,7 @@ const TitleSlide = () => {
 
     </div>
 }
-export default React.memo(TitleSlide)
+export default React.memo(TitleSlide) as unknown as typeof TitleSlide
 
 
 
@@ -125,7 +123,7 @@ export default React.memo(TitleSlide)
 
 
 
-const Arrow1DownIcTitle = styled(Arrow1DownIc).attrs({
+let Arrow1DownIcTitle = styled(Arrow1DownIc).attrs({
     mainColor: '#F8F8F8', // icon color
 })`
   height: 15px;
@@ -136,7 +134,9 @@ const Arrow1DownIcTitle = styled(Arrow1DownIc).attrs({
     transform: rotate(180deg);
   }
 `
-const SelectTitle = React.memo(styled(Select).attrs({
+Arrow1DownIcTitle = React.memo(Arrow1DownIcTitle) as unknown as typeof Arrow1DownIcTitle
+
+let SelectTitle = styled(Select).attrs({
     variant: 'outlined',
     IconComponent: Arrow1DownIcTitle,
 })`
@@ -161,27 +161,30 @@ const SelectTitle = React.memo(styled(Select).attrs({
       color: #8B8B8B;
     }
   }
-`)
+`
+SelectTitle = React.memo(SelectTitle) as unknown as typeof SelectTitle
 
 
 
 
 
-const ButtonTitle = React.memo(styled(Button)`
+let ButtonTitle = styled(ButtonGreen2)`
   &.MuiButtonBase-root {
     width: 100%; height: 100%;
-    
-    background-color: ${root.colorGreen};
     border: 1px solid #F8F8F8;
-    border-radius: 0;
-    
-    text-transform: none;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-    
-    :hover {
-      background-color: ${root.colorGreen};
-    }
   }
-`)
+`
+ButtonTitle = React.memo(ButtonTitle) as unknown as typeof ButtonTitle
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from "react";
 import css from './BuilderStatisticsPage.module.scss'
 import Space from "src/components/Space";
-import {Button, MenuItem, Select} from "@mui/material";
+import {MenuItem, Select} from "@mui/material";
 import styled from "styled-components";
 import {Arrow1DownIc} from "src/components/icons";
-import { root } from "src/styles";
 import { toast } from "react-toastify";
 import ListItem from "src/components/PersonListItem/PersonListItem";
 
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import PieDiagram, {FullData} from "./components/PieDiagram/PieDiagram";
 import ProjectsSelect from "./components/ProjectsSelect/ProjectsSelect";
+import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
+import ButtonWhite2 from "src/components/UI-Styled/Button/ButtonWhite2/ButtonWhite2";
 
 
 
@@ -137,7 +138,7 @@ const BuilderStatisticsPage = () => {
                     displayEmpty
                     value={developer}
                     onChange={onDeveloper}
-                    renderValue={(selected)=>{
+                    renderValue={(selected: any)=>{
                         if (selected.id===null){
                             return <span data-placeholder-text>Застройщик</span>
                         }
@@ -225,12 +226,12 @@ const BuilderStatisticsPage = () => {
 
     </div>
 }
-export default React.memo(BuilderStatisticsPage)
+export default React.memo(BuilderStatisticsPage) as unknown as typeof BuilderStatisticsPage
 
 
 
 
-const Arrow1DownIc1 = React.memo(styled(Arrow1DownIc).attrs({
+let Arrow1DownIc1 = styled(Arrow1DownIc).attrs({
     mainColor: 'black', // icon color
 })`
   height: 11px;
@@ -240,8 +241,10 @@ const Arrow1DownIc1 = React.memo(styled(Arrow1DownIc).attrs({
   &.MuiSelect-iconOpen { // icon state when menu is open
     transform: rotate(180deg);
   }
-`)
-const Select1 = React.memo(styled(Select).attrs({
+`
+Arrow1DownIc1 = React.memo(Arrow1DownIc1) as unknown as typeof Arrow1DownIc1
+
+let Select1 = styled(Select).attrs({
     variant: 'outlined',
     IconComponent: Arrow1DownIc1,
 })`
@@ -261,39 +264,25 @@ const Select1 = React.memo(styled(Select).attrs({
       color: #8B8B8B;
     }
   }
-`)
+`
+Select1 = React.memo(Select1) as unknown as typeof Select1
 
 
 
 
-const Button1 = React.memo(styled(Button)`
+let Button1 = styled(ButtonGreen2)`
   &.MuiButtonBase-root {
     width: 280px; height: 59px;
-
-    background-color: ${root.colorGreen};
-    border: 1px solid #424041;
-    border-radius: 0;
-
-    text-transform: none;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-
-    :hover {
-      background-color: ${root.colorGreen};
-    }
   }
-`)
+`
+Button1 = React.memo(Button1) as unknown as typeof Button1
 
-const Button1White = React.memo(styled(Button1)`
+let Button1White = styled(ButtonWhite2)`
   &.MuiButtonBase-root {
     width: 245px;
-    background-color: #F8F8F8;
-    :hover {
-      background-color: #F8F8F8;
-    }
   }
-`)
+`
+Button1White = React.memo(Button1White) as unknown as typeof Button1White
 
 
 
@@ -301,18 +290,20 @@ const Button1White = React.memo(styled(Button1)`
 
 
 type ListItem2Props = { name: string, value: string }
-const ListItem2 = React.memo(({ name, value }: ListItem2Props)=>{
+let ListItem2 = ({ name, value }: ListItem2Props)=>{
     return <div className={css.listItemFrame}>
         <div className={css.text}>{name}</div>
         <div className={css.text}>{value}</div>
     </div>
-})
+}
+ListItem2 = React.memo(ListItem2) as unknown as typeof ListItem2
 
 
 type LegendElementProps = { color: string, title: string }
-const LegendElement = React.memo(({ color, title }: LegendElementProps)=>{
+let LegendElement = ({ color, title }: LegendElementProps)=>{
     return <div className={css.legendElement}>
         <div className={css.indicator} style={{ background: color }}/>
         <div className={css.title}>{title}</div>
     </div>
-})
+}
+LegendElement = React.memo(LegendElement) as unknown as typeof LegendElement

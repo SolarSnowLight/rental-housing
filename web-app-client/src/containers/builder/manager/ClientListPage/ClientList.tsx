@@ -1,11 +1,9 @@
 import React from "react";
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import css from './ClientList.module.scss'
-import styled from "styled-components";
 import ListItem from "src/components/PersonListItem/PersonListItem";
 import Space from "src/components/Space";
-import {Button} from "@mui/material";
-import { root } from "src/styles";
+import ButtonGreen3 from "src/components/UI-Styled/Button/ButtonGreen3/ButtonGreen3";
 
 
 
@@ -55,9 +53,9 @@ const ClientList = () => {
         <Space h={98}/>
 
         <div className={css.buttonsContainer}>
-            <Button1>Заинтересованные</Button1>
-            <Button1>Заключившие договор</Button1>
-            <Button1>Заключившие договор</Button1>
+            <ButtonGreen3>Заинтересованные</ButtonGreen3>
+            <ButtonGreen3>Заключившие договор</ButtonGreen3>
+            <ButtonGreen3>Заключившие договор</ButtonGreen3>
         </div>
 
         <Space h={89}/>
@@ -70,27 +68,8 @@ const ClientList = () => {
 
     </div>
 }
-export default React.memo(ClientList)
+export default React.memo(ClientList) as unknown as typeof ClientList
 
 
-const Button1 = React.memo(styled(Button)`
-  &.MuiButtonBase-root {
-    width: fit-content; height: fit-content;
-    padding: 8px 16px;
-    
-    background-color: #DCDCDC;
-    //border: 1px solid #424041;
-    border-radius: 0;
-    
-    text-transform: none;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-    
-    :hover {
-      background-color: ${root.colorGreen};
-    }
-  }
-`)
 
 

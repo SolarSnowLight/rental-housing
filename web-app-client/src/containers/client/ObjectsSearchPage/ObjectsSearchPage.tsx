@@ -132,6 +132,7 @@ const ObjectsSearchPage = () => {
                     options={searchVariants.map(it=>it.value)}
                     renderInput={(params)=><SearchInput1
                         {...params}
+                        // @ts-ignore
                         InputProps={{
                             ...params.InputProps,
                             type: 'search',
@@ -182,7 +183,7 @@ const ObjectsSearchPage = () => {
                     displayEmpty
                     value={sort}
                     onChange={onSort}
-                    renderValue={(selected)=>{
+                    renderValue={(selected: any)=>{
                         if (selected.length===0){
                             return <span data-placeholder-text>Сортировать по</span>
                         }
@@ -221,12 +222,12 @@ const ObjectsSearchPage = () => {
 
     </div>
 }
-export default ObjectsSearchPage;
+export default React.memo(ObjectsSearchPage) as unknown as typeof ObjectsSearchPage
 
 
 
 
-const Arrow1DownIc1 = styled(Arrow1DownIc).attrs({
+let Arrow1DownIc1 = styled(Arrow1DownIc).attrs({
     mainColor: 'black', // icon color
 })`
   height: 11px;
@@ -237,7 +238,9 @@ const Arrow1DownIc1 = styled(Arrow1DownIc).attrs({
     transform: rotate(180deg);
   }
 `
-const Select1 = React.memo(styled(Select).attrs({
+Arrow1DownIc1 = React.memo(Arrow1DownIc1) as unknown as typeof Arrow1DownIc1
+
+let Select1 = styled(Select).attrs({
     variant: 'outlined',
     IconComponent: Arrow1DownIc1,
 })`
@@ -257,10 +260,11 @@ const Select1 = React.memo(styled(Select).attrs({
       color: #8B8B8B;
     }
   }
-`)
+`
+Select1 = React.memo(Select1) as unknown as typeof Select1
 
 
-const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
+let SearchInput1 = styled(TextField).attrs(p=>({
     variant: "outlined",
     type: 'text',
     placeholder: "Введите название ЖК или адрес",
@@ -300,4 +304,5 @@ const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
       margin-right: calc(32px - 8px);
     }
   }
-`)
+`
+SearchInput1 = React.memo(SearchInput1) as unknown as typeof SearchInput1

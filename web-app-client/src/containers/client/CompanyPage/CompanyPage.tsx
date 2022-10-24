@@ -144,4 +144,4 @@ const CompanyPage = () => {
     </div>
 }
 
-export default CompanyPage;
+export default React.memo(CompanyPage) as unknown as typeof CompanyPage

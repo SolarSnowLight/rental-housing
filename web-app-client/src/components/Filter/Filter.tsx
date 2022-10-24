@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import css from './Filter.module.scss'
-import {Autocomplete, Button, IconButton, InputAdornment, MenuItem, Select, TextField} from "@mui/material";
+import {Autocomplete, IconButton, InputAdornment, MenuItem, Select, TextField} from "@mui/material";
 import {toast} from "react-toastify";
 import styled from "styled-components";
 import { root } from "src/styles";
 import { Arrow1DownIc, SearchIc } from "../icons";
 import Space from "../Space";
 import RowSelect from "../RowSelect";
+import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
+import ButtonWhite2 from "src/components/UI-Styled/Button/ButtonWhite2/ButtonWhite2";
 
 
 
@@ -63,6 +65,7 @@ const Filter = () => {
             options={searchVariants.map(it=>it.value)}
             renderInput={(params)=><SearchInput1
                 {...params}
+                // @ts-ignore
                 InputProps={{
                     ...params.InputProps,
                     type: 'search',
@@ -112,7 +115,7 @@ const Filter = () => {
                 displayEmpty
                 value={sort}
                 onChange={onSort}
-                renderValue={(selected)=>{
+                renderValue={(selected: any)=>{
                     if (selected.length===0){
                         return <span data-placeholder-text>Сортировать по</span>
                     }
@@ -130,13 +133,13 @@ const Filter = () => {
 
     </div>
 }
-export default React.memo(Filter)
+export default React.memo(Filter) as unknown as typeof Filter
 
 
 
 
 
-const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
+let SearchInput1 = styled(TextField).attrs(p=>({
     variant: "outlined",
     type: 'text',
     placeholder: "Введите название ЖК или адрес",
@@ -176,11 +179,11 @@ const SearchInput1 = React.memo(styled(TextField).attrs(p=>({
       margin-right: calc(32px - 8px);
     }
   }
-`)
+`
+SearchInput1 = React.memo(SearchInput1) as unknown as typeof SearchInput1
 
 
-
-const ArrowDownIc1 = styled(Arrow1DownIc).attrs({
+let ArrowDownIc1 = styled(Arrow1DownIc).attrs({
     mainColor: 'black', // icon color
 })`
   height: 11px;
@@ -191,7 +194,9 @@ const ArrowDownIc1 = styled(Arrow1DownIc).attrs({
     transform: rotate(180deg);
   }
 `
-const Select1 = React.memo(styled(Select).attrs({
+ArrowDownIc1 = React.memo(ArrowDownIc1) as unknown as typeof ArrowDownIc1
+
+let Select1 = styled(Select).attrs({
     variant: 'outlined',
     IconComponent: ArrowDownIc1,
 })`
@@ -211,35 +216,21 @@ const Select1 = React.memo(styled(Select).attrs({
       color: #8B8B8B;
     }
   }
-`)
+`
+Select1 = React.memo(Select1) as unknown as typeof Select1
 
 
 
-const Button1 = React.memo(styled(Button)`
+let Button1 = styled(ButtonGreen2)`
   &.MuiButtonBase-root {
     width: 280px; height: 59px;
-
-    background-color: ${root.colorGreen};
-    border: 1px solid #424041;
-    border-radius: 0;
-
-    text-transform: none;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-
-    :hover {
-      background-color: ${root.colorGreen};
-    }
   }
-`)
+`
+Button1 = React.memo(Button1) as unknown as typeof Button1
 
-const Button1White = React.memo(styled(Button1)`
+let Button1White = styled(ButtonWhite2)`
   &.MuiButtonBase-root {
-    width: 177px;
-    background-color: #F8F8F8;
-    :hover {
-      background-color: #F8F8F8;
-    }
+    width: 177px; height: 59px;
   }
-`)
+`
+Button1White = React.memo(Button1White) as unknown as typeof Button1White

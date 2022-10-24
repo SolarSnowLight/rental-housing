@@ -1,11 +1,9 @@
 import css from './CompanyInfo.module.scss';
 
 import React from "react";
-import styled from "styled-components";
-import {Button} from "@mui/material";
-import { root } from 'src/styles';
 import { toast } from "react-toastify";
 import Space from 'src/components/Space';
+import ButtonWhite2 from "src/components/UI-Styled/Button/ButtonWhite2/ButtonWhite2";
 
 
 type CompanyInfoProps = {
@@ -41,42 +39,12 @@ const CompanyInfo = ({ companyInfo }: CompanyInfoProps) => {
             <div className={css.infoItem}>{companyInfo.phone}</div>
             <Space h={42} />
 
-            <Button1White onClick={onChat}>
+            <ButtonWhite2 onClick={onChat}>
                 Чат онлайн
-            </Button1White>
+            </ButtonWhite2>
         </div>
         <div className={css.descriptionFrame}>{companyInfo.description}</div>
     </div>
 }
-export default React.memo(CompanyInfo);
+export default React.memo(CompanyInfo) as unknown as typeof CompanyInfo
 
-
-
-
-const Button1 = React.memo(styled(Button)`
-  &.MuiButtonBase-root {
-    width: 400px; height: 59px;
-
-    background-color: ${root.colorGreen};
-    border: 1px solid #424041;
-    border-radius: 0;
-
-    text-transform: none;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-
-    :hover {
-      background-color: ${root.colorGreen};
-    }
-  }
-`)
-
-const Button1White = React.memo(styled(Button1)`
-  &.MuiButtonBase-root {
-    background-color: #F8F8F8;
-    :hover {
-      background-color: #F8F8F8;
-    }
-  }
-`)

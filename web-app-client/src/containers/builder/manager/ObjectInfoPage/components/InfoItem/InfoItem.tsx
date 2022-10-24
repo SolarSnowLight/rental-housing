@@ -3,7 +3,7 @@ import { commonStyled } from "src/styles/commonStyled";
 import styled from "styled-components";
 
 
-type InfoItemProps = {
+export type InfoItemProps = {
     title: string
     items: string[]
 }
@@ -12,18 +12,17 @@ const InfoItem = React.forwardRef<HTMLDivElement, InfoItemProps & JSX.IntrinsicE
     { title, items, ...props },
     forwardedRef
 ) => {
-    return <Frame ref={forwardedRef} {...props}>
+    return <Frame ref={forwardedRef as any} {...props}>
         <Title>{title}</Title>
         <ItemsBox>
             { items.map(it=><Item key={it}>{it}</Item>) }
         </ItemsBox>
     </Frame>
 })
-export default React.memo(InfoItem)
-export type { InfoItemProps }
+export default React.memo(InfoItem) as unknown as typeof InfoItem
 
 
-const Frame = React.memo(styled.div`
+let Frame = styled.div`
   display: grid;
   grid-template-columns: 1fr minmax(300px, 1fr);
   grid-gap: 32px;
@@ -31,8 +30,10 @@ const Frame = React.memo(styled.div`
   //flex-flow: row nowrap;
   //gap: 32px;
   border-bottom: 1px solid #424041;
-`)
-const Title = React.memo(styled.div`
+`
+Frame = React.memo(Frame) as unknown as typeof Frame
+
+let Title = styled.div`
   //flex-grow: 1;
   font: 500 18px var(--font-family-text);
   letter-spacing: 0.05em;
@@ -40,17 +41,20 @@ const Title = React.memo(styled.div`
   color: #424041;
   margin-bottom: 8px;
   place-self: end start;
-`)
+`
+Title = React.memo(Title) as unknown as typeof Title
 
-const ItemsBox = React.memo(styled.div`
+let ItemsBox = styled.div`
   //flex-grow: 1;
   //min-width: 300px;
   ${commonStyled.col};
   gap: 8px;
   margin-bottom: 8px;
   align-items: stretch;
-`)
-const Item = React.memo(styled.div`
+`
+ItemsBox = React.memo(ItemsBox) as unknown as typeof ItemsBox
+
+let Item = styled.div`
   font: 500 18px var(--font-family-text);
   letter-spacing: 0.05em;
   color: black;
@@ -59,4 +63,5 @@ const Item = React.memo(styled.div`
   &:not(:last-child) {
     border-bottom: 1px solid #8B8B8B;
   }
-`)
+`
+Item = React.memo(Item) as unknown as typeof Item

@@ -6,4 +6,4 @@ const BuilderManagerPage = () => {
         Builder Manager Default Page
     </div>
 }
-export default React.memo(BuilderManagerPage)
+export default React.memo(BuilderManagerPage) as unknown as typeof BuilderManagerPage

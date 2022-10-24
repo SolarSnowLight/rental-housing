@@ -29,5 +29,5 @@ const CompanyInfoSlide = () => {
 
     </div>
 }
-export default React.memo(CompanyInfoSlide)
+export default React.memo(CompanyInfoSlide) as unknown as typeof CompanyInfoSlide
 

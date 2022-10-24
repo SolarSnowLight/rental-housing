@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import css from './ManagerInfoPage.module.scss'
 import {toast} from "react-toastify";
 import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
-import ImagePicker from "src/components/ImagePicker";
+import ImagePickerRound from "src/components/ImagePicker/ImagePickerRound";
 
 
 const ManagerInfoPage = () => {
@@ -16,6 +16,7 @@ const ManagerInfoPage = () => {
     const onSubmit = (ev: React.FormEvent) => {
         ev.preventDefault()
         console.log('onSubmit', ev)
+        toast.info('Submit')
     }
 
 
@@ -31,7 +32,7 @@ const ManagerInfoPage = () => {
 
             <div className={css.managerNick}>Ник менеджера</div>
 
-            <ImagePicker image={image} setImage={setImage} />
+            <ImagePickerRound image={image} setImage={setImage} />
 
             <ButtonGreen2 type='submit'>
                 Сохранить изменения

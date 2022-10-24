@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import React, { useRef, useState, useEffect, useMemo } from "react";
-import {Button} from "@mui/material";
-import { root } from 'src/styles';
+import React, { useRef, useState, useEffect } from "react";
 import {utils} from "src/utils/utils";
 import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
 
@@ -45,7 +43,7 @@ const ImagePicker = React.forwardRef<HTMLDivElement, ImagePickerProps>((
         }
     }
 
-    return <Frame ref={forwardedRef} {...props} onClick={onClick}>
+    return <Frame ref={forwardedRef as any} {...props} onClick={onClick}>
         {/*<Border borderRadius={4} borderColor={'#1F8DCD'} borderWidth={2} strokeDasharray='8,8' cornerSize={8}/>*/}
         <Border />
         { !image
@@ -64,33 +62,33 @@ export default React.memo(ImagePicker) as typeof ImagePicker
 
 
 
-let Frame = React.memo(styled.div`
+let Frame = styled.div`
   width: 400px; height: 295px;
   position: relative;
   border-radius: 4px;
   cursor: pointer;
   display: grid;
   place-items: center;
-`)
+`
 Frame = React.memo(Frame) as unknown as typeof Frame
 
-let Border = React.memo(styled.div`
+let Border = styled.div`
   position: absolute; top: 0; right: 0; bottom: 0; left: 0;
   pointer-events: none;
   border: 2px dashed black;
   border-radius: 0px;
-`)
+`
 Border = React.memo(Border) as unknown as typeof Border
 
-let Label = React.memo(styled.div`
+let Label = styled.div`
   font: 500 18px var(--font-family-text);
   color: #424041;
-`)
+`
 Label = React.memo(Label) as unknown as typeof Label
 
-let FileInput = React.memo(styled.input`
+let FileInput = styled.input`
   display: none;
-`)
+`
 FileInput = React.memo(FileInput) as unknown as typeof FileInput
 
 

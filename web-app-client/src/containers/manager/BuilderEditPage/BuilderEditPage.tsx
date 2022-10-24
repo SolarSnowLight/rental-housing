@@ -1,12 +1,12 @@
 import React, {FormEvent, useState} from 'react'
 import css from './BuilderEditPage.module.scss'
 import Space from "src/components/Space/Space";
-import {Button, IconButton, InputAdornment, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import styled from "styled-components";
-import { root } from 'src/styles';
 import {toast} from "react-toastify";
-import ImageUploading from "react-images-uploading";
 import ImagePicker from "src/components/ImagePicker";
+import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
+import ButtonWhite2 from "src/components/UI-Styled/Button/ButtonWhite2/ButtonWhite2";
 
 
 
@@ -91,13 +91,13 @@ const BuilderEditPage = () => {
             <div className={css.fieldsContainer}>
 
                 <div className={css.widgetBox} onClick={onCancel}>
-                    <Button1White>Отмена</Button1White>
+                    <ButtonWhite2>Отмена</ButtonWhite2>
                 </div>
 
                 <div className={css.widgetBox}>
-                    <Button1 type='submit'>
+                    <ButtonGreen2 type='submit'>
                         Сохранить изменения
-                    </Button1>
+                    </ButtonGreen2>
                 </div>
 
             </div>
@@ -105,40 +105,13 @@ const BuilderEditPage = () => {
 
     </div>
 }
-export default React.memo(BuilderEditPage)
+export default React.memo(BuilderEditPage) as unknown as typeof BuilderEditPage
 
 
 
-const Button1 = React.memo(styled(Button)`
-  &.MuiButtonBase-root {
-    width: 400px; height: 59px;
-    
-    background-color: ${root.colorGreen};
-    border: 1px solid #424041;
-    border-radius: 0;
-    
-    text-transform: none;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-    
-    :hover {
-      background-color: ${root.colorGreen};
-    }
-  }
-`)
-
-const Button1White = React.memo(styled(Button1)`
-  &.MuiButtonBase-root {
-    background-color: #F8F8F8;
-    :hover {
-      background-color: #F8F8F8;
-    }
-  }
-`)
 
 
-const Input1 = React.memo(styled(TextField).attrs(p=>({
+let Input1 = styled(TextField).attrs(p=>({
     variant: "outlined",
     type: 'text',
 }))`
@@ -161,9 +134,11 @@ const Input1 = React.memo(styled(TextField).attrs(p=>({
       opacity: 1;
     }
   }
-`)
+`
+Input1 = React.memo(Input1) as unknown as typeof Input1
 
-const Multiline1 = React.memo(styled(TextField).attrs({
+
+let Multiline1 =styled(TextField).attrs({
     variant: 'outlined',
     type: 'text',
     multiline: true,
@@ -184,7 +159,8 @@ const Multiline1 = React.memo(styled(TextField).attrs({
       color: #8B8B8B;
     }
   }
-`)
+`
+Multiline1 = React.memo(Multiline1) as unknown as typeof Multiline1
 
 
 

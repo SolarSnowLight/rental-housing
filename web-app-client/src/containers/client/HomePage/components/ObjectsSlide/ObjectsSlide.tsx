@@ -106,12 +106,12 @@ const ObjectsSlide = () => {
 
     </div>
 }
-export default React.memo(ObjectsSlide)
+export default React.memo(ObjectsSlide) as unknown as typeof ObjectsSlide
 
 
 
 
-const ArrowButton = React.memo(styled(Button)`
+let ArrowButton = styled(Button)`
   &.MuiButtonBase-root {
     width: 32px; height: 32px;
     min-width: 32px; min-height: 32px;
@@ -125,4 +125,5 @@ const ArrowButton = React.memo(styled(Button)`
       background-color: ${root.colorGreen};
     }
   }
-`)
+`
+ArrowButton = React.memo(ArrowButton) as unknown as typeof ArrowButton

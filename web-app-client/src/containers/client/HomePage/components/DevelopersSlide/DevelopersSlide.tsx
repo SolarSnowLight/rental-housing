@@ -71,7 +71,7 @@ const DevelopersSlide = () => {
 
     </div>
 }
-export default React.memo(DevelopersSlide)
+export default React.memo(DevelopersSlide) as unknown as typeof DevelopersSlide
 
 
 

@@ -167,4 +167,4 @@ const ProjectInfoPage = () => {
 
     </div>
 }
-export default React.memo(ProjectInfoPage)
+export default React.memo(ProjectInfoPage) as unknown as typeof ProjectInfoPage

@@ -227,4 +227,4 @@ const ObjectInfoPage = () => {
         </div>
     </>
 }
-export default React.memo(ObjectInfoPage)
+export default React.memo(ObjectInfoPage) as unknown as typeof ObjectInfoPage

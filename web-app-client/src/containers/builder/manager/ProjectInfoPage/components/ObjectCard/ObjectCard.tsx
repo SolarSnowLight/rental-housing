@@ -66,7 +66,7 @@ const ObjectCard = (props: ObjectCardProps) => {
         <div className={css.count}>{b.objectCnt} {wordUtils.objectsPlural(b.objectCnt)}</div>
     </div>
 }
-export default React.memo(ObjectCard) as typeof ObjectCard
+export default React.memo(ObjectCard) as unknown as typeof ObjectCard
 
 
 

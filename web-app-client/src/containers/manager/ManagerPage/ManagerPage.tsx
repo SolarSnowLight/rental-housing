@@ -8,4 +8,4 @@ const ManagerPage = () => {
         Default Manager Page
     </div>
 }
-export default React.memo(ManagerPage)
+export default React.memo(ManagerPage) as unknown as typeof ManagerPage

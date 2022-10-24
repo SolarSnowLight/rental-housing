@@ -26,7 +26,7 @@ const FlatsTable = React.forwardRef<HTMLDivElement, FlatsTableProps & JSX.Intrin
     { floors, flats, ...props },
     forwardedRef
 ) => {
-    return <Floors ref={forwardedRef} {...props}>
+    return <Floors ref={forwardedRef as any} {...props}>
         { floors.map(f=>
             <FloorContainer key={f.number}>
                 <FloorLabel><big>{f.number}</big>этаж</FloorLabel>
@@ -35,7 +35,7 @@ const FlatsTable = React.forwardRef<HTMLDivElement, FlatsTableProps & JSX.Intrin
         ) }
     </Floors>
 })
-export default React.memo(FlatsTable)
+export default React.memo(FlatsTable) as unknown as typeof FlatsTable
 
 
 
@@ -65,7 +65,7 @@ const FloorFlats = React.memo(({ floor, flats }: FloorsProps) => {
 
 
 
-const Floors = React.memo(styled.div`
+let Floors = styled.div`
   ${commonStyled.col};
 
   position: relative;
@@ -76,8 +76,10 @@ const Floors = React.memo(styled.div`
     border: 1px solid #424041;
   }
   padding: 1px 0 0 1px;
-`)
-const FloorContainer = React.memo(styled.div`
+`
+Floors = React.memo(Floors) as unknown as typeof Floors
+
+let FloorContainer = styled.div`
   ${commonStyled.row};
 
   position: relative;
@@ -89,10 +91,11 @@ const FloorContainer = React.memo(styled.div`
   }
   margin: -1px 0 0 -1px;
   padding: 1px 0 0 1px;
-`)
+`
+FloorContainer = React.memo(FloorContainer) as unknown as typeof FloorContainer
 
 
-const FloorLabel = React.memo(styled.div`
+let FloorLabel = styled.div`
   display: grid;
   place-content: center;
   align-items: center;
@@ -118,10 +121,11 @@ const FloorLabel = React.memo(styled.div`
     border: 1px solid #424041;
   }
   margin: -1px 0 0 -1px;
-`)
+`
+FloorLabel = React.memo(FloorLabel) as unknown as typeof FloorLabel
 
 
-const Flats = React.memo(styled.div`
+let Flats = styled.div`
   display: grid;
   grid-template-columns: repeat(5, auto);
   grid-auto-rows: auto;
@@ -136,8 +140,10 @@ const Flats = React.memo(styled.div`
   }
   padding: 1px 0 0 1px;
   margin: -1px 0 0 -1px;
-`)
-const FlatElem = React.memo(styled.div`
+`
+Flats = React.memo(Flats) as unknown as typeof Flats
+
+let FlatElem = styled.div`
   width: 48px;
   height: 50px;
   ${commonStyled.center};
@@ -172,4 +178,5 @@ const FlatElem = React.memo(styled.div`
     background: #e9e9e9;
     color: #999999;
   }
-`)
+`
+FlatElem = React.memo(FlatElem) as unknown as typeof FlatElem
