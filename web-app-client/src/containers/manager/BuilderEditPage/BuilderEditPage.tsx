@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import ImagePicker from "src/components/ImagePicker";
 import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
 import ButtonWhite2 from "src/components/UI-Styled/Button/ButtonWhite2/ButtonWhite2";
+import Input2 from "src/components/UI-Styled/Input/Input2/Input2";
 
 
 
@@ -63,25 +64,25 @@ const BuilderEditPage = () => {
                 <div className={css.widgetBox}>
                     <div className={css.title2}>Название  *</div>
                     <Space h={12}/>
-                    <Input1 placeholder='Название застройщика' />
+                    <Input2 placeholder='Название застройщика' />
                 </div>
 
                 <div className={css.widgetBox}>
                     <div className={css.title2}>Email  *</div>
                     <Space h={12}/>
-                    <Input1 placeholder='Вставьте почту' />
+                    <Input2 placeholder='Вставьте почту' />
                 </div>
 
                 <div className={css.widgetBox}>
                     <div className={css.title2}>Телефон  *</div>
                     <Space h={12}/>
-                    <Input1 placeholder='Вставьте телефон' />
+                    <Input2 placeholder='Вставьте телефон' />
                 </div>
 
                 <div className={css.widgetBox}>
                     <div className={css.title2}>Ссылка на сайт  *</div>
                     <Space h={12}/>
-                    <Input1 placeholder='Вставьте ссылку' />
+                    <Input2 placeholder='Вставьте ссылку' />
                 </div>
 
             </div>
@@ -110,35 +111,7 @@ export default React.memo(BuilderEditPage) as unknown as typeof BuilderEditPage
 
 
 
-
-let Input1 = styled(TextField).attrs(p=>({
-    variant: "outlined",
-    type: 'text',
-}))`
-  fieldset { // рамка
-    border: 1px solid #8B8B8B;
-    border-radius: 0;
-  }
-  .MuiInputBase-root.MuiOutlinedInput-root { // input container
-    width: 400px; height: 59px;
-    padding-right: 0; 
-    padding-left: 0;
-  }
-  input { // input
-    padding-left: 16px;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-    ::placeholder {
-      color: #8B8B8B;
-      opacity: 1;
-    }
-  }
-`
-Input1 = React.memo(Input1) as unknown as typeof Input1
-
-
-let Multiline1 =styled(TextField).attrs({
+let Multiline1 = styled(TextField).attrs({
     variant: 'outlined',
     type: 'text',
     multiline: true,

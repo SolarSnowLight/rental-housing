@@ -3,6 +3,14 @@ import css from './ManagerInfoPage.module.scss'
 import {toast} from "react-toastify";
 import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
 import ImagePickerRound from "src/components/ImagePicker/ImagePickerRound";
+import Input2 from "src/components/UI-Styled/Input/Input2/Input2";
+
+/*
+todo
+    controlled inputs
+    validation
+
+ */
 
 
 const ManagerInfoPage = () => {
@@ -22,7 +30,7 @@ const ManagerInfoPage = () => {
 
     return <div className={css.page}>
 
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} style={{ display: 'contents' }}>
 
             <div className={css.mainTitle}>Информация о менеджере</div>
 
@@ -32,7 +40,32 @@ const ManagerInfoPage = () => {
 
             <div className={css.managerNick}>Ник менеджера</div>
 
-            <ImagePickerRound image={image} setImage={setImage} />
+            <ImagePickerRound className={css.imagePicker} image={image} setImage={setImage} />
+
+            <div className={css.widgetBox}>
+                <div className={css.title}>Имя</div>
+                <Input2 placeholder='Имя' />
+            </div>
+
+            <div className={css.widgetBox}>
+                <div className={css.title}>Фамилия</div>
+                <Input2 placeholder='Фамилия' />
+            </div>
+
+            <div className={css.widgetBox}>
+                <div className={css.title}>Отчество</div>
+                <Input2 placeholder='Отчество' />
+            </div>
+
+            <div className={css.widgetBox}>
+                <div className={css.title}>Никнейм</div>
+                <Input2 placeholder='Никнейм' />
+            </div>
+
+            <div className={css.widgetBox}>
+                <div className={css.title}>email</div>
+                <Input2 placeholder='email' />
+            </div>
 
             <ButtonGreen2 type='submit'>
                 Сохранить изменения

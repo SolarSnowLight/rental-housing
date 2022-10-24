@@ -3,8 +3,7 @@ import css from './Filter.module.scss'
 import {Autocomplete, IconButton, InputAdornment, MenuItem, Select, TextField} from "@mui/material";
 import {toast} from "react-toastify";
 import styled from "styled-components";
-import { root } from "src/styles";
-import { Arrow1DownIc, SearchIc } from "../icons";
+import { Arrow1DownIc, SearchIc } from "src/components/icons";
 import Space from "../Space";
 import RowSelect from "../RowSelect";
 import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
