@@ -1,41 +1,42 @@
 import {css} from "styled-components";
 
 
-export const abs = css`
+const abs = css`
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
 `
 
-export const absoluteOff = (offset?: string) => css`
+const absoluteOff = (offset?: string) => css`
   position: absolute;
   ${offsetToPosition(offset)}
 `
 
-export const allDefault = css`
+const allDefault = css`
   all: unset;
   box-sizing: border-box;
   margin: 0;
   background: none;
 `
 
-export const row = css`
+const row = css`
   display: flex;
   flex-flow: row nowrap;
 `
 
-export const col = css`
+const col = css`
   display: flex;
   flex-flow: column nowrap;
 `
 
-export const center = css`
+const center = css`
   display: grid;
   place-items: center;
 `
-export const centerV = css`
+const centerV = css`
   display: grid;
   place-items: center start;
 `
+const centerStart = centerV
 
 
 function offsetToPosition(offset?: string){
@@ -57,4 +58,5 @@ export const commonStyled = {
     col,
     center,
     centerV,
+    centerStart,
 }

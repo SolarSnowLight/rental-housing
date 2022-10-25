@@ -42,6 +42,12 @@
 }
 
 
+@mixin mobileFullWidth {
+    @media screen and (max-width: 550px) {
+        width: 100%;
+    }
+}
+
 
 .hideScrollbar {
     scrollbar-width: none;

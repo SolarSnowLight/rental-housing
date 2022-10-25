@@ -1,7 +1,7 @@
 import React from "react";
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import css from './ClientList.module.scss'
-import ListItem from "src/components/PersonListItem/PersonListItem";
+import ListItem from "src/components/list-items/PersonListItem/PersonListItem";
 import Space from "src/components/Space";
 import ButtonGreen3 from "src/components/UI-Styled/Button/ButtonGreen3/ButtonGreen3";
 

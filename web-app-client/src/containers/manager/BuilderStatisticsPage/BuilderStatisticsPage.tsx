@@ -5,7 +5,7 @@ import {MenuItem, Select} from "@mui/material";
 import styled from "styled-components";
 import {Arrow1DownIc} from "src/components/icons";
 import { toast } from "react-toastify";
-import ListItem from "src/components/PersonListItem/PersonListItem";
+import ListItem from "src/components/list-items/PersonListItem/PersonListItem";
 
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import PieDiagram, {FullData} from "./components/PieDiagram/PieDiagram";

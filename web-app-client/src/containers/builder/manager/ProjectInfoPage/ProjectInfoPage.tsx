@@ -4,7 +4,7 @@ import ButtonWhite2 from "src/components/UI-Styled/Button/ButtonWhite2/ButtonWhi
 import {toast} from "react-toastify";
 import Space from "src/components/Space";
 import {useMediaQuery} from "@mui/material";
-import PersonListItem from "src/components/PersonListItem/PersonListItem";
+import PersonListItem from "src/components/list-items/PersonListItem/PersonListItem";
 import MapComponent from 'src/components/MapComponent';
 import ObjectCard from './components/ObjectCard/ObjectCard';
 import HorizontalScrollbar from "src/components/HorizontalScrollbar/HorizontalScrollbar";

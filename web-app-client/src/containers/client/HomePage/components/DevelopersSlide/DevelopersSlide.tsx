@@ -2,7 +2,7 @@ import React from "react";
 import css from './DevelopersSlide.module.scss'
 import Space from "src/components/Space";
 
-import ListItem from "src/components/PersonListItem/PersonListItem";
+import PersonListItem from "src/components/list-items/PersonListItem/PersonListItem";
 
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import {toast} from "react-toastify";
@@ -62,7 +62,7 @@ const DevelopersSlide = () => {
         <Space h={24}/>
 
         <div className={css.list}>
-            { developers.map(it=><ListItem key={it.id} client={it} />) }
+            { developers.map(it=><PersonListItem key={it.id} client={it} />) }
         </div>
 
         <Space h={24}/>

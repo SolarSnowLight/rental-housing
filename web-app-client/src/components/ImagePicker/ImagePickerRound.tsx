@@ -55,21 +55,9 @@ const ImagePickerRound = React.forwardRef<HTMLDivElement, ImagePickerRoundProps>
             <Label>Добавить фото</Label>
         </AddBtnBox> }
 
-
-
-        {/*<Border />
-        { !image
-            ? <Label>Добавить фото</Label>
-            : <>
-                <Image imageUrl={imageUrl}/>
-                <ButtonBox>
-                    <Button1 onClick={onDelete}>Удалить</Button1>
-                </ButtonBox>
-              </>
-        }*/}
     </Frame>
 })
-export default React.memo(ImagePickerRound) as typeof ImagePickerRound
+export default React.memo(ImagePickerRound) as unknown as typeof ImagePickerRound
 
 
 
