@@ -1,23 +1,14 @@
 import React from 'react'
 import styled from "styled-components";
 import {Button} from "@mui/material";
+import ButtonGreen2 from "../ButtonGreen2/ButtonGreen2";
 
 
 
 
-const ButtonRed2 = styled(Button)`
+const ButtonRed2 = styled(ButtonGreen2)`
   &.MuiButtonBase-root {
-    width: 400px; height: 59px;
-
     background-color: #fb5f65;
-    border: 1px solid #424041;
-    border-radius: 0;
-
-    text-transform: none;
-    font: 500 18px var(--font-family-text);
-    color: black;
-    letter-spacing: 0.05em;
-
     :hover {
       background-color: #fb5f65;
     }

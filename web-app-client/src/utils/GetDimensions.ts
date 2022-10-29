@@ -17,6 +17,7 @@
     Useful:
     ● element.getBoundingClientRect()
     ● window.getComputedStyle(element)
+    ● ширина вертикального скроллбара: let scrollWidth = div.offsetWidth - div.clientWidth;
 */
 
 
@@ -68,11 +69,13 @@ export class GetDimensions {
     get clientHeight(){ return this.domElement.clientHeight }
 
 
-
+    // Ширина / высота левой / верхней прокрученной части контента
     // width of horizontal-paddings + part of full content located behind the border-left inner boundary
     get scrollLeft(){ return this.domElement.scrollLeft }
     // height of vertical-paddings + part of full content located behind the border-top inner boundary
     get scrollTop(){ return this.domElement.scrollTop }
+    // Установка значения scrollTop на 0 или Infinity прокрутит элемент в самый верх/низ соответственно.
+
 
     // max width of horizontal-paddings + content located behind the border-left inner boundary
     // !!! non-standard

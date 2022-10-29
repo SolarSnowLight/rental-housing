@@ -1,0 +1,209 @@
+
+
+@use 'src/styles/common';
+
+
+//html, body {margin: 0; height: 100%; overflow: hidden}
+//html { overflow: hidden }
+
+// doesn't work
+/*:global(html:has(.fade)) {
+    overflow: hidden;
+}*/
+
+
+
+
+.noScroll {
+    overflow: hidden;
+}
+
+
+.fade {
+    * { @extend .reset }
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+    @extend .center;
+    overflow: auto;
+
+    .frame {
+        display: grid;
+        grid: '....  close' auto
+              'card  .....' auto
+             / auto  auto
+    }
+}
+
+.closeContainer {
+    width: 60px; height: 60px;
+    grid-area: close;
+    @extend .center;
+
+    .closeBox {
+        width: 40px; height: 40px;
+        @extend .center;
+        cursor: pointer;
+    }
+}
+
+.card {
+    grid-area: card;
+    @extend .rowWrap;
+    background: #F8F8F8;
+    padding: 32px;
+    gap: 52px;
+}
+
+.projectsListContainer {
+    min-width: calc(16px + 400px + 48px + 400px + 16px + 20px);
+    width: fit-content;
+    background: #FFFFFF;
+    border: 1px solid #8B8B8B;
+    height: 565px;
+    overflow-y: auto;
+
+    .content {
+        display: grid;
+        padding: 16px;
+        gap: 48px;
+        grid-template-columns: auto auto;
+    }
+}
+
+.buttons {
+    @extend .col;
+    gap: 25px;
+    width: 267px;
+
+    :global(.MuiButtonBase-root) {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.position {
+    grid-area: pos;
+    place-self: center;
+    font: 400 30px var(--font-family-text);
+    color: #F8F8F8;
+}
+
+.crossContainer {
+    //width: 52px; height: 52px;
+    grid-area: close;
+    @extend .center;
+    cursor: pointer;
+}
+
+
+.arrowFrame {
+    //width: 352px; height: 600px;
+    @extend .center;
+
+    .container {
+        width: 100px; height: 100px;
+        @extend .center;
+        cursor: pointer;
+
+        .box {
+            width: 32px; height: 32px;
+            border: 1px solid #F8F8F8;
+            @extend .center;
+        }
+    }
+}
+.arrowLeft {
+    @extend .arrowFrame;
+    grid-area: l;
+}
+.arrowRight {
+    @extend .arrowFrame;
+    grid-area: r;
+}
+
+
+
+.image {
+    width: 100%; height: 100%;
+    grid-area: photo;
+    object-position: center;
+    object-fit: contain;
+}
+
+
+.imageListFrame {
+    grid-area: list;
+    overflow: scroll;
+    display: flex;
+    //flex: 1;
+    @extend .hideScrollbar;
+    //padding-left: 10px; background: red;
+
+    .box {
+        @extend .row;
+        width: auto; height: var(--image-preview-h);
+        gap: 12px;
+
+        .imagePreview {
+            width: auto; height: var(--image-preview-h);
+            padding: 4px;
+            &:hover {
+                outline: 2px solid #909090;
+                outline-offset: -2px;
+            }
+
+            .image {
+                width: auto; height: 100%;
+                object-position: center;
+                object-fit: contain;
+                cursor: pointer;
+                //display: flex;
+                //border: 3px solid red;
+            }
+        }
+        .selected {
+            outline: 2px solid white;
+            outline-offset: -2px;
+            &:hover {
+                outline: 2px solid white;
+                outline-offset: -2px;
+            }
+
+            /*position: relative;
+            &::after {
+                content: '';
+                pointer-events: none;
+                position: absolute;
+                top: -4px; right: -4px; bottom: -4px; left: -4px;
+                border: 2px solid white;
+            }*/
+        }
+    }
+}
+
+
+

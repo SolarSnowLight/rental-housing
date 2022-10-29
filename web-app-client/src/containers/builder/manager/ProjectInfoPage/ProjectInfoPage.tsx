@@ -6,7 +6,7 @@ import Space from "src/components/Space";
 import {useMediaQuery} from "@mui/material";
 import PersonListItem from "src/components/list-items/PersonListItem/PersonListItem";
 import MapComponent from 'src/components/MapComponent';
-import ObjectCard from './components/ObjectCard/ObjectCard';
+import ObjectCard2 from 'src/components/ObjectCard2/ObjectCard2';
 import HorizontalScrollbar from "src/components/HorizontalScrollbar/HorizontalScrollbar";
 import {useScrollbar} from "src/hooks/useScrollbar/useScrollbar";
 
@@ -51,9 +51,9 @@ const objects = [...Array(6).keys()].map(i=>({
     id: i+'',
     builderLogo: logoDefault,
     images: [buildingExample1,buildingExample2,buildingExample3],
-    objectName: 'Название объекта',
+    name: 'Название объекта',
     year: 2025,
-    objectCnt: i+1,
+    objectsCnt: i+1,
 }))
 objects[0].images = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
 
@@ -125,7 +125,7 @@ const ProjectInfoPage = () => {
 
         <div ref={objectsContainerRef} className={css.objectsListSlide} onScroll={onContainerScroll}>
             <div ref={objectsContentRef} className={css.contentContainer}>
-                { objects.map(it=><ObjectCard key={it.id} object={it}/>) }
+                { objects.map(it=><ObjectCard2 key={it.id} object={it}/>) }
             </div>
         </div>
 

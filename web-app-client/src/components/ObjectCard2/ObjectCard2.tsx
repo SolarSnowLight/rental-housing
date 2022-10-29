@@ -1,12 +1,12 @@
 import React, {useRef} from 'react'
-import css from './ObjcectCard.module.scss'
+import css from './ObjcectCard2.module.scss'
 import buildingDefault from 'src/resources/images/building-default.png'
 import {wordUtils} from "src/utils/wordUtils";
 import {useGalleryScrollbar} from "src/hooks/useScrollbar/useGalleryScrollbar";
 import GalleryHorizontalScrollbar from "src/components/GalleryHorizontalScrollbar/GalleryHorizontalScrollbar";
 import styled from "styled-components";
 import Arrow1DownIc from "src/components/icons/Arrow1DownIc";
-import {commonStyled} from "../../../../../../styles/commonStyled";
+import {commonStyled} from "src/styles/commonStyled";
 
 type empty = null|undefined
 
@@ -14,13 +14,13 @@ export type ObjectCardProps = {
     object: {
         builderLogo?: string|undefined // ссылка на лого застройщика
         images?: string[] | empty // массив ссылок на изображения
-        objectName: string
+        name: string
         year: string|number
-        objectCnt: number
+        objectsCnt: number
     }
 }
 
-const ObjectCard = (props: ObjectCardProps) => {
+const ObjectCard2 = (props: ObjectCardProps) => {
     const b = props.object
     b.images ??= [buildingDefault]
 
@@ -61,12 +61,12 @@ const ObjectCard = (props: ObjectCardProps) => {
 
         { b.builderLogo && <img className={css.logo} src={b.builderLogo} alt='Builder Logo'/> }
 
-        <div className={css.name}>{b.objectName}</div>
+        <div className={css.name}>{b.name}</div>
         <div className={css.year}>Сдача {b.year}</div>
-        <div className={css.count}>{b.objectCnt} {wordUtils.objectsPlural(b.objectCnt)}</div>
+        <div className={css.count}>{b.objectsCnt} {wordUtils.objectsPlural(b.objectsCnt)}</div>
     </div>
 }
-export default React.memo(ObjectCard) as unknown as typeof ObjectCard
+export default React.memo(ObjectCard2) as unknown as typeof ObjectCard2
 
 
 

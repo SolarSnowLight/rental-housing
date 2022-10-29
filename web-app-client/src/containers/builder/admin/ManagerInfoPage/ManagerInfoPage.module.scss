@@ -46,6 +46,10 @@
 
 .imagePickerBox {
     @extend .pageElement;
+    display: grid;
+    @media screen and (max-width: 550px) {
+        place-items: center;
+    }
 }
 
 

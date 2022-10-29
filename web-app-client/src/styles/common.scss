@@ -29,6 +29,10 @@
     display: grid;
     place-items: center;
 }
+@mixin center {
+    display: grid;
+    place-items: center;
+}
 .centerText {
     text-align: center;
 }
