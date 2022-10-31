@@ -49,6 +49,7 @@ const projects2 = [...Array(6).keys()].map(i=>({
     name: 'Название проекта',
     year: 2025,
     objectsCnt: i+1,
+    isManagerInProject: !!(i%2),
 }))
 projects2[0].images = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
 const managerId = 'dsknfoqpafjdmlnv'

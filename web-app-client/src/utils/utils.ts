@@ -37,6 +37,13 @@ const isArray = <T,E>(obj: T|E[]): obj is Array<E> => obj instanceof Array
 
 
 
+const toggleInSet = <E>(set: Set<E>, element: E) => {
+    if (set.has(element)) set.delete(element)
+    else set.add(element)
+    return set
+}
+
+
 
 export const utils = {
     readAsUrl,
@@ -47,4 +54,5 @@ export const utils = {
     fitInto,
     inRange,
     isArray,
+    toggleInSet,
 }

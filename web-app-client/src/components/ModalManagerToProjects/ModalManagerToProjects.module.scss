@@ -78,132 +78,31 @@
     width: 267px;
 
     :global(.MuiButtonBase-root) {
-        width: 100%;
+        width: 100% !important;
     }
 }
 
 
+.selectableItem {
+    width: fit-content; height: fit-content;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.position {
-    grid-area: pos;
-    place-self: center;
-    font: 400 30px var(--font-family-text);
-    color: #F8F8F8;
-}
-
-.crossContainer {
-    //width: 52px; height: 52px;
-    grid-area: close;
-    @extend .center;
-    cursor: pointer;
-}
-
-
-.arrowFrame {
-    //width: 352px; height: 600px;
-    @extend .center;
-
-    .container {
-        width: 100px; height: 100px;
-        @extend .center;
-        cursor: pointer;
-
-        .box {
-            width: 32px; height: 32px;
-            border: 1px solid #F8F8F8;
-            @extend .center;
+    .active {
+        width: fit-content; height: fit-content;
+        &[data-active=true]{
+            outline: 4px solid #B4EFA6;
+            outline-offset: 2px;
+        }
+    }
+    .selected {
+        width: fit-content; height: fit-content;
+        //outline: 2px solid #dcdcdc99;
+        outline-offset: 2px;
+        &:hover {
+            outline: 4px solid #909090;
+        }
+        &[data-selected=true] {
+            outline: 4px solid #555555;
         }
     }
 }
-.arrowLeft {
-    @extend .arrowFrame;
-    grid-area: l;
-}
-.arrowRight {
-    @extend .arrowFrame;
-    grid-area: r;
-}
-
-
-
-.image {
-    width: 100%; height: 100%;
-    grid-area: photo;
-    object-position: center;
-    object-fit: contain;
-}
-
-
-.imageListFrame {
-    grid-area: list;
-    overflow: scroll;
-    display: flex;
-    //flex: 1;
-    @extend .hideScrollbar;
-    //padding-left: 10px; background: red;
-
-    .box {
-        @extend .row;
-        width: auto; height: var(--image-preview-h);
-        gap: 12px;
-
-        .imagePreview {
-            width: auto; height: var(--image-preview-h);
-            padding: 4px;
-            &:hover {
-                outline: 2px solid #909090;
-                outline-offset: -2px;
-            }
-
-            .image {
-                width: auto; height: 100%;
-                object-position: center;
-                object-fit: contain;
-                cursor: pointer;
-                //display: flex;
-                //border: 3px solid red;
-            }
-        }
-        .selected {
-            outline: 2px solid white;
-            outline-offset: -2px;
-            &:hover {
-                outline: 2px solid white;
-                outline-offset: -2px;
-            }
-
-            /*position: relative;
-            &::after {
-                content: '';
-                pointer-events: none;
-                position: absolute;
-                top: -4px; right: -4px; bottom: -4px; left: -4px;
-                border: 2px solid white;
-            }*/
-        }
-    }
-}
-
-
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react'
+import React, {MouseEventHandler, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react'
 import css from './ModalManagerToProjects.module.scss'
 import CrossIc from "src/components/icons/Cross2Ic";
 import styled from "styled-components";
@@ -8,6 +8,8 @@ import {useDisableHtmlScroll} from "src/hooks/useDisableHtmlScroll/useDisableHtm
 import ObjectCard2 from "src/components/ObjectCard2/ObjectCard2";
 import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
 import ButtonGray2 from "src/components/UI-Styled/Button/ButtonGray2/ButtonGray2";
+import {toast} from "react-toastify";
+import {useSet} from "../../hooks/useSet";
 
 
 
@@ -24,6 +26,7 @@ type Project = {
     name: string
     year: string|number
     objectsCnt: number
+    isManagerInProject: boolean
 }
 
 
@@ -35,7 +38,7 @@ export type ModalManagerToProjectsProps = {
 const ModalManagerToProjects = ({
     managerId,
     projects,
-    onClose = ()=>{}
+    onClose = ()=>{},
 }: ModalManagerToProjectsProps) => {
     projects ??= []
 
@@ -43,9 +46,38 @@ const ModalManagerToProjects = ({
     useDisableHtmlScroll()
 
 
-    const [selectedProjectId, setSelectedProjectId] = useState(undefined as string|undefined)
+
+    const _initialSelectedIds = useMemo(
+        ()=>({ ids: new Set<string>(
+                projects?.filter(it=>it.isManagerInProject).map(it=>it.id)
+            )}),[projects]
+    )
+    const initialSelectedIds = _initialSelectedIds.ids
+
+    const [selectedIds, updateSelectedIds] = useSet(new Set<string>())
+
+    const onSelect = (ev: React.MouseEvent, id: string) => {
+        if (!ev.ctrlKey) selectedIds.clear()
+        utils.toggleInSet(selectedIds, id)
+        updateSelectedIds()
+    }
 
 
+    const onAddManagerToProjects = () => {
+        //console.log('initialIds',initialSelectedIds)
+        //console.log('selectedIds',selectedIds)
+        const addedIds = [] as string[]
+        for (const id of selectedIds) if (!initialSelectedIds.has(id)) addedIds.push(id)
+        toast.info(`add manager(id='${managerId}') to projects(ids='${JSON.stringify(addedIds)}')`)
+    }
+    const onRemoveManagerFromProjects = () => {
+        const removedIds = [] as string[]
+        for (const id of selectedIds) if (initialSelectedIds.has(id)) removedIds.push(id)
+        toast.info(`remove manager(id='${managerId}') from projects(ids='${JSON.stringify(removedIds)}')`)
+    }
+    const onContactTheManager = () => {
+        toast.info(`Contact the manager`)
+    }
 
 
     return <div className={css.fade}>
@@ -61,15 +93,24 @@ const ModalManagerToProjects = ({
 
                 <div className={css.projectsListContainer}>
                     <div className={css.content}>
-                        { projects.map(it=><ObjectCard2 key={it.id} object={it}/>) }
+                        { projects.map(it=><SelectableItem
+                            key={it.id}
+                            project={it}
+                            isSelected={selectedIds.has(it.id)}
+                            onSelect={ev=>onSelect(ev,it.id)}
+                        />) }
                     </div>
                 </div>
 
                 <div className={css.buttons}>
-                    <ButtonGreen2>Добавить в проект</ButtonGreen2>
-                    <ButtonGreen2>Связаться с менеджером</ButtonGreen2>
-                    <ButtonGreen2>Удалить из проекта</ButtonGreen2>
-                    <ButtonGray2>Отмена</ButtonGray2>
+                    <ButtonGreen2 onClick={onAddManagerToProjects}>
+                        Добавить в проект
+                    </ButtonGreen2>
+                    <ButtonGreen2 onClick={onContactTheManager}>Связаться с менеджером</ButtonGreen2>
+                    <ButtonGreen2 onClick={onRemoveManagerFromProjects}>
+                        Удалить из проекта
+                    </ButtonGreen2>
+                    {/*<ButtonGray2>Отмена</ButtonGray2>*/}
                 </div>
 
             </div>
@@ -87,5 +128,26 @@ let CrossIc1 = styled(CrossIc).attrs({
 })``
 CrossIc1 = React.memo(CrossIc1) as unknown as typeof CrossIc1
 
+
+
+type SelectableItemProps = {
+    project: Project
+    isSelected?: boolean
+    onSelect?: MouseEventHandler<HTMLDivElement> | undefined
+}
+let SelectableItem = ({
+    project,
+    isSelected = false,
+    onSelect = ()=>{},
+} : SelectableItemProps) => {
+    return <div className={css.selectableItem} onClick={onSelect}>
+        <div className={css.active} data-active={project.isManagerInProject}>
+            <div className={css.selected} data-selected={isSelected}>
+                <ObjectCard2 key={project.id} object={project}/>
+            </div>
+        </div>
+    </div>
+}
+SelectableItem = React.memo(SelectableItem) as unknown as typeof SelectableItem
 
 
