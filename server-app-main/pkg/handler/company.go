@@ -148,3 +148,45 @@ func (h *Handler) companyUpdate(c *gin.Context) {
 
 	c.JSON(http.StatusOK, data)
 }
+
+// @Summary Get manager
+// @Tags company
+// @Description Получение информации о менеджере
+// @ID company-get-manager
+// @Accept  json
+// @Produce  json
+// @Param input body companyModel.ManagerUuidModel true "credentials"
+// @Success 200 {object} companyModel.ManagerCompanyModel "data"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /company/manager/get [post]
+func (h *Handler) companyGetManager(c *gin.Context) {
+	var input companyModel.ManagerUuidModel
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	userId, domainId, err := getContextUserInfo(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
+
+	data, err := h.services.Company.GetManager(
+		userModel.UserIdentityModel{
+			UserId:   userId,
+			DomainId: domainId,
+		},
+		input,
+	)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, data)
+}

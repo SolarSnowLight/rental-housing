@@ -111,6 +111,10 @@ func (r *ProjectPostgres) CreateProject(userId, domainId int, data projectModel.
 			return projectModel.ProjectModel{}, err
 		}
 
+		queryFindWorker := fmt.Sprintf("SELECT * FROM %s tl WHERE tl.users_id = $1", tableConstant.WORKERS_TABLE)
+		var workers []int 
+		err = r.db.Select(&workers, queryFindWorker, user.Id)
+
 		var workerId int
 		row = tx.QueryRow(query, uuid.NewV4().String(), roleBuilderManagerJson, currentDate, currentDate, user.Id, companyId)
 		if err := row.Scan(&workerId); err != nil {

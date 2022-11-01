@@ -8,6 +8,7 @@ import (
 	roleConstant "main-server/pkg/constant/role"
 	tableConstant "main-server/pkg/constant/table"
 	companyModel "main-server/pkg/model/company"
+	projectModel "main-server/pkg/model/project"
 	rbacModel "main-server/pkg/model/rbac"
 	userModel "main-server/pkg/model/user"
 	utilSlice "main-server/pkg/util"
@@ -22,17 +23,28 @@ type CompanyPostgres struct {
 	db       *sqlx.DB
 	enforcer *casbin.Enforcer
 	role     *RolePostgres
+	user     *UserPostgres
+	wrapper  *WrapperPostgres
 }
 
 /* Function for create new struct of CompanyPostgres */
-func NewCompanyPostgres(db *sqlx.DB, enforcer *casbin.Enforcer, role *RolePostgres) *CompanyPostgres {
+func NewCompanyPostgres(
+	db *sqlx.DB,
+	enforcer *casbin.Enforcer,
+	role *RolePostgres,
+	user *UserPostgres,
+	wrapper *WrapperPostgres,
+) *CompanyPostgres {
 	return &CompanyPostgres{
 		db:       db,
 		enforcer: enforcer,
 		role:     role,
+		user:     user,
+		wrapper:  wrapper,
 	}
 }
 
+/* Получение списка менеджеров компании */
 func (r *CompanyPostgres) GetManagers(userId, domainId int, data companyModel.ManagerCountModel) (companyModel.ManagerAnyCountModel, error) {
 	query := fmt.Sprintf("SELECT id FROM %s WHERE uuid=$1", tableConstant.COMPANIES_TABLE)
 	var companyId int
@@ -46,7 +58,7 @@ func (r *CompanyPostgres) GetManagers(userId, domainId int, data companyModel.Ma
 	sum := (data.Count + data.Limit)
 
 	query = fmt.Sprintf(`
-	SELECT DISTINCT tl.uuid, tr.data, tw.created_at FROM %s tl
+	SELECT DISTINCT tl.uuid, tl.email, tr.data, tw.created_at FROM %s tl
 	JOIN %s tr ON tr.users_id = tl.id
 	JOIN %s tw ON tw.users_id = tl.id
 	JOIN %s twp ON twp.workers_id = tw.id
@@ -84,6 +96,7 @@ func (r *CompanyPostgres) GetManagers(userId, domainId int, data companyModel.Ma
 
 		managersEx = append(managersEx, companyModel.ManagerDataEx{
 			Uuid:      element.Uuid,
+			Email:     element.Email,
 			Data:      managerData,
 			CreatedAt: element.CreatedAt,
 		})
@@ -210,4 +223,80 @@ func (r *CompanyPostgres) CompanyUpdate(user userModel.UserIdentityModel, data c
 	}
 
 	return data, nil
+}
+
+type SQLResultGetManager struct {
+	Id int `json:"id" binding:"required" db:"id"`
+}
+
+type SQLResultListProject struct {
+	Uuid string `json:"uuid" binding:"required" db:"uuid"`
+	Data string `json:"data" binding:"required" db:"data"`
+}
+
+/* Метод структуры для получения информации о менеджере */
+func (r *CompanyPostgres) GetManager(user userModel.UserIdentityModel, data companyModel.ManagerUuidModel) (companyModel.ManagerCompanyModel, error) {
+	// Получение информации о пользователе по UUID
+	manager, err := r.user.GetUser("uuid", data.ManagerUuid)
+	if err != nil {
+		return companyModel.ManagerCompanyModel{}, err
+	}
+
+	// Информация о менеджере
+	var sqlResultManager []SQLResultGetManager
+
+	query := fmt.Sprintf(
+		`SELECT DISTINCT w.id FROM %s u
+		INNER JOIN %s ud ON ud.users_id = u.id
+		INNER JOIN %s w ON w.users_id = u.id
+		WHERE u.id = $1 LIMIT 1`,
+		tableConstant.USERS_TABLE,
+		tableConstant.USERS_DATA_TABLE,
+		tableConstant.WORKERS_TABLE,
+	)
+
+	if err := r.db.Select(&sqlResultManager, query, manager.Id); err != nil {
+		return companyModel.ManagerCompanyModel{}, err
+	}
+
+	// Проверка полученного массива данных
+	if len(sqlResultManager) <= 0 {
+		return companyModel.ManagerCompanyModel{}, nil
+	}
+
+	// Информация о всех проектах, в которых участвует менеджер
+	var sqlResultProject []SQLResultListProject
+
+	query = fmt.Sprintf(
+		`SELECT p.uuid, p.data FROM %s wp
+		INNER JOIN %s p ON p.id = wp.projects_id
+		WHERE wp.workers_id = $1;`,
+		tableConstant.WORKERS_PROJECTS_TABLE,
+		tableConstant.PROJECTS_TABLE,
+	)
+
+	if err := r.db.Select(&sqlResultProject, query, sqlResultManager[len(sqlResultManager)-1].Id); err != nil {
+		return companyModel.ManagerCompanyModel{}, err
+	}
+
+	var projects []companyModel.ManagerProjectInfoModel
+
+	for _, element := range sqlResultProject {
+		var data projectModel.ProjectDataModel
+		err := json.Unmarshal([]byte(element.Data), &data)
+		if err != nil {
+			return companyModel.ManagerCompanyModel{}, err
+		}
+
+		projects = append(projects, companyModel.ManagerProjectInfoModel{
+			Uuid:        element.Uuid,
+			Logo:        data.Logo,
+			Title:       data.Title,
+			Description: data.Description,
+		})
+	}
+
+	return companyModel.ManagerCompanyModel{
+		Projects: projects,
+	}, nil
 }

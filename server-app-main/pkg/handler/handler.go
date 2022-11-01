@@ -172,6 +172,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			// URL: /company/manager/get/all
 			manager.POST(route.GET_ALL_ROUTE, h.userIdentityHasRole(roleConstant.ROLE_BUILDER_ADMIN), h.getManagers)
+
+			// URL: /company/manager/get
+			manager.POST(route.GET_ROUTE, h.companyGetManager)
 		}
 
 		// URL: /company/create

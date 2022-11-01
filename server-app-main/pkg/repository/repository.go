@@ -71,10 +71,16 @@ type Project interface {
 
 type Company interface {
 	GetManagers(userId, domainId int, data companyModel.ManagerCountModel) (companyModel.ManagerAnyCountModel, error)
+	GetManager(user userModel.UserIdentityModel, data companyModel.ManagerUuidModel) (companyModel.ManagerCompanyModel, error)
 
 	/* CRUD */
 	CompanyUpdateImage(user userModel.UserIdentityModel, data companyModel.CompanyImageModel) (companyModel.CompanyImageModel, error)
 	CompanyUpdate(user userModel.UserIdentityModel, data companyModel.CompanyUpdateModel) (companyModel.CompanyUpdateModel, error)
+}
+
+/* Обёртка над функционалом sqlx */
+type Wrapper interface {
+	GetOne(table string, column, value interface{}) (interface{}, error)
 }
 
 type Repository struct {
@@ -86,15 +92,18 @@ type Repository struct {
 	AuthType
 	Project
 	Company
+	Wrapper
 }
 
 func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
+	wrapper := NewWrapperPostgres(db)
+
 	domain := NewDomainPostgres(db)
 	role := NewRolePostgres(db, enforcer)
 	user := NewUserPostgres(db, enforcer, domain, role)
 	admin := NewAdminPostgres(db, enforcer, domain, role)
 	project := NewProjectPostgres(db, enforcer, role)
-	company := NewCompanyPostgres(db, enforcer, role)
+	company := NewCompanyPostgres(db, enforcer, role, user, wrapper)
 
 	return &Repository{
 		Authorization: NewAuthPostgres(db, enforcer, *user),
@@ -105,5 +114,6 @@ func NewRepository(db *sqlx.DB, enforcer *casbin.Enforcer) *Repository {
 		AuthType:      NewAuthTypePostgres(db),
 		Project:       project,
 		Company:       company,
+		Wrapper:       wrapper,
 	}
 }

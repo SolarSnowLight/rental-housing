@@ -5,6 +5,11 @@ type UserIdentityModel struct {
 	DomainId int
 }
 
+/* A model for user uuid */
+type UserUuidModel struct {
+	Uuid string `json:"uuid" binding:"required" db:"uuid"`
+}
+
 /* A model for working with an instance of user data from the users table */
 type UserModel struct {
 	Id       int    `json:"id" db:"id"`

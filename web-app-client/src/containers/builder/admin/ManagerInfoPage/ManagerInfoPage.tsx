@@ -1,6 +1,9 @@
+/* Библиотеки */
 import React, { useState } from 'react'
 import css from './ManagerInfoPage.module.scss'
 import {toast} from "react-toastify";
+
+/* Компоненты */
 import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
 import ImagePickerRound from "src/components/ImagePicker/ImagePickerRound";
 import Input2 from "src/components/UI-Styled/Input/Input2/Input2";
@@ -8,11 +11,11 @@ import ButtonRed2 from "src/components/UI-Styled/Button/ButtonRed2/ButtonRed2";
 import ListItem from "src/components/list-items/ListItem";
 import buildingDefault from 'src/resources/images/building-default.png'
 import Space from "src/components/Space";
+import ModalManagerToProjects from "src/components/ModalManagerToProjects/ModalManagerToProjects";
 
-
+/* Ресурсы */
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import logoDefault from 'src/resources/images/company-logo-default.png'
-
 import buildingExample1 from 'src/resources/images/examples/building-example-1.webp';
 import buildingExample2 from 'src/resources/images/examples/building-example-2.webp';
 import buildingExample3 from 'src/resources/images/examples/building-example-3.jpg';
@@ -24,16 +27,8 @@ import retrowave1 from 'src/resources/images/examples/retrowave-1.png';
 import hotlineMiami2 from 'src/resources/images/examples/wallpaper-Hotline-Miami-2---Wrong-Number2560x1440.jpg';
 import needMoreAcidMarkII from 'src/resources/images/examples/need_more_acid_mark_ii.jpg';
 import retrowave2 from 'src/resources/images/examples/Retrowave_(2).jpg';
-import ModalManagerToProjects from "src/components/ModalManagerToProjects/ModalManagerToProjects";
-
-
-/*
-todo
-    controlled inputs
-    validation
-
- */
-
+import { useLocation } from 'react-router-dom';
+import MainApi from 'src/constants/addresses/apis/main.api';
 
 
 const projects = [...Array(10).keys()].map(i=>({
@@ -41,7 +36,8 @@ const projects = [...Array(10).keys()].map(i=>({
     image: buildingDefault,
     name: 'Название',
     deliveryDate: 'дата сдачи',
-}))
+}));
+
 const projects2 = [...Array(6).keys()].map(i=>({
     id: i+'',
     builderLogo: logoDefault,
@@ -55,10 +51,29 @@ projects2[0].images = [buildingExample1, buildingExample2, buildingExample3, hom
 const managerId = 'dsknfoqpafjdmlnv'
 
 
+/* Локальные интерфейсы */
+interface ManagerInfoData {
+    name: string;
+    surname: string;
+    nickname: string;
+    patronymic: string;
+    position: string;
+    avatar: string;
+}
 
+interface ManagerInfo {
+    uuid: string;
+    email: string;
+    data: ManagerInfoData;
+    CreatedAt: Date;
+}
 
-
+/**
+ * Функциональный компонент, определяющий вид страницы информации о менеджере
+ * @returns {JSX.Element}
+ */
 const ManagerInfoPage = () => {
+    const managerInfo = (useLocation().state) as ManagerInfo;
 
     const [showModalManagerToProjects, setShowModalManagerToProjects] = useState(false)
 
@@ -69,14 +84,15 @@ const ManagerInfoPage = () => {
         toast.info('Удалить менеджера')
     }
 
-    const [image, setImage] = useState(undefined as File|string|undefined)
+    const [image, setImage] = useState<File | string | undefined>(
+        `${MainApi.main_server}/${managerInfo.data.avatar}`
+    );
 
     const onSubmit = (ev: React.FormEvent) => {
         ev.preventDefault()
         console.log('onSubmit', ev)
         toast.info('Submit')
     }
-
 
     return <>
 
@@ -119,27 +135,42 @@ const ManagerInfoPage = () => {
 
                         <div className={css.widgetBox}>
                             <div className={css.title}>Имя</div>
-                            <Input2 placeholder='Имя' />
+                            <Input2 
+                            placeholder='Имя'
+                            value={managerInfo.data.name}
+                            />
                         </div>
 
                         <div className={css.widgetBox}>
                             <div className={css.title}>Фамилия</div>
-                            <Input2 placeholder='Фамилия' />
+                            <Input2 
+                            placeholder='Фамилия' 
+                            value={managerInfo.data.surname}
+                            />
                         </div>
 
                         <div className={css.widgetBox}>
                             <div className={css.title}>Отчество</div>
-                            <Input2 placeholder='Отчество' />
+                            <Input2 
+                            placeholder='Отчество' 
+                            value={managerInfo.data.patronymic}
+                            />
                         </div>
 
                         <div className={css.widgetBox}>
                             <div className={css.title}>Никнейм</div>
-                            <Input2 placeholder='Никнейм' />
+                            <Input2 
+                            placeholder='Никнейм' 
+                            value={managerInfo.data.nickname}
+                            />
                         </div>
 
                         <div className={css.widgetBox}>
                             <div className={css.title}>email</div>
-                            <Input2 placeholder='email' />
+                            <Input2 
+                            placeholder='email' 
+                            value={managerInfo.email}
+                            />
                         </div>
 
                         <Space h={48}/>
@@ -164,4 +195,5 @@ const ManagerInfoPage = () => {
         </div>
     </>
 }
+
 export default React.memo(ManagerInfoPage) as unknown as typeof ManagerInfoPage

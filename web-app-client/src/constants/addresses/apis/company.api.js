@@ -4,6 +4,7 @@ export const CompanyApiBase = "/company";
 const CompanyApi = {
     get_all_projects: `${CompanyApiBase}${ProjectApiBase}/get/all`,
     get_all_managers: `${CompanyApiBase}/manager/get/all`,
+    get_manager: `${CompanyApiBase}/manager/get`,
     create_project: `${CompanyApiBase}${ProjectApiBase}/create`,
 
     /* CRUD for project in company */

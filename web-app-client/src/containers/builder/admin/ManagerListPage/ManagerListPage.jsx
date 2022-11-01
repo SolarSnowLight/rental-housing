@@ -32,6 +32,17 @@ const ManagerListPage = () => {
         ));
     };
 
+    const navigateToManager = (item) => {
+        navigate(
+            (BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.manager_info),
+            {
+                state: {
+                    ...item
+                }
+            }
+        );
+    }
+
     return (
         <div className={styles["flex-container"]}>
             <div className={styles["flex-item"]}>
@@ -51,14 +62,7 @@ const ManagerListPage = () => {
                                 column1={item.data.name}
                                 img={(item.data.avatar) ? MainApi.main_server + '/' + item.data.avatar.replace('\\', '/') : null}
                                 clickHandler={() => {
-                                    navigate(
-                                        (BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_info),
-                                        {
-                                            state: {
-                                                ...item
-                                            }
-                                        }
-                                    );
+                                    navigateToManager(item);
                                 }}
                             />
                         )

@@ -32,3 +32,8 @@ func (s *CompanyService) CompanyUpdateImage(user userModel.UserIdentityModel, da
 func (s *CompanyService) CompanyUpdate(user userModel.UserIdentityModel, data companyModel.CompanyUpdateModel) (companyModel.CompanyUpdateModel, error) {
 	return s.repo.CompanyUpdate(user, data)
 }
+
+/* Method for get information about define manager */
+func (s *CompanyService) GetManager(user userModel.UserIdentityModel, data companyModel.ManagerUuidModel) (companyModel.ManagerCompanyModel, error) {
+	return s.repo.GetManager(user, data)
+}

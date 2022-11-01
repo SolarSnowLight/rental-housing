@@ -1,8 +1,9 @@
 package company
 
 /* Company UUID model */
-type CompanyUuidModel struct {
-	Uuid string `json:"uuid" binding:"required"`
+type ManagerUuidModel struct {
+	CompanyUuid string `json:"company_uuid" binding:"required"`
+	ManagerUuid string `json:"manager_uuid" binding:"required"`
 }
 
 type CompanyImageModel struct {
