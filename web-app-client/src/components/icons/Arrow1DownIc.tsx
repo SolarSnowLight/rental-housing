@@ -23,4 +23,4 @@ const Arrow1DownIc = ({ mainColor = 'black', size = undefined, ...props }: Custo
         {...restProps}
     />
 }
-export default React.memo(Arrow1DownIc) as typeof Arrow1DownIc
+export default React.memo(Arrow1DownIc) as unknown as typeof Arrow1DownIc

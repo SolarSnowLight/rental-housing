@@ -28,7 +28,7 @@ const getPercent = (value: number, total: number, scale: number = 1) => {
     return utils.numberToPlainString(utils.round(value*100/total,scale))
 }
 const mod = (a: number,b: number) => (a+b)%b
-const fitInto = (min: number, curr: number, max: number) => curr<min ? min : curr>max ? max : curr
+const fitRange = (min: number, curr: number, max: number) => curr<min ? min : curr>max ? max : curr
 const inRange = (min: number, curr: number, max: number) => curr>=min && curr<=max
 
 
@@ -51,7 +51,7 @@ export const utils = {
     numberToPlainString,
     getPercent,
     mod,
-    fitInto,
+    fitRange,
     inRange,
     isArray,
     toggleInSet,

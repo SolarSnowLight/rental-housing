@@ -1,4 +1,4 @@
-import { ReactComponent as SvgComponent } from 'src/resources/images/cross-2.svg'
+import { ReactComponent as SvgComponent } from 'src/resources/images/checkmark.svg'
 import React from 'react'
 
 
@@ -8,7 +8,8 @@ type CustomProps = {
     size?: number|string|undefined
 }
 
-const Cross2Ic = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProps) => {
+
+const CheckmarkIc = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProps) => {
     const { style, ...restProps } = props
     return <SvgComponent
         style={{
@@ -20,4 +21,4 @@ const Cross2Ic = ({ mainColor = 'black', size, ...props }: CustomProps & SvgProp
         {...restProps}
     />
 }
-export default React.memo(Cross2Ic) as unknown as typeof Cross2Ic
+export default React.memo(CheckmarkIc) as unknown as typeof CheckmarkIc

@@ -123,7 +123,7 @@ const HorizontalScrollbar = React.forwardRef<HorizontalScrollbarRef, HorizontalS
         const thumbD = new GetDimensions(thumbBoxRef.current!)
         if (!utils.inRange(thumbD.left, evX, thumbD.right)){
             const trackD = new GetDimensions(trackRef.current!)
-            const newScrollLeft = utils.fitInto(
+            const newScrollLeft = utils.fitRange(
                 0,
                 toScrollScale(evX - thumbBoxProps.width/2 - trackD.left),
                 scrollProps.scrollLeftMax

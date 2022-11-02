@@ -3,6 +3,7 @@ import MainRoute from "src/constants/addresses/routes/main.route";
 import CompanyPage from "src/containers/client/CompanyPage";
 import ObjectsSearchPage from "src/containers/client/ObjectsSearchPage";
 import HomePage from "src/containers/client/HomePage";
+import ChatPage from "src/containers/client/ChatPage";
 
 /* Models */
 import IRouteModel from "src/models/IRouteModel";
@@ -30,6 +31,12 @@ const baseRouteConfig: IRouteModel[] = [
         // URL: /home
         path: MainRoute.home_page,
         element: HomePage
+    },
+
+    {
+        // URL: /chat
+        path: MainRoute.chat,
+        element: ChatPage
     },
 ];
 

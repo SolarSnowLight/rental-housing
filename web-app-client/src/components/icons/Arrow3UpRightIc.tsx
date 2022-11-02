@@ -23,4 +23,4 @@ const Arrow3UpRightIc = ({ mainColor = 'black', size, ...props }: CustomProps & 
         {...restProps}
     />
 }
-export default React.memo(Arrow3UpRightIc) as typeof Arrow3UpRightIc
+export default React.memo(Arrow3UpRightIc) as unknown as typeof Arrow3UpRightIc

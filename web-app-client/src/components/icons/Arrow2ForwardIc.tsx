@@ -23,4 +23,4 @@ const Arrow2ForwardIc = ({ mainColor = 'black', size = undefined, ...props }: Cu
         {...restProps}
     />
 }
-export default React.memo(Arrow2ForwardIc) as typeof Arrow2ForwardIc
+export default React.memo(Arrow2ForwardIc) as unknown as typeof Arrow2ForwardIc
