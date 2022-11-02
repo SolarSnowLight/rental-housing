@@ -1,5 +1,5 @@
 /* Библиотеки */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import css from './ManagerInfoPage.module.scss'
 import {toast} from "react-toastify";
 
@@ -29,6 +29,10 @@ import needMoreAcidMarkII from 'src/resources/images/examples/need_more_acid_mar
 import retrowave2 from 'src/resources/images/examples/Retrowave_(2).jpg';
 import { useLocation } from 'react-router-dom';
 import MainApi from 'src/constants/addresses/apis/main.api';
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';
+import managerInfoAction from 'src/store/actions/Manager/ManagerInfoAction';
+import { managerInfoSlice } from 'src/store/reducers/Manager/ManagerInfoSlice';
+import { getPublicAddress } from 'src/utils/file';
 
 
 const projects = [...Array(10).keys()].map(i=>({
@@ -65,7 +69,7 @@ interface ManagerInfo {
     uuid: string;
     email: string;
     data: ManagerInfoData;
-    CreatedAt: Date;
+    createdAt: Date;
 }
 
 /**
@@ -73,6 +77,10 @@ interface ManagerInfo {
  * @returns {JSX.Element}
  */
 const ManagerInfoPage = () => {
+    const managerInfoSelector = useAppSelector((state) => state.managerInfoReducer);
+    const userSelector = useAppSelector((state) => state.userReducer);
+
+    const dispatch = useAppDispatch();
     const managerInfo = (useLocation().state) as ManagerInfo;
 
     const [showModalManagerToProjects, setShowModalManagerToProjects] = useState(false)
@@ -93,6 +101,16 @@ const ManagerInfoPage = () => {
         console.log('onSubmit', ev)
         toast.info('Submit')
     }
+
+    useEffect(() => {
+        if(userSelector.company){
+            dispatch(managerInfoAction.getProjects({
+                // @ts-ignore
+                company_uuid: userSelector.company.uuid,
+                manager_uuid: managerInfo.uuid
+            }));
+        }
+    }, []);
 
     return <>
 
@@ -183,7 +201,10 @@ const ManagerInfoPage = () => {
 
                     <div className={css.projectsTableBox}>
                         <div className={css.projectsTable}>
-                            { projects.map(it=><ListItem key={it.id} item={{ image: it.image, title: it.name, info: it.deliveryDate }} />) }
+                            { managerInfoSelector.projects && managerInfoSelector.projects.map(it => 
+                                <ListItem key={it.uuid} item={{ image: getPublicAddress(it.logo as string), title: it.title as string, info: 'дата сдачи' }} />
+                             ) 
+                            }
                         </div>
                     </div>
 

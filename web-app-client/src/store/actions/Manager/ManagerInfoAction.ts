@@ -1,13 +1,14 @@
 /* Контекст */
 import { managerInfoSlice } from "src/store/reducers/Manager/ManagerInfoSlice";
+import messageQueueAction from "../MessageQueueAction";
 
 /* HTTP */
 import apiMainServer from "src/http/http.main-server";
 
 /* Константы */
-import MainApi from "src/constants/addresses/apis/main.api";
-import AdminApi from "src/constants/addresses/apis/admin.api";
-import messageQueueAction from "../MessageQueueAction";
+import CompanyApi from "src/constants/addresses/apis/company.api";
+
+/* Модели */
 import {
   IManagerCompanyModel,
   IManagerUuidModel,
@@ -22,9 +23,9 @@ const getProjects = (value: IManagerUuidModel) => async (dispatch) => {
 
   try {
     const response = await apiMainServer.post<IManagerCompanyModel>(
-      AdminApi.get_all_users,
+      CompanyApi.get_manager,
       JSON.stringify({
-        value,
+        ...value,
       })
     );
 
