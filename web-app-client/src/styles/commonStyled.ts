@@ -39,6 +39,14 @@ const centerV = css`
 const centerStart = centerV
 
 
+
+const mobileFullWidth = css`
+  @media (max-width: 550px) {
+    width: 100%;
+  }
+`
+
+
 function offsetToPosition(offset?: string){
     if (offset){
         const parts = offset.trim().split(/\s+/)
@@ -59,4 +67,5 @@ export const commonStyled = {
     center,
     centerV,
     centerStart,
+    mobileFullWidth,
 }

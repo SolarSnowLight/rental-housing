@@ -1,20 +1,18 @@
 import React from 'react'
-import Space from 'src/components/Space'
 import css from './ChatPage.module.scss'
 import Chat from "./components/Chat";
+import {useMediaQuery} from "@mui/material";
 
 
 const ChatPage = () => {
 
+    const mobile = useMediaQuery('(max-width: 900px)');
+
     return <div className={css.page}>
 
-        <Space h={32}/>
-
-        <div className={css.titleBox}>
+        { !mobile && <div className={css.titleBox}>
             <div className={css.title}>Чат</div>
-        </div>
-
-        <Space h={32}/>
+        </div> }
 
         <div className={css.chatFrame}>
             <Chat/>

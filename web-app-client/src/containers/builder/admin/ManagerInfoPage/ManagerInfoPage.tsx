@@ -52,7 +52,7 @@ const projects2 = [...Array(6).keys()].map(i=>({
     isManagerInProject: !!(i%2),
 }))
 projects2[0].images = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
-const managerId = 'dsknfoqpafjdmlnv'
+const managerId = 'some-manager-id'
 
 
 /* Локальные интерфейсы */
@@ -81,7 +81,7 @@ const ManagerInfoPage = () => {
     const userSelector = useAppSelector((state) => state.userReducer);
 
     const dispatch = useAppDispatch();
-    const managerInfo = (useLocation().state) as ManagerInfo;
+    const managerInfo = (useLocation().state) as ManagerInfo|null;
 
     const [showModalManagerToProjects, setShowModalManagerToProjects] = useState(false)
 
@@ -92,8 +92,8 @@ const ManagerInfoPage = () => {
         toast.info('Удалить менеджера')
     }
 
-    const [image, setImage] = useState<File | string | undefined>(
-        `${MainApi.main_server}/${managerInfo.data.avatar}`
+    const [image, setImage] = useState<File | string | null | undefined>(
+        `${MainApi.main_server}/${managerInfo?.data?.avatar}`
     );
 
     const onSubmit = (ev: React.FormEvent) => {
@@ -107,7 +107,8 @@ const ManagerInfoPage = () => {
             dispatch(managerInfoAction.getProjects({
                 // @ts-ignore
                 company_uuid: userSelector.company.uuid,
-                manager_uuid: managerInfo.uuid
+                // @ts-ignore
+                manager_uuid: managerInfo?.uuid
             }));
         }
     }, []);
@@ -155,7 +156,7 @@ const ManagerInfoPage = () => {
                             <div className={css.title}>Имя</div>
                             <Input2 
                             placeholder='Имя'
-                            value={managerInfo.data.name}
+                            value={managerInfo?.data?.name}
                             />
                         </div>
 
@@ -163,7 +164,7 @@ const ManagerInfoPage = () => {
                             <div className={css.title}>Фамилия</div>
                             <Input2 
                             placeholder='Фамилия' 
-                            value={managerInfo.data.surname}
+                            value={managerInfo?.data?.surname}
                             />
                         </div>
 
@@ -171,7 +172,7 @@ const ManagerInfoPage = () => {
                             <div className={css.title}>Отчество</div>
                             <Input2 
                             placeholder='Отчество' 
-                            value={managerInfo.data.patronymic}
+                            value={managerInfo?.data?.patronymic}
                             />
                         </div>
 
@@ -179,7 +180,7 @@ const ManagerInfoPage = () => {
                             <div className={css.title}>Никнейм</div>
                             <Input2 
                             placeholder='Никнейм' 
-                            value={managerInfo.data.nickname}
+                            value={managerInfo?.data?.nickname}
                             />
                         </div>
 
@@ -187,7 +188,7 @@ const ManagerInfoPage = () => {
                             <div className={css.title}>email</div>
                             <Input2 
                             placeholder='email' 
-                            value={managerInfo.email}
+                            value={managerInfo?.email}
                             />
                         </div>
 

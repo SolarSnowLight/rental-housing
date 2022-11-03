@@ -9,7 +9,7 @@ import ObjectCard2 from "src/components/ObjectCard2/ObjectCard2";
 import ButtonGreen2 from "src/components/UI-Styled/Button/ButtonGreen2/ButtonGreen2";
 import ButtonGray2 from "src/components/UI-Styled/Button/ButtonGray2/ButtonGray2";
 import {toast} from "react-toastify";
-import {useSet} from "../../hooks/useSet";
+import {useSet} from "src/hooks/useSet";
 
 
 
@@ -24,10 +24,22 @@ type Project = {
     builderLogo?: string|undefined // ссылка на лого застройщика
     images?: string[] | null | undefined // массив ссылок на изображения
     name: string
-    year: string|number
-    objectsCnt: number
-    isManagerInProject: boolean
+    year?: string|number
+    objectsCnt?: number
+    isManagerInProject?: boolean
 }
+type ProjectApi = {
+    Uuid: string
+    Data: {
+        Logo: string
+        Title: string
+    }
+}
+export const ProjectApiToProject = (projectApi: ProjectApi): Project => ({
+    id: projectApi.Uuid,
+    images: [projectApi.Data.Logo],
+    name: projectApi.Data.Title,
+})
 
 
 export type ModalManagerToProjectsProps = {

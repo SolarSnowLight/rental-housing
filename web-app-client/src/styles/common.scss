@@ -47,7 +47,7 @@
 
 
 @mixin mobileFullWidth {
-    @media screen and (max-width: 550px) {
+    @media (max-width: 550px) {
         width: 100%;
     }
 }

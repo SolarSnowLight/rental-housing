@@ -7,8 +7,8 @@ import Cross2Ic from "src/components/icons/Cross2Ic";
 
 
 export type ImagePickerRoundProps = JSX.IntrinsicElements['div'] & {
-    image?: File|string|undefined
-    setImage?: ((image:File|undefined)=>void) | undefined
+    image?: File|string|null|undefined
+    setImage?: ((image:File|null|undefined)=>void) | undefined
 }
 
 const ImagePickerRound = React.forwardRef<HTMLDivElement, ImagePickerRoundProps>((
@@ -24,7 +24,7 @@ const ImagePickerRound = React.forwardRef<HTMLDivElement, ImagePickerRoundProps>
         setImage(undefined)
     }
 
-    const [imageUrl, setImageUrl] = useState(undefined as undefined|string)
+    const [imageUrl, setImageUrl] = useState(undefined as string|null|undefined)
     useEffect(()=>{
         if (image instanceof File){
             (async()=>{
@@ -43,11 +43,13 @@ const ImagePickerRound = React.forwardRef<HTMLDivElement, ImagePickerRoundProps>
         }
     }
 
+
+
     return <Frame ref={forwardedRef as any} {...props}>
 
         <FileInput ref={fileInputRef} type='file' accept='image/*' onInput={onFileInput}/>
 
-        { image && <Image src={imageUrl} alt='Profile photo' onClick={onClick}/> }
+        { image && <Image src={imageUrl??undefined} alt='Profile photo' onClick={onClick}/> }
         { image && <DelBtn onClick={onDelete}/> }
 
         { !image && <Border/> }

@@ -15,8 +15,8 @@ export type ObjectCardProps = {
         builderLogo?: string|undefined // ссылка на лого застройщика
         images?: string[] | empty // массив ссылок на изображения
         name: string
-        year: string|number
-        objectsCnt: number
+        year?: string|number
+        objectsCnt?: number
     }
 }
 
@@ -62,8 +62,8 @@ const ObjectCard2 = (props: ObjectCardProps) => {
         { b.builderLogo && <img className={css.logo} src={b.builderLogo} alt='Builder Logo'/> }
 
         <div className={css.name}>{b.name}</div>
-        <div className={css.year}>Сдача {b.year}</div>
-        <div className={css.count}>{b.objectsCnt} {wordUtils.objectsPlural(b.objectsCnt)}</div>
+        { b.year && <div className={css.year}>Сдача {b.year}</div> }
+        { b.objectsCnt && <div className={css.count}>{b.objectsCnt} {wordUtils.objectsPlural(b.objectsCnt)}</div> }
     </div>
 }
 export default React.memo(ObjectCard2) as unknown as typeof ObjectCard2
