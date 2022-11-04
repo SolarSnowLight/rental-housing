@@ -26,9 +26,9 @@ const round = (n: number, scale: number = 0) => {
 };
 
 /**
- * Перевод числа в дату
+ * Конвертация значения типа number в обычную строку (без сокращений типа 2e+67)
  * @param n Число
- * @returns {string} Результат с языкозависимым представлением даты
+ * @returns {string} Число в виде обычной строки
  */
 const numberToPlainString = (n: number) => {
   return n.toLocaleString(["fullwide", "en-Us"], {
@@ -77,9 +77,9 @@ const inRange = (min: number, curr: number, max: number) =>
   curr >= min && curr <= max;
 
 /**
- * Проверка существования свойства прототипа конструктора где-либо в цепочке прототипов объекта
- * @param obj Объект
- * @returns {boolean} Результат проверки
+ * Проверка является ли переданное значение массивом
+ * @param obj any
+ * @returns {boolean} true если obj является массивом
  */
 const isArray = <T, E>(obj: T | E[]): obj is Array<E> => obj instanceof Array;
 
