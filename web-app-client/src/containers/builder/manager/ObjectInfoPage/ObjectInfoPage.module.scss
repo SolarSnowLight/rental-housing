@@ -30,23 +30,31 @@
 
 
 
-.pageTopContainer {
+.objectFullInfoContainer {
     @extend .pageElement;
     @extend .rowWrap;
     gap: 64px;
     justify-content: space-between;
+    @media (max-width: 1400px) {
+        @include common.col;
+    }
 
     .photosContainer {
         @extend .col;
         min-width: 400px;
+        flex: 1;
+        align-items: center;
 
         .objectName {
+            width: 100%;
+            justify-content: start;
             font: 900 48px var(--font-family-text);
             color: black;
         }
 
         .developerAndAddress {
             @extend .rowWrap;
+            width: 100%;
             justify-content: space-between;
             gap: 8px 200px;
 
@@ -62,7 +70,52 @@
         }
 
 
+
         .imagesContainer {
+            min-width: 600px;
+            //max-width: calc(401px + 16px + 401px);
+            max-width: 1000px;
+            height: fit-content;
+            @extend .col;
+            gap: 16px;
+            flex: 1;
+
+            .imagesRow {
+                @extend .row;
+                gap: 16px;
+
+                .imageWrapper {
+                    @extend .center;
+                    grid: 'center';
+                    flex: 1;
+
+                    .count {
+                        grid-area: center;
+                        font: 500 36px var(--font-family-text);
+                        color: black;
+                        cursor: pointer;
+                    }
+                }
+                .normalImage {
+                    grid-area: center;
+                    //width: 401px; height: 285px;
+                    width: 100%;
+                    aspect-ratio: 401/285;
+                    object-position: center;
+                    object-fit: cover;
+                    cursor: pointer;
+                }
+                .smallImage {
+                    @extend .normalImage;
+                    //width: 262px; height: 151px;
+                    aspect-ratio: 262/151;
+                }
+            }
+        }
+
+
+
+        /*.imagesContainer {
             width: calc(401px + 16px + 401px); height: fit-content;
             @extend .rowWrap;
             gap: 16px;
@@ -74,7 +127,8 @@
 
             .normalImage {
                 grid-area: center;
-                width: 401px; height: 285px;
+                //width: 401px; height: 285px;
+                flex: 1; aspect-ratio: 401/285;
                 background-position: center;
                 background-size: cover;
                 background-repeat: no-repeat;
@@ -82,7 +136,8 @@
             }
             .smallImage {
                 @extend .normalImage;
-                width: 262px; height: 151px;
+                //width: 262px; height: 151px;
+                flex: 1; aspect-ratio: 262/151;
             }
 
             .count {
@@ -91,14 +146,14 @@
                 color: black;
                 cursor: pointer;
             }
-        }
+        }*/
     }
 
     .infoContainer {
         @extend .col;
         gap: 48px;
         min-width: 400px;
-        flex-grow: 1;
+        flex: 1;
     }
 }
 

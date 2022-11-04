@@ -21,7 +21,7 @@ import {useSet} from "src/hooks/useSet";
 }*/
 type Project = {
     id: string
-    builderLogo?: string|undefined // ссылка на лого застройщика
+    logo?: string|undefined // ссылка на лого застройщика
     images?: string[] | null | undefined // массив ссылок на изображения
     name: string
     year?: string|number
@@ -31,11 +31,14 @@ type Project = {
 type ProjectApi = {
     Uuid: string
     Data: {
-        Logo: string
-        Title: string
+        Logo: string // относительная ссылка на главное изображение проекта (использовать getPublicAddress для получения абсолютной)
+        Title: string // навзание проекта
+        Description: string // описание проекта
+        Managers: string[] // array of manager emails
     }
+    CreatedAt: string // время создания проекта, пример: '2022-10-29T09:12:07.011641Z', таймзона UTC+8
 }
-export const ProjectApiToProject = (projectApi: ProjectApi): Project => ({
+export const projectApiToProject = (projectApi: ProjectApi): Project => ({
     id: projectApi.Uuid,
     images: [projectApi.Data.Logo],
     name: projectApi.Data.Title,

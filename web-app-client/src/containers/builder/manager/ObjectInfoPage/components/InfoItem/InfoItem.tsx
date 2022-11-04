@@ -35,6 +35,7 @@ Frame = React.memo(Frame) as unknown as typeof Frame
 
 let Title = styled.div`
   //flex-grow: 1;
+  min-width: 200px;
   font: 500 18px var(--font-family-text);
   letter-spacing: 0.05em;
   text-transform: uppercase;

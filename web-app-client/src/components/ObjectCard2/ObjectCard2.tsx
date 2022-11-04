@@ -10,29 +10,30 @@ import {commonStyled} from "src/styles/commonStyled";
 
 type empty = null|undefined
 
-export type ObjectCardProps = {
-    object: {
-        builderLogo?: string|undefined // ссылка на лого застройщика
-        images?: string[] | empty // массив ссылок на изображения
-        name: string
-        year?: string|number
-        objectsCnt?: number
-    }
+export type ObjectInCard = {
+    logo?: string|empty // ссылка на лого застройщика
+    images?: string[] | empty // массив ссылок на изображения
+    name: string
+    year?: string|number
+    objectsCnt?: number
 }
-
+export type ObjectCardProps = {
+    object: ObjectInCard
+}
 const ObjectCard2 = (props: ObjectCardProps) => {
-    const b = props.object
-    b.images ??= [buildingDefault]
+    const o = { ...props.object }
+    o.images ??= [buildingDefault]
 
+    const elementsCnt = o.images.length
     const containerRef = useRef<HTMLDivElement>(null)
     const contentRef = useRef<HTMLDivElement>(null)
-    const [scrollProps, onContainerScroll, setContainerScroll, scrollToElementByIndex] = useGalleryScrollbar(containerRef, contentRef, b.images.length)
+    const [scrollProps, onContainerScroll, setContainerScroll, scrollToElementByIndex] = useGalleryScrollbar(containerRef, contentRef, elementsCnt)
 
     return <div className={css.frame}>
 
         <div className={css.imagesFrame} ref={containerRef} onScroll={onContainerScroll}>
             <div className={css.contentContainer} ref={contentRef}>
-                { b.images.map(it=><div key={it} className={css.imageContainer}>
+                { o.images.map(it=><div key={it} className={css.imageContainer}>
                     <img className={css.imageBgc} src={it} alt={'Building'}/>
                     <div className={css.blur}/>
                     <img className={css.image} src={it} alt={'Building'}/>
@@ -41,10 +42,10 @@ const ObjectCard2 = (props: ObjectCardProps) => {
         </div>
 
         <div className={css.controlElementsContainer}>
-            <GalleryHorizontalScrollbar className={css.scroll}
+            { elementsCnt>=2 && <GalleryHorizontalScrollbar className={css.scroll}
                                         scrollProps={scrollProps}
                                         setContainerScroll={setContainerScroll}
-                                        scrollToElementByIndex={scrollToElementByIndex}/>
+                                        scrollToElementByIndex={scrollToElementByIndex}/> }
 
             {/*<HoverDetectorLeft />
             <ArrowBoxLeft
@@ -59,11 +60,11 @@ const ObjectCard2 = (props: ObjectCardProps) => {
             </ArrowBoxRight>*/}
         </div>
 
-        { b.builderLogo && <img className={css.logo} src={b.builderLogo} alt='Builder Logo'/> }
+        { o.logo && <img className={css.logo} src={o.logo} alt='Builder Logo'/> }
 
-        <div className={css.name}>{b.name}</div>
-        { b.year && <div className={css.year}>Сдача {b.year}</div> }
-        { b.objectsCnt && <div className={css.count}>{b.objectsCnt} {wordUtils.objectsPlural(b.objectsCnt)}</div> }
+        <div className={css.name}>{o.name}</div>
+        { o.year && <div className={css.year}>Сдача {o.year}</div> }
+        { o.objectsCnt && <div className={css.count}>{o.objectsCnt} {wordUtils.objectsPlural(o.objectsCnt)}</div> }
     </div>
 }
 export default React.memo(ObjectCard2) as unknown as typeof ObjectCard2

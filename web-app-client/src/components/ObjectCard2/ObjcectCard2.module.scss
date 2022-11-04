@@ -1,5 +1,5 @@
 
-@use '../../styles/common';
+@use 'src/styles/common';
 
 
 
@@ -28,7 +28,7 @@
             display: flex;
 
             .imageContainer {
-                width: 400px; height: 240px;
+                width: 398px; height: 240px;
                 position: relative;
 
                 .imageBgc {

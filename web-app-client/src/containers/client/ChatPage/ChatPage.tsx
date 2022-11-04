@@ -1,12 +1,12 @@
 import React from 'react'
 import css from './ChatPage.module.scss'
 import Chat from "./components/Chat";
-import {useMediaQuery} from "@mui/material";
+import {useMedia} from "src/hooks/useMedia";
 
 
 const ChatPage = () => {
 
-    const mobile = useMediaQuery('(max-width: 900px)');
+    const mobile = useMedia('(max-width: 900px)')
 
     return <div className={css.page}>
 

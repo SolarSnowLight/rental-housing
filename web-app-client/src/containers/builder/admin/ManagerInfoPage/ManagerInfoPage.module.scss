@@ -16,7 +16,7 @@
 .pageElement {
     width: clamp(400px, 100%, 1920px);
     padding: 0 64px 0 64px;
-    @media screen and (max-width: 900px) {
+    @media (max-width: 900px) {
         padding: 0 16px 0 16px;
     }
 }
@@ -56,8 +56,12 @@
 
 .third {
     @extend .pageElement;
-    @extend .rowWrap;
+    @extend .row;
     gap: 30px;
+    @media (max-width: 1000px) {
+        @include common.col;
+        align-items: center;
+    }
 
     .inputBox {
         @extend .col;
@@ -88,7 +92,6 @@
         height: 514px;
         overflow-y: auto;
         @extend .col;
-        align-self: stretch;
         border: 1px solid #8B8B8B;
         background: #FFFFFF;
 

@@ -25,6 +25,7 @@ import retrowave1 from 'src/resources/images/examples/retrowave-1.png';
 import hotlineMiami2 from 'src/resources/images/examples/wallpaper-Hotline-Miami-2---Wrong-Number2560x1440.jpg';
 import needMoreAcidMarkII from 'src/resources/images/examples/need_more_acid_mark_ii.jpg';
 import retrowave2 from 'src/resources/images/examples/Retrowave_(2).jpg';
+import { useMedia } from 'src/hooks/useMedia';
 
 
 const projectInfo = {
@@ -56,11 +57,12 @@ const objects = [...Array(6).keys()].map(i=>({
     objectsCnt: i+1,
 }))
 objects[0].images = [buildingExample1, buildingExample2, buildingExample3, homePage, imagePlaceholder, mainPageBgc, neonSunrise, retrowave1, hotlineMiami2, needMoreAcidMarkII, retrowave2]
+objects[1].images = [buildingExample2]
 
 
 const ProjectInfoPage = () => {
 
-    const media = useMediaQuery('screen and (max-width: 900px)');
+    const media = useMedia('(max-width: 900px)');
 
     const onEditProjectInfo = () => {
         toast.info('Редактировать информацию')

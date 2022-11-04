@@ -146,12 +146,15 @@ const ObjectInfoPage = () => {
     const onCloseModal = () => setModalImageId(undefined)
 
     return <>
+
         { modalImageId && <ModalImageViewer onClose={onCloseModal} images={photos} defaultSelectedImageId={modalImageId}/> }
+
         <div className={css.page}>
 
             <Space h={64}/>
 
-            <div className={css.pageTopContainer}>
+            <div className={css.objectFullInfoContainer}>
+
                 <div className={css.photosContainer}>
 
                     <div className={css.objectName}>Название объекта</div>
@@ -166,19 +169,38 @@ const ObjectInfoPage = () => {
                     <Space h={34}/>
 
                     <div className={css.imagesContainer}>
+                        <div className={css.imagesRow}>
+                            { photos.slice(0,2).map(it=><div className={css.imageWrapper} onClick={()=>onImage(it.id)}>
+                                <img className={css.normalImage} src={it.url}/>
+                            </div>) }
+                        </div>
+                        <div className={css.imagesRow}>
+                            { photos.slice(2,4).map(it=><div className={css.imageWrapper} onClick={()=>onImage(it.id)}>
+                                <img className={css.smallImage} src={it.url}/>
+                            </div>) }
+                            { photos[4] && <div className={css.imageWrapper} onClick={()=>onImage(photos[4].id)}>
+                                <img className={css.smallImage} src={photos[4].url}/>
+                                <div className={css.count}>+{photos.length-4}</div>
+                            </div> }
+                        </div>
+                    </div>
+
+                    {/*<div className={css.imagesContainer}>
                         { photos.slice(0,5).map((it,i)=><div key={it.id} className={css.imageFrame} onClick={()=>onImage(it.id)}>
                             <div className={i<2 ? css.normalImage : css.smallImage} style={{ backgroundImage: `url(${it.url})`}} />
                             { i===4 && <div className={css.count}>+{photos.length-4}</div> }
                         </div>)}
-                    </div>
+                    </div>*/}
 
                 </div>
+
                 <div className={css.infoContainer}>
                     <InfoItem title={'Срок сдачи'} items={['Март 2023 года']}/>
                     <InfoItem title={'Оплата'} items={['ДКП','Ипотека','Рассрочка: 70% первый взнос, 30% на 3 месяца']}/>
                     <InfoItem title={'Характеристики'} items={['Бизнес-класс','Управляющая компания','Закрытая охраняемая территория','1,5 км до моря','Черновая отделка','Вид на горы, море, парк, атриум']}/>
                     <InfoItem title={'Коммуникации'} items={['Центральное отопление','Водоснабжение и канализация','Электричество']}/>
                 </div>
+
             </div>
 
             <Space h={106}/>

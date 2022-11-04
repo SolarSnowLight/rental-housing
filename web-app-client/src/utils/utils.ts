@@ -95,6 +95,10 @@ const toggleInSet = <E>(set: Set<E>, element: E) => {
   return set;
 };
 
+
+export type empty = null|undefined
+
+
 export const utils = {
   readAsUrl,
   round,

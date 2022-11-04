@@ -1,6 +1,6 @@
 import React, {useState, useMemo} from "react"
 import css from './Chat.module.scss'
-import {Autocomplete, useMediaQuery} from "@mui/material";
+import {Autocomplete} from "@mui/material";
 import SearchInput1 from "./components/SearchInput1/SearchInput1";
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import ChatListItem from "./components/ChatListItem/ChatListItem";
@@ -12,6 +12,7 @@ import Plane1Ic from "src/components/icons/Plane1Ic";
 import {commonStyled} from "src/styles/commonStyled";
 import Arrow2ForwardIc from "src/components/icons/Arrow2ForwardIc";
 import Space from "src/components/Space";
+import {useMedia} from "src/hooks/useMedia";
 
 
 
@@ -29,7 +30,7 @@ const hasMessages = false
 
 const Chat = () => {
 
-    const mobile = useMediaQuery('(max-width: 900px)');
+    const mobile = useMedia('(max-width: 900px)')
 
     // selected chat
     const [selectedId, setSelectedId] = useState(undefined as string|undefined)
