@@ -1,15 +1,16 @@
 /* Libraries */
 import Avatar from '@mui/material/Avatar';
 import React from 'react';
+import { Box } from '@mui/system';
 
 /* Images */
 import defaultProfileImg from 'src/resources/images/default_profile.png';
 
 /* Styles */
-import styles from './ListItem.module.css';
+import styles from './ProjectCard.module.scss';
 
 
-const ListItem = ({ column1 = '', column2 = '', column3 = '', clickHandler = () => { }, img = { defaultProfileImg } }) => {
+const ProjectCard = ({ column1 = '', column2 = '', column3 = '', clickHandler = () => { }, img = { defaultProfileImg } }) => {
     const columnCheck = (column) => {
         if (column.length <= 0) {
             return false;
@@ -19,12 +20,19 @@ const ListItem = ({ column1 = '', column2 = '', column3 = '', clickHandler = () 
     };
 
     return (
-        <div className={styles["flex-container"]}>
+        <div
+            className={styles["flex-container"]}
+            onClick={() => {
+                clickHandler();
+            }}
+        >
             <div className={styles["flex-item"]}>
                 <Avatar
-                    sx={{ width: '4.688em', height: '4.688em' }}
-                    onClick={() => {
-                        clickHandler();
+                    sx={{
+                        width: '4.688em',
+                        height: '4.688em',
+                        border: '1px',
+                        borderColor: 'black'
                     }}
                     src={(img) ? img : defaultProfileImg}
                 />
@@ -48,9 +56,6 @@ const ListItem = ({ column1 = '', column2 = '', column3 = '', clickHandler = () 
                     <div>
                         <span
                             className={styles["text-span"]}
-                            onClick={() => {
-                                clickHandler();
-                            }}
                         >{column2}</span>
                     </div>
                 }
@@ -61,9 +66,6 @@ const ListItem = ({ column1 = '', column2 = '', column3 = '', clickHandler = () 
                     <div>
                         <span
                             className={styles["text-span"]}
-                            onClick={() => {
-                                clickHandler();
-                            }}
                         >{column3}</span>
                     </div>
                 }
@@ -72,4 +74,4 @@ const ListItem = ({ column1 = '', column2 = '', column3 = '', clickHandler = () 
     )
 }
 
-export default React.memo(ListItem);
+export default React.memo(ProjectCard);

@@ -1,12 +1,12 @@
-/* Libraries */
+/* Библиотеки */
 import React from 'react';
+import { Avatar } from '@mui/material';
 
-/* Images */
+/* Ресурсы */
 import company_logo from 'src/resources/images/company_logo.svg';
 
-/* Styles */
-import styles from './ProjectInfo.module.css';
-
+/* Стили */
+import styles from './ProjectInfo.module.scss';
 
 const ProjectInfo = ({
     logo = company_logo,
@@ -18,24 +18,25 @@ const ProjectInfo = ({
     География присутствия: Москва, Санкт-Петербург, Ленинградская область, Архангельск, Северодвинск.`}) => {
 
     return (
-        <div className={styles['project-wrapper__header']}>
-            <div className={styles['project-info__header']}>
-                <div className={styles['project-info-title__header']}>
-                    <img 
-                    src={logo} 
-                    className={styles["logo"]}
+        <div className={styles["wrapper"]}>
+            <div className={styles['flex-container']}>
+                <div className={styles['flex-item']}>
+                    <Avatar
+                        sx={{
+                            width: '4.688em',
+                            height: '4.688em',
+                            border: '1px',
+                            borderColor: 'black'
+                        }}
+                        src={logo}
                     />
-                    <div>
-                        <div>
-                            <span className={styles['text-project-title']}>{title}</span>
-                        </div>
-                        <div>
-                            <span className={styles['text-project-contact__header']}>{company}</span>
-                        </div>
+                    <div className={styles['flex-subitem']}>
+                        <span className={styles['text-project-title']}>{title}</span>
+                        <span className={styles['text-project-contact__header']}>{company}</span>
                     </div>
                 </div>
-                <div className={styles['project-description__header']}>
-                    <span className={styles['text-project-description']}>
+                <div className={styles['flex-item']}>
+                    <span className='span__text__black '>
                         {description}
                     </span>
                 </div>

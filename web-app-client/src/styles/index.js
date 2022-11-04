@@ -20,11 +20,11 @@ export const sxTextField = {
     border: 'none',
     width: '18em',
     '&:hover fieldset': {
-        border: '1px solid #424041 !important',
+        border: '1px solid #424041',
         borderRadius: '0px'
     },
     'fieldset': {
-        border: '1px solid #424041 !important',
+        border: '1px solid #424041',
         borderRadius: '0px'
     },
 }

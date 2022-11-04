@@ -8,11 +8,19 @@
     gap: 10px;
     flex-wrap: wrap;
     width: clamp(40em, 40%, 45em);
-    border-bottom: 1px solid var(--gray);
+    border: 1px solid var(--color-dark-purple);
+    border-radius: 1px;
 
-    /*.flex-item:nth-child(n + 3) {
-        background-color: yellow;
-    }*/
+    .flex-item:nth-child(n + 1) {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        padding-left: 0.5em;
+    }
+}
+
+.flex-container:hover {
+    background-color: var(--color-light-green);
+    cursor: pointer;
 }
 
 .flex-item {

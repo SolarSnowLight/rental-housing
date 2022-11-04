@@ -1,42 +1,43 @@
-.project-wrapper__header {
-  margin-top: 2em;
-  display: grid;
-  position: relative;
-  width: 100%;
-  height: max-content;
-  grid-auto-flow: row;
+.wrapper {
+  margin-top: 32px;
+  display: flex;
   justify-content: center;
 }
 
-.project-info__header {
-  margin-left: 6em;
-  margin-right: 6em;
-  display: grid;
-  position: relative;
-  justify-content: center;
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   width: 43.75em;
-  height: max-content;
-  grid-auto-flow: row;
+  gap: 16px;
 }
-
-.project-info-title__header {
-  display: grid;
-  position: relative;
-  grid-auto-flow: column;
-  place-items: center;
+.flex-container .flex-item:first-child {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 64px;
+  gap: 16px;
+}
+.flex-container .flex-item:last-child {
+  display: flex;
+  justify-content: center;
+}
+@media screen and (max-width: 768px) {
+  .flex-container {
+    justify-content: center;
+    width: 25em;
+  }
 }
 
-.project-description__header {
-  margin-top: 16px;
-  margin-right: 6em;
-  grid-auto-flow: row;
-  align-items: center;
-  display: grid;
-  position: relative;
-  height: max-content;
-  width: 100%;
+.flex-subitem {
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (max-width: 768px) {
+  .flex-subitem {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .text-project-title {
@@ -45,7 +46,6 @@
   font-weight: 600;
   font-size: 48px;
   line-height: 62px;
-
   color: #000000;
 }
 
@@ -55,22 +55,8 @@
   font-weight: 450;
   font-size: 18px;
   line-height: 150%;
-
   letter-spacing: 0.05em;
-
   color: #8b8b8b;
-}
-
-.text-project-description {
-  font-family: "Futura PT";
-  font-style: normal;
-  font-weight: 450;
-  font-size: 18px;
-  line-height: 150%;
-
-  letter-spacing: 0.05em;
-
-  color: #000000;
 }
 
 .logo {

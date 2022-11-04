@@ -7,7 +7,7 @@ import companyAction from 'src/store/actions/CompanyAction';
 
 /* Components */
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
-import ListItemComponent from 'src/components/Project/ListItem';
+import ListItemComponent from 'src/components/Project/ProjectCard';
 
 /* Hooks */
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';

@@ -4,7 +4,7 @@ import React from "react";
 import styles from './ManagerListPage.module.scss';
 
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
-import ListItemComponent from 'src/components/Project/ListItem';
+import ListItemComponent from 'src/components/Project/ProjectCard';
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { useNavigate } from 'react-router-dom';

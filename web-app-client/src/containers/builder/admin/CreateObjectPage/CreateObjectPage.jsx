@@ -1,15 +1,13 @@
 /* Libraries */
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextField as TextFieldMUI, Button, Autocomplete as AutocompleteMUI } from '@mui/material';
-import ImageUploading from "react-images-uploading";
+import { TextField as TextFieldMUI, Autocomplete as AutocompleteMUI } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useFormState, Controller, useForm } from 'react-hook-form';
+import { useFormState, useForm } from 'react-hook-form';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { FormControl, MenuItem } from '@mui/material';
 
 /* Context */
 import { authSlice } from 'src/store/reducers/AuthSlice';
@@ -52,6 +50,7 @@ import messageQueueAction from 'src/store/actions/MessageQueueAction';
  */
 const CreateObjectPage = () => {
     const userSelector = useAppSelector((state) => state.userReducer);
+    const projectSelector = useAppSelector((state) => state.projectReducer);
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
     const [modalActive, setModalActive] = useState(false);
@@ -109,6 +108,10 @@ const CreateObjectPage = () => {
 
     const changeHandler = (key, value) => {
         setForm({ ...form, [key]: value });
+    };
+
+    const onSubmit = (value) => {
+        
     };
 
     // Charactetistic
@@ -238,6 +241,7 @@ const CreateObjectPage = () => {
         setExcelFile(acceptedFiles[0]);
     }, []);
 
+    // Использование хука useDropzone
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
@@ -248,7 +252,7 @@ const CreateObjectPage = () => {
     });
 
     return (
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
             {/* Выбор метки на карте для позиционирования объекта */}
             <LabelSelectComponent active={modalActive} setActive={setModalActive}>
                 {
