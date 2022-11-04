@@ -4,13 +4,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IManagerCompanyModel, IManagerProjectInfoModel } from "src/models/Manager/IManagerCompany";
 
 /* Локальные интерфейсы */
-interface ManagerInfoSlice {
+interface IManagerInfoSlice {
     projects: IManagerProjectInfoModel[] | null | undefined,
     isLoading: boolean
 }
 
 /* Базовое состояние текущего слайса */
-const initialState: ManagerInfoSlice = {
+const initialState: IManagerInfoSlice = {
     projects: null,
     isLoading: false
 };
@@ -20,20 +20,20 @@ export const managerInfoSlice = createSlice({
     name: "manager_info_slice",
     initialState,
     reducers: {
-        loadingStart(state: ManagerInfoSlice) {
+        loadingStart(state: IManagerInfoSlice) {
             state.isLoading = true;
         },
 
-        loadingEnd(state: ManagerInfoSlice) {
+        loadingEnd(state: IManagerInfoSlice) {
             state.isLoading = false;
         },
 
-        clear(state: ManagerInfoSlice) {
+        clear(state: IManagerInfoSlice) {
             state.projects = null;
             state.isLoading = false;
         },
 
-        setProjects(state: ManagerInfoSlice, action: PayloadAction<IManagerCompanyModel>) {
+        setProjects(state: IManagerInfoSlice, action: PayloadAction<IManagerCompanyModel>) {
             state.isLoading = false;
 
             if (action.payload) {

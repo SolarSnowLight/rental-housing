@@ -1,4 +1,4 @@
-/* Libraries */
+/* Библиотеки */
 import React, { useState, useEffect, useCallback } from 'react';
 import { TextField as TextFieldMUI, Autocomplete as AutocompleteMUI } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
@@ -9,10 +9,10 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
-/* Context */
-import { authSlice } from 'src/store/reducers/AuthSlice';
+/* Контекст */
+import messageQueueAction from 'src/store/actions/MessageQueueAction';
 
-/* Components */
+/* Компоненты */
 import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
 import ProjectInfo from 'src/components/Company/ProjectInfo/ProjectInfo';
@@ -24,25 +24,47 @@ import TextField from 'src/components/UI/TextField/TextField';
 import Select from 'src/components/UI/Select';
 import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
 
-/* Hooks */
+/* Хуки */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import useHttp from 'src/hooks/http.hook';
 
-/* Constants */
+/* Утилиты */
+import { utils } from 'src/utils/utils';
+
+/* Константы */
 import MainApi from 'src/constants/addresses/apis/main.api';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 import cities from 'src/data/russian-cities.json';
 import TimeUploadValue from 'src/constants/values/time.upload.value';
 
-/* Styles */
+/* Стили */
 import styles from './CreateObjectPage.module.scss';
 import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles';
 import ImageUpload from 'src/components/UI/ImageUpload';
-import messageQueueAction from 'src/store/actions/MessageQueueAction';
+import { dataURLToBlob } from 'src/utils/file';
 
+/* Базовые данные */
+const defaultTokens = [
+    [
+        { value: "Номер", type_component: "text", position: '0;0' },
+        { value: "Адрес", type_component: "text", position: '0;1' }
+    ],
+    [
+        { value: "Ширина", type_component: "text", position: '1;0' },
+        { value: "Статус", type_component: "text", position: '1;1' }
+    ],
+    [
+        { value: "Длина", type_component: "text", position: '2;0' },
+        { value: "Общая стоимость", type_component: "text", position: '2;1' }
+    ],
+    [
+        { value: "Площадь", type_component: "text", position: '3;0' },
+        { value: "Стоимость в кв. м.", type_component: "text", position: '3;1' }
+    ]
+];
 
 /**
  * Функциональный компонент для страницы создания объектов
@@ -64,8 +86,11 @@ const CreateObjectPage = () => {
     const [logo, setLogo] = useState([]);
     const [form, setForm] = useState({
         title: '',
-        date_end: new Date()
+        date_delivery: new Date()
     });
+
+    // Токены таблицы
+    const [token, setToken] = useState(defaultTokens);
 
     // Form controls
     const { handleSubmit, control } = useForm();
@@ -110,8 +135,27 @@ const CreateObjectPage = () => {
         setForm({ ...form, [key]: value });
     };
 
-    const onSubmit = (value) => {
-        
+    const onSubmit = async (value) => {
+        const data = {
+            ...form,
+            images: logo.map((item) => {
+                return (
+                    'a'//item.data_url
+                );
+            }),
+            characteristics: characteristics,
+            payment_methods: paymentMethods,
+            communications: communications,
+            coords: {
+                city: city,
+                lat: latLng.lat,
+                lng: latLng.lng
+            },
+            tokens: token,
+            file: 'a'//(await utils.readAsUrl(excelFile))
+        };
+
+        console.log(JSON.stringify(data));
     };
 
     // Charactetistic
@@ -348,8 +392,8 @@ const CreateObjectPage = () => {
                             }}
                         />
                         <DateSelect
-                            value={form.date_end}
-                            changeHandler={(date) => changeHandler("date_end", date)}
+                            value={form.date_delivery}
+                            changeHandler={(date) => changeHandler("date_delivery", date)}
                             placeholder="Дата сдачи"
                             title={"Дата сдачи"}
                         />
@@ -368,7 +412,10 @@ const CreateObjectPage = () => {
                         {
                             paymentMethods && paymentMethods.map((item) => {
                                 return (
-                                    <div className={styles['element__row']}>
+                                    <div
+                                        className={styles['element__row']}
+                                        key={item}
+                                    >
                                         <TextField
                                             value={item}
                                             title="Способ оплаты"
@@ -391,7 +438,6 @@ const CreateObjectPage = () => {
                         <TextField
                             placeholder={"Введите способ оплаты"}
                             autocomplete={"off"}
-                            required={true}
                             value={currentPaymentMethod}
 
                             changeHandler={(e) => {
@@ -409,7 +455,10 @@ const CreateObjectPage = () => {
                         {
                             characteristics && characteristics.map((item) => {
                                 return (
-                                    <div className={styles['element__row']}>
+                                    <div
+                                        className={styles['element__row']}
+                                        key={item}
+                                    >
                                         <TextField
                                             value={item}
                                             title="Характеристика"
@@ -432,7 +481,6 @@ const CreateObjectPage = () => {
                         <TextField
                             placeholder={"Введите новую характеристику"}
                             autocomplete={"off"}
-                            required={true}
                             value={currentCharacteristic}
 
                             changeHandler={(e) => {
@@ -450,7 +498,10 @@ const CreateObjectPage = () => {
                         {
                             communications && communications.map((item) => {
                                 return (
-                                    <div className={styles['element__row']}>
+                                    <div
+                                        className={styles['element__row']}
+                                        key={item}
+                                    >
                                         <TextField
                                             value={item}
                                             title="Коммуникация"
@@ -472,7 +523,6 @@ const CreateObjectPage = () => {
                         <TextField
                             placeholder={"Введите коммуникацию"}
                             autocomplete={"off"}
-                            required={true}
                             value={currentCommunication}
 
                             changeHandler={(e) => {
@@ -500,7 +550,10 @@ const CreateObjectPage = () => {
                 <div
                     style={{ marginTop: '16px' }}
                 >
-                    <TemplateTable />
+                    <TemplateTable
+                        token={token}
+                        setToken={setToken}
+                    />
                 </div>
                 <span className='span__text__black'>Вы также можете скачать шаблон для заполнения
                     ячеек информации о каждой отдельной квартире</span>

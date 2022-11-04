@@ -1,19 +1,5 @@
-/* Libraries */
+/* Библиотеки */
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-
-/* Context */
-import authReducer from "./reducers/AuthSlice";
-import configReducer from "./reducers/ConfigSlice";
-import adminReducer from "./reducers/AdminSlice";
-import userReducer from "./reducers/UserSlice";
-import companyReducer from "./reducers/CompanySlice";
-import projectReducer from "./reducers/ProjectSlice";
-import managerInfoReducer from "./reducers/Manager/ManagerInfoSlice";
-import messageQueueReducer from "./reducers/MessageQueueSlice";
-
-/* Constants */
-import storageConfig from "../configs/store.config.json";
-
 import {
   persistStore,
   persistReducer,
@@ -25,6 +11,19 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+
+/* Контекст */
+import authReducer from "./reducers/AuthSlice";
+import configReducer from "./reducers/ConfigSlice";
+import adminReducer from "./reducers/AdminSlice";
+import userReducer from "./reducers/UserSlice";
+import companyReducer from "./reducers/CompanySlice";
+import projectReducer from "./reducers/ProjectSlice";
+import managerInfoReducer from "./reducers/Manager/ManagerInfoSlice";
+import messageQueueReducer from "./reducers/MessageQueueSlice";
+
+/* Константы */
+import storageConfig from "../configs/store.config.json";
 
 /* Главный Reducer */
 const rootReducer = combineReducers({
@@ -38,14 +37,17 @@ const rootReducer = combineReducers({
   managerInfoReducer,
 });
 
+// Конфигурация Persist
 const persistConfig = {
   key: storageConfig["main-store"],
   storage,
   blacklist: ["manager_info_slice"],
 };
 
+// Создание Persist Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// Конфигурирование общего хранилища
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

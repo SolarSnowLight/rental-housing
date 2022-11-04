@@ -1,4 +1,5 @@
 /* Context */
+import { IObjectModel } from "src/models/Object/IObjectModel";
 import { projectSlice } from "../reducers/ProjectSlice";
 import messageQueueAction from "./MessageQueueAction";
 
@@ -8,11 +9,14 @@ import messageQueueAction from "./MessageQueueAction";
  * @param {any} value - value for property object
  * @returns {Promise<any>}
  */
-const setItemProjectInfo = (item, value) => async (dispatch) => {
+const setItemProjectInfo = (item: string, value) => async (dispatch) => {
     dispatch(projectSlice.actions.loadingStart());
 
     try {
-        dispatch(projectSlice.actions.setItemProjectInfo({ item, value }));
+        dispatch(projectSlice.actions.setItemProjectInfo({ 
+            item: item,
+            value: value
+         }));
     } catch (e) {
         dispatch(messageQueueAction.errorMessage(e));
     }
@@ -25,7 +29,7 @@ const setItemProjectInfo = (item, value) => async (dispatch) => {
  * @param {any} object - object information
  * @returns 
  */
-const addObjectInfo = (object) => async (dispatch) => {
+const addObjectInfo = (object: IObjectModel) => async (dispatch) => {
     dispatch(projectSlice.actions.loadingStart());
 
     try {
@@ -42,7 +46,7 @@ const addObjectInfo = (object) => async (dispatch) => {
  * @param {any} object 
  * @returns {Promise<any>}
  */
-const deleteObjectInfo = (object) => async (dispatch) => {
+const deleteObjectInfo = (object: IObjectModel) => async (dispatch) => {
     dispatch(projectSlice.actions.loadingStart());
 
     try {

@@ -6,12 +6,12 @@ import { MainServerURL } from "src/constants/addresses/apis/main.api";
  * @param {string} dataURI URI
  * @returns {Blob} Blob
  */
-export const dataURItoBlob = (dataURI) => {
+export const dataURLToBlob = (dataURL: string) => {
     // Конвертация base64 в необработанные бинарные данные, хранящиеся в строке
-    var byteString = atob(dataURI.split(',')[1]);
+    var byteString = atob(dataURL.split(',')[1]);
 
     // Выделение компонента MIME
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
 
     // Запись байтов строки в буфер массива
     var ab = new ArrayBuffer(byteString.length);
@@ -33,7 +33,7 @@ export const isDataURL = (dataURI, address = MainServerURL) => {
 }
 
 /**
- * 
+ * Функция получения абсолютного пути к файлу на сервере
  * @param {string} address Относительный адрес файла
  * @param {*} server Адрес сервера, где расположены статические файлы (публичные файлы)
  * @returns {string} Абсолютный путь к файлу на сервере

@@ -4,14 +4,15 @@ import { TextField } from '@mui/material';
 
 import styles from './TemplateTable.module.css';
 
-const TemplateTable = () => {
-    const [token, setToken] = useState([
-        [{ value: "Номер", type_component: "text" }, { value: "Адрес", type_component: "text" }],
-        [{ value: "Ширина", type_component: "text" }, { value: "Статус", type_component: "text" }],
-        [{ value: "Длина", type_component: "text" }, { value: "Общая стоимость", type_component: "text" }],
-        [{ value: "Площадь", type_component: "text" }, { value: "Стоимость в кв. м.", type_component: "text" }],
-    ]);
-
+/**
+ * Функциональный компонент шаблона таблицы, с помощью которого
+ * происходит парсинг данных из excel-таблицы
+ * @returns {JSX.Element} Функциональный компонент таблицы
+ */
+const TemplateTable = ({
+    token,
+    setToken
+}) => {
     let visibleAddColumn = false;
 
     return (
@@ -40,13 +41,13 @@ const TemplateTable = () => {
                     }
 
                     return (
-                        <tr key={itemIndex}>
+                        <tr key={Math.random()}>
                             {
                                 item.map((subItem) => {
                                     return (
                                         <td
                                             style={{ border: "1px solid #000000" }}
-                                            key={subItem.value}
+                                            key={Math.random()}
                                         >
                                             {
                                                 subItem.type_component == "text" &&

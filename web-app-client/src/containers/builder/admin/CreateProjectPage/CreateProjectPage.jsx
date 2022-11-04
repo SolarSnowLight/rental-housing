@@ -28,7 +28,7 @@ import useHttp from 'src/hooks/http.hook';
 import { useScrollbar } from 'src/hooks/useScrollbar/useScrollbar';
 
 /* Utils */
-import { dataURItoBlob, isDataURL } from 'src/utils/file';
+import { dataURLToBlob, isDataURL } from 'src/utils/file';
 
 /* Constants */
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
@@ -156,7 +156,7 @@ const CreateProjectPage = () => {
             && (Object.keys(file).length >= 1)
             && (Object.getPrototypeOf(file) === Object.prototype)
             && (!isDataURL(file.data_url))) {
-            file = dataURItoBlob(projectSelector.logo[0].data_url);
+            file = dataURLToBlob(projectSelector.logo[0].data_url);
         } else {
             file = null;
         }

@@ -26,7 +26,7 @@ import useHttp from 'src/hooks/http.hook';
 import CompanyUpdateDto from 'src/dtos/company.update-dto';
 
 /* Utils */
-import { dataURItoBlob, isDataURL } from 'src/utils/file';
+import { dataURLToBlob, isDataURL } from 'src/utils/file';
 
 /* Constants */
 import AdminApi from 'src/constants/addresses/apis/admin.api';
@@ -84,7 +84,7 @@ const CompanyEditPage = () => {
             && (Object.keys(file).length >= 1)
             && (Object.getPrototypeOf(file) === Object.prototype)
             && (!isDataURL(file.data_url))) {
-            file = dataURItoBlob(userSelector.company.data.logo[0].data_url);
+            file = dataURLToBlob(userSelector.company.data.logo[0].data_url);
         } else {
             file = null;
         }
