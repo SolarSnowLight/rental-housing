@@ -74,6 +74,10 @@ export const projectSlice = createSlice({
             if (index >= 0) {
                 state.objects.splice(index, 1);
             }
+        },
+
+        deleteAllObject(state: IProjectSlice){
+            state.objects = [];
         }
     },
 });

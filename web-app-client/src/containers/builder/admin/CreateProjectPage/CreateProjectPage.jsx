@@ -212,7 +212,9 @@ const CreateProjectPage = () => {
                 }
             }
         );
-    }
+    };
+
+    console.log(projectSelector.objects);
 
     return (
         <form className={styles["wrapper-section"]} onSubmit={handleSubmit(onSubmit)}>

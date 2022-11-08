@@ -1,5 +1,5 @@
 /* Библиотеки */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { TextField as TextFieldMUI, Autocomplete as AutocompleteMUI } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -11,6 +11,7 @@ import Switch from '@mui/material/Switch';
 
 /* Контекст */
 import messageQueueAction from 'src/store/actions/MessageQueueAction';
+import projectAction from 'src/store/actions/ProjectAction';
 
 /* Компоненты */
 import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
@@ -92,33 +93,32 @@ const CreateObjectPage = () => {
     // Токены таблицы
     const [token, setToken] = useState(defaultTokens);
 
-    // Form controls
+    // Контролеры ошибок
     const { handleSubmit, control } = useForm();
     const { errors } = useFormState({
         control
     });
 
-    // Characteristics
+    // Характеристики объекта
     const [characteristics, setCharacteristics] = useState([]);
     const [currentCharacteristic, setCurrentCharacteristic] = useState();
 
-    // Payment methods
+    // Методы оплаты
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [currentPaymentMethod, setCurrentPaymentMethod] = useState();
 
-    // Communications
+    // Коммуникации
     const [communications, setCommunications] = useState([]);
     const [currentCommunication, setCurrentCommunication] = useState();
 
-    // Data section of functional operation of components
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
     const [cityOptions, setCityOptions] = useState(cities);
 
-    // City
+    // Город, в котором расположен объект
     const [city, setCity] = useState(cities.find(o => o.name === 'Иркутск'));
 
-    // (latitude; longtitude)
+    // Координаты объекта (latitude; longtitude)
     const [latLng, setLatLng] = useState({
         lat: 0,
         lng: 0
@@ -126,7 +126,6 @@ const CreateObjectPage = () => {
 
     const loadingAutocomplete = open && options?.length === 0;
 
-    // Event Handlers Section
     const onChangeImage = (imageList) => {
         setLogo(imageList);
     };
@@ -138,9 +137,10 @@ const CreateObjectPage = () => {
     const onSubmit = async (value) => {
         const data = {
             ...form,
+            date_delivery: form.date_delivery.toISOString(),
             images: logo.map((item) => {
                 return (
-                    'a'//item.data_url
+                    item.data_url
                 );
             }),
             characteristics: characteristics,
@@ -152,10 +152,10 @@ const CreateObjectPage = () => {
                 lng: latLng.lng
             },
             tokens: token,
-            file: 'a'//(await utils.readAsUrl(excelFile))
+            file: (await utils.readAsUrl(excelFile))
         };
 
-        console.log(JSON.stringify(data));
+        dispatch(projectAction.addObjectInfo(data));
     };
 
     // Charactetistic
@@ -298,11 +298,15 @@ const CreateObjectPage = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             {/* Выбор метки на карте для позиционирования объекта */}
-            <LabelSelectComponent active={modalActive} setActive={setModalActive}>
-                {
-                    city && <MapSelectObject city={city} setActive={setModalActive} setLatLng={setLatLng} />
-                }
-            </LabelSelectComponent>
+            {
+                modalActive && (
+                    <LabelSelectComponent active={modalActive} setActive={setModalActive}>
+                        {
+                            city && <MapSelectObject city={city} setActive={setModalActive} setLatLng={setLatLng} />
+                        }
+                    </LabelSelectComponent>
+                )
+            }
 
             {/* Информация о проекте */}
             <ProjectInfo
@@ -385,7 +389,7 @@ const CreateObjectPage = () => {
                             placeholder={"Выбрать latiitude; longtitude"}
                             autocomplete={"off"}
                             required={true}
-                            value={(latLng.lat && latLng.lng) ? `${latLng.lat.toFixed(10)}; ${latLng.lng.toFixed(10)}` : null}
+                            value={(latLng.lat && latLng.lng) ? `${latLng.lat.toFixed(10)}; ${latLng.lng.toFixed(10)}` : ""}
 
                             clickHandler={() => {
                                 setModalActive(true);
@@ -588,7 +592,11 @@ const CreateObjectPage = () => {
                             placeholder="Название файла"
                             value={(excelFile) ? excelFile.name : ''}
                         />
-                        <div>
+                        <div
+                            style={{
+                                alignSelf: 'flex-end'
+                            }}
+                        >
                             <div
                                 {...getRootProps()}
                             >
