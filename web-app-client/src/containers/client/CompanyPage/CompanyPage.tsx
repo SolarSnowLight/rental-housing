@@ -1,7 +1,7 @@
 import css from './CompanyPage.module.scss';
 
 import CompanyInfo from 'src/components/Company/CompanyInfo/CompanyInfo';
-import MapComponent from 'src/components/MapComponent';
+import MapComponent from 'src/components/Map/MapComponent';
 import React, { useState } from 'react';
 import Filter from "src/components/Filter/Filter";
 import { animated, useSpring } from '@react-spring/web';

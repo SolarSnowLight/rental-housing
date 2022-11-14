@@ -1,45 +1,46 @@
-/* Libraries */
+/* Библиотеки */
 import React, { useState, useEffect, useRef } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { useFormState, useForm } from 'react-hook-form';
 import { useMediaQuery } from '@mui/material';
 
-/* Context */
+/* Контекст */
 import projectAction from 'src/store/actions/ProjectAction';
 import { authSlice } from 'src/store/reducers/AuthSlice';
 import messageQueueAction from 'src/store/actions/MessageQueueAction';
 
-/* Components */
-import MapComponent from 'src/components/MapComponent';
+/* Компоненты */
+import MapComponent from 'src/components/Map/MapComponent';
 import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
 import ImageUpload from 'src/components/UI/ImageUpload';
 import TextFieldControl from 'src/components/UI/TextField/TextFieldControl';
-import ObjectCard from '../../../../components/ObjectCard2/ObjectCard2';
+import ObjectCard from 'src/components/Project/ObjectCard';
 import AutocompleteControl from 'src/components/UI/Autocomplete/AutocompleteControl';
 import HorizontalScrollbar from 'src/components/HorizontalScrollbar/HorizontalScrollbar';
 import Space from 'src/components/Space';
+import MapObject from 'src/components/Map/MapObject';
 
-/* Hooks */
+/* Хуки */
 import { useAppSelector, useAppDispatch } from 'src/hooks/redux.hook';
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import useHttp from 'src/hooks/http.hook';
 import { useScrollbar } from 'src/hooks/useScrollbar/useScrollbar';
 
-/* Utils */
+/* Утилиты */
 import { dataURLToBlob, isDataURL } from 'src/utils/file';
 
-/* Constants */
+/* Константы */
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 import CompanyApi from 'src/constants/addresses/apis/company.api';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
 
-/* Styles */
+/* Стили */
 import styles from './CreateProjectPage.module.scss';
 import companyAction from 'src/store/actions/CompanyAction';
 
-/* Images */
+/* Ресурсы */
 import avaDefault from 'src/resources/images/ava-default.jpg'
 import logoDefault from 'src/resources/images/company-logo-default.png'
 import buildingExample1 from 'src/resources/images/examples/building-example-1.webp';
@@ -214,7 +215,16 @@ const CreateProjectPage = () => {
         );
     };
 
-    console.log(projectSelector.objects);
+    // Индекс выбранного проекта в данный момент времени
+    const [selectIndex, setSelectIndex] = useState(-1);
+    const setIndex = (index) => {
+        if (selectIndex === index) {
+            setSelectIndex(-1);
+        } else {
+            setSelectIndex(index);
+            setContainerScroll(index * (projectSelector.objects.length + 400));
+        }
+    };
 
     return (
         <form className={styles["wrapper-section"]} onSubmit={handleSubmit(onSubmit)}>
@@ -300,23 +310,37 @@ const CreateProjectPage = () => {
 
                 { /* Компонент карты */}
                 <div className={styles["wrapper-section__item-element__map"]}>
-                    <MapComponent />
+                    <MapObject
+                        objects={projectSelector.objects}
+                        selectObject={selectIndex}
+                        setIndex={setIndex}
+                    />
                 </div>
             </div>
 
-            { /* Секция карточек объектов проекта */ }
+            { /* Секция карточек объектов проекта */}
             <div className={styles["wrapper-section__item__map"]}>
-
-                { /* Объекты */ }
+                { /* Объекты */}
                 <div ref={objectsContainerRef} className={styles.objectsListSlide} onScroll={onContainerScroll}>
                     <div ref={objectsContentRef} className={styles.contentContainer}>
-                        {objects.map(it => <ObjectCard key={it.id} object={it} />)}
+                        {projectSelector.objects.map((it, index) => {
+                            return (
+                                <ObjectCard
+                                    key={it.id}
+                                    object={it}
+                                    select={(index == selectIndex) ? true : false}
+                                    clickHandler={() => {
+                                        setIndex(index);
+                                    }}
+                                />
+                            )
+                        })}
                     </div>
                 </div>
 
                 <Space h={8} />
 
-                { /* Горизонтальный скроллбар */ }
+                { /* Горизонтальный скроллбар */}
                 <div className={styles.scrollbarContainer}>
                     <HorizontalScrollbar className={styles.scroll} scrollProps={scrollProps} setContainerScroll={setContainerScroll} />
                 </div>

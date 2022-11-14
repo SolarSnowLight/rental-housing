@@ -7,7 +7,8 @@ import styles from './Select.module.css';
 
 const Select = ({
     title = "",
-    items = []
+    items = [],
+    changeHandler = () => {}
 }) => {
     return (
         <>
@@ -16,6 +17,7 @@ const Select = ({
                 <SelectMUI
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}
+                    onChange={changeHandler}
                     sx={{
                         marginTop: '8px',
                         borderRadius: '0px !important',

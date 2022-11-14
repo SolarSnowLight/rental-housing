@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
 import Space from "src/components/Space";
 import {useMediaQuery} from "@mui/material";
 import PersonListItem from "src/components/list-items/PersonListItem/PersonListItem";
-import MapComponent from 'src/components/MapComponent';
+import MapComponent from 'src/components/Map/MapComponent';
 import ObjectCard2 from 'src/components/ObjectCard2/ObjectCard2';
 import HorizontalScrollbar from "src/components/HorizontalScrollbar/HorizontalScrollbar";
 import {useScrollbar} from "src/hooks/useScrollbar/useScrollbar";

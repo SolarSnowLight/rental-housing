@@ -9,7 +9,7 @@ import { useForm, useFormState } from 'react-hook-form';
 import messageQueueAction from 'src/store/actions/MessageQueueAction';
 
 /* Components */
-import MapComponent from 'src/components/MapComponent';
+import MapComponent from 'src/components/Map/MapComponent';
 import ButtonGreenComponent from 'src/components/UI/Button/ButtonGreenComponent';
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
 import ImageUpload from 'src/components/UI/ImageUpload';

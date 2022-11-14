@@ -48,4 +48,5 @@ export interface IObjectModel {
   coords: IObjectCoords;
   tokens: ITokenTableModel[][];
   file: string;
+  is_link: boolean;
 }

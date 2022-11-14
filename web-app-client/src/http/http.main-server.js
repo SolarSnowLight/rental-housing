@@ -34,13 +34,14 @@ apiMainServer.interceptors.response.use((config) => {
 }, async (error) => {
     const originalRequest = error.config;
 
-    if ((error.response.status == 401)
+    if ((error.response) 
+        && (error.response.status == 401)
         && (error.config)
         && (!error.config._isRetry)) {
         originalRequest._isRetry = true;
 
         try {
-            const response = await apiMainServer.post(`${AuthApi.refresh}`);
+            const response = await apiMainServer.post(`${AuthApi.refresh}`, null, { withCredentials: true });
 
             store.dispatch(refreshAccessToken(response.data));
             return apiMainServer.request(originalRequest);

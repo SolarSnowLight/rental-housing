@@ -1,4 +1,4 @@
-/* Libraries */
+/* Библиотеки */
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Map, { Marker, Source, Layer, FullscreenControl, useControl } from 'react-map-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
@@ -6,29 +6,21 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
-/* Context */
-import { useAppSelector } from '../../hooks/redux.hook';
+/* Контекст */
+import { useAppSelector } from '../../../hooks/redux.hook';
 
-/* Components */
-import ButtonGreenComponent from '../UI/Button/ButtonGreenComponent';
-import ButtonWhiteComponent from '../UI/Button/ButtonWhiteComponent';
+/* Компоненты */
+import ButtonGreenComponent from '../../UI/Button/ButtonGreenComponent';
+import ButtonWhiteComponent from '../../UI/Button/ButtonWhiteComponent';
 
-/* Constants */
+/* Константы */
 import cities from "src/data/russian-cities.json";
 
-/* Images */
+/* Изображения */
 import update from 'src/resources/images/update.svg';
 
-/* Styles */
+/* Стили */
 import styles from './MapSelectObject.module.scss';
-
-function DrawControl(props) {
-    useControl(() => new MapboxDraw(props), {
-        position: props.position
-    });
-
-    return null;
-}
 
 /**
  * Компонент для выбора позиции объекта на карте
@@ -186,4 +178,4 @@ const MapSelectObject = ({ city, style, setActive, setLatLng }) => {
     )
 }
 
-export default MapSelectObject;
+export default React.memo(MapSelectObject);

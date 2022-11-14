@@ -19,7 +19,7 @@ import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent'
 import ProjectInfo from 'src/components/Company/ProjectInfo/ProjectInfo';
 import TemplateTable from 'src/components/TemplateTable';
 import LabelSelectComponent from 'src/components/LabelSelectComponent';
-import MapSelectObject from 'src/components/MapSelectObject';
+import MapSelectObject from 'src/components/Map/MapSelectObject';
 import DateSelect from 'src/components/UI/DateSelect';
 import TextField from 'src/components/UI/TextField/TextField';
 import Select from 'src/components/UI/Select';
@@ -46,6 +46,7 @@ import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles';
 import ImageUpload from 'src/components/UI/ImageUpload';
 import { dataURLToBlob } from 'src/utils/file';
+import { FileLinkModel } from 'src/models/Object/IFileLinkModel';
 
 /* Базовые данные */
 const defaultTokens = [
@@ -89,6 +90,24 @@ const CreateObjectPage = () => {
         title: '',
         date_delivery: new Date()
     });
+
+    // Состояния для загрузки файла через ссылку
+    const [link, setLink] = useState("");
+    const [timeValue, setTimeValue] = useState(0);
+    const [timeKey, setTimeKey] = useState(TimeUploadValue.minute);
+
+    // Массив для элемента Select (выбор интервала времени)
+    const items = [
+        {
+            value: TimeUploadValue.minute
+        },
+        {
+            value: TimeUploadValue.hour
+        },
+        {
+            value: TimeUploadValue.day
+        },
+    ];
 
     // Токены таблицы
     const [token, setToken] = useState(defaultTokens);
@@ -152,10 +171,16 @@ const CreateObjectPage = () => {
                 lng: latLng.lng
             },
             tokens: token,
-            file: (await utils.readAsUrl(excelFile))
+            file: (stateUseLink) ?
+                FileLinkModel.toString({ link: link, time_value: timeValue, time_key: timeKey })
+                : (await utils.readAsUrl(excelFile)),
+            is_link: stateUseLink
         };
 
         dispatch(projectAction.addObjectInfo(data));
+        dispatch(messageQueueAction.addMessage(null, "success", "Объект добавлен"));
+
+        navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_create);
     };
 
     // Charactetistic
@@ -617,28 +642,27 @@ const CreateObjectPage = () => {
                         <TextField
                             title="Ссылка на файл"
                             placeholder="Вставьте ссылку на файл"
-                            value={(excelFile) ? excelFile.name : ''}
+                            value={link}
+                            changeHandler={(e) => {
+                                setLink(e.target.value);
+                            }}
                         />
 
                         <TextField
                             title="Количество времени"
                             placeholder="Введите числовое значение"
+                            value={timeValue}
+                            changeHandler={(e) => {
+                                setTimeValue(e.target.value);
+                            }}
                         />
 
                         <Select
                             title='Единица времени'
-                            items={[
-                                {
-                                    value: TimeUploadValue.minute
-                                },
-                                {
-                                    value: TimeUploadValue.hour
-                                },
-                                {
-                                    value: TimeUploadValue.day
-                                },
-                            ]}
-
+                            items={items}
+                            changeHandler={(e) => {
+                                setTimeKey(items[e.target.value]);
+                            }}
                         />
 
                         <div>
@@ -662,7 +686,7 @@ const CreateObjectPage = () => {
                             window.scrollTo(0, 0);
                             navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_create);
                         }}
-                        title={"Отмена"}
+                        title={"Назад"}
                     />
                     <ButtonGreenComponent
                         type={'submit'}

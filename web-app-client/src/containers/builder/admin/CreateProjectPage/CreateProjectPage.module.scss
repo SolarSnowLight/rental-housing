@@ -5,7 +5,6 @@
     display: grid;
     grid-auto-flow: row;
     height: max-content;
-
 }
 
 .wrapper-section__item {
@@ -53,6 +52,7 @@
 .wrapper-section__element-description-input {
     width: 25em;
 }
+
 
 .grid-item__right {
     display: grid;
@@ -281,8 +281,8 @@
 .objectsListSlide {
     @extend .pageElement;
     padding: 0;
-    height: 319px;
-    margin-top: -62px;
+    height: 340px;
+    margin-top: 32px;
     display: flex;
     overflow: auto;
     z-index: 2;
@@ -303,6 +303,7 @@
 .scrollbarContainer {
     @extend .pageElement;
 
+    margin-left: -4%;
     .scroll {
         background: rgba(0, 0, 0, 0.2);
         height: 10px;

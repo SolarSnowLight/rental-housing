@@ -1,5 +1,6 @@
 /* Константы */
 import { MainServerURL } from "src/constants/addresses/apis/main.api";
+import { IFileLinkModel } from "src/models/Object/IFileLinkModel";
 
 /**
  * Функция конвертации URI в Blob объект

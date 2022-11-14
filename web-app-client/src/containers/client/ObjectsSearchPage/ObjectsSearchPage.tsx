@@ -7,7 +7,7 @@ import {Select, MenuItem, TextField, IconButton, InputAdornment, Autocomplete} f
 import styled from "styled-components";
 import { Arrow1DownIc } from 'src/components/icons';
 import {SearchIc} from "src/components/icons";
-import MapComponent from 'src/components/MapComponent';
+import MapComponent from 'src/components/Map/MapComponent';
 import ObjectCard from "src/components/ObjectCard/ObjectCard";
 
 

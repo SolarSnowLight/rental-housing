@@ -306,8 +306,8 @@
 
 .objectsListSlide {
   padding: 0;
-  height: 319px;
-  margin-top: -62px;
+  height: 340px;
+  margin-top: 32px;
   display: flex;
   overflow: auto;
   z-index: 2;
@@ -323,6 +323,9 @@
   }
 }
 
+.scrollbarContainer {
+  margin-left: -4%;
+}
 .scrollbarContainer .scroll {
   background: rgba(0, 0, 0, 0.2);
   height: 10px;

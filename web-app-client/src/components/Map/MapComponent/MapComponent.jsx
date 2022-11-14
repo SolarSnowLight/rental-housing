@@ -1,12 +1,10 @@
 import React from 'react';
 import Map, { Marker, Source, Layer } from 'react-map-gl';
-import { useAppSelector } from '../../hooks/redux.hook';
+import { useAppSelector } from 'src/hooks/redux.hook';
 
 import styles from './MapComponent.module.css';
 
 const MapComponent = (props) => {
-    const configSlice = useAppSelector(store => store.configReducer);
-
     return (
         <Map
             initialViewState={{

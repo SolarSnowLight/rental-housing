@@ -1,7 +1,8 @@
+/* Библиотеки */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-
 import { TextField } from '@mui/material';
 
+/* Стили */
 import styles from './TemplateTable.module.scss';
 
 

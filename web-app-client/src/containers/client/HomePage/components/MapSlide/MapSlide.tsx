@@ -1,7 +1,7 @@
 import React from "react";
 import css from './MapSlide.module.scss'
 import Space from "src/components/Space";
-import MapComponent from "src/components/MapComponent";
+import MapComponent from "src/components/Map/MapComponent";
 import Filter from "src/components/Filter/Filter";
 
 
