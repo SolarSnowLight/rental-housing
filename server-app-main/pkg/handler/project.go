@@ -136,7 +136,7 @@ func (h *Handler) getProjects(c *gin.Context) {
 // @Produce  json
 // @Param logo query string true "logo"
 // @Param uuid query string true "uuid"
-// @Success 200 {object} projectModel.ProjectLogoModel "data"
+// @Success 200 {object} projectModel.ProjectImageModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -186,7 +186,7 @@ func (h *Handler) projectUpdateImage(c *gin.Context) {
 // @ID project-update
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} adminModel.CompanyModel "data"
+// @Success 200 {object} projectModel.ProjectUpdateModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse

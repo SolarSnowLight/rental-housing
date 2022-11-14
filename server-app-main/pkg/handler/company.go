@@ -53,7 +53,7 @@ func (h *Handler) getManagers(c *gin.Context) {
 // @Produce  json
 // @Param uuid query string true "uuid"
 // @Param logo query string true "logo"
-// @Success 200 {object} adminModel.CompanyModel "data"
+// @Success 200 {object} companyModel.CompanyImageModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -114,7 +114,7 @@ func (h *Handler) companyUpdateImage(c *gin.Context) {
 // @ID company-update
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} adminModel.CompanyModel "data"
+// @Success 200 {object} companyModel.CompanyUpdateModel "data"
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -155,6 +155,7 @@ func (h *Handler) companyUpdate(c *gin.Context) {
 // @ID company-get-manager
 // @Accept  json
 // @Produce  json
+// @Param Authorization header string true "Токен доступа для текущего пользователя" example(Bearer access_token)
 // @Param input body companyModel.ManagerUuidModel true "credentials"
 // @Success 200 {object} companyModel.ManagerCompanyModel "data"
 // @Failure 400,404 {object} errorResponse

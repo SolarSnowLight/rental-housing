@@ -59,6 +59,16 @@ definitions:
     - rules
     - uuid
     type: object
+  company.CompanyImageModel:
+    properties:
+      Filepath:
+        type: string
+      uuid:
+        type: string
+    required:
+    - Filepath
+    - uuid
+    type: object
   company.CompanyModel:
     properties:
       description:
@@ -83,6 +93,123 @@ definitions:
     - logo
     - phone
     - title
+    type: object
+  company.CompanyUpdateModel:
+    properties:
+      description:
+        type: string
+      email_admin:
+        type: string
+      email_company:
+        type: string
+      link:
+        type: string
+      phone:
+        type: string
+      title:
+        type: string
+      uuid:
+        type: string
+    required:
+    - description
+    - email_company
+    - link
+    - phone
+    - title
+    - uuid
+    type: object
+  company.ManagerAnyCountModel:
+    properties:
+      count:
+        type: integer
+      managers:
+        items:
+          $ref: '#/definitions/company.ManagerDataEx'
+        type: array
+    required:
+    - count
+    - managers
+    type: object
+  company.ManagerCompanyModel:
+    properties:
+      projects:
+        items:
+          $ref: '#/definitions/company.ManagerProjectInfoModel'
+        type: array
+    required:
+    - projects
+    type: object
+  company.ManagerCountModel:
+    properties:
+      count:
+        type: integer
+      limit:
+        type: integer
+      uuid:
+        type: string
+    required:
+    - limit
+    - uuid
+    type: object
+  company.ManagerDataEx:
+    properties:
+      createdAt:
+        type: string
+      data:
+        $ref: '#/definitions/company.ManagerUserData'
+      email:
+        type: string
+      uuid:
+        type: string
+    required:
+    - createdAt
+    - data
+    - uuid
+    type: object
+  company.ManagerProjectInfoModel:
+    properties:
+      description:
+        type: string
+      logo:
+        type: string
+      title:
+        type: string
+      uuid:
+        type: string
+    required:
+    - description
+    - title
+    - uuid
+    type: object
+  company.ManagerUserData:
+    properties:
+      avatar:
+        type: string
+      name:
+        type: string
+      nickname:
+        type: string
+      patronymic:
+        type: string
+      position:
+        type: string
+      surname:
+        type: string
+    type: object
+  company.ManagerUuidModel:
+    properties:
+      company_uuid:
+        type: string
+      manager_uuid:
+        type: string
+    required:
+    - company_uuid
+    - manager_uuid
+    type: object
+  handler.BooleanResponse:
+    properties:
+      value:
+        type: boolean
     type: object
   handler.LogoutOutputModel:
     properties:
@@ -149,7 +276,7 @@ definitions:
       uuid:
         type: string
     type: object
-  project.ProjectLogoModel:
+  project.ProjectImageModel:
     properties:
       filepath:
         type: string
@@ -164,6 +291,24 @@ definitions:
       description:
         type: string
       logo:
+        type: string
+      managers:
+        items:
+          $ref: '#/definitions/project.UserEmailModel'
+        type: array
+      title:
+        type: string
+      uuid:
+        type: string
+    required:
+    - description
+    - managers
+    - title
+    - uuid
+    type: object
+  project.ProjectUpdateModel:
+    properties:
+      description:
         type: string
       managers:
         items:
@@ -214,13 +359,6 @@ definitions:
         type: string
     required:
     - access_token
-    type: object
-  user.TokenRefreshModel:
-    properties:
-      refresh_token:
-        type: string
-    required:
-    - refresh_token
     type: object
   user.UserEmailModel:
     properties:
@@ -322,38 +460,44 @@ paths:
       description: Создание новой компании (доступно только администратору)
       operationId: admin-company-create
       parameters:
-      - description: logo
-        in: query
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Логотип компании
+        in: formData
         name: logo
         required: true
         type: string
-      - description: title
-        in: query
+      - description: Название компании
+        in: formData
         name: title
         required: true
         type: string
-      - description: description
-        in: query
+      - description: Описание компании
+        in: formData
         name: description
         required: true
         type: string
-      - description: email_company
-        in: query
+      - description: Адрес электронной почты компании
+        in: formData
         name: email_company
         required: true
         type: string
-      - description: email_admin
-        in: query
+      - description: 'Адрес электронной почты главного администратора '
+        in: formData
         name: email_admin
         required: true
         type: string
-      - description: phone
-        in: query
+      - description: Номер телефона компании
+        in: formData
         name: phone
         required: true
         type: string
-      - description: link
-        in: query
+      - description: Ссылка на сайт компании
+        in: formData
         name: link
         required: true
         type: string
@@ -389,6 +533,13 @@ paths:
       - application/json
       description: Получение списка всех пользователей находящихся в системе
       operationId: admin-user-get-all
+      parameters:
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -453,6 +604,13 @@ paths:
       - application/json
       description: Выход из аккаунта
       operationId: auth-logout
+      parameters:
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -525,12 +683,12 @@ paths:
       description: Обновление токена доступа и токена обновления
       operationId: auth-refresh
       parameters:
-      - description: credentials
-        in: body
-        name: input
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
         required: true
-        schema:
-          $ref: '#/definitions/user.TokenRefreshModel'
+        type: string
       produces:
       - application/json
       responses:
@@ -554,7 +712,7 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/handler.errorResponse'
-      summary: Refresh
+      summary: refresh
       tags:
       - auth
   /auth/reset/password:
@@ -791,30 +949,32 @@ paths:
       summary: UploadProfileImage
       tags:
       - auth
-  /company/project/add/logo:
+  /company/manager/get:
     post:
       consumes:
       - application/json
-      description: Добавление нового логотипа проекта
-      operationId: company-project-add-logo
+      description: Получение информации о менеджере
+      operationId: company-get-manager
       parameters:
-      - description: logo
-        in: query
-        name: logo
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
         required: true
         type: string
-      - description: uuid
-        in: query
-        name: uuid
+      - description: credentials
+        in: body
+        name: input
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/company.ManagerUuidModel'
       produces:
       - application/json
       responses:
         "200":
           description: data
           schema:
-            $ref: '#/definitions/project.ProjectLogoModel'
+            $ref: '#/definitions/company.ManagerCompanyModel'
         "400":
           description: Bad Request
           schema:
@@ -831,7 +991,46 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/handler.errorResponse'
-      summary: AddLogoProject
+      summary: Get manager
+      tags:
+      - company
+  /company/manager/get/all:
+    post:
+      consumes:
+      - application/json
+      description: Получение среза из общего числа менеджеров компании
+      operationId: company-manager-get-all
+      parameters:
+      - description: credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/company.ManagerCountModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: data
+          schema:
+            $ref: '#/definitions/company.ManagerAnyCountModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: GetManagers
       tags:
       - company
   /company/project/create:
@@ -872,7 +1071,7 @@ paths:
             $ref: '#/definitions/handler.errorResponse'
       summary: CreateProject
       tags:
-      - company
+      - project
   /company/project/get:
     post:
       consumes:
@@ -911,7 +1110,7 @@ paths:
             $ref: '#/definitions/handler.errorResponse'
       summary: GetProject
       tags:
-      - company
+      - project
   /company/project/get/all:
     post:
       consumes:
@@ -950,13 +1149,153 @@ paths:
             $ref: '#/definitions/handler.errorResponse'
       summary: GetProjects
       tags:
+      - project
+  /company/project/update:
+    post:
+      consumes:
+      - application/json
+      description: Обновление информации о проекте в компании
+      operationId: project-update
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: data
+          schema:
+            $ref: '#/definitions/project.ProjectUpdateModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: ProjectUpdate
+      tags:
+      - project
+  /company/project/update/image:
+    post:
+      consumes:
+      - application/json
+      description: Добавление нового логотипа проекта
+      operationId: company-project-add-logo
+      parameters:
+      - description: logo
+        in: query
+        name: logo
+        required: true
+        type: string
+      - description: uuid
+        in: query
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: data
+          schema:
+            $ref: '#/definitions/project.ProjectImageModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: ProjectUpdateImage
+      tags:
+      - project
+  /company/update:
+    post:
+      consumes:
+      - application/json
+      description: Создание новой компании (доступно только администратору)
+      operationId: company-update
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: data
+          schema:
+            $ref: '#/definitions/company.CompanyUpdateModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: UpdateCompany
+      tags:
       - company
+  /user/access/check:
+    post:
+      consumes:
+      - application/json
+      description: Проверка пользовательских прав на подключение к тому или иному
+        административному модулю
+      operationId: user-check-access
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: data
+          schema:
+            $ref: '#/definitions/handler.BooleanResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: CheckAccess
+      tags:
+      - profile
   /user/company/get:
     post:
       consumes:
       - application/json
-      description: Получение информации о компании, к которой принадлежит пользователь
-      operationId: user-company-get
+      description: Получение информации о всех ролях пользователя
+      operationId: user-role-get-all
       produces:
       - application/json
       responses:
@@ -980,7 +1319,7 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/handler.errorResponse'
-      summary: GetUserCompany
+      summary: GetUserRoles
       tags:
       - profile
   /user/profile/get:

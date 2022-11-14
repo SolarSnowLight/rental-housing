@@ -33,51 +33,59 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "logo",
+                        "example": "Bearer access_token",
+                        "description": "Токен доступа для текущего пользователя",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Логотип компании",
                         "name": "logo",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "title",
+                        "description": "Название компании",
                         "name": "title",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "description",
+                        "description": "Описание компании",
                         "name": "description",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "email_company",
+                        "description": "Адрес электронной почты компании",
                         "name": "email_company",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "email_admin",
+                        "description": "Адрес электронной почты главного администратора ",
                         "name": "email_admin",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "phone",
+                        "description": "Номер телефона компании",
                         "name": "phone",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "link",
+                        "description": "Ссылка на сайт компании",
                         "name": "link",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -129,6 +137,16 @@ const docTemplate = `{
                 ],
                 "summary": "GetAllUsers",
                 "operationId": "admin-user-get-all",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "Bearer access_token",
+                        "description": "Токен доступа для текущего пользователя",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "data",
@@ -225,6 +243,16 @@ const docTemplate = `{
                 ],
                 "summary": "Logout",
                 "operationId": "auth-logout",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "Bearer access_token",
+                        "description": "Токен доступа для текущего пользователя",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "data",
@@ -330,17 +358,16 @@ const docTemplate = `{
                 "tags": [
                     "auth"
                 ],
-                "summary": "Refresh",
+                "summary": "refresh",
                 "operationId": "auth-refresh",
                 "parameters": [
                     {
-                        "description": "credentials",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user.TokenRefreshModel"
-                        }
+                        "type": "string",
+                        "example": "Bearer access_token",
+                        "description": "Токен доступа для текущего пользователя",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -731,9 +758,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/company/project/add/logo": {
+        "/company/manager/get": {
             "post": {
-                "description": "Добавление нового логотипа проекта",
+                "description": "Получение информации о менеджере",
                 "consumes": [
                     "application/json"
                 ],
@@ -743,29 +770,91 @@ const docTemplate = `{
                 "tags": [
                     "company"
                 ],
-                "summary": "AddLogoProject",
-                "operationId": "company-project-add-logo",
+                "summary": "Get manager",
+                "operationId": "company-get-manager",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "logo",
-                        "name": "logo",
-                        "in": "query",
+                        "example": "Bearer access_token",
+                        "description": "Токен доступа для текущего пользователя",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "uuid",
-                        "name": "uuid",
-                        "in": "query",
-                        "required": true
+                        "description": "credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/company.ManagerUuidModel"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "data",
                         "schema": {
-                            "$ref": "#/definitions/project.ProjectLogoModel"
+                            "$ref": "#/definitions/company.ManagerCompanyModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/company/manager/get/all": {
+            "post": {
+                "description": "Получение среза из общего числа менеджеров компании",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company"
+                ],
+                "summary": "GetManagers",
+                "operationId": "company-manager-get-all",
+                "parameters": [
+                    {
+                        "description": "credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/company.ManagerCountModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/company.ManagerAnyCountModel"
                         }
                     },
                     "400": {
@@ -805,7 +894,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "company"
+                    "project"
                 ],
                 "summary": "CreateProject",
                 "operationId": "company-project-create",
@@ -864,7 +953,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "company"
+                    "project"
                 ],
                 "summary": "GetProject",
                 "operationId": "company-project-get",
@@ -923,7 +1012,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "company"
+                    "project"
                 ],
                 "summary": "GetProjects",
                 "operationId": "company-project-get-all",
@@ -972,9 +1061,169 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/company/get": {
+        "/company/project/update": {
             "post": {
-                "description": "Получение информации о компании, к которой принадлежит пользователь",
+                "description": "Обновление информации о проекте в компании",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "ProjectUpdate",
+                "operationId": "project-update",
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/project.ProjectUpdateModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/company/project/update/image": {
+            "post": {
+                "description": "Добавление нового логотипа проекта",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "ProjectUpdateImage",
+                "operationId": "company-project-add-logo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "logo",
+                        "name": "logo",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "uuid",
+                        "name": "uuid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/project.ProjectImageModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/company/update": {
+            "post": {
+                "description": "Создание новой компании (доступно только администратору)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company"
+                ],
+                "summary": "UpdateCompany",
+                "operationId": "company-update",
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/company.CompanyUpdateModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/access/check": {
+            "post": {
+                "description": "Проверка пользовательских прав на подключение к тому или иному административному модулю",
                 "consumes": [
                     "application/json"
                 ],
@@ -984,8 +1233,56 @@ const docTemplate = `{
                 "tags": [
                     "profile"
                 ],
-                "summary": "GetUserCompany",
-                "operationId": "user-company-get",
+                "summary": "CheckAccess",
+                "operationId": "user-check-access",
+                "responses": {
+                    "200": {
+                        "description": "data",
+                        "schema": {
+                            "$ref": "#/definitions/handler.BooleanResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/company/get": {
+            "post": {
+                "description": "Получение информации о всех ролях пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "profile"
+                ],
+                "summary": "GetUserRoles",
+                "operationId": "user-role-get-all",
                 "responses": {
                     "200": {
                         "description": "data",
@@ -1226,6 +1523,21 @@ const docTemplate = `{
                 }
             }
         },
+        "company.CompanyImageModel": {
+            "type": "object",
+            "required": [
+                "Filepath",
+                "uuid"
+            ],
+            "properties": {
+                "Filepath": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
         "company.CompanyModel": {
             "type": "object",
             "required": [
@@ -1258,6 +1570,180 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "company.CompanyUpdateModel": {
+            "type": "object",
+            "required": [
+                "description",
+                "email_company",
+                "link",
+                "phone",
+                "title",
+                "uuid"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "email_admin": {
+                    "type": "string"
+                },
+                "email_company": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "company.ManagerAnyCountModel": {
+            "type": "object",
+            "required": [
+                "count",
+                "managers"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "managers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/company.ManagerDataEx"
+                    }
+                }
+            }
+        },
+        "company.ManagerCompanyModel": {
+            "type": "object",
+            "required": [
+                "projects"
+            ],
+            "properties": {
+                "projects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/company.ManagerProjectInfoModel"
+                    }
+                }
+            }
+        },
+        "company.ManagerCountModel": {
+            "type": "object",
+            "required": [
+                "limit",
+                "uuid"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "company.ManagerDataEx": {
+            "type": "object",
+            "required": [
+                "createdAt",
+                "data",
+                "uuid"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/company.ManagerUserData"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "company.ManagerProjectInfoModel": {
+            "type": "object",
+            "required": [
+                "description",
+                "title",
+                "uuid"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "company.ManagerUserData": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "patronymic": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
+        "company.ManagerUuidModel": {
+            "type": "object",
+            "required": [
+                "company_uuid",
+                "manager_uuid"
+            ],
+            "properties": {
+                "company_uuid": {
+                    "type": "string"
+                },
+                "manager_uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.BooleanResponse": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "boolean"
                 }
             }
         },
@@ -1360,7 +1846,7 @@ const docTemplate = `{
                 }
             }
         },
-        "project.ProjectLogoModel": {
+        "project.ProjectImageModel": {
             "type": "object",
             "required": [
                 "filepath",
@@ -1388,6 +1874,32 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "logo": {
+                    "type": "string"
+                },
+                "managers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/project.UserEmailModel"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "project.ProjectUpdateModel": {
+            "type": "object",
+            "required": [
+                "description",
+                "managers",
+                "title",
+                "uuid"
+            ],
+            "properties": {
+                "description": {
                     "type": "string"
                 },
                 "managers": {
@@ -1456,17 +1968,6 @@ const docTemplate = `{
             ],
             "properties": {
                 "access_token": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.TokenRefreshModel": {
-            "type": "object",
-            "required": [
-                "refresh_token"
-            ],
-            "properties": {
-                "refresh_token": {
                     "type": "string"
                 }
             }
