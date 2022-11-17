@@ -8,7 +8,7 @@ const initialState = {
 
 /* Create a new clice for admin API */
 export const adminSlice = createSlice({
-    name: "admin",
+    name: "admin_slice",
     initialState,
     reducers: {
         loadingStart(state) {

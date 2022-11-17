@@ -8,7 +8,7 @@ import styles from './Select.module.css';
 const Select = ({
     title = "",
     items = [],
-    changeHandler = () => {}
+    changeHandler = (e) => {}
 }) => {
     return (
         <>

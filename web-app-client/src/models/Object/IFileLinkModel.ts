@@ -5,9 +5,6 @@ export interface IFileLinkModel {
     link: string;                                                 // Ссылка на файл (google docs)
     time_value: number;                                           // Количество времени
     time_key: string;                                             // Временной интервал 
-
-    toString(separator: string): string;                          // Метод преобразования объекта класса в строку
-    fromString(value: string, separator: string): IFileLinkModel; // Метод преобразования строки в объект класса
 }
 
 /**

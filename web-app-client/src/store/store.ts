@@ -41,7 +41,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: storageConfig["main-store"],
   storage,
-  blacklist: ["manager_info_slice"],
+  blacklist: ["managerInfoReducer", "adminReducer", "companyReducer", "messageQueueReducer", "projectReducer"],
 };
 
 // Создание Persist Reducer

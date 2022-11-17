@@ -30,7 +30,7 @@ const initialState: IProjectSlice = {
  * Описание слайса для работы с ъранилищем проектов
  */
 export const projectSlice = createSlice({
-    name: "project",
+    name: "project_slice",
     initialState,
     reducers: {
         loadingStart(state: IProjectSlice) {
@@ -58,6 +58,16 @@ export const projectSlice = createSlice({
             }
         },
 
+        updateObjectInfo(state: IProjectSlice, action: PayloadAction<IObjectModel>) {
+            state.isLoading = false;
+
+            const index = state.objects.findIndex((element) => element.uuid === action.payload.uuid);
+
+            if (index >= 0) {
+                state.objects[index] = action.payload;
+            }
+        },
+
         addObjectInfo(state: IProjectSlice, action: PayloadAction<IObjectModel>) {
             state.isLoading = false;
 
@@ -69,7 +79,7 @@ export const projectSlice = createSlice({
         deleteObjectInfo(state: IProjectSlice, action: PayloadAction<IObjectModel>) {
             state.isLoading = false;
 
-            const index = state.objects.indexOf(action.payload);
+            const index = state.objects.findIndex((element) => element.uuid === action.payload.uuid);
 
             if (index >= 0) {
                 state.objects.splice(index, 1);

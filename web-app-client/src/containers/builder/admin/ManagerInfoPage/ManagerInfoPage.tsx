@@ -98,7 +98,6 @@ const ManagerInfoPage = () => {
 
     const onSubmit = (ev: React.FormEvent) => {
         ev.preventDefault()
-        console.log('onSubmit', ev)
         toast.info('Submit')
     }
 

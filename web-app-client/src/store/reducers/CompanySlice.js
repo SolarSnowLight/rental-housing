@@ -9,7 +9,7 @@ const initialState = {
 
 /* Create a new clice for company API */
 export const companySlice = createSlice({
-    name: "company",
+    name: "company_slice",
     initialState,
     reducers: {
         loadingStart(state) {

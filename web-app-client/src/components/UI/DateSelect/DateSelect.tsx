@@ -12,12 +12,10 @@ import styles from './DateSelect.module.css';
  * @returns {JSX.Element}
  */
 const DateSelect = ({
-    value = new Date(),
-    changeHandler = () => { },
-    placeholder = "Дата сдачи",
     title = "Дата",
-
-    // Styles
+    value = new Date(),
+    changeHandler = (e) => { },
+    placeholder = "Дата сдачи",
     styleContainer = { width: '18em'},
     styleTitle = {},
     styleText = {}

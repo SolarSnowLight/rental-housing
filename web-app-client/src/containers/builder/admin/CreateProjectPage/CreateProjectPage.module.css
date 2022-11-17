@@ -306,7 +306,8 @@
 
 .objectsListSlide {
   padding: 0;
-  height: 340px;
+  height: -moz-max-content;
+  height: max-content;
   margin-top: 32px;
   display: flex;
   overflow: auto;

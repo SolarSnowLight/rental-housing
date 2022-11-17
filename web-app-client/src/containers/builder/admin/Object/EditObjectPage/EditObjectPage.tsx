@@ -1,5 +1,5 @@
 /* Библиотеки */
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { FC, useState, useEffect, useCallback, useRef } from 'react';
 import { TextField as TextFieldMUI, Autocomplete as AutocompleteMUI } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,6 +8,7 @@ import { useFormState, useForm } from 'react-hook-form';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import { v4 as uuidv4 } from 'uuid';
 
 /* Контекст */
 import messageQueueAction from 'src/store/actions/MessageQueueAction';
@@ -33,6 +34,11 @@ import useHttp from 'src/hooks/http.hook';
 /* Утилиты */
 import { utils } from 'src/utils/utils';
 
+/* Модели */
+import { FileLinkModel } from 'src/models/Object/IFileLinkModel';
+import { ICity, IObjectModel } from 'src/models/Object/IObjectModel';
+import { IProjectModel } from 'src/models/Project/IProjectModel';
+
 /* Константы */
 import MainApi from 'src/constants/addresses/apis/main.api';
 import AdminApi from 'src/constants/addresses/apis/admin.api';
@@ -41,54 +47,37 @@ import cities from 'src/data/russian-cities.json';
 import TimeUploadValue from 'src/constants/values/time.upload.value';
 
 /* Стили */
-import styles from './CreateObjectPage.module.scss';
+import styles from './EditObjectPage.module.scss';
 import { textStyleDefault } from 'src/styles';
 import { root } from 'src/styles';
 import ImageUpload from 'src/components/UI/ImageUpload';
 import { dataURLToBlob } from 'src/utils/file';
-import { FileLinkModel } from 'src/models/Object/IFileLinkModel';
+import { ImageListType } from 'react-images-uploading';
 
-/* Базовые данные */
-const defaultTokens = [
-    [
-        { value: "Номер", type_component: "text", position: '0;0' },
-        { value: "Адрес", type_component: "text", position: '0;1' }
-    ],
-    [
-        { value: "Ширина", type_component: "text", position: '1;0' },
-        { value: "Статус", type_component: "text", position: '1;1' }
-    ],
-    [
-        { value: "Длина", type_component: "text", position: '2;0' },
-        { value: "Общая стоимость", type_component: "text", position: '2;1' }
-    ],
-    [
-        { value: "Площадь", type_component: "text", position: '3;0' },
-        { value: "Стоимость в кв. м.", type_component: "text", position: '3;1' }
-    ]
-];
+/* Локальные интерфейсы */
+interface IEditObjectProps{
+    object: IObjectModel;
+    project: IProjectModel;
+}
 
 /**
  * Функциональный компонент для страницы создания объектов
  * @returns {JSX.Element}
  */
-const CreateObjectPage = () => {
-    const userSelector = useAppSelector((state) => state.userReducer);
-    const projectSelector = useAppSelector((state) => state.projectReducer);
+const EditObjectPage = () => {
     const dispatch = useAppDispatch();
     const { loading, request, error, clearError } = useHttp();
     const [modalActive, setModalActive] = useState(false);
-    const [modalText, setModalText] = useState(null);
     const navigate = useNavigate();
     const message = useMessageToastify();
-    const { state } = useLocation();
+    const props = (useLocation().state) as IEditObjectProps;
     const [stateUseLink, setStateUseLink] = useState(false);
 
     const [btnDisabled, setBtnDisabled] = useState(true);
-    const [logo, setLogo] = useState([]);
+    const [images, setImages] = useState<ImageListType>(props.object.images);
     const [form, setForm] = useState({
-        title: '',
-        date_delivery: new Date()
+        title: props.object.title,
+        date_delivery: new Date(props.object.date_delivery)
     });
 
     // Состояния для загрузки файла через ссылку
@@ -110,7 +99,7 @@ const CreateObjectPage = () => {
     ];
 
     // Токены таблицы
-    const [token, setToken] = useState(defaultTokens);
+    const [token, setToken] = useState(props.object.tokens);
 
     // Контролеры ошибок
     const { handleSubmit, control } = useForm();
@@ -119,34 +108,34 @@ const CreateObjectPage = () => {
     });
 
     // Характеристики объекта
-    const [characteristics, setCharacteristics] = useState([]);
-    const [currentCharacteristic, setCurrentCharacteristic] = useState();
+    const [characteristics, setCharacteristics] = useState(props.object.characteristics);
+    const [currentCharacteristic, setCurrentCharacteristic] = useState('');
 
     // Методы оплаты
-    const [paymentMethods, setPaymentMethods] = useState([]);
-    const [currentPaymentMethod, setCurrentPaymentMethod] = useState();
+    const [paymentMethods, setPaymentMethods] = useState(props.object.payment_methods);
+    const [currentPaymentMethod, setCurrentPaymentMethod] = useState('');
 
     // Коммуникации
-    const [communications, setCommunications] = useState([]);
-    const [currentCommunication, setCurrentCommunication] = useState();
+    const [communications, setCommunications] = useState(props.object.communications);
+    const [currentCommunication, setCurrentCommunication] = useState('');
 
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
     const [cityOptions, setCityOptions] = useState(cities);
 
     // Город, в котором расположен объект
-    const [city, setCity] = useState(cities.find(o => o.name === 'Иркутск'));
+    const [city, setCity] = useState<ICity | null>(props.object.coords.city);
 
     // Координаты объекта (latitude; longtitude)
     const [latLng, setLatLng] = useState({
-        lat: 0,
-        lng: 0
+        lat: props.object.coords.lat,
+        lng: props.object.coords.lng
     });
 
     const loadingAutocomplete = open && options?.length === 0;
 
-    const onChangeImage = (imageList) => {
-        setLogo(imageList);
+    const onChangeImage = (value: ImageListType, addUpdatedIndex?: number[] | undefined) => {
+        setImages(value);
     };
 
     const changeHandler = (key, value) => {
@@ -154,31 +143,32 @@ const CreateObjectPage = () => {
     };
 
     const onSubmit = async (value) => {
-        const data = {
+        const data: IObjectModel = {
+            uuid: props.object.uuid,
             ...form,
             date_delivery: form.date_delivery.toISOString(),
-            images: logo.map((item) => {
-                return (
-                    item.data_url
-                );
+            images: images.map((item) => {
+                return {
+                    data_url: item.dataURL as string
+                };
             }),
             characteristics: characteristics,
             payment_methods: paymentMethods,
             communications: communications,
             coords: {
-                city: city,
+                city: city as ICity,
                 lat: latLng.lat,
                 lng: latLng.lng
             },
             tokens: token,
             file: (stateUseLink) ?
                 FileLinkModel.toString({ link: link, time_value: timeValue, time_key: timeKey })
-                : (await utils.readAsUrl(excelFile)),
+                : ((excelFile)? await utils.readAsUrl(excelFile) : ''),
             is_link: stateUseLink
         };
 
-        dispatch(projectAction.addObjectInfo(data));
-        dispatch(messageQueueAction.addMessage(null, "success", "Объект добавлен"));
+        dispatch(projectAction.updateObjectInfo(data));
+        dispatch(messageQueueAction.addMessage(null, "success", "Объект изменён!"));
 
         navigate(BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_create);
     };
@@ -305,7 +295,7 @@ const CreateObjectPage = () => {
         }
     }, [form]);
 
-    const [excelFile, setExcelFile] = useState(null);
+    const [excelFile, setExcelFile] = useState<File | null>(null);
     const onDrop = useCallback(acceptedFiles => {
         setExcelFile(acceptedFiles[0]);
     }, []);
@@ -327,7 +317,7 @@ const CreateObjectPage = () => {
                 modalActive && (
                     <LabelSelectComponent active={modalActive} setActive={setModalActive}>
                         {
-                            city && <MapSelectObject city={city} setActive={setModalActive} setLatLng={setLatLng} />
+                            city && <MapSelectObject city={city} setActive={setModalActive} setLatLng={setLatLng} style={undefined} />
                         }
                     </LabelSelectComponent>
                 )
@@ -335,9 +325,9 @@ const CreateObjectPage = () => {
 
             {/* Информация о проекте */}
             <ProjectInfo
-                logo={(state.logo[0].data_url) ? state.logo[0].data_url : state.logo[0]}
-                title={state.title}
-                description={state.description}
+                logo={(props.project.logo[0].data_url) ? props.project.logo[0].data_url : undefined}
+                title={props.project.title}
+                description={props.project.description}
             />
 
             {/* Основная информация об объекте */}
@@ -350,9 +340,10 @@ const CreateObjectPage = () => {
                     <div className={styles["block__item-element__img"]}>
                         <ImageUpload
                             title={"Изображение *"}
-                            value={logo}
+                            subtitle={''}  
+                            value={images}
                             onChange={onChangeImage}
-                            multiple={true}
+                            multiple={true}                      
                         />
                     </div>
                     <div className={styles["block__item-element"]}>
@@ -380,6 +371,7 @@ const CreateObjectPage = () => {
                                     setCity(value);
                                 }}
                                 renderInput={(params) => (
+                                    // @ts-ignore
                                     <TextFieldMUI
                                         {...params}
                                         sx={{
@@ -421,10 +413,10 @@ const CreateObjectPage = () => {
                             }}
                         />
                         <DateSelect
+                            title={"Дата сдачи"}
                             value={form.date_delivery}
                             changeHandler={(date) => changeHandler("date_delivery", date)}
-                            placeholder="Дата сдачи"
-                            title={"Дата сдачи"}
+                            placeholder={"Дата сдачи"}
                         />
                     </div>
                 </div>
@@ -651,7 +643,7 @@ const CreateObjectPage = () => {
                         <TextField
                             title="Количество времени"
                             placeholder="Введите числовое значение"
-                            value={timeValue}
+                            value={String(timeValue)}
                             changeHandler={(e) => {
                                 setTimeValue(e.target.value);
                             }}
@@ -661,7 +653,7 @@ const CreateObjectPage = () => {
                             title='Единица времени'
                             items={items}
                             changeHandler={(e) => {
-                                setTimeKey(items[e.target.value]);
+                                setTimeKey(items[e.target.value].value);
                             }}
                         />
 
@@ -690,7 +682,7 @@ const CreateObjectPage = () => {
                     />
                     <ButtonGreenComponent
                         type={'submit'}
-                        title={"Добавить объект"}
+                        title={"Сохранить изменения"}
                     />
                 </div>
             </div>
@@ -698,4 +690,4 @@ const CreateObjectPage = () => {
     )
 }
 
-export default React.memo(CreateObjectPage);
+export default React.memo(EditObjectPage);

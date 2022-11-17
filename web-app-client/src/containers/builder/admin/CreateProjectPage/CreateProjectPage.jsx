@@ -328,9 +328,31 @@ const CreateProjectPage = () => {
                                 <ObjectCard
                                     key={it.id}
                                     object={it}
+                                    logo={projectSelector.logo[0]}
                                     select={(index == selectIndex) ? true : false}
                                     clickHandler={() => {
                                         setIndex(index);
+                                    }}
+                                    deleteHandler={() => {
+                                        dispatch(projectAction.deleteObjectInfo(it));
+                                    }}
+                                    editHandler={() => {
+                                        window.scrollTo(0, 0);
+                                        navigate(
+                                            (BuilderAdminRoute.builder_admin + '/' + BuilderAdminRoute.project_edit_object),
+                                            {
+                                                state: {
+                                                    object: {
+                                                        ...it
+                                                    },
+                                                    project: {
+                                                        title: projectSelector.title,
+                                                        description: projectSelector.description,
+                                                        logo: projectSelector.logo
+                                                    }
+                                                }
+                                            }
+                                        );
                                     }}
                                 />
                             )

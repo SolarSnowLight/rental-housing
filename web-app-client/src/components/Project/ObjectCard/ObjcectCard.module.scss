@@ -5,18 +5,28 @@
 
 .frame {
     * { @extend .reset }
-    width: 400px; height: 319px;
+    width: 400px; height: max-content;
     background: #F8F8F8;
     border: 2px solid #424041;
     display: grid;
     padding-bottom: 8px;
-    grid: 'image image' 240px
+    grid: 'ui ui'
+          'image image' 240px
           'name  name '
           'year  count';
 
     &:hover {
         border: peru 2px solid !important;
         cursor: pointer;
+    }
+
+    .ui {
+        grid-area: ui;
+        display: grid;
+        grid-auto-flow: column;
+        width: 100%;
+        height: min-content;
+        justify-content: end;
     }
 
     .imagesFrame {

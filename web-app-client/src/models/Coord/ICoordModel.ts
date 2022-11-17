@@ -6,12 +6,10 @@ export interface ICoordModel {
   longitude: number;
 }
 
-
 /**
  * Интерфейс координат (в виде строки)
  */
- export interface ICoordStrModel {
-    latitude: number;
-    longitude: number;
-  }
-  
+export interface ICoordStrModel {
+  latitude: number;
+  longitude: number;
+}

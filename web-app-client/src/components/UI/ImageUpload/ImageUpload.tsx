@@ -1,18 +1,32 @@
-/* Libraries */
+/* Библиотеки */
 import ImageUploading from "react-images-uploading";
-import React from 'react';
+import React, {FC} from 'react';
 
-/* Images */
+/* Изображения */
 import cross from 'src/resources/images/cross.svg';
 import update from 'src/resources/images/update.svg';
 
-/* Styles */
+/* Стили */
 import styles from './ImageUpload.module.scss';
+import { IDataURLModel } from "src/models/Image/IImageModel";
+
+import { ImageListType } from "react-images-uploading";
+
+/* Локальные интерфейсы */
+interface IImageUploadProps {
+    title: string;
+    subtitle: string;
+    value: ImageListType;
+    onChange: (value: ImageListType, addUpdatedIndex?: number[] | undefined) => void;
+    multiple: boolean
+}
 
 /* Component for uploading images (in one quantity or in many) */
-const ImageUpload = ({
-    title = "Изображение *", subtitle = "Загрузить изображение",
-    value = null, onChange = () => { },
+const ImageUpload: FC<IImageUploadProps> = ({
+    title = "Изображение *", 
+    subtitle = "Загрузить изображение",
+    value = [], 
+    onChange = (value: ImageListType, addUpdatedIndex?: number[] | undefined) => {},
     multiple = false
 }) => {
     return (

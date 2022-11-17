@@ -44,6 +44,23 @@ const addObjectInfo = (object: IObjectModel) => async (dispatch) => {
 };
 
 /**
+ * Обновление информации об объекте
+ * @param {any} object Информация об объекте
+ * @returns {Promise<any>}
+ */
+ const updateObjectInfo = (object: IObjectModel) => async (dispatch) => {
+  dispatch(projectSlice.actions.loadingStart());
+
+  try {
+    dispatch(projectSlice.actions.updateObjectInfo(object));
+  } catch (e) {
+    dispatch(messageQueueAction.errorMessage(e));
+  }
+
+  dispatch(projectSlice.actions.loadingEnd());
+};
+
+/**
  * Удаление информации об объекте
  * @param {any} object Конкретный объект из списка объектов
  * @returns {Promise<any>}
@@ -80,6 +97,7 @@ const deleteAllObject = () => async (dispatch) => {
 const projectAction = {
   setItemProjectInfo,
   addObjectInfo,
+  updateObjectInfo,
   deleteObjectInfo,
   deleteAllObject,
   clearProjectInfo,

@@ -1,3 +1,5 @@
+import { IDataURLModel } from "../Image/IImageModel";
+
 /**
  * Интерфейс для описания координат города
  */
@@ -39,14 +41,15 @@ export interface ITokenTableModel {
  * Интерфейс для описание информации об объекте
  */
 export interface IObjectModel {
-  title: string;
-  date_delivery: Date;
-  images: string[];
-  characteristics: string[];
-  payment_methods: string[];
-  communications: string[];
-  coords: IObjectCoords;
-  tokens: ITokenTableModel[][];
-  file: string;
-  is_link: boolean;
+  uuid: string;                     // Идентификатор объекта
+  title: string;                    // Название
+  date_delivery: string;            // Дата сдачи
+  images: IDataURLModel[];          // Изображения
+  characteristics: string[];        // Характеристики
+  payment_methods: string[];        // Методы оплаты
+  communications: string[];         // Коммуникации
+  coords: IObjectCoords;            // Координаты
+  tokens: ITokenTableModel[][];     // Токены (для парсинга таблицы по шаблону)
+  file: string;                     // Файл таблицы (или ссылка на google docs по определённому паттерну)
+  is_link: boolean;                 // Флаг ссылки на удалённый источник для данных о квартире объекта
 }

@@ -1,6 +1,10 @@
 /* Библиотеки */
 import React, { useRef } from "react";
 import styled from "styled-components";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 /* Компоненты */
 import GalleryHorizontalScrollbar from "src/components/GalleryHorizontalScrollbar/GalleryHorizontalScrollbar";
@@ -25,24 +29,21 @@ import { empty } from "src/types/empty";
 /* Модели */
 import { IObjectModel } from "src/models/Object/IObjectModel";
 import { getDateLocale } from "src/utils/date";
+import { IDataURLModel } from "src/models/Image/IImageModel";
 
-export type ObjectInCard = {
-  logo?: string | empty; // Ссылка на лого застройщика
-  images?: string[] | empty; // Массив ссылок на изображения
-  title: string;
-  date_delivery?: string | number;
+export type IObjectCardProps = {
+  object: IObjectModel;
   count_objects?: number;
-};
-
-export type ObjectCardProps = {
-  object: ObjectInCard;
+  logo?: IDataURLModel | empty;
   select: boolean;
   clickHandler: () => {};
+  deleteHandler: () => {};
+  editHandler: () => {};
 };
 
-const ObjectCard = (props: ObjectCardProps) => {
+const ObjectCard = (props: IObjectCardProps) => {
   const object = { ...props.object };
-  object.images ??= [buildingDefault];
+  object.images ??= [{ data_url: buildingDefault}];
 
   const elementCount = object.images.length;
   const containerRef = useRef<HTMLDivElement>(null);
@@ -65,6 +66,23 @@ const ObjectCard = (props: ObjectCardProps) => {
     			props.clickHandler();
     		}}
 		>
+			
+			<div className={css.ui}>
+				<Tooltip describeChild title="Edit">
+        			<Button
+						onClick={props.editHandler}
+					>
+						Изменить
+					</Button>
+      			</Tooltip>
+				<Tooltip title="Delete">
+        			<IconButton>
+          				<DeleteIcon
+							onClick={props.deleteHandler}
+						/>
+        			</IconButton>
+      			</Tooltip>
+			</div>
     		<div
     			className={css.imagesFrame}
     			ref={containerRef}
@@ -73,10 +91,10 @@ const ObjectCard = (props: ObjectCardProps) => {
 				<div 
 					className={css.contentContainer} ref={contentRef}>
     				{object.images.map((it) => (
-    					<div key={it} className={css.imageContainer}>
-        					<img className={css.imageBgc} src={it} alt={"Building"} />
+    					<div key={Math.random()} className={css.imageContainer}>
+        					<img className={css.imageBgc} src={it.data_url} alt={"Building"} />
         					<div className={css.blur} />
-        					<img className={css.image} src={it} alt={"Building"} />
+        					<img className={css.image} src={it.data_url} alt={"Building"} />
     					</div>
     				))}
 				</div>
@@ -93,8 +111,8 @@ const ObjectCard = (props: ObjectCardProps) => {
     		)}
       </div>
 
-    	{object.logo && (
-    		<img className={css.logo} src={object.logo} alt="Builder Logo" />
+    	{props.logo && (
+    		<img className={css.logo} src={props.logo.data_url} alt="Builder Logo" />
     	)}
 
     	<div className={css.name}>{object.title}11</div>
@@ -103,9 +121,9 @@ const ObjectCard = (props: ObjectCardProps) => {
           			Сдача {getDateLocale(object.date_delivery as string)}
         		</div>
       		)}
-      		{object.count_objects && (
+      		{props.count_objects && (
         		<div className={css.count}>
-          			{object.count_objects} {wordUtils.objectsPlural(object.count_objects)}
+          			{props.count_objects} {wordUtils.objectsPlural(props.count_objects)}
         		</div>
       		)}
     	</div>

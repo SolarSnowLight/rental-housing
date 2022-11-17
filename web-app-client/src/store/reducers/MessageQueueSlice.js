@@ -7,7 +7,7 @@ const initialState = {
 
 /* Create a new clice for user API */
 export const messageQueueSlice = createSlice({
-    name: "message_queue",
+    name: "message_queue_slice",
     initialState,
     reducers: {
         addMessage(state, action) {

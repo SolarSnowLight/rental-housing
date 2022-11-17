@@ -281,7 +281,7 @@
 .objectsListSlide {
     @extend .pageElement;
     padding: 0;
-    height: 340px;
+    height: max-content;
     margin-top: 32px;
     display: flex;
     overflow: auto;

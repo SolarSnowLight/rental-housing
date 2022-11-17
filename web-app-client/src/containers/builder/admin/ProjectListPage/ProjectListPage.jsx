@@ -1,23 +1,23 @@
-/* Libraries */
+/* Библиотеки */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-/* Context */
+/* Контекст */
 import companyAction from 'src/store/actions/CompanyAction';
 
-/* Components */
+/* Компоненты */
 import ButtonWhiteComponent from 'src/components/UI/Button/ButtonWhiteComponent';
 import ListItemComponent from 'src/components/Project/ProjectCard';
 
-/* Hooks */
+/* Хуки */
 import { useMessageToastify } from 'src/hooks/message.toastify.hook';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux.hook';
 
-/* Constants */
+/* Константы */
 import MainApi from 'src/constants/addresses/apis/main.api';
 import BuilderAdminRoute from 'src/constants/addresses/routes/builder.admin.route';
 
-/* Styles */
+/* Стили */
 import styles from './ProjectListPage.module.scss';
 
 const ProjectListPage = () => {

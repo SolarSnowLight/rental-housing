@@ -1,12 +1,13 @@
 /* Containers */
 import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
-import CreateObjectPage from "src/containers/builder/admin/CreateObjectPage";
+import CreateObjectPage from "src/containers/builder/admin/Object/CreateObjectPage";
 import CreateProjectPage from "src/containers/builder/admin/CreateProjectPage";
 import ManagerListPage from "src/containers/builder/admin/ManagerListPage";
 import ProjectEditPage from "src/containers/builder/admin/ProjectEditPage";
 import ProjectListPage from "src/containers/builder/admin/ProjectListPage";
 import CompanyEditPage from "src/containers/builder/admin/CompanyEditPage";
 import ManagerInfoPage from "src/containers/builder/admin/ManagerInfoPage";
+import EditObjectPage from "src/containers/builder/admin/Object/EditObjectPage";
 
 /* Models */
 import IRouteModel from "src/models/IRouteModel";
@@ -59,6 +60,11 @@ const builderAdminRouteConfig: IRouteModel[] = [
         // URL: /builder/admin/project/create/add/object
         path: BuilderAdminRoute.project_add_object,
         element: CreateObjectPage
+    },
+
+    {
+        path: BuilderAdminRoute.project_edit_object,
+        element: EditObjectPage
     },
 
     {
