@@ -24,13 +24,15 @@ export const getUserCompany = () => async (dispatch) => {
             return;
         }
 
-        response.data.data.logo = [{
-            data_url: `${MainApi.main_server}/${response.data.data.logo.replace('\\', '/')}`
-        }];
+        if (response.data) {
+            response.data.data.logo = [{
+                data_url: `${MainApi.main_server}/${response.data.data.logo.replace('\\', '/')}`
+            }];
 
-        dispatch(userSlice.actions.getUserCompanySuccess({
-            ...response.data,
-        }));
+            dispatch(userSlice.actions.getUserCompanySuccess({
+                ...response.data,
+            }));
+        }
     } catch (e) {
         dispatch(messageQueueAction.errorMessage(e));
     }

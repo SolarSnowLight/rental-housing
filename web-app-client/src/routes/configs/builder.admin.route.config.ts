@@ -1,10 +1,10 @@
 /* Containers */
 import BuilderAdminPage from "src/containers/builder/admin/BuilderAdminPage";
 import CreateObjectPage from "src/containers/builder/admin/Object/CreateObjectPage";
-import CreateProjectPage from "src/containers/builder/admin/CreateProjectPage";
+import CreateProjectPage from "src/containers/builder/admin/Project/CreateProjectPage";
 import ManagerListPage from "src/containers/builder/admin/ManagerListPage";
-import ProjectEditPage from "src/containers/builder/admin/ProjectEditPage";
-import ProjectListPage from "src/containers/builder/admin/ProjectListPage";
+import ProjectEditPage from "src/containers/builder/admin/Project/ProjectEditPage";
+import ProjectListPage from "src/containers/builder/admin/Project/ProjectListPage";
 import CompanyEditPage from "src/containers/builder/admin/CompanyEditPage";
 import ManagerInfoPage from "src/containers/builder/admin/ManagerInfoPage";
 import EditObjectPage from "src/containers/builder/admin/Object/EditObjectPage";
